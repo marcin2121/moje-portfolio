@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Code2, Smartphone, Zap, Gauge, Rocket, ArrowRight, Github, Linkedin } from 'lucide-react';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { Code2, Smartphone, Zap, Gauge, Rocket, ArrowRight, Facebook, Linkedin, Monitor, Smartphone as PhoneIcon, X } from 'lucide-react';
 import useSound from 'use-sound';
 import MagicBento from '@/components/ui/MagicBento';
 import MagneticButton from '@/components/ui/MagneticButton';
@@ -18,19 +18,27 @@ if (typeof window !== "undefined") {
   }
 }
 
+// Typ definiujący strukturę aktywnego dema
+type DemoConfig = {
+  url: string;
+  title: string;
+  colorClass: string;
+  bgClass: string;
+};
+
 export default function PortfolioHome() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
   const horizontal1Ref = useRef<HTMLDivElement>(null);
-  const vertical1Ref = useRef<HTMLDivElement>(null);
   const horizontal2Ref = useRef<HTMLDivElement>(null);
+  const vertical1Ref = useRef<HTMLDivElement>(null);
   const vertical2Ref = useRef<HTMLDivElement>(null);
 
-  const lastSnappedRef = useRef(-1);
   const [activeDot, setActiveDot] = useState(0);
-  const [playNavClick] = useSound('/sfx/click.mp3', { volume: 0.1 }); 
+  const [openDemo, setOpenDemo] = useState<DemoConfig | null>(null);
+  const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop');
+  const [playNavClick] = useSound('/sfx/click.mp3', { volume: 0.1 });
 
-  const rawProgress = useMotionValue(0); 
+  const rawProgress = useMotionValue(0);
   const smoothProgress = useSpring(rawProgress, { stiffness: 80, damping: 18, mass: 0.8 });
   const lavaHeight = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
 
@@ -40,63 +48,36 @@ export default function PortfolioHome() {
     { id: 2, title: "O mnie" },
     { id: 3, title: "Portfolio" },
     { id: 4, title: "Sklep Urwis" },
-    { id: 5, title: "Kontakt" }
+    { id: 5, title: "zamówtu.pl" },
+    { id: 6, title: "Kontakt" }
   ];
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
     let ctx = gsap.context(() => {
-      
+      // Horizontal 1: Hero + Usługi
       gsap.to(horizontal1Ref.current, { xPercent: -50, ease: "none", scrollTrigger: { trigger: horizontal1Ref.current, start: "top top", end: "+=100%", pin: true, scrub: true }});
-      gsap.to(horizontal2Ref.current, { xPercent: -50, ease: "none", scrollTrigger: { trigger: horizontal2Ref.current, start: "top top", end: "+=100%", pin: true, scrub: true }});
+      
+      // Horizontal 2: Case Studies + Urwis + Zamówtu (3 panele = -66.66%)
+      gsap.to(horizontal2Ref.current, { xPercent: -66.66, ease: "none", scrollTrigger: { trigger: horizontal2Ref.current, start: "top top", end: "+=200%", pin: true, scrub: true }});
 
       ScrollTrigger.create({
         start: 0,
-        end: "max", 
-        snap: {
-          snapTo: (p) => {
-            const step = 0.2; 
-            const nearestIndex = Math.round(p / step);
-            const nearest = nearestIndex * step;
-
-            if (Math.abs(p - nearest) < 0.08) {
-              if (lastSnappedRef.current !== nearestIndex) {
-                lastSnappedRef.current = nearestIndex; 
-                return nearest; 
-              }
-              return p; 
-            }
-            lastSnappedRef.current = -1;
-            return p; 
-          },
-          duration: { min: 0.2, max: 0.5 },
-          delay: 0.1, 
-          ease: "power2.out"
-        },
+        end: "max",
         onUpdate: (self) => {
           rawProgress.set(self.progress);
-          const currentDot = Math.round(self.progress * 5);
-          setActiveDot(prev => {
-            if (prev !== currentDot) {
-              playNavClick(); 
-              return currentDot;
-            }
-            return prev;
-          });
+          const currentDot = Math.round(self.progress * (navDots.length - 1));
+          setActiveDot(currentDot);
         }
       });
-
     }, containerRef);
-
     return () => ctx.revert();
-  }, [rawProgress, playNavClick]);
+  }, []);
 
   const scrollToSection = (index: number) => {
     playNavClick();
-    lastSnappedRef.current = index; 
-    const totalScroll = ScrollTrigger.maxScroll(window); 
-    const targetY = (totalScroll / 5) * index;
+    const totalScroll = ScrollTrigger.maxScroll(window);
+    const targetY = (totalScroll / (navDots.length - 1)) * index;
     gsap.to(window, { scrollTo: targetY, duration: 1.2, ease: "power3.inOut" });
   };
 
@@ -104,217 +85,289 @@ export default function PortfolioHome() {
     <div ref={containerRef} className="relative bg-zinc-950 text-zinc-50 font-sans selection:bg-orange-500 selection:text-white">
       
       {/* LEWY NAVBAR */}
-      <nav className="fixed left-0 top-0 bottom-0 w-24 bg-zinc-950/80 backdrop-blur-xl border-r border-white/5 z-100 flex flex-col items-center justify-center py-10">
-        <div className="absolute top-10 w-full text-center text-[10px] font-black uppercase tracking-widest text-zinc-500">DEV</div>
+    {/* LEWY NAVBAR */}
+    <nav className="fixed left-0 top-0 bottom-0 w-24 bg-zinc-950/80 backdrop-blur-xl border-r border-white/5 z-50 flex flex-col items-center justify-center">
+        <div className="absolute top-10 w-full text-center text-[8px] font-black uppercase tracking-widest text-zinc-600 italic px-2 leading-tight">
+          Marcin Molenda<br/>Development
+        </div>
         <div className="relative h-[60vh] w-4 mt-8">
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1.5 bg-white/5 rounded-full shadow-inner z-0" />
-          <motion.div className="absolute left-1/2 -translate-x-1/2 top-0 w-1.5 bg-linear-to-b from-orange-500 via-red-500 to-rose-600 rounded-full shadow-[0_0_15px_rgba(239,68,68,0.5)] origin-top z-0" style={{ height: lavaHeight }} />
-          <motion.div className="absolute left-1/2 w-5 h-5 bg-white rounded-full z-20 shadow-[0_0_20px_rgba(255,255,255,0.9),0_0_40px_rgba(239,68,68,1)] pointer-events-none" style={{ top: lavaHeight, x: "-50%", y: "-50%" }}>
-            <div className="absolute inset-1 bg-linear-to-br from-orange-200 to-red-600 rounded-full" />
-          </motion.div>
-          {/* Matematycznie nałożone punkty kontrolne (20% co krok, z-10) */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-white/5 rounded-full" />
+          <motion.div className="absolute left-1/2 -translate-x-1/2 top-0 w-1 bg-orange-500 rounded-full origin-top z-0" style={{ height: lavaHeight }} />
+          
           {navDots.map((dot, index) => {
             const isActive = activeDot === index;
-            const isPassed = index < activeDot; 
+            const isPassed = index < activeDot;
             
-            let dotClasses = 'bg-zinc-900 border-zinc-700';
-            let textClasses = 'opacity-0 group-hover:opacity-100 text-zinc-500';
+            // Domyślne klasy (nieaktywne)
+            let dotClasses = 'bg-zinc-900 border-white/10';
+            let textClasses = 'opacity-0 group-hover:opacity-50 text-white';
 
+            // Klasy dla aktywnej sekcji
             if (isActive) {
-              dotClasses = 'bg-orange-500 border-white shadow-[0_0_12px_rgba(249,115,22,0.9)] scale-110';
-              textClasses = 'opacity-100 text-white font-black scale-110';
-            } else if (isPassed) {
-              dotClasses = 'bg-orange-600/60 border-orange-400/50 shadow-[0_0_8px_rgba(249,115,22,0.4)]';
-              textClasses = 'opacity-0 group-hover:opacity-100 text-orange-200/60';
+              dotClasses = 'bg-orange-500 border-orange-500 shadow-[0_0_12px_#ea580c] scale-125';
+              textClasses = 'opacity-100 text-orange-500 scale-110 font-black';
+            } 
+            // Klasy dla miniętej sekcji
+            else if (isPassed) {
+              dotClasses = 'bg-orange-900/80 border-orange-500/50 shadow-[0_0_5px_rgba(234,88,12,0.3)]';
+              textClasses = 'opacity-0 group-hover:opacity-80 text-orange-300';
             }
 
             return (
               <div 
-                key={dot.id}
-                onClick={() => scrollToSection(dot.id)}
-                className={`absolute left-1/2 w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 z-10 cursor-pointer hover:scale-150 transition-all duration-500 group flex items-center ${dotClasses}`}
-                style={{ top: `${index * 20}%` }} 
+                key={dot.id} 
+                onClick={() => scrollToSection(dot.id)} 
+                className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border cursor-pointer group hover:scale-150 transition-all duration-300 z-10 ${dotClasses}`} 
+                style={{ top: `${index * (100 / (navDots.length - 1))}%` }}
               >
-                <span className={`absolute left-8 transition-all duration-300 text-[10px] uppercase tracking-widest whitespace-nowrap ${textClasses}`}>
+                <span className={`absolute left-8 text-[10px] uppercase font-bold tracking-widest transition-all duration-300 whitespace-nowrap ${textClasses}`}>
                   {dot.title}
                 </span>
               </div>
-            )
+            );
           })}
         </div>
       </nav>
 
-      {/* GŁÓWNA ZAWARTOŚĆ */}
-      <main className="pl-24 w-full overflow-x-hidden">
-        
-        {/* ETAP 1 */}
+      <main className="pl-24 w-full">
+        {/* SECTION 1 & 2: HERO + USŁUGI */}
         <div ref={horizontal1Ref} className="flex w-[200%] h-screen">
-          <section className="w-1/2 h-full flex flex-col items-center justify-center border-r border-white/5 relative overflow-hidden">
+          {/* HERO */}
+          <section className="w-1/2 h-full flex flex-col items-center justify-center relative overflow-hidden px-10">
             <Particles color="#ea580c" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-600/10 blur-[120px] rounded-full pointer-events-none" />
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-orange-400 text-xs font-black uppercase tracking-widest mb-8 relative z-10 hover:bg-white/10 transition-colors cursor-default">
-              <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" /> Dostępny na nowe wyzwania
-            </div>
-            <h1 className="text-7xl font-black tracking-tighter mb-6 relative z-10 text-center leading-tight">
-              Cześć, nazywam się <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-400 to-red-500">Marcin Molenda</span>.<br /> Buduję nowoczesny web.
-            </h1>
-            <p className="text-xl text-zinc-400 max-w-xl text-center font-light mb-10 relative z-10">
-              Przekształcam skomplikowane problemy biznesowe w ultraszybkie, intuicyjne i zyskowne aplikacje internetowe (PWA).
-            </p>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-orange-600/5 blur-[140px] rounded-full pointer-events-none" />
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center z-10">
+              <h1 className="text-8xl md:text-9xl font-black tracking-tighter leading-[0.8] mb-4">Marcin<br/><span className="text-orange-500">Molenda</span></h1>
+              <div className="text-xl font-black uppercase tracking-[0.4em] text-zinc-500 italic mb-10">molendadevelopment.pl</div>
+              <p className="text-zinc-400 max-w-xl mx-auto text-lg font-light leading-relaxed">
+                <strong className="text-white font-bold">Twórca nowoczesnych stron internetowych i aplikacji webowych.</strong><br />
+                Dostarczam technologię dopasowaną do potrzeb Twojej firmy. Projektuję wydajne rozwiązania od zera, bez ociężałych szablonów.
+              </p>
+            </motion.div>
           </section>
 
-          <section className="w-1/2 h-full flex items-center justify-center bg-zinc-900/30">
-            <div className="max-w-5xl w-full px-12 text-center">
-              <h2 className="text-5xl font-black mb-16 text-left">W czym mogę Ci pomóc?</h2>
-              <div className="grid grid-cols-2 gap-6 text-left">
-                
-                {/* KARTA 1: Wizytówki Premium */}
-                <MagicBento className="group">
-                  <Zap className="w-10 h-10 text-orange-500 mb-5 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-bold mb-3 text-white">Strony Wizytówkowe WOW</h3>
-                  <p className="text-zinc-400 leading-relaxed text-sm">
-                    Koniec z nudnymi szablonami. Tworzę nowoczesne Landing Page'e i strony firmowe z płynnymi animacjami, które od pierwszej sekundy budują zaufanie i wyróżniają Cię na tle lokalnej konkurencji.
-                  </p>
-                </MagicBento>
-
-                {/* KARTA 2: PWA */}
-                <MagicBento className="group">
-                  <Smartphone className="w-10 h-10 text-red-500 mb-5 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-bold mb-3 text-white">PWA: Aplikacja na telefon</h3>
-                  <p className="text-zinc-400 leading-relaxed text-sm">
-                    Zmieniam zwykłe strony w aplikacje. Twój klient może jednym kliknięciem dodać Twój biznes na ekran główny swojego smartfona (bez App Store) i przeglądać ofertę nawet przy słabym internecie.
-                  </p>
-                </MagicBento>
-
-                {/* KARTA 3: Szybkość 100/100 */}
-                <MagicBento className="group">
-                  <Gauge className="w-10 h-10 text-rose-500 mb-5 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-bold mb-3 text-white">Ratunek dla wolnych stron</h3>
-                  <p className="text-zinc-400 leading-relaxed text-sm">
-                    Uciekają Ci klienci przez zacinającego się WordPressa? Przepisuję przestarzałe strony na ultraszybki kod w technologii Next.js. Wynik 100/100 w testach szybkości od razu poprawi Twoje pozycje w Google.
-                  </p>
-                </MagicBento>
-
-                {/* KARTA 4: Kalkulatory */}
-                <MagicBento className="group">
-                  <Code2 className="w-10 h-10 text-orange-400 mb-5 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-bold mb-3 text-white">Interaktywne Narzędzia</h3>
-                  <p className="text-zinc-400 leading-relaxed text-sm">
-                    Koniec z odpisywaniem na te same maile o wycenę. Buduję na stronach małe aplikacje – np. inteligentne konfiguratory ofert i kalkulatory, które angażują klienta i automatycznie zbierają dla Ciebie leady.
-                  </p>
-                </MagicBento>
-
-              </div>
+          {/* USŁUGI */}
+          <section className="w-1/2 h-full flex items-center justify-center bg-zinc-900/20 px-12">
+            <div className="grid grid-cols-2 gap-6 max-w-5xl text-left">
+              <MagicBento>
+                <Zap className="text-orange-500 mb-4" />
+                <h3 className="font-bold text-lg mb-2 text-white uppercase italic">Nowoczesne Strony WWW</h3>
+                <p className="text-xs text-zinc-400">Projektuję i koduję od zera strony firmowe oraz Landing Page, które ładują się natychmiast.</p>
+              </MagicBento>
+              <MagicBento>
+                <Smartphone className="text-red-500 mb-4" />
+                <h3 className="font-bold text-lg mb-2 text-white uppercase italic">Aplikacje SaaS</h3>
+                <p className="text-xs text-zinc-400">Zmieniam skomplikowane procesy w proste narzędzia. Tworzę dedykowane systemy webowe.</p>
+              </MagicBento>
+              <MagicBento>
+                <Gauge className="text-rose-500 mb-4" />
+                <h3 className="font-bold text-lg mb-2 text-white uppercase italic">Optymalizacja i SEO</h3>
+                <p className="text-xs text-zinc-400">Wykonuję audyty techniczne i naprawiam błędy, przywracając witrynie szybkość.</p>
+              </MagicBento>
+              <MagicBento>
+                <Code2 className="text-orange-400 mb-4" />
+                <h3 className="font-bold text-lg mb-2 text-white uppercase italic">Narzędzia Dedykowane</h3>
+                <p className="text-xs text-zinc-400">Buduję inteligentne konfiguratory ofert i kalkulatory wycen generujące zapytania.</p>
+              </MagicBento>
             </div>
           </section>
         </div>
 
-        {/* ETAP 2 */}
-        <section ref={vertical1Ref} className="w-full h-screen flex items-center justify-center relative bg-zinc-950">
-          <div className="max-w-4xl w-full text-center px-10 relative z-10">
-            <h2 className="text-6xl font-black mb-10">Mój kod, Twoje zasady.</h2>
-            <p className="text-2xl text-zinc-400 leading-relaxed font-light mb-16 max-w-3xl mx-auto">
-              Większość wykonawców instaluje Ci ciężkiego, dziurawego WordPressa i liczy na to, że "jakoś to będzie". <strong className="text-white font-bold text-orange-400">Ja piszę kod od zera.</strong><br/><br/>
-              Współpracując ze mną, otrzymujesz bezpieczny, zamknięty w nowoczesnej architekturze ekosystem, w którym to technologia dopasowuje się do Twojej firmy, a nie na odwrót.
-            </p>
-            <MagneticButton onClick={() => scrollToSection(3)}>
-              <div className="inline-flex items-center gap-3 px-8 py-4 bg-zinc-900 border border-zinc-700 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-black hover:border-white transition-colors shadow-lg shadow-black/50 cursor-pointer">
-                Sprawdź realizacje <ArrowRight className="w-4 h-4" />
-              </div>
-            </MagneticButton>
+        {/* SECTION 3: O MNIE */}
+        <section ref={vertical1Ref} className="w-full h-screen flex flex-col items-center justify-center px-10 bg-zinc-950">
+          <h2 className="text-7xl font-black mb-8 italic tracking-tighter text-white">Mój kod, Twoje zasady.</h2>
+          <p className="text-2xl text-zinc-400 max-w-3xl text-center font-light leading-relaxed">
+            Zamiast masowych produktów, dostarczam technologię dopasowaną do potrzeb Twojej firmy. Rezygnuję z ociężałych szablonów na rzecz <span className="text-orange-500 font-bold italic underline">wydajnych rozwiązań budowanych od zera.</span>
+          </p>
+          <div className="mt-12 flex flex-col items-center gap-4 opacity-30 animate-bounce">
+            <span className="text-[10px] font-black uppercase tracking-widest">Scrolluj do Portfolio</span>
+            <ArrowRight className="w-5 h-5 rotate-90" />
           </div>
-          <div className="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-zinc-900 to-transparent pointer-events-none" />
         </section>
 
-        {/* ETAP 3 */}
-        <div ref={horizontal2Ref} className="flex w-[200%] h-screen bg-zinc-900 border-t border-white/5">
-          <section className="w-1/2 h-full flex flex-col items-center justify-center border-r border-white/5 relative overflow-hidden">
-            <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-red-600/10 blur-[100px] rounded-full pointer-events-none" />
-            <p className="text-orange-500 font-black tracking-widest uppercase mb-4 text-sm">Wybrane prace</p>
-            <h2 className="text-8xl font-black uppercase tracking-tighter">Case<br/>Studies</h2>
+        {/* SECTION 4, 5, 6: PORTFOLIO HORIZONTAL */}
+        <div ref={horizontal2Ref} className="flex w-[300%] h-screen bg-zinc-900/20">
+          {/* CASE STUDIES TITLE */}
+          <section className="w-1/3 h-full flex flex-col items-center justify-center bg-zinc-950 relative overflow-hidden">
+            <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-orange-600/10 blur-[100px] rounded-full pointer-events-none" />
+            <span className="text-orange-500 font-black tracking-widest uppercase text-xs mb-4">Realizacje</span>
+            <h2 className="text-8xl font-black italic uppercase tracking-tighter text-white">Case<br/>Studies</h2>
           </section>
 
-          <section className="w-1/2 h-full flex items-center justify-center relative overflow-hidden bg-zinc-950">
-            <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/10 blur-[150px] rounded-full pointer-events-none" />
-            <div className="flex gap-16 items-center max-w-7xl w-full px-16 relative z-10">
-              <div className="flex-1">
-                <span className="px-4 py-1.5 bg-blue-500/20 border border-blue-500/30 text-blue-400 text-xs font-black uppercase rounded-full mb-6 inline-block tracking-widest">Web App / E-commerce</span>
-                <h2 className="text-7xl font-black mb-6 tracking-tight">Sklep Urwis</h2>
-                <p className="text-zinc-400 mb-10 leading-relaxed text-lg font-light">
-                  Kompleksowa platforma sprzedażowa z elementami gamifikacji. Aplikacja posiada wbudowany kreator rysowania na żywo (Canvas), autorski system powiadomień Web-Push z segmentacją odbiorców oraz cyfrowy portfel lojalnościowy zintegrowany z backendem w Supabase.
+          {/* SKLEP URWIS */}
+          <section className="w-1/3 h-full flex items-center justify-center bg-zinc-950 border-l border-white/5 px-20">
+            <div className="grid grid-cols-2 gap-16 items-center">
+              <div className="space-y-6">
+                <span className="px-4 py-1.5 bg-blue-500/20 border border-blue-500/30 text-blue-400 text-[10px] font-black uppercase rounded-full inline-block tracking-widest">E-commerce / PWA</span>
+                <h3 className="text-6xl font-black italic text-white uppercase tracking-tighter">Sklep Urwis</h3>
+                <p className="text-zinc-400 text-lg font-light leading-relaxed">
+                  Kompleksowa platforma sprzedażowa z kreatorem rysowania na żywo i systemem lojalnościowym zintegrowanym z Supabase.
                 </p>
-                <div className="flex gap-4">
-                  <MagneticButton>
-                    <a href="https://sklep-urwis.pl" target="_blank" rel="noreferrer" className="block px-8 py-4 bg-white text-zinc-950 rounded-full font-black uppercase tracking-wider text-sm hover:bg-zinc-200 transition-colors shadow-xl">
-                      Live Demo
-                    </a>
-                  </MagneticButton>
-                </div>
+                <MagneticButton onClick={() => setOpenDemo({ 
+                  url: 'https://sklep-urwis.pl', 
+                  title: 'sklep-urwis.pl', 
+                  colorClass: 'text-blue-500', 
+                  bgClass: 'bg-blue-600' 
+                })}>
+                  <button className="inline-block px-10 py-4 bg-blue-600 text-white font-black rounded-full uppercase text-xs tracking-widest hover:bg-blue-700 transition-colors shadow-lg shadow-blue-900/30 cursor-pointer">
+                    Uruchom Demo
+                  </button>
+                </MagneticButton>
               </div>
-              <div className="flex-1 aspect-4/3 bg-zinc-900 rounded-3xl border border-white/10 flex items-center justify-center shadow-2xl relative overflow-hidden group">
-                 <div className="absolute inset-0 bg-[url('/gallery/sklep-front.webp')] bg-cover bg-center opacity-60 group-hover:opacity-100 transition-opacity duration-700 group-hover:scale-105" />
-                 <span className="relative z-10 px-6 py-3 bg-black/70 backdrop-blur-md rounded-xl text-white font-black uppercase tracking-widest text-sm border border-white/10 opacity-100 group-hover:opacity-0 transition-opacity">sklep-urwis.pl</span>
+              <div 
+                onClick={() => setOpenDemo({ 
+                  url: 'https://sklep-urwis.pl', 
+                  title: 'sklep-urwis.pl', 
+                  colorClass: 'text-blue-500', 
+                  bgClass: 'bg-blue-600' 
+                })}
+                className="aspect-4/3 bg-zinc-900 rounded-[2rem] border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer flex items-center justify-center"
+              >
+                <div className="absolute inset-0 bg-[url('/sklepurwis.png')] bg-cover bg-center opacity-80 group-hover:opacity-30 group-hover:scale-105 transition-all duration-700 z-10" />
+                <span className="text-white font-black text-xs uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-500 relative z-20 px-6 py-3 bg-orange-600/90 backdrop-blur-md rounded-xl border border-white/20 shadow-2xl shadow-orange-900/50">
+                   Podgląd Demo
+                 </span>
+              </div>
+            </div>
+          </section>
+
+          {/* ZAMÓWTU.PL */}
+          {/* USUNIĘTO klasę 'group' z sekcji, aby hover działał poprawnie! */}
+          <section className="w-1/3 h-full flex items-center justify-center bg-zinc-950 border-l border-white/5 px-20">
+            <div className="grid grid-cols-2 gap-16 items-center">
+              <div className="space-y-6">
+                <span className="px-4 py-1.5 bg-orange-500/20 border border-orange-500/30 text-orange-400 text-[10px] font-black uppercase rounded-full inline-block tracking-widest">SaaS / Gastronomia</span>
+                <h3 className="text-6xl font-black italic text-white uppercase tracking-tighter">zamówtu.pl</h3>
+                <p className="text-zinc-400 text-lg font-light leading-relaxed">
+                  System zamówień online dla gastronomii. Fintech, dashboardy analityczne i pełna automatyzacja sprzedaży bez prowizji.
+                </p>
+                <MagneticButton onClick={() => setOpenDemo({ 
+                  url: 'https://zamówtu.pl/demo', 
+                  title: 'zamówtu.pl', 
+                  colorClass: 'text-orange-500', 
+                  bgClass: 'bg-orange-600' 
+                })}>
+                  <button className="px-10 py-4 bg-orange-600 text-white font-black rounded-full uppercase text-xs tracking-widest cursor-pointer shadow-lg shadow-orange-900/30">
+                    Uruchom Demo
+                  </button>
+                </MagneticButton>
+              </div>
+              <div 
+                onClick={() => setOpenDemo({ 
+                  url: 'https://zamówtu.pl/demo', 
+                  title: 'zamówtu.pl', 
+                  colorClass: 'text-orange-500', 
+                  bgClass: 'bg-orange-600' 
+                })}
+                className="aspect-4/3 bg-zinc-900 rounded-[2rem] border border-white/10 flex items-center justify-center relative overflow-hidden shadow-2xl cursor-pointer group"
+              >
+                 <div className="absolute inset-0 bg-[url('/zamowtu.png')] bg-cover bg-center opacity-80 group-hover:opacity-30 group-hover:scale-105 transition-all duration-700 z-10" />
+                 <span className="text-white font-black text-xs uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-500 relative z-20 px-6 py-3 bg-orange-600/90 backdrop-blur-md rounded-xl border border-white/20 shadow-2xl shadow-orange-900/50">
+                   Podgląd Demo
+                 </span>
               </div>
             </div>
           </section>
         </div>
 
-        {/* ETAP 4 */}
-        <section ref={vertical2Ref} className="w-full min-h-screen flex flex-col items-center justify-center bg-zinc-950 border-t border-white/5 relative overflow-hidden py-20">
+        {/* SECTION 7: KONTAKT */}
+        <section ref={vertical2Ref} className="w-full min-h-screen flex flex-col items-center justify-center p-20 bg-zinc-950 border-t border-white/5 relative">
           <Particles color="#e11d48" />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-rose-600/10 blur-[120px] rounded-full pointer-events-none" />
-          
-          <div className="max-w-5xl w-full p-16 bg-zinc-900/50 border border-white/10 rounded-[3rem] backdrop-blur-xl relative z-10 shadow-2xl">
-            <div className="flex flex-col md:flex-row gap-16">
-              <div className="flex-1 flex flex-col justify-between">
-                <div>
-                  <Rocket className="w-12 h-12 text-rose-500 mb-8 animate-bounce" />
-                  <h2 className="text-5xl font-black mb-6 leading-tight">Zbudujmy coś<br/>wyjątkowego.</h2>
-                  <p className="text-zinc-400 leading-relaxed font-light mb-8 max-w-sm">
-                    Niezależnie czy potrzebujesz innowacyjnej aplikacji, czy sklepu, który wyróżni się na tle konkurencji – porozmawiajmy o tym.
-                  </p>
-                </div>
-                
-                <div className="mt-8">
-                  <p className="text-sm text-zinc-500 font-bold uppercase tracking-widest mb-4">Napisz bezpośrednio:</p>
-                  <a href="mailto:[TwojEmail@domena.pl]" className="text-2xl font-bold text-white hover:text-orange-500 transition-colors border-b-2 border-orange-500 pb-1 inline-block">
-                    [TwojEmail@domena.pl]
-                  </a>
-                  
-                  {/* Social Links */}
-                  <div className="flex gap-4 mt-10">
-                    <a href="https://github.com/[TwojGithub]" target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-full border border-white/10 hover:bg-orange-500 hover:border-orange-500 transition-all group">
-                      <Github className="w-5 h-5 text-zinc-400 group-hover:text-white" />
-                    </a>
-                    <a href="https://linkedin.com/in/[TwojLinkedIn]" target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-full border border-white/10 hover:bg-blue-600 hover:border-blue-600 transition-all group">
-                      <Linkedin className="w-5 h-5 text-zinc-400 group-hover:text-white" />
-                    </a>
+          <div className="max-w-5xl w-full bg-zinc-900/50 border border-white/10 rounded-[3rem] p-16 grid grid-cols-2 gap-16 relative z-10 backdrop-blur-xl">
+            <div>
+              <Rocket className="text-rose-500 w-12 h-12 mb-8 animate-bounce" />
+              <h2 className="text-5xl font-black italic mb-6 text-white leading-tight">Zacznijmy projekt, który wygrywa.</h2>
+              <p className="text-zinc-400 mb-10 font-light leading-relaxed">Twoja firma zasługuje na technologię, która realnie zwiększa obroty i odciąża Cię z powtarzalnych zadań.</p>
+              <a href="mailto:kontakt@molendadevelopment.pl" className="text-xl font-bold text-white border-b-2 border-orange-500 pb-1 hover:text-orange-500 transition-colors">kontakt@molendadevelopment.pl</a>
+              <div className="flex gap-4 mt-12">
+                <a href="https://www.facebook.com/profile.php?id=61564367727437" target="_blank" className="p-3 bg-white/5 rounded-full border border-white/10 hover:bg-[#1877F2] hover:border-[#1877F2] transition-all group">
+                  <Facebook className="w-5 h-5 text-zinc-400 group-hover:text-white" />
+                </a>
+                <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" className="p-3 bg-white/5 rounded-full border border-white/10 hover:bg-blue-600 hover:border-blue-600 transition-all group">
+                  <Linkedin className="w-5 h-5 text-zinc-400 group-hover:text-white" />
+                </a>
+              </div>
+            </div>
+            <form action="https://formspree.io/f/mgolplyg" method="POST" className="space-y-4">
+              <input type="text" name="Imię/Firma" placeholder="Imię / Nazwa Firmy" required className="w-full p-5 bg-black/50 border border-white/10 rounded-2xl outline-none focus:border-orange-500 transition-all font-light" />
+              <input type="email" name="Email" placeholder="Adres e-mail" required className="w-full p-5 bg-black/50 border border-white/10 rounded-2xl outline-none focus:border-orange-500 transition-all font-light" />
+              <textarea name="Wiadomość" placeholder="Opisz krótko, czego potrzebujesz..." rows={4} required className="w-full p-5 bg-black/50 border border-white/10 rounded-2xl outline-none focus:border-orange-500 transition-all resize-none font-light" />
+              <MagneticButton className="w-full">
+                <button type="submit" className="w-full py-6 bg-linear-to-r from-orange-500 to-red-600 text-white font-black uppercase text-xs tracking-widest rounded-2xl shadow-xl hover:opacity-90 transition-opacity">Wyślij zapytanie</button>
+              </MagneticButton>
+            </form>
+          </div>
+          <div className="mt-20 text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em] text-center">
+            &copy; {new Date().getFullYear()} Marcin Molenda - molendadevelopment.pl<br/>
+            Wykonano w technologii Next.js 16 & React 19
+          </div>
+        </section>
+      </main>
+
+      {/* UNIWERSALNY MODAL DEMO Z PRZEŁĄCZNIKIEM WIDOKU */}
+      <AnimatePresence>
+        {openDemo && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[999] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-6 md:p-12">
+            <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} className="w-full h-full bg-zinc-900 rounded-[2.5rem] border border-white/10 overflow-hidden flex flex-col shadow-2xl">
+              
+              {/* Belka sterująca */}
+              <div className="p-4 border-b border-white/5 flex items-center justify-between bg-zinc-950/50 shrink-0">
+                <div className="flex items-center gap-6">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500/30"/><div className="w-3 h-3 rounded-full bg-yellow-500/30"/><div className="w-3 h-3 rounded-full bg-green-500/30"/>
+                  </div>
+                  <div className="hidden md:flex bg-white/5 p-1 rounded-xl gap-1">
+                    <button onClick={() => setViewMode('desktop')} className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase flex items-center gap-2 transition-all ${viewMode === 'desktop' ? `${openDemo.bgClass} text-white shadow-lg` : 'text-zinc-500 hover:text-white'}`}>
+                      <Monitor size={14}/> Desktop
+                    </button>
+                    <button onClick={() => setViewMode('mobile')} className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase flex items-center gap-2 transition-all ${viewMode === 'mobile' ? `${openDemo.bgClass} text-white shadow-lg` : 'text-zinc-500 hover:text-white'}`}>
+                      <PhoneIcon size={14}/> Mobile
+                    </button>
                   </div>
                 </div>
+                <div className={`text-[10px] ${openDemo.colorClass} font-black uppercase tracking-widest hidden lg:block`}>{openDemo.title} Preview</div>
+                <button onClick={() => setOpenDemo(null)} className="p-3 hover:bg-white/10 rounded-full transition-colors text-zinc-400 hover:text-white cursor-pointer"><X size={24}/></button>
               </div>
-
-              <div className="flex-1">
-                <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert('Formularz wymaga podpięcia np. pod Formspree!'); }}>
-                  <input type="text" required placeholder="Imię / Nazwa Firmy" className="w-full p-5 bg-zinc-950/80 border border-white/10 rounded-2xl outline-none focus:border-orange-500 focus:bg-zinc-950 transition-all font-light" />
-                  <input type="email" required placeholder="Adres e-mail" className="w-full p-5 bg-zinc-950/80 border border-white/10 rounded-2xl outline-none focus:border-orange-500 focus:bg-zinc-950 transition-all font-light" />
-                  <textarea required placeholder="Opisz krótko, czego potrzebujesz..." rows={5} className="w-full p-5 bg-zinc-950/80 border border-white/10 rounded-2xl outline-none focus:border-orange-500 focus:bg-zinc-950 transition-all resize-none font-light" />
+              
+              {/* Obszar Iframe z Notch'em (który nie zasłania) */}
+              <div className="flex-1 bg-zinc-800 flex justify-center items-center overflow-hidden p-4">
+                <motion.div 
+                  animate={{ 
+                    width: viewMode === 'desktop' ? '100%' : '430px', 
+                    height: viewMode === 'desktop' ? '100%' : '832px',
+                    borderRadius: viewMode === 'desktop' ? '0px' : '32px' 
+                  }} 
+                  transition={{ type: 'spring', stiffness: 100, damping: 20 }} 
+                  className="bg-black shadow-2xl overflow-hidden relative border-[8px] border-zinc-950 flex flex-col"
+                >
+                  {/* Pasek statusu (iOS style) dla Mobile */}
+                  {viewMode === 'mobile' && (
+                    <div className="h-6 w-full flex justify-between items-center px-5 text-[10px] font-bold text-white shrink-0 bg-black relative z-50">
+                       <span>9:41</span>
+                       
+                       {/* Notch */}
+                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-5 bg-zinc-950 rounded-b-[1rem]" />
+                       
+                       {/* Ikona Baterii */}
+                       <div className="flex gap-1.5 items-center relative z-10">
+                          <div className="w-5 h-2.5 border border-white/50 rounded-[3px] p-[1px] relative flex items-center">
+                             <div className="w-[80%] h-full bg-white rounded-[1px]" />
+                             <div className="absolute -right-[2px] top-1/2 -translate-y-1/2 w-[2px] h-1 bg-white/50 rounded-r-sm" />
+                          </div>
+                       </div>
+                    </div>
+                  )}
                   
-                  <MagneticButton className="w-full">
-                    <button type="submit" className="w-full py-6 px-10 bg-linear-to-r from-orange-500 to-red-600 text-white font-black uppercase tracking-widest text-sm rounded-2xl hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(239,68,68,0.3)]">
-                      Wyślij zapytanie
-                    </button>
-                  </MagneticButton>
-                </form>
+                  {/* Kontener Iframe - odsuwa się od paska statusu, więc notch niczego nie zasłania! */}
+                  <div className="flex-1 w-full bg-white relative">
+                    <iframe src={openDemo.url} className="absolute inset-0 w-full h-full border-none" />
+                  </div>
+                </motion.div>
               </div>
-            </div>
-          </div>
-          
-          <div className="w-full text-center mt-12 text-zinc-600 text-sm font-light relative z-10">
-            &copy; {new Date().getFullYear()} Marcin Molenda. Wszelkie prawa zastrzeżone. <br/>Zaprojektowane i zakodowane z pasją.
-          </div>
-        </section>
-
-      </main>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
