@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { GoogleTagManager } from '@next/third-parties/google';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,12 +19,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://molendadevelopment.pl',
   },
-  // Konfiguracja Twoich faviconów
   icons: {
     icon: [
       { url: '/favicon.ico' },
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon32x32.png', sizes: '32x32', type: 'image/png' }, // Zgodnie z Twoją nazwą pliku
+      { url: '/favicon32x32.png', sizes: '32x32', type: 'image/png' },
     ],
     apple: [
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
@@ -38,14 +38,6 @@ export const metadata: Metadata = {
     description: 'Ultraszybkie strony Next.js i aplikacje webowe z efektem WOW.',
     url: 'https://molendadevelopment.pl',
     siteName: 'Marcin Molenda Portfolio',
-    // images: [
-    //   {
-    //     url: 'https://molendadevelopment.pl/og-image.webp', 
-    //     width: 1200,
-    //     height: 630,
-    //     alt: 'Marcin Molenda - Strony i Aplikacje Webowe',
-    //   },
-    // ],
     locale: 'pl_PL',
     type: 'website',
   },
@@ -58,6 +50,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pl">
+      {/* Wstrzykiwanie GTM po ID */}
+      <GoogleTagManager gtmId="GTM-K2TJZ899" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
