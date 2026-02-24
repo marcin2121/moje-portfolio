@@ -330,38 +330,47 @@ export default function PortfolioHome() {
             </section>
           </div>
 
-          {/* ─── O Mnie ─── */}
-          <section className="w-screen h-screen flex flex-col items-center justify-center px-6 lg:px-10 py-20 bg-transparent relative overflow-hidden">
+         {/* ─── O Mnie ─── */}
+         <section className="w-screen h-screen flex flex-col items-center justify-center px-6 lg:px-10 py-20 bg-transparent relative overflow-hidden">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full opacity-[0.02] pointer-events-none text-[25vw] font-black text-center leading-none select-none tracking-tighter">
               ROOT
             </div>
             <div className="relative z-10 w-full max-w-4xl flex flex-col items-center text-center">
-              <div className="font-mono text-[10px] text-zinc-500 mb-8 flex items-center gap-2 tracking-[0.2em]">
+              
+              {/* 🔥 Zmiana text-zinc-500 na text-zinc-400 */}
+              <div className="font-mono text-[10px] text-zinc-400 mb-8 flex items-center gap-2 tracking-[0.2em]">
                 <span className="text-orange-500">~/marcin-molenda</span>
-                <span className="text-zinc-800">/</span>
-                <Terminal size={12} className="text-zinc-600" />
-                <span>whoami --full</span>
+                <span className="text-zinc-400">/</span>
+                <Terminal size={12} className="text-zinc-400" />
+                <span className="text-zinc-400">whoami --full</span> {/* 🔥 Dodany kolor do span */}
               </div>
+              
               <h2 className="text-4xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] mb-10 tracking-tighter text-white leading-[0.9] max-w-3xl">
                 <span className="text-orange-500 mr-4 font-mono font-light">&gt;</span>Kod pisany pod Twoje zasady.
               </h2>
+              
               <div className="space-y-6 max-w-2xl">
                 <p className="text-sm sm:text-lg lg:text-xl text-zinc-300 font-light leading-relaxed">
                   Odrzucam gotowe szablony i ociężałe kreatory. Każdy projekt traktuję jak <span className="text-white font-medium">system krytyczny</span>, projektując logikę dopasowaną do realnych wyzwań Twojego biznesu.
                 </p>
-                <p className="text-xs sm:text-base text-zinc-500 font-light leading-relaxed">
-                  Moja rola zaczyna się tam, gdzie liczy się precyzja: od wdrażania <span className="text-orange-500/80">mikrousług</span>, po pełną <span className="text-orange-500/80">architekturę systemów SaaS</span>. Dostarczam technologię, która nie zna pojęcia kompromisu i skaluje się wraz z Twoim sukcesem.
+                {/* 🔥 Zmiana text-zinc-500 na text-zinc-400 */}
+                <p className="text-xs sm:text-base text-zinc-400 font-light leading-relaxed">
+                  Moja rola zaczyna się tam, gdzie liczy się precyzja: od wdrażania <span className="text-orange-500">mikrousług</span>, po pełną <span className="text-orange-500">architekturę systemów SaaS</span>. Dostarczam technologię, która nie zna pojęcia kompromisu i skaluje się wraz z Twoim sukcesem.
                 </p>
               </div>
+              
               <div className="mt-16 flex flex-col items-center gap-8">
                 <div className="flex items-center gap-4">
                   <div className="w-8 h-px bg-zinc-800" />
-                  <span className="font-mono text-[9px] text-zinc-600 uppercase tracking-[0.4em]">Ready for execution</span>
+                  {/* 🔥 Zmiana text-zinc-600 na text-zinc-400 */}
+                  <span className="font-mono text-[9px] text-zinc-400 uppercase tracking-[0.4em]">Ready for execution</span>
                   <div className="w-8 h-px bg-zinc-800" />
                 </div>
-                <div className="flex flex-col items-center gap-3 animate-bounce opacity-40">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-orange-500">Scroll.init()</span>
-                  <ArrowRight className="w-4 h-4 rotate-90 text-orange-500" />
+                
+                {/* 🔥 Usunięto opacity-40, użyto text-orange-700 by było ciemniejsze bez psucia kontrastu przezroczystością */}
+                <div className="flex flex-col items-center gap-3 animate-bounce">
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-orange-600">Scroll.init()</span>
+                  <ArrowRight className="w-4 h-4 rotate-90 text-orange-600" />
                 </div>
               </div>
             </div>
@@ -495,9 +504,9 @@ export default function PortfolioHome() {
                 </form>
               </div>
             </div>
-            <div className="mt-12 lg:absolute lg:bottom-6 lg:mt-0 text-[9px] lg:text-[10px] text-zinc-600 font-mono uppercase tracking-[0.2em] text-center">
-              &copy; {new Date().getFullYear()} Marcin Molenda // molendadevelopment.pl
-            </div>
+            <div className="mt-12 lg:absolute lg:bottom-6 lg:mt-0 text-[9px] lg:text-[10px] text-zinc-400 font-mono uppercase tracking-[0.2em] text-center">
+  &copy; {new Date().getFullYear()} Marcin Molenda // molendadevelopment.pl
+</div>
           </section>
 
         </main>
