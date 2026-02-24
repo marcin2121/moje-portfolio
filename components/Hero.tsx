@@ -71,7 +71,7 @@ export default function Hero({ onNavigate }: HeroProps) {
       <motion.div
         animate={{ scale: [1, 1.05, 1], opacity: [0.1, 0.2, 0.1] }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/4 w-[400px] h-[400px] lg:w-[800px] lg:h-[800px] bg-gradient-to-tr from-orange-600/20 via-zinc-900 to-transparent blur-[120px] rounded-full pointer-events-none will-change-transform"
+        className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/4 w-[400px] h-[400px] lg:w-[800px] lg:h-[800px] bg-linear-to-tr from-orange-600/20 via-zinc-900 to-transparent blur-[120px] rounded-full pointer-events-none will-change-transform"
       />
 
       {/* ─── INTERAKTYWNA ORBITA ─── */}
@@ -93,7 +93,7 @@ export default function Hero({ onNavigate }: HeroProps) {
         {/* Środek układu */}
         <div className="absolute w-2 h-2 bg-orange-500 rounded-full shadow-[0_0_30px_5px_#ea580c] animate-pulse" />
         <div className="absolute w-[80%] h-[80%] border border-white/5 rounded-full" />
-        <div className="absolute w-full h-full border border-white/[0.02] rounded-full border-dashed animate-[spin_60s_linear_infinite]" />
+        <div className="absolute w-full h-full border border-white/2 rounded-full border-dashed animate-[spin_60s_linear_infinite]" />
       </div>
 
       {/* ─── TREŚĆ ─── */}
@@ -123,7 +123,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             initial={{ width: 0 }}
             animate={{ width: "100%" }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }} // 🔥 Zmniejszone opóźnienie
-            className="overflow-hidden whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 via-zinc-100 to-white"
+            className="overflow-hidden whitespace-nowrap text-transparent bg-clip-text bg-linear-to-r from-zinc-400 via-zinc-100 to-white"
           >
             &gt; Wydajność.
           </motion.div>
