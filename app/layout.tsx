@@ -1,22 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google"; // ✅ Zostawiamy tylko Mono
 import "./globals.css";
-import {GoogleTagManager} from '@next/third-parties/google';
+import Script from "next/script";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
+// ✅ Konfiguracja fontu Mono - Next.js sam zajmie się optymalizacją i self-hostingiem
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: "Marcin Molenda | Strony Internetowe, Aplikacje Webowe i Optymalizacja",
-  description: "Twój biznes zasługuje na lepszy kod. Projektuję od zera wydajne strony i aplikacje oraz modernizuję istniejące witryny. Wdrażam technologie i SEO, które deklasują konkurencję.",
-  keywords: ['tworzenie stron internetowych', 'programista Next.js', 'aplikacje webowe', 'developer Polska', 'optymalizacja SEO'],
+  title: "Marcin Molenda | Precyzyjne Systemy, Web & Mobile",
+  description: "Dedykowane systemy i aplikacje webowe oparte o Next.js 16 i Supabase. Architektura bez kompromisów, od JDG po duże firmy. Szybkość ładowania < 1s.",
+  keywords: ['tworzenie stron internetowych', 'programista Next.js', 'aplikacje webowe', 'aplikacje mobilne', 'developer Polska', 'optymalizacja SEO'],
   authors: [{ name: 'Marcin Molenda', url: 'https://molendadevelopment.pl' }],
   robots: {
     index: true,
@@ -27,7 +23,7 @@ export const metadata: Metadata = {
     canonical: 'https://molendadevelopment.pl',
   },
   openGraph: {
-    title: 'Marcin Molenda | Strony Internetowe i Aplikacje Webowe Next.js',
+    title: 'Marcin Molenda | Strony i Aplikacje Web & Mobile',
     description: 'Dedykowane strony i aplikacje webowe w Next.js 16. Szybkość ładowania < 1s, Lighthouse 100. Obsługa firm z całej Polski.',
     url: 'https://molendadevelopment.pl',
     siteName: 'Marcin Molenda Portfolio',
@@ -37,20 +33,20 @@ export const metadata: Metadata = {
       url: 'https://molendadevelopment.pl/og-image.webp',
       width: 1200,
       height: 630,
-      alt: 'Marcin Molenda – Tworzenie stron i aplikacji webowych',
+      alt: 'Marcin Molenda – Precyzyjne systemy webowe',
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Marcin Molenda | Strony i Aplikacje Webowe',
-    description: 'Dedykowane strony i aplikacje webowe w Next.js 15.',
+    title: 'Marcin Molenda | Precyzyjne Systemy Web & Mobile',
+    description: 'Dedykowane systemy i aplikacje webowe oparte o Next.js 16.',
     images: ['https://molendadevelopment.pl/og-image.webp'],
   },
   icons: {
     icon: [
       { url: '/favicon.ico' },
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' }, // ← poprawiony myślnik
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     other: [
@@ -60,13 +56,13 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pl">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      {/* ✅ Zastosowanie fontu Mono na całym body */}
+      <body className={`${geistMono.className} bg-zinc-950 text-zinc-50 antialiased overflow-x-hidden selection:bg-orange-500/30 selection:text-orange-200`}>
         
-        {/* JSON-LD pozostaje bez zmian */}
+        {/* JSON-LD dla usług profesjonalnych */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -83,14 +79,35 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 "addressLocality": "Zduńska Wola",
                 "addressCountry": "PL"
               },
-              "serviceType": ["Strony Internetowe", "Aplikacje Webowe", "Optymalizacja SEO"]
+              "serviceType": ["Strony Internetowe", "Aplikacje Webowe", "Aplikacje Mobilne", "Optymalizacja SEO"]
             })
           }}
         />
 
         {children}
+
+        {/* ✅ GTM — lazyOnload dla zachowania 100/100 Performance */}
+        <Script
+          id="gtm"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-K2TJZ899');`,
+          }}
+        />
+
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-K2TJZ899"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
       </body>
-      <GoogleTagManager gtmId="GTM-K2TJZ899" />
     </html>
   );
 }
