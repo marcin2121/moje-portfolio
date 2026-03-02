@@ -99,22 +99,6 @@ export default function Hero({ onNavigate }: HeroProps) {
           <span>system.status: high_performance_ready</span>
         </div>
 
-        {/* 🔥 Złoty Środek Optymalizacji LCP: Animacje przeniesione z JS na natywny CSS */}
-        <style dangerouslySetInnerHTML={{__html: `
-          @keyframes type {
-            from { clip-path: inset(0 100% 0 0); }
-            to { clip-path: inset(0 0 0 0); }
-          }
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          .type-1 { animation: type 0.5s ease-out 0s both; }
-          .type-2 { animation: type 0.5s ease-out 0.4s both; }
-          .type-3 { animation: type 0.5s ease-out 0.8s both; }
-          .fade-up { animation: fadeInUp 0.8s ease-out 1.2s both; }
-        `}} />
-
         <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-[5.5rem] font-mono tracking-tighter leading-tight mb-8 text-white">
           <div className="overflow-hidden whitespace-nowrap type-1">
             &gt; Precyzja.

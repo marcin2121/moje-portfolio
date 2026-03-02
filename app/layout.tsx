@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     locale: 'pl_PL',
     type: 'website',
     images: [{
-      url: 'https://molendadevelopment.pl/og-image.webp',
+      url: 'https://molendadevelopment.pl/og-image.jpg',
       width: 1200,
       height: 630,
       alt: 'Marcin Molenda – Precyzyjne systemy webowe',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Marcin Molenda | Precyzyjne Systemy Web & Mobile',
     description: 'Dedykowane systemy i aplikacje webowe oparte o Next.js 16.',
-    images: ['https://molendadevelopment.pl/og-image.webp'],
+    images: ['https://molendadevelopment.pl/og-image.jpg'],
   },
   icons: {
     icon: [
@@ -60,7 +60,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="pl">
       {/* ✅ Zastosowanie fontu Mono na całym body */}
       <body className={`${geistMono.className} bg-zinc-950 text-zinc-50 antialiased overflow-x-hidden selection:bg-orange-500/30 selection:text-orange-200`}>
-        
+         {/* ✅ GTM — lazyOnload dla zachowania 100/100 Performance */}
+         <Script
+          id="gtm"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-K2TJZ899');`,
+          }}
+        />
         {/* JSON-LD dla usług profesjonalnych */}
         <script
           type="application/ld+json"
@@ -69,7 +80,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               "@context": "https://schema.org",
               "@type": "ProfessionalService",
               "name": "Marcin Molenda Development",
-              "image": "https://molendadevelopment.pl/og-image.webp",
+              "image": "https://molendadevelopment.pl/og-image.jpg",
               "@id": "https://molendadevelopment.pl",
               "url": "https://molendadevelopment.pl",
               "telephone": "+48665430469",
@@ -85,18 +96,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
         {children}
 
-        {/* ✅ GTM — lazyOnload dla zachowania 100/100 Performance */}
-        <Script
-          id="gtm"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-K2TJZ899');`,
-          }}
-        />
+       
 
         <noscript>
           <iframe

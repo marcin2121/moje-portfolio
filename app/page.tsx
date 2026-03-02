@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Code2, Smartphone, Zap, Gauge, Rocket, ArrowRight, Facebook, Linkedin, Monitor, Smartphone as PhoneIcon, X, Terminal } from 'lucide-react';
+import { Code2, Smartphone, Zap, Gauge, ArrowRight, Facebook, Linkedin, Monitor, Smartphone as PhoneIcon, X, Terminal } from 'lucide-react';
 import useSound from 'use-sound';
 import MagicBento from '@/components/ui/MagicBento';
 import Hero from '@/components/Hero';
@@ -58,10 +58,10 @@ export default function PortfolioHome() {
   const horizontal1Ref  = useRef<HTMLDivElement>(null);
   const horizontal2Ref  = useRef<HTMLDivElement>(null);
 
-  const gsapRef = useRef<any>(null);
-  const stRef   = useRef<any>(null);
-  const ctxRef  = useRef<any>(null);
-
+  const gsapRef = useRef<typeof import('gsap')['default'] | null>(null);
+  const stRef = useRef<typeof import('gsap/ScrollTrigger').ScrollTrigger | null>(null);
+  const ctxRef = useRef<{ revert: () => void } | null>(null);
+  
   const [activeDot, setActiveDot]         = useState(0);
   const [openDemo, setOpenDemo]           = useState<DemoConfig | null>(null);
   const [viewMode, setViewMode]           = useState<'desktop' | 'mobile'>('desktop');
@@ -79,7 +79,7 @@ export default function PortfolioHome() {
   useEffect(() => {
     window.scrollTo(0, 0);
     let isMounted = true;
-    let idleId: number;
+    let idleId: number = -1;
 
     idleId = rIC(async () => {
       const { default: gsap }  = await import('gsap');
@@ -113,8 +113,11 @@ export default function PortfolioHome() {
             ease: 'power1.out',
           },
           onUpdate: (self) => {
-            rawProgress.set(self.progress);
-            setActiveDot(Math.round(self.progress * (NAV_DOTS.length - 1)));
+            rawProgress.set(self.progress); // ✅ OK — motion value, bez re-renderu
+            setActiveDot(prev => {
+              const next = Math.round(self.progress * (NAV_DOTS.length - 1));
+              return prev !== next ? next : prev; // re-render tylko przy zmianie kropki
+            });
           },
         });
       }, containerRef);
@@ -123,7 +126,7 @@ export default function PortfolioHome() {
 
     return () => {
       isMounted = false;
-      cIC(idleId);
+      if (idleId !== -1) cIC(idleId);
       ctxRef.current?.revert();
     };
   }, [rawProgress]);
@@ -162,6 +165,7 @@ export default function PortfolioHome() {
       if (response.ok) {
         pushGTMEvent('wyslanie_formularza_kontakt');
         setIsFormSubmitted(true);
+        setFormError('');
         form.reset();
       }
     } catch { setFormError('Błąd połączenia.'); } finally { setIsSubmitting(false); }
