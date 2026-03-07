@@ -60,10 +60,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="pl">
       {/* ✅ Zastosowanie fontu Mono na całym body */}
       <body suppressHydrationWarning className={`${geistMono.className} bg-zinc-950 text-zinc-50 antialiased overflow-x-hidden selection:bg-orange-500/30 selection:text-orange-200`}>
-         {/* ✅ GTM — lazyOnload dla zachowania 100/100 Performance */}
+         
+         {/* ✅ GTM — afterInteractive żeby Tag Assistant i analityka działały niezawodnie */}
          <Script
           id="gtm"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             })(window,document,'script','dataLayer','GTM-K2TJZ899');`,
           }}
         />
+        
         {/* JSON-LD dla usług profesjonalnych */}
         <script
           type="application/ld+json"
@@ -95,8 +97,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
 
         {children}
-
-       
 
         <noscript>
           <iframe
