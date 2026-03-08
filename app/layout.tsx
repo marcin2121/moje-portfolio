@@ -61,18 +61,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       {/* ✅ Zastosowanie fontu Mono na całym body */}
       <body suppressHydrationWarning className={`${geistMono.className} bg-zinc-950 text-zinc-50 antialiased overflow-x-hidden selection:bg-orange-500/30 selection:text-orange-200`}>
          
-         {/* ✅ GTM — afterInteractive żeby Tag Assistant i analityka działały niezawodnie */}
-         <Script
-          id="gtm"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-K2TJZ899');`,
-          }}
-        />
+         {/* ✅ Skrypt Umami (Bez Cookies, Bez Banerów, Bez GTM) */}
+         <Script 
+           src="https://analytics.molendadevelopment.pl/script.js"
+           data-website-id="0e03a10c-fb02-4e95-b03b-008e9e5f6a2f" // ⚠️ WAŻNE: Wklej tutaj swój ciąg znaków z panelu Umami
+           strategy="afterInteractive"
+         />
         
         {/* JSON-LD dla usług profesjonalnych */}
         <script
@@ -98,14 +92,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
         {children}
 
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-K2TJZ899"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
       </body>
     </html>
   );
