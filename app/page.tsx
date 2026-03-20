@@ -9,6 +9,7 @@ import Hero from '@/components/Hero';
 import MagneticWrapper from '@/components/ui/MagneticWrapper';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 // ✅ Particles ładowane dynamicznie dla Performance 100
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
@@ -523,9 +524,10 @@ export default function PortfolioHome() {
                 </form>
               </div>
             </div>
-            <div className="mt-12 lg:absolute lg:bottom-6 lg:mt-0 text-[9px] lg:text-[10px] text-zinc-400 font-mono uppercase tracking-[0.2em] text-center">
-  &copy; {new Date().getFullYear()} Marcin Molenda // molendadevelopment.pl
-</div>
+            <div className="mt-12 lg:absolute lg:bottom-6 lg:mt-0 text-[9px] lg:text-[10px] text-zinc-400 font-mono uppercase tracking-[0.2em] text-center flex flex-col items-center gap-2">
+              <span>&copy; {new Date().getFullYear()} Marcin Molenda // molendadevelopment.pl</span>
+              <Link href="/polityka-prywatnosci" className="hover:text-orange-500 transition-colors underline-offset-2 hover:underline">Polityka Prywatności</Link>
+            </div>
           </section>
 
         </main>
