@@ -13,6 +13,7 @@ import Link from 'next/link';
 
 // ✅ Particles ładowane dynamicznie dla Performance 100
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
+const UrwisModel = dynamic(() => import('@/components/UrwisModel'), { ssr: false });
 
 const rIC = (cb: IdleRequestCallback): number => {
   if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
@@ -420,13 +421,24 @@ export default function PortfolioHome() {
                     </MagneticWrapper>
                   </div>
                 </div>
-                <div onClick={() => {
-                  pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'Sklep Urwis' });
-                  handleOpenDemo({ url: 'https://www.sklep-urwis.pl', title: 'sklep-urwis.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
-                }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
-                  <Image src="/sklepurwis.png" alt="Podgląd aplikacji Sklep Urwis - E-commerce i Grywalizacja" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
-                  <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl">Execute</span>
+                <div className="aspect-4/3 w-full bg-zinc-950/40 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
+                  <UrwisModel />
+                  {/* pointer-events-none pozwala na przeciąganie modelu pod spodem na hoverze */}
+                  <div className="absolute inset-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-end justify-between p-4 pointer-events-none">
+                    <button 
+                      onClick={() => {
+                        pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'Sklep Urwis' });
+                        handleOpenDemo({ url: 'https://www.sklep-urwis.pl', title: 'sklep-urwis.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
+                      }} 
+                      className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 hover:bg-orange-700 px-4 py-2 rounded-lg shadow-2xl transition-all cursor-pointer pointer-events-auto border border-white/10 hover:scale-105 active:scale-95"
+                    >
+                      Uruchom Demo
+                    </button>
+
+                    <div className="self-center font-mono text-[9px] text-zinc-300 uppercase tracking-widest bg-zinc-950/70 px-4 py-2 rounded-xl backdrop-blur-md border border-white/5 flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
+                      Przeciągnij by obrócić
+                    </div>
                   </div>
                 </div>
               </div>
