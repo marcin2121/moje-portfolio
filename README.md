@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Marcin Molenda - Premium Portfolio 2026
 
-## Getting Started
+Portfolio stworzone w technologii **Next.js**, zaprojektowane jako interaktywne i płynne doświadczenie użytkownika (UI/UX) wykorzystujące model 3D oraz motion design.
 
-First, run the development server:
+---
 
+## 🛠️ Architektura i Stack Technologiczny
+
+Projekt łączy w sobie najnowsze standardy web developmentu:
+
+- **Framework:** [Next.js](https://nextjs.org/) (App Router, dynamiczne ładowanie)
+- **3D & Canvas:** [@react-three/fiber](https://r3f.docs.pmnd.rs/), [@react-three/drei](https://github.com/pmndrs/drei), [Three.js](https://threejs.org/)
+- **Animacje:** [GSAP](https://gsap.com/) + [ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/), [Framer Motion](https://www.framer.com/motion/)
+- **Smooth Scroll:** [Lenis](https://lenis.darkroom.engineering/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Biblioteki Pomocnicze:** Lucide Icons, use-sound, Radix UI
+
+---
+
+## ✨ Kluczowe Funkcje
+
+- **Interaktywność 3D:** Model `UrwisModel` osadzony w scenie R3F, reagujący na interakcję i płynnie wkomponowany w układ strony.
+- **Scroll Snapping & Bento Grid:** Praca z wieloma sekcjami oparta na płynnym scrollowaniu horyzontalnym sterowanym za pomocą GSAP.
+- **Wbudowane demo (Viewport Preview):** Modal pozwalający na testowanie działania innych projektów (np. Sklep Urwis, zamowtu.pl) w widoku **Desktop / Mobile** bezpośrednio w interfejsie portfolio.
+- **Głęboka Optymalizacja:** Wykorzystanie `dynamic()` i `requestIdleCallback` (rIC) dla maksymalnego odciążenia głównego wątku przeglądarki i błyskawicznego ładowania.
+
+---
+
+## 📁 Struktura Projektu
+
+- `/app` – Główna struktura stron (Next.js App Router). Zawiera `page.tsx` z globalną nawigacją i płynną logiką ScrollTrigger.
+- `/components` – Modułowe komponenty:
+  - `/ui` – `MagicBento`, `MagneticWrapper`, `Particles` itp.
+  - `Hero.tsx` – Landing i intro.
+  - `UrwisModel.tsx` – Logika canvasu 3D.
+- `/public` – Zasoby statyczne (modele 3D, grafiki, efekty dźwiękowe).
+
+---
+
+## 🚀 Instalacja i Uruchomienie
+
+Aby uruchomić projekt lokalnie, wykonaj poniższe kroki.
+
+### Instalacja Zależności
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Uruchomienie Serwera Develomentu
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Otwórz [http://localhost:3000](http://localhost:3000) w przeglądarce, aby zobaczyć efekt.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Budowanie Wersji Produkcyjnej
+```bash
+npm run build
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤝 Kontakt
+- **Email:** kontakt@molendadevelopment.pl
