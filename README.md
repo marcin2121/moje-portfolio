@@ -1,6 +1,4 @@
-# 🚀 Marcin Molenda - Premium Portfolio 2026
-
-[English Version Below / Wersja Polska Poniżej](#wersja-polska-pl)
+# 🚀 Marcin Molenda - Portfolio 2026
 
 ---
 
