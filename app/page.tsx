@@ -512,7 +512,7 @@ export default function PortfolioHome() {
                     <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">DevTools / Boilerplate</span>
                   </div>
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">MDK</h2>
-                  <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Marcin Development Kit to autorski ekosystem narzędziowy typu &quot;Premium Boilerplate&quot;, zaprojektowany do błyskawicznego wdrażania zaawansowanych aplikacji SaaS i e-commerce. MDK integruje autorskie systemy automatyzacji ról, zaawansowaną architekturę baz danych oraz gotowe moduły AI (MDK Brain). Jest to fundament moich wdrożeń klasy Enterprise, optymalizujący time-to-market przy zachowaniu najwyższej jakości inżynieryjnej i bezpieczeństwa.</p>
+                  <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Molenda Development Kit to autorski ekosystem narzędziowy typu &quot;Premium Boilerplate&quot;, zaprojektowany do błyskawicznego wdrażania zaawansowanych aplikacji SaaS i e-commerce. MDK integruje autorskie systemy automatyzacji ról, zaawansowaną architekturę baz danych oraz gotowe moduły AI (MDK Brain). Jest to fundament moich wdrożeń klasy Enterprise, optymalizujący time-to-market przy zachowaniu najwyższej jakości inżynieryjnej i bezpieczeństwa.</p>
                 </div>
                 <div className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
                   <AnimatedWebP src="/MDK.webp" alt="Animacja projektu MDK" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
