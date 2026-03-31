@@ -16,6 +16,8 @@
   <img src="https://img.shields.io/badge/TypeScript-5-3178c6?style=for-the-badge&logo=typescript" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Three.js-r183-black?style=for-the-badge&logo=three.js" alt="Three.js" />
 </p>
+</p>
+
 
 ---
 
@@ -115,7 +117,7 @@ moje-portfolio/
 
 ```bash
 # Clone
-git clone https://github.com/marcin2121/marcin.git
+git clone https://github.com/marcin2121/moje-portfolio.git
 cd marcin
 
 # Install
