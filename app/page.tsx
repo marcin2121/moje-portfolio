@@ -119,22 +119,27 @@ export default function PortfolioHome() {
         mm.add('(min-width: 1024px)', () => {
           gsap.to(horizontal1Ref.current, { xPercent: -50, ease: 'none', scrollTrigger: { trigger: horizontal1Ref.current, start: 'top top', end: '+=100%', pin: true, scrub: true } });
           gsap.to(horizontal2Ref.current, { xPercent: -83.33, ease: 'none', scrollTrigger: { trigger: horizontal2Ref.current, start: 'top top', end: '+=500%', pin: true, scrub: true } });
+          
+          ScrollTrigger.create({
+            start: 0,
+            end: 'max',
+            snap: {
+              snapTo: (progress) => {
+                const step = 1 / (NAV_DOTS.length - 1);
+                const closestPoint = Math.round(progress / step) * step;
+                if (Math.abs(progress - closestPoint) < 0.03) return closestPoint;
+                return progress;
+              },
+              duration: { min: 0.1, max: 0.3 },
+              delay: 0.1,
+              ease: 'power1.out',
+            }
+          });
         });
 
         ScrollTrigger.create({
           start: 0,
           end: 'max',
-          snap: {
-            snapTo: (progress) => {
-              const step = 1 / (NAV_DOTS.length - 1);
-              const closestPoint = Math.round(progress / step) * step;
-              if (Math.abs(progress - closestPoint) < 0.03) return closestPoint;
-              return progress;
-            },
-            duration: { min: 0.1, max: 0.3 },
-            delay: 0.1,
-            ease: 'power1.out',
-          },
           onUpdate: (self) => {
             rawProgress.set(self.progress); // MotionValue update — no React re-render
             setActiveDot(prev => {
