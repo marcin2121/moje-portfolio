@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
@@ -8,10 +8,17 @@ const geistMono = Geist_Mono({
   display: 'swap', // Prevents render-blocking font load
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
   title: "Marcin Molenda | Precyzyjne Systemy, Web & Mobile",
   description: "Dedykowane systemy i aplikacje webowe oparte o Next.js 16 i Supabase. Architektura bez kompromisów, od JDG po duże firmy. Szybkość ładowania < 1s.",
   keywords: ['tworzenie stron internetowych', 'programista Next.js', 'aplikacje webowe', 'aplikacje mobilne', 'developer Polska', 'optymalizacja SEO'],
+
   authors: [{ name: 'Marcin Molenda', url: 'https://molendadevelopment.pl' }],
   robots: {
     index: true,
@@ -59,7 +66,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="pl">
       {/* Geist Mono applied globally */}
-      <body suppressHydrationWarning className={`${geistMono.className} bg-zinc-950 text-zinc-50 antialiased overflow-x-hidden selection:bg-orange-500/30 selection:text-orange-200`}>
+      <body suppressHydrationWarning className={`${geistMono.className} bg-zinc-950 text-zinc-50 antialiased h-dvh overflow-hidden flex flex-col selection:bg-orange-500/30 selection:text-orange-200`}>
          
          {/* Umami Analytics (cookie-free, GDPR-compliant) */}
          <Script 
@@ -90,7 +97,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           }}
         />
 
-        {children}
+        {/* iOS-Shell: Scrollable content container */}
+        <div id="scroll-container" className="flex-1 overflow-y-auto overscroll-contain [WebkitOverflowScrolling:touch]">
+          {children}
+        </div>
 
       </body>
     </html>
