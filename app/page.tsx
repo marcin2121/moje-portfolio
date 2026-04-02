@@ -517,10 +517,10 @@ export default function PortfolioHome() {
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">DevTools / Boilerplate</span>
+                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">DevTools / Automatyzacja</span>
                   </div>
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">MDK</h2>
-                  <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Molenda Development Kit to autorski ekosystem narzędziowy typu &quot;Premium Boilerplate&quot;, zaprojektowany do błyskawicznego wdrażania zaawansowanych aplikacji SaaS i e-commerce. MDK integruje autorskie systemy automatyzacji ról, zaawansowaną architekturę baz danych oraz gotowe moduły AI (MDK Brain). Jest to fundament moich wdrożeń klasy Enterprise, optymalizujący time-to-market przy zachowaniu najwyższej jakości inżynieryjnej i bezpieczeństwa.</p>
+                  <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Molenda Development Kit to mój autorski system optymalizacji produkcji oprogramowania. Zamiast pisać każdą aplikację od zera – mechanizmy MDK automatycznie generują najwyższej jakości architekturę bazodanową, systemy zabezpieczeń ról (RBAC) oraz fundamenty aplikacji, przyspieszając proces wdrożenia komercyjnego (time-to-market) o kilkadziesiąt procent względem klasycznych agencji IT. Dzięki temu budżet projektu inwestowany jest wyłącznie w to, co realnie napędza Twój biznes.</p>
                 </div>
                 <TiltCard disableDesktop className="aspect-4/3 w-full order-1 lg:order-2 group">
                   <AnimatedWebP src="/MDK.webp" alt="Animacja projektu MDK" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />

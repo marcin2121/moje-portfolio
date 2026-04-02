@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCircle2, ChevronRight } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ChevronRight, ArrowLeft } from 'lucide-react';
 import MagneticWrapper from '@/components/ui/MagneticWrapper';
 import { pushGTMEvent } from '@/app/page';
 
@@ -97,7 +97,17 @@ export default function Configurator() {
             exit={{ opacity: 0, x: -20 }}
             className="flex flex-col"
           >
-            <h3 className="text-xl text-white font-bold mb-6">{currentStepData.title}</h3>
+            <div className="flex items-center gap-4 mb-6">
+              {step > 1 && (
+                <button 
+                  onClick={() => setStep(step - 1)}
+                  className="p-2 -ml-2 bg-zinc-900 rounded-xl border border-white/5 hover:border-white/20 transition-all text-zinc-400 hover:text-white active:scale-95"
+                >
+                  <ArrowLeft size={16} />
+                </button>
+              )}
+              <h3 className="text-xl text-white font-bold">{currentStepData.title}</h3>
+            </div>
             <div className="space-y-3">
               {currentStepData.options.map(opt => {
                 const isSelected = selections[step] === opt.id;
@@ -124,7 +134,15 @@ export default function Configurator() {
             animate={{ opacity: 1, x: 0 }}
             className="flex flex-col"
           >
-            <h3 className="text-xl text-white font-bold mb-6">Zostaw kontakt</h3>
+            <div className="flex items-center gap-4 mb-6">
+              <button 
+                onClick={() => setStep(step - 1)}
+                className="p-2 -ml-2 bg-zinc-900 rounded-xl border border-white/5 hover:border-white/20 transition-all text-zinc-400 hover:text-white active:scale-95"
+              >
+                <ArrowLeft size={16} />
+              </button>
+              <h3 className="text-xl text-white font-bold">Zostaw kontakt</h3>
+            </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <input type="text" name="name" placeholder="Imię / Nazwa Firmy" required disabled={isSubmitting} className="w-full p-4 bg-zinc-900 border border-white/5 rounded-xl outline-none focus:border-white/20 text-zinc-200 text-sm font-mono transition-colors" />
               <input type="text" name="email" placeholder="Telefon lub E-mail" required disabled={isSubmitting} className="w-full p-4 bg-zinc-900 border border-white/5 rounded-xl outline-none focus:border-white/20 text-zinc-200 text-sm font-mono transition-colors" />
