@@ -10,6 +10,9 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import AnimatedWebP from '@/components/ui/AnimatedWebP';
 import Link from 'next/link';
+import TiltCard from '@/components/ui/TiltCard';
+import BottomSheet from '@/components/ui/BottomSheet';
+import Configurator from '@/components/ui/Configurator';
 
 // Dynamically loaded to avoid blocking initial paint
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
@@ -76,6 +79,7 @@ export default function PortfolioHome() {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formError, setFormError]         = useState('');
   const [isSubmitting, setIsSubmitting]   = useState(false);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   // Lazy-load sound on first interaction to avoid Howler.js in initial bundle
   const playRef = useRef<(() => void) | null>(null);
@@ -247,32 +251,26 @@ export default function PortfolioHome() {
           </div>
         </nav>
 
-        {/* ─── Mobile Bottom Nav ─── */}
-        <nav className="flex lg:hidden fixed bottom-0 left-0 right-0 h-[70px] bg-zinc-950/90 backdrop-blur-md border-t border-white/5 z-50 items-center justify-center px-8 pb-2">
-          <div className="relative w-full h-1.5 flex items-center">
-            <div className="absolute left-0 right-0 h-full bg-white/10 rounded-full" />
-            <motion.div className="absolute left-0 h-full bg-orange-500 rounded-full z-0" style={{ width: lavaWidth }} />
-            <div className="absolute left-0 right-0 flex justify-between items-center w-full">
-              {NAV_DOTS.map((dot, index) => {
-                const isActive = activeDot === index;
-                const isPassed = index < activeDot;
-                return (
-                  <button 
-                    key={dot.id} 
-                    aria-label={`Sekcja ${dot.title}`} 
-                    onClick={() => scrollToSection(dot.id)} 
-                    className={`relative z-10 w-3 h-3 sm:w-4 sm:h-4 rounded-full border transition-all duration-300 ${
-                      isActive 
-                        ? 'bg-orange-500 border-orange-500 scale-150 shadow-[0_0_10px_#ea580c]' 
-                        : isPassed 
-                        ? 'bg-orange-900/60 border-orange-500/40' 
-                        : 'bg-zinc-900 border-white/10'
-                    }`} 
-                  />
-                );
-              })}
+        {/* ─── Mobile Bottom Nav (Sticky CTA) ─── */}
+        <nav className="flex lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] bg-zinc-900/90 backdrop-blur-2xl border border-white/10 rounded-2xl z-50 items-center justify-between px-4 py-3 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.8)]">
+          <div className="flex flex-col gap-1.5 w-[45%]">
+            <div className="text-[9px] font-mono font-bold text-zinc-400 uppercase tracking-widest truncate">
+              {NAV_DOTS[activeDot]?.title || 'Przewijaj'}
+            </div>
+            <div className="relative w-full h-1 flex items-center shrink-0">
+              <div className="absolute left-0 right-0 h-full bg-white/10 rounded-full" />
+              <motion.div className="absolute left-0 h-full bg-orange-500 rounded-full z-0" style={{ width: lavaWidth }} />
             </div>
           </div>
+          <button 
+            onClick={() => {
+              pushGTMEvent('mobile_nav_cta_click');
+              setIsBottomSheetOpen(true);
+            }} 
+            className="px-5 py-2.5 bg-orange-600 text-white font-black uppercase text-[10px] tracking-widest rounded-xl hover:bg-orange-500 shadow-[0_0_15px_#ea580c40] transition-colors whitespace-nowrap active:scale-95"
+          >
+            Wyceń Projekt
+          </button>
         </nav>
 
         <main className="pl-0 lg:pl-24 w-full overflow-x-hidden">
@@ -484,15 +482,15 @@ export default function PortfolioHome() {
                     </MagneticWrapper>
                   </div>
                 </div>
-                <div onClick={() => {
+                <TiltCard disableDesktop onClick={() => {
                   pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'zamowtu.pl' });
                   handleOpenDemo({ url: 'https://zamówtu.pl/demo', title: 'zamowtu.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
-                }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
+                }} className="aspect-4/3 w-full cursor-pointer order-1 lg:order-2 group">
                   <Image src="/zamowtu.webp" alt="Podgląd systemu zamówień Zamowtu" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                   <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl">Execute</span>
                   </div>
-                </div>
+                </TiltCard>
               </div>
             </section>
 
@@ -507,9 +505,9 @@ export default function PortfolioHome() {
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Zielnik</h2>
                   <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Zaawansowana aplikacja terenowa PWA dla pasjonatów przyrody, łącząca Google Gemini AI z precyzyjną kartografią Mazowsza. System wykorzystuje model Gemini Flash-Lite do inteligentnego skanowania roślin oraz interaktywnego czatu botanicznego w czasie rzeczywistym. Wdrożyłem unikalną mechanikę &quot;Mgły Wojny&quot; (Fog of War) na mapie, system grywalizacji odkryć oraz pełną obsługę Offline First z synchronizacją danych przez Supabase, tworząc elitarne narzędzie do cyfrowej dokumentacji flory.</p>
                 </div>
-                <div className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
+                <TiltCard disableDesktop className="aspect-4/3 w-full order-1 lg:order-2 group">
                   <AnimatedWebP src="/zielnik.webp" alt="Animacja projektu Zielnik" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
-                </div>
+                </TiltCard>
               </div>
             </section>
 
@@ -524,9 +522,9 @@ export default function PortfolioHome() {
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">MDK</h2>
                   <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Molenda Development Kit to autorski ekosystem narzędziowy typu &quot;Premium Boilerplate&quot;, zaprojektowany do błyskawicznego wdrażania zaawansowanych aplikacji SaaS i e-commerce. MDK integruje autorskie systemy automatyzacji ról, zaawansowaną architekturę baz danych oraz gotowe moduły AI (MDK Brain). Jest to fundament moich wdrożeń klasy Enterprise, optymalizujący time-to-market przy zachowaniu najwyższej jakości inżynieryjnej i bezpieczeństwa.</p>
                 </div>
-                <div className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
+                <TiltCard disableDesktop className="aspect-4/3 w-full order-1 lg:order-2 group">
                   <AnimatedWebP src="/MDK.webp" alt="Animacja projektu MDK" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
-                </div>
+                </TiltCard>
               </div>
             </section>
 
@@ -541,9 +539,9 @@ export default function PortfolioHome() {
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Opal</h2>
                   <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Zaawansowany panel analityczny Business Intelligence (BI) wykorzystujący nienadzorowane uczenie maszynowe (K-Means Clustering) do segmentacji rzeczywistych danych rynkowych. System, zbudowany w 100% w architekturze Node.js, eliminuje potrzebę zewnętrznych mikroserwisów Python, oferując błyskawiczną klasyfikację profili. Wdrożyłem interaktywny Cluster Explorer z diagnostyką Metody Łokcia (Elbow Method), wielowymiarowe wykresy profilowe oraz symulator &quot;What-If&quot;, dostarczając precyzyjnych wglądów biznesowych w czasie rzeczywistym.</p>
                 </div>
-                <div className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
+                <TiltCard disableDesktop className="aspect-4/3 w-full order-1 lg:order-2 group">
                   <AnimatedWebP src="/opal.webp" alt="Animacja projektu Opal" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
-                </div>
+                </TiltCard>
               </div>
             </section>
           </div>
@@ -613,6 +611,10 @@ export default function PortfolioHome() {
 
         </main>
       </div>
+
+      <BottomSheet isOpen={isBottomSheetOpen} onClose={() => setIsBottomSheetOpen(false)}>
+        <Configurator />
+      </BottomSheet>
 
       <AnimatePresence>
         {openDemo && (
