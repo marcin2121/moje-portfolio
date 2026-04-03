@@ -317,7 +317,7 @@ export default function PortfolioHome() {
               <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" rel="noopener noreferrer" className="p-1.5 text-zinc-500 hover:text-white transition-colors" title="LinkedIn">
                 <Linkedin size={14} />
               </a>
-              <a href="https://www.facebook.com/profile.php?id=61564367727437" target="_blank" rel="noopener noreferrer" className="p-1.5 text-zinc-500 hover:text-white transition-colors" title="Facebook">
+              <a href="https://www.facebook.com/molendadevelopment/" target="_blank" rel="noopener noreferrer" className="p-1.5 text-zinc-500 hover:text-white transition-colors" title="Facebook">
                 <Facebook size={14} />
               </a>
             </div>
