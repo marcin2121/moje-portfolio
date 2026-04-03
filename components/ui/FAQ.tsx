@@ -15,11 +15,11 @@ const FAQ_ITEMS = [
   },
   {
     question: "Jak długo trwa budowa profesjonalnego systemu?",
-    answer: "Dzięki autorskiemu systemowi MDK, zaawansowane aplikacje wdrażam w 1-4 tygodni."
+    answer: "Dzięki autorskiemu systemowi MDK, zaawansowane aplikacje wdrażam od kilku dni do miesiąca."
   },
   {
     question: "Czy moje dane i płatności będą bezpieczne?",
-    answer: "Stosuję światowe standardy: certyfikaty SSL, bezpieczne bazy danych Supabase oraz sprawdzone integracje płatnicze (Stripe / Przelewy24)."
+    answer: "Bezpieczeństwo to fundament mojej architektury. Korzystam z izolowanych baz danych Supabase z rygorystycznymi politykami RLS (Row Level Security), szyfrowania danych w spoczynku oraz certyfikowanych bramek płatniczych (Stripe / Przelewy24). Całość opiera się na statycznym renderowaniu Next.js, co eliminuje większość podatności typowych dla systemów CMS takich jak WordPress."
   },
   {
     question: "Co jeśli będę potrzebował rozbudowy w przyszłości?",

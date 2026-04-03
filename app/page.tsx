@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Code2, Smartphone, Zap, Gauge, ArrowRight, Facebook, Linkedin, Monitor, Smartphone as PhoneIcon, X, Terminal, ChevronDown, ChevronUp } from 'lucide-react';
+import { Code2, Smartphone, Zap, Gauge, ArrowRight, Facebook, Linkedin, Github, Monitor, Smartphone as PhoneIcon, X, Terminal, ChevronDown, ChevronUp } from 'lucide-react';
 import MagicBento from '@/components/ui/MagicBento';
 import Hero from '@/components/Hero';
 import MagneticWrapper from '@/components/ui/MagneticWrapper';
@@ -76,38 +76,6 @@ export default function PortfolioHome() {
   const [viewMode, setViewMode]           = useState<'desktop' | 'mobile'>('desktop');
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
-  const sectionRefs         = useRef<(HTMLElement | null)[]>([]);
-  const isAutoScrollingRef  = useRef(false);
-  const snapPointsRef       = useRef<number[]>([]);
-
-  const setSectionRef = useCallback((index: number) => (el: HTMLElement | null) => {
-    sectionRefs.current[index] = el;
-  }, []);
-
-  const rebuildSnapPoints = useCallback(() => {
-    const points: number[] = [];
-    const vh = window.innerHeight;
-    
-    // Points 0-2 (Hero, Usługi, O mnie)
-    const startY = 0; 
-    points[0] = startY;                        // Hero
-    points[1] = startY + vh;                   // Usługi (End of H1 pin)
-    points[2] = startY + 2 * vh;               // O mnie (Vertical revelation)
-    
-    // Points 3-8 (Portfolio Intro + 5 Projects)
-    const h2Start = 3 * vh; 
-    for (let i = 0; i <= 5; i++) {
-      points[3 + i] = h2Start + (i * vh);
-    }
-    
-    // Points 9-10 (FAQ, Kontakt)
-    const faqStart = (points[8] || 0) + vh;
-    points[9] = faqStart;
-    points[10] = faqStart + vh;
-
-    snapPointsRef.current = points;
-  }, []);
-
   const playRef = useRef<(() => void) | null>(null);
   const playNavClick = useCallback(() => {
     if (playRef.current) { playRef.current(); return; }
@@ -124,6 +92,8 @@ export default function PortfolioHome() {
   const lavaHeight    = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
   const lavaWidth     = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
 
+  const snapPointsRef = useRef<number[]>(NAV_DOTS.map((_, i) => i / (NAV_DOTS.length - 1)));
+
   useEffect(() => {
     window.scrollTo(0, 0);
     let isMounted = true;
@@ -139,73 +109,95 @@ export default function PortfolioHome() {
       gsapRef.current = gsap;
       stRef.current   = ScrollTrigger;
 
+      /** Rebuild snap progress array from real pin positions */
+      const buildSnapPoints = () => {
+        const maxScr = ScrollTrigger.maxScroll(window);
+        if (maxScr === 0) return;
+
+        const allST = ScrollTrigger.getAll();
+        const h1 = allST.find(t => t.trigger === horizontal1Ref.current);
+        const h2 = allST.find(t => t.trigger === horizontal2Ref.current);
+
+        if (!h1 || !h2) {
+          // Mobile fallback: equal division
+          snapPointsRef.current = NAV_DOTS.map((_, i) => i / (NAV_DOTS.length - 1));
+          return;
+        }
+
+        const pts: number[] = [];
+        // 0: Hero = start of H1 pin
+        pts[0] = h1.start / maxScr;
+        // 1: Usługi = end of H1 pin  
+        pts[1] = h1.end / maxScr;
+        // 2: O mnie = midpoint between pins
+        pts[2] = (h1.end + (h2.start - h1.end) * 0.5) / maxScr;
+        // 3-8: H2 pin (Portfolio intro + 5 projects, 6 sub-sections)
+        const h2Dur = h2.end - h2.start;
+        for (let i = 0; i < 6; i++) {
+          pts[3 + i] = (h2.start + h2Dur * i / 5) / maxScr;
+        }
+        // 9-10: FAQ and Kontakt — use DOM positions for accuracy
+        const faqEl = document.getElementById('faq');
+        const kontaktEl = document.getElementById('kontakt');
+        if (faqEl) {
+          pts[9] = (window.scrollY + faqEl.getBoundingClientRect().top) / maxScr;
+        } else {
+          pts[9] = (h2.end + 10) / maxScr;
+        }
+        if (kontaktEl) {
+          pts[10] = Math.min((window.scrollY + kontaktEl.getBoundingClientRect().top) / maxScr, 1);
+        } else {
+          const vh = window.innerHeight;
+          pts[10] = Math.min((h2.end + vh) / maxScr, 1);
+        }
+
+        snapPointsRef.current = pts;
+      };
+
       const ctx = gsap.context(() => {
         const mm = gsap.matchMedia();
         mm.add('(min-width: 1024px)', () => {
-          gsap.to(horizontal1Ref.current, { 
-            xPercent: -50, 
-            ease: 'none', 
-            scrollTrigger: { 
-              trigger: horizontal1Ref.current, 
-              start: 'top top', 
-              end: '+=100%', 
-              pin: true, 
-              scrub: 0.6 
-            } 
-          });
-          gsap.to(horizontal2Ref.current, { 
-            xPercent: -83.33, 
-            ease: 'none', 
-            scrollTrigger: { 
-              trigger: horizontal2Ref.current, 
-              start: 'top top', 
-              end: '+=500%', 
-              pin: true, 
-              scrub: 0.6 
-            } 
-          });
+          gsap.to(horizontal1Ref.current, { xPercent: -50, ease: 'none', scrollTrigger: { trigger: horizontal1Ref.current, start: 'top top', end: '+=100%', pin: true, scrub: 0.5 } });
+          gsap.to(horizontal2Ref.current, { xPercent: -83.33, ease: 'none', scrollTrigger: { trigger: horizontal2Ref.current, start: 'top top', end: '+=500%', pin: true, scrub: 0.5 } });
         });
 
-        const tracker = ScrollTrigger.create({
+        ScrollTrigger.create({
           start: 0,
           end: 'max',
-          onRefresh: rebuildSnapPoints,
-          onUpdate: (self) => {
-            if (isAutoScrollingRef.current) return;
-            rawProgress.set(self.progress);
-            
-            const currentY = self.scroll();
-            const points = snapPointsRef.current;
-            if (points.length) {
-              let closestIndex = 0;
+          onRefresh: buildSnapPoints,
+          snap: {
+            snapTo: (progress) => {
+              const pts = snapPointsRef.current;
+              let closest = pts[0];
               let minDist = Infinity;
-              points.forEach((point, index) => {
-                const dist = Math.abs(point - currentY);
-                if (dist < minDist) {
-                  minDist = dist;
-                  closestIndex = index;
-                }
-              });
-              setActiveDot(prev => prev !== closestIndex ? closestIndex : prev);
-            }
-          }
+              // Snap only to first 10 points (0-9), excluding the very last (Kontakt) to allow footer scroll
+              for (let i = 0; i < pts.length - 1; i++) {
+                const p = pts[i];
+                const d = Math.abs(progress - p);
+                if (d < minDist) { minDist = d; closest = p; }
+              }
+              if (minDist < 0.05) return closest;
+              return progress;
+            },
+            duration: { min: 0.15, max: 0.4 },
+            delay: 0.15,
+            ease: 'power2.out',
+          },
+          onUpdate: (self) => {
+            rawProgress.set(self.progress);
+            const pts = snapPointsRef.current;
+            let closestIdx = 0;
+            let minDist = Infinity;
+            pts.forEach((p, i) => {
+              const d = Math.abs(self.progress - p);
+              if (d < minDist) { minDist = d; closestIdx = i; }
+            });
+            setActiveDot(prev => prev !== closestIdx ? closestIdx : prev);
+          },
         });
 
-        rebuildSnapPoints();
-        
-        const onResize = () => {
-          rebuildSnapPoints();
-          ScrollTrigger.refresh();
-        };
-
-        window.addEventListener('resize', onResize);
-        window.addEventListener('refreshScroll', onResize);
-
-        return () => {
-          window.removeEventListener('resize', onResize);
-          window.removeEventListener('refreshScroll', onResize);
-          tracker.kill();
-        };
+        // Initial build after triggers exist
+        buildSnapPoints();
       }, containerRef);
       ctxRef.current = ctx;
     });
@@ -217,40 +209,33 @@ export default function PortfolioHome() {
     };
   }, [rawProgress]);
 
-  useEffect(() => {
-    if (!openDemo) return;
-    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpenDemo(null); };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [openDemo]);
-
   const scrollToSection = useCallback((index: number) => {
     const gsap = gsapRef.current;
-    if (!gsap) return;
-    
-    const points  = snapPointsRef.current;
-    const targetY = points[index];
-    if (typeof targetY !== 'number') return;
-
-    isAutoScrollingRef.current = true;
+    const ScrollTrigger = stRef.current;
+    if (!gsap || !ScrollTrigger) return; 
     playNavClick();
     pushGTMEvent('nawigacja_klikniecie', { sekcja_docelowa: NAV_DOTS.find((d) => d.id === index)?.title ?? 'Nieznana' });
-    
-    gsap.killTweensOf(window);
-    gsap.to(window, { 
-      scrollTo: { y: targetY, autoKill: false }, 
-      duration: 1, 
-      ease: 'power2.out', 
-      overwrite: true,
-      onComplete: () => {
-        isAutoScrollingRef.current = false;
-        setActiveDot(index);
-      },
-      onInterrupt: () => {
-        isAutoScrollingRef.current = false;
-      }
-    });
+    const targetY = snapPointsRef.current[index] * ScrollTrigger.maxScroll(window);
+    gsap.to(window, { scrollTo: targetY, duration: 1.2, ease: 'power3.inOut', overwrite: 'auto' });
   }, [playNavClick]);
+
+
+  // Keyboard: arrows navigate sections, Escape closes demo
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && openDemo) { setOpenDemo(null); return; }
+      if (openDemo) return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        scrollToSection(Math.min(NAV_DOTS.length - 1, activeDot + 1));
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        scrollToSection(Math.max(0, activeDot - 1));
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [openDemo, activeDot, scrollToSection]);
 
   const handleOpenDemo = useCallback((config: DemoConfig) => {
     if (typeof window !== 'undefined') setViewMode(window.innerWidth < 768 ? 'mobile' : 'desktop');
@@ -293,7 +278,7 @@ export default function PortfolioHome() {
                   key={dot.id}
                   onClick={() => scrollToSection(dot.id)}
                   className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border cursor-pointer group hover:scale-150 transition-all duration-300 z-10 ${dotClasses}`}
-                  style={{ top: `${index * (100 / (NAV_DOTS.length - 1))}%` }}
+                  style={{ top: `${snapPointsRef.current[index] * 100}%` }}
                 >
                   <span className={`absolute left-8 text-[10px] uppercase font-mono tracking-widest transition-all duration-300 whitespace-nowrap ${textClasses}`}>{dot.title}</span>
                 </button>
@@ -302,35 +287,60 @@ export default function PortfolioHome() {
           </div>
         </nav>
 
-        {/* ─── Pływający pasek nawigacji z Wyceń Projekt (Desktop) ─── */}
-        <div className="hidden lg:flex fixed left-1/2 -translate-x-1/2 bottom-12 z-50 items-center bg-zinc-900/90 backdrop-blur-md border border-white/10 rounded-full p-2 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.8)]">
+        {/* ─── Floating Desktop Nav: Section Name + CTA + Arrows ─── */}
+        <div className="hidden lg:flex fixed bottom-10 left-1/2 -translate-x-1/2 z-50 items-center gap-3">
+          {/* Arrow Up */}
           <button 
             onClick={() => scrollToSection(Math.max(0, activeDot - 1))}
             disabled={activeDot === 0}
-            className="w-10 h-10 flex items-center justify-center rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-30 transition-all active:scale-95"
-            aria-label="Poprzednia sekcja"
+            className="w-9 h-9 flex items-center justify-center rounded-full bg-zinc-900/80 backdrop-blur-md border border-white/10 text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-20 disabled:hover:bg-zinc-900/80 transition-all active:scale-90"
+            aria-label="Poprzednia sekcja (↑)"
           >
-            <ChevronUp size={20} />
-          </button>
-          
-          <div className="w-px h-6 bg-white/10 mx-2" />
-          
-          <button 
-            onClick={() => scrollToSection(10)} // Scrolluje do sekcji "Kontakt" (id: 10 w NAV_DOTS)
-            className="px-6 py-2 bg-white text-black font-black uppercase text-[10px] tracking-[0.2em] rounded-full hover:bg-zinc-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95 whitespace-nowrap mx-1"
-          >
-            Wyceń Projekt
+            <ChevronUp size={16} />
           </button>
 
-          <div className="w-px h-6 bg-white/10 mx-2" />
+          {/* Main pill: section name + Socials + CTA */}
+          <div className="flex items-center bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-full px-2 py-1.5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8),0_0_20px_rgba(255,255,255,0.02)]">
+            <div className="px-4 py-1.5 flex items-center gap-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse shadow-[0_0_8px_#ea580c]" />
+              <span className="font-mono text-[10px] text-zinc-300 uppercase tracking-widest min-w-[80px]">
+                {NAV_DOTS[activeDot]?.title || '...'}
+              </span>
+            </div>
+            
+            <div className="w-px h-5 bg-white/10 mx-2" />
+            
+            <div className="flex items-center gap-1.5 px-2">
+              <a href="https://github.com/marcin2121" target="_blank" rel="noopener noreferrer" className="p-1.5 text-zinc-500 hover:text-white transition-colors" title="GitHub">
+                <Github size={14} />
+              </a>
+              <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" rel="noopener noreferrer" className="p-1.5 text-zinc-500 hover:text-white transition-colors" title="LinkedIn">
+                <Linkedin size={14} />
+              </a>
+              <a href="https://www.facebook.com/profile.php?id=61564367727437" target="_blank" rel="noopener noreferrer" className="p-1.5 text-zinc-500 hover:text-white transition-colors" title="Facebook">
+                <Facebook size={14} />
+              </a>
+            </div>
 
+            <div className="w-px h-5 bg-white/10 mx-2" />
+
+            <button 
+              onClick={() => scrollToSection(10)}
+              className="group relative ml-1 px-6 py-2 bg-white text-black font-black uppercase text-[10px] tracking-[0.15em] rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-orange-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <span className="relative z-10">Wyceń Projekt</span>
+            </button>
+          </div>
+
+          {/* Arrow Down */}
           <button 
             onClick={() => scrollToSection(Math.min(NAV_DOTS.length - 1, activeDot + 1))}
             disabled={activeDot === NAV_DOTS.length - 1}
-            className="w-10 h-10 flex items-center justify-center rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-30 transition-all active:scale-95"
-            aria-label="Następna sekcja"
+            className="w-9 h-9 flex items-center justify-center rounded-full bg-zinc-900/80 backdrop-blur-md border border-white/10 text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-20 disabled:hover:bg-zinc-900/80 transition-all active:scale-90"
+            aria-label="Następna sekcja (↓)"
           >
-            <ChevronDown size={20} />
+            <ChevronDown size={16} />
           </button>
         </div>
 
@@ -358,10 +368,8 @@ export default function PortfolioHome() {
 
         <main className="pl-0 lg:pl-24 w-full overflow-x-hidden">
           <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[200%] h-auto lg:h-screen">
-            <div ref={setSectionRef(0)} className="w-full lg:w-1/2 h-full">
-              <Hero onNavigate={scrollToSection} />
-            </div>
-            <section ref={setSectionRef(1)} className="w-full lg:w-1/2 min-h-screen lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent">
+            <Hero onNavigate={scrollToSection} />
+            <section className="w-full lg:w-1/2 min-h-screen lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent">
               <div className="flex flex-col gap-8 lg:gap-10 max-w-5xl w-full relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 w-full">
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
@@ -437,7 +445,7 @@ export default function PortfolioHome() {
             </section>
           </div>
 
-         <section ref={setSectionRef(2)} className="w-screen h-screen flex flex-col items-center justify-center px-6 lg:px-10 py-20 bg-transparent relative overflow-hidden">
+         <section className="w-screen h-screen flex flex-col items-center justify-center px-6 lg:px-10 py-20 bg-transparent relative overflow-hidden">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full opacity-[0.02] pointer-events-none text-[25vw] font-black text-center leading-none select-none tracking-tighter">
               ROOT
             </div>
@@ -480,7 +488,7 @@ export default function PortfolioHome() {
 
           <div ref={horizontal2Ref} className="flex flex-col lg:flex-row w-full lg:w-[600%] h-auto lg:h-screen bg-transparent">
             
-            <section ref={setSectionRef(3)} className="w-full lg:w-1/6 min-h-[50vh] lg:h-full flex flex-col items-center justify-center bg-transparent relative overflow-hidden py-20 lg:py-0 border-y lg:border-none border-white/5">
+            <section className="w-full lg:w-1/6 min-h-[50vh] lg:h-full flex flex-col items-center justify-center bg-transparent relative overflow-hidden py-20 lg:py-0 border-y lg:border-none border-white/5">
               <div className="absolute -top-40 -left-40 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-orange-900/10 blur-[120px] rounded-full pointer-events-none" />
               <div className="font-mono text-[10px] text-orange-500 mb-4 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
@@ -491,7 +499,7 @@ export default function PortfolioHome() {
               </h2>
             </section>
 
-            <section ref={setSectionRef(4)} className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l border-white/5 px-6 lg:px-20 py-20 lg:py-0">
+            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
@@ -537,7 +545,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section ref={setSectionRef(5)} className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l border-white/5 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
+            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
@@ -570,7 +578,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section ref={setSectionRef(6)} className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l border-white/5 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
+            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
@@ -586,7 +594,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section ref={setSectionRef(7)} className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l border-white/5 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
+            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
@@ -602,7 +610,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section ref={setSectionRef(8)} className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l border-white/5 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
+            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
@@ -619,12 +627,14 @@ export default function PortfolioHome() {
             </section>
           </div>
 
-          <div id="faq" ref={setSectionRef(9)}>
-            <FAQ />
+          <div id="faq" className="min-h-screen flex items-center border-t border-white/5">
+            <div className="w-full">
+              <FAQ />
+            </div>
           </div>
 
           {/* SEKCJA 7: Kontakt - Minimalizm i Klasa */}
-          <section id="kontakt" ref={setSectionRef(10)} className="w-full min-h-screen flex flex-col items-center justify-start px-4 sm:px-6 lg:px-10 bg-transparent relative py-20 lg:py-32">
+          <section id="kontakt" className="w-full min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-10 bg-transparent relative py-20 lg:py-32">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-950/50 to-black pointer-events-none" />
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
             
@@ -649,12 +659,11 @@ export default function PortfolioHome() {
             </div>
             
             <div className="mt-16 text-[9px] md:text-[10px] text-zinc-600 font-mono uppercase tracking-[0.2em] text-center flex flex-col items-center gap-3 relative z-10">
-              <div className="flex justify-center gap-4 mb-2">
-                <a href="https://www.facebook.com/profile.php?id=61564367727437" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-400 transition-colors">Facebook</a>
-                <span>//</span>
-                <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-400 transition-colors">LinkedIn</a>
+              <div className="flex items-center gap-4">
+                <span>&copy; {new Date().getFullYear()} Marcin Molenda // <span className="text-zinc-500">molendadevelopment.pl</span></span>
+                <span className="text-zinc-800">//</span>
+                <Link href="/polityka-prywatnosci" className="hover:text-orange-500 transition-colors underline-offset-4 hover:underline">Polityka Prywatności</Link>
               </div>
-              <span>&copy; {new Date().getFullYear()} Marcin Molenda // molendadevelopment.pl</span>
             </div>
           </section>
 
