@@ -165,7 +165,7 @@ export default function PortfolioHome() {
           start: 0,
           end: 'max',
           onRefresh: buildSnapPoints,
-          snap: {
+          snap: window.innerWidth >= 1024 ? {
             snapTo: (progress) => {
               const pts = snapPointsRef.current;
               let closest = pts[0];
@@ -182,7 +182,7 @@ export default function PortfolioHome() {
             duration: { min: 0.15, max: 0.4 },
             delay: 0.15,
             ease: 'power2.out',
-          },
+          } : undefined,
           onUpdate: (self) => {
             rawProgress.set(self.progress);
             const pts = snapPointsRef.current;
@@ -326,9 +326,9 @@ export default function PortfolioHome() {
 
             <button 
               onClick={() => scrollToSection(10)}
-              className="group relative ml-1 px-6 py-2 bg-white text-black font-black uppercase text-[10px] tracking-[0.15em] rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95"
+              className="group relative ml-1 px-6 py-2 bg-orange-500 text-white font-black uppercase text-[10px] tracking-[0.15em] rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(234,88,12,0.3)]"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-orange-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               <span className="relative z-10">Wyceń Projekt</span>
             </button>
           </div>
@@ -344,25 +344,37 @@ export default function PortfolioHome() {
           </button>
         </div>
 
-        {/* ─── Mobile Bottom Nav (Zmieniona na CTA Button) ─── */}
-        <nav className="flex lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] bg-zinc-900/90 backdrop-blur-2xl border border-white/10 rounded-2xl z-50 items-center justify-between px-4 py-3 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.8)]">
-          <div className="flex flex-col gap-1.5 w-[45%]">
+        <nav className="flex lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-[440px] bg-zinc-900/90 backdrop-blur-2xl border border-white/10 rounded-2xl z-50 items-center justify-between px-3 py-3 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.8)]">
+          <div className="flex flex-col gap-1.5 w-[35%] overflow-hidden pl-1">
             <div className="text-[9px] font-mono font-bold text-zinc-400 uppercase tracking-widest truncate">
               {NAV_DOTS[activeDot]?.title || 'Przewijaj'}
             </div>
             <div className="relative w-full h-1 flex items-center shrink-0">
               <div className="absolute left-0 right-0 h-full bg-white/10 rounded-full" />
-              <motion.div className="absolute left-0 h-full bg-orange-500 rounded-full z-0" style={{ width: lavaWidth }} />
+              <motion.div className="absolute left-0 h-full bg-orange-500 rounded-full z-0 shadow-[0_0_8px_#ea580c]" style={{ width: lavaWidth }} />
             </div>
           </div>
+
+          <div className="flex items-center gap-1 scale-[0.85] opacity-80">
+            <a href="https://github.com/marcin2121" target="_blank" rel="noopener noreferrer" className="p-1 text-zinc-400 hover:text-white transition-colors" aria-label="GitHub">
+              <Github size={16} />
+            </a>
+            <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" rel="noopener noreferrer" className="p-1 text-zinc-400 hover:text-white transition-colors" aria-label="LinkedIn">
+              <Linkedin size={16} />
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61564367727437" target="_blank" rel="noopener noreferrer" className="p-1 text-zinc-400 hover:text-white transition-colors" aria-label="Facebook">
+              <Facebook size={16} />
+            </a>
+          </div>
+
           <button 
             onClick={() => {
               pushGTMEvent('mobile_nav_cta_click');
               setIsBottomSheetOpen(true);
             }} 
-            className="px-5 py-2.5 bg-white text-black font-black uppercase text-[10px] tracking-widest rounded-xl hover:bg-zinc-200 shadow-lg transition-colors whitespace-nowrap active:scale-95"
+            className="px-4 py-2.5 bg-orange-500 text-white font-black uppercase text-[10px] tracking-widest rounded-xl shadow-lg transition-all active:scale-95 whitespace-nowrap shadow-[0_4px_12px_rgba(234,88,12,0.3)]"
           >
-            Wyceń Projekt
+            Wyceń
           </button>
         </nav>
 
@@ -634,7 +646,7 @@ export default function PortfolioHome() {
           </div>
 
           {/* SEKCJA 7: Kontakt - Minimalizm i Klasa */}
-          <section id="kontakt" className="w-full min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-10 bg-transparent relative py-20 lg:py-32">
+          <section id="kontakt" className="w-full min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-10 bg-transparent relative py-20 lg:py-32 pb-40 lg:pb-32">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-950/50 to-black pointer-events-none" />
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
             

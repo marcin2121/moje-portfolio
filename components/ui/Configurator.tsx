@@ -129,7 +129,7 @@ export default function Configurator() {
             <textarea name="msg" placeholder="Link do strony lub krótki opis projektu..." rows={3} disabled={isSubmitting} className="w-full p-4 md:p-6 bg-zinc-950/50 border border-white/10 rounded-xl md:rounded-2xl outline-none focus:border-white/30 text-zinc-200 text-xs md:text-sm font-mono resize-none transition-colors" />
             
             <MagneticWrapper className="w-full pt-2 md:pt-4">
-              <button type="submit" disabled={isSubmitting} className="w-full py-4 md:py-6 bg-white text-black hover:bg-zinc-200 font-black uppercase tracking-[0.15em] rounded-xl md:rounded-2xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 md:gap-3 active:scale-[0.98] text-[10px] md:text-sm">
+              <button type="submit" disabled={isSubmitting} className="w-full py-4 md:py-6 bg-orange-500 text-white hover:bg-orange-600 font-black uppercase tracking-[0.15em] rounded-xl md:rounded-2xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 md:gap-3 active:scale-[0.98] text-[10px] md:text-sm shadow-[0_4px_20px_rgba(234,88,12,0.2)]">
                 {isSubmitting ? 'Wysyłanie...' : 'Rozpocznijmy rozmowę'}
                 {!isSubmitting && <ArrowRight size={16} />}
               </button>
@@ -144,9 +144,19 @@ export default function Configurator() {
 
     return (
       <motion.div key={`step${step}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col w-full px-2 md:px-0">
-        <div className="text-center mb-6 md:mb-10">
+        <div className="text-center mb-6 md:mb-10 relative">
           <h3 className="text-2xl md:text-4xl text-white font-bold mb-2 md:mb-3">{currentData.title}</h3>
           <p className="text-zinc-500 md:text-zinc-400 font-mono text-[10px] md:text-sm uppercase tracking-widest">{currentData.subtitle}</p>
+          
+          {/* Mobile-only Back button: positioned below the title/subtitle */}
+          {step > 1 && (
+            <button 
+              onClick={() => setStep(step - 1)} 
+              className="md:hidden mt-6 mx-auto px-4 py-2 bg-zinc-900/50 border border-white/5 rounded-full text-zinc-500 hover:text-white transition-all flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-widest"
+            >
+              <ArrowLeft size={12} /> <span>Wstecz</span>
+            </button>
+          )}
         </div>
         
         {/* Optymalizacja Mobile: grid-cols-1 i mniejsze paddingi, na desktop grid-cols-2 lub 3 */}
@@ -194,7 +204,7 @@ export default function Configurator() {
         <AnimatePresence>
           {isMultiSelect && (selections[step] as string[]).length > 0 && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="flex justify-center mt-6 md:mt-10">
-              <button onClick={() => setStep(step + 1)} className="w-full md:w-auto px-6 py-4 md:px-10 md:py-5 bg-white text-black font-black text-[10px] md:text-sm uppercase tracking-widest rounded-xl md:rounded-2xl shadow-xl hover:bg-zinc-200 transition-colors flex items-center justify-center gap-3 active:scale-[0.98]">
+              <button onClick={() => setStep(step + 1)} className="w-full md:w-auto px-6 py-4 md:px-10 md:py-5 bg-orange-500 text-white font-black text-[10px] md:text-sm uppercase tracking-widest rounded-xl md:rounded-2xl shadow-xl hover:bg-orange-600 transition-colors flex items-center justify-center gap-3 active:scale-[0.98] shadow-[0_4px_20px_rgba(234,88,12,0.2)]">
                 Przejdź dalej <ArrowRight size={16} />
               </button>
             </motion.div>
@@ -218,9 +228,13 @@ export default function Configurator() {
       </div>
 
       <div className="relative min-h-[300px] md:min-h-[400px] w-full flex flex-col justify-center">
+        {/* Desktop-only Back button: positioned absolutely to the left */}
         {step > 1 && step < 6 && (
-          <button onClick={() => setStep(step - 1)} className="absolute -top-10 md:-top-6 left-2 md:-left-12 p-2 md:p-3 bg-zinc-900/80 backdrop-blur rounded-xl md:rounded-2xl border border-white/5 hover:border-white/20 transition-all text-zinc-400 hover:text-white active:scale-95 z-10 flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs font-mono uppercase">
-            <ArrowLeft size={14} /> <span className="hidden md:inline">Wstecz</span>
+          <button 
+            onClick={() => setStep(step - 1)} 
+            className="hidden md:flex absolute -left-12 p-3 bg-zinc-900/80 backdrop-blur rounded-2xl border border-white/5 hover:border-white/20 transition-all text-zinc-400 hover:text-white active:scale-95 z-10 items-center gap-2 text-xs font-mono uppercase"
+          >
+            <ArrowLeft size={14} /> <span>Wstecz</span>
           </button>
         )}
         <AnimatePresence mode="wait">
