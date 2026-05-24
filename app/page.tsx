@@ -47,8 +47,8 @@ const NAV_DOTS = [
   { id: 3, title: 'Portfolio' },
   { id: 4, title: 'Sklep Urwis' },
   { id: 5, title: 'zamowtu.pl' },
-  { id: 6, title: 'Zielnik' },
-  { id: 7, title: 'MDK' },
+  { id: 6, title: 'RLT Polska' },
+  { id: 7, title: 'Zielnik' },
   { id: 8, title: 'Opal' },
   { id: 9, title: 'FAQ' },
   { id: 10, title: 'Kontakt' },
@@ -594,14 +594,34 @@ export default function PortfolioHome() {
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">E-commerce / GreenTech</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">E-commerce / Migracja WordPress → Next.js</span>
                   </div>
-                  <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Zielnik</h2>
-                  <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Zaawansowana aplikacja terenowa PWA dla pasjonatów przyrody, łącząca Google Gemini AI z precyzyjną kartografią Mazowsza. System wykorzystuje model Gemini Flash-Lite do inteligentnego skanowania roślin oraz interaktywnego czatu botanicznego w czasie rzeczywistym. Wdrożyłem unikalną mechanikę &quot;Mgły Wojny&quot; (Fog of War) na mapie, system grywalizacji odkryć oraz pełną obsługę Offline First z synchronizacją danych przez Supabase, tworząc elitarne narzędzie do cyfrowej dokumentacji flory.</p>
+                  <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">RLT Polska</h2>
+                  <div className="space-y-4 text-zinc-400 text-sm sm:text-base font-light leading-relaxed">
+                    <p>Ekskluzywny sklep internetowy z urządzeniami do terapii czerwonym światłem (LED). Stara strona działała na WordPressie – była wolna, ociężała i gubiła klientów przez powolne ładowanie. Przeniosłem ją na nowoczesny Next.js.</p>
+                    <p>Efekt? Sklep ładuje się w ułamku sekundy, koszyk i płatności działają bez odświeżania strony, a unikalny design klasy premium buduje natychmiastowe zaufanie. Klient zyskał stabilną, szybką maszynę do sprzedaży, która nie wymaga ciągłych aktualizacji wtyczek ani walki z błędami. Jeśli Twój obecny sklep na WordPressie Cię ogranicza – dokładnie taką zmianę mogę zrobić dla Ciebie.</p>
+                  </div>
+                  <div className="flex justify-center lg:justify-start pt-4">
+                    <MagneticWrapper>
+                      <button onClick={() => {
+                        pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'RLT Polska' });
+                        handleOpenDemo({ url: 'https://rltpolska.pl', title: 'rltpolska.pl', colorClass: 'text-red-500', bgClass: 'bg-red-950' });
+                      }} className="px-8 py-4 bg-red-950 text-white border border-red-500/20 font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg hover:bg-red-900 transition-colors flex items-center gap-3">
+                        <Terminal size={14} />
+                        <span>Init Demo</span>
+                      </button>
+                    </MagneticWrapper>
+                  </div>
                 </div>
-                <div className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
-                  <AnimatedWebP src="/zielnik.webp" alt="Animacja projektu Zielnik" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                <div onClick={() => {
+                  pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'RLT Polska' });
+                  handleOpenDemo({ url: 'https://rltpolska.pl', title: 'rltpolska.pl', colorClass: 'text-red-500', bgClass: 'bg-red-950' });
+                }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
+                  <Image src="/rltpolska.webp" alt="Podgląd sklepu RLT Polska" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                  <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-red-950 px-6 py-3 rounded-lg shadow-2xl border border-red-500/20">Execute</span>
+                  </div>
                 </div>
               </div>
             </section>
@@ -611,13 +631,13 @@ export default function PortfolioHome() {
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">DevTools / Boilerplate</span>
+                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">E-commerce / GreenTech</span>
                   </div>
-                  <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">MDK</h2>
-                  <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Molenda Development Kit to autorski ekosystem narzędziowy typu &quot;Premium Boilerplate&quot;, zaprojektowany do błyskawicznego wdrażania zaawansowanych aplikacji SaaS i e-commerce. MDK integruje autorskie systemy automatyzacji ról, zaawansowaną architekturę baz danych oraz gotowe moduły AI (MDK Brain). Jest to fundament moich wdrożeń klasy Enterprise, optymalizujący time-to-market przy zachowaniu najwyższej jakości inżynieryjnej i bezpieczeństwa.</p>
+                  <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Zielnik</h2>
+                  <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Zaawansowana aplikacja terenowa PWA dla pasjonatów przyrody, łącząca Google Gemini AI z precyzyjną kartografią Mazowsza. System wykorzystuje model Gemini Flash-Lite do inteligentnego skanowania roślin oraz interaktywnego czatu botanicznego w czasie rzeczywistym. Wdrożyłem unikalną mechanikę &quot;Mgły Wojny&quot; (Fog of War) na mapie, system grywalizacji odkryć oraz pełną obsługę Offline First z synchronizacją danych przez Supabase, tworząc elitarne narzędzie do cyfrowej dokumentacji flory.</p>
                 </div>
                 <div className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
-                  <AnimatedWebP src="/MDK.webp" alt="Animacja projektu MDK" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                  <AnimatedWebP src="/zielnik.webp" alt="Animacja projektu Zielnik" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                 </div>
               </div>
             </section>
