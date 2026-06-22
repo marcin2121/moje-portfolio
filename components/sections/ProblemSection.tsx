@@ -1,29 +1,27 @@
 'use client';
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Smartphone, Edit3, MessageSquare } from 'lucide-react';
 
-export function ProblemSection({ isDevMode }: { isDevMode: boolean }) {
+export function ProblemSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const problems = [
     {
-      title: isDevMode ? 'Monolithic Bottlenecks' : 'Ograniczenia darmowych CMS-ów',
-      desc: isDevMode 
-        ? 'Legacy WordPress/PHP architectures fail to scale under heavy database queries for complex product variants.'
-        : 'Standardowe platformy nie są w stanie udźwignąć skomplikowanych wymagań wielowariantowej konfiguracji.',
+      icon: <Smartphone className="w-6 h-6" />,
+      title: 'Błyskawiczne otwieranie na telefonie',
+      desc: 'Wyobraź sobie klienta, który stoi na światłach i klika w Twój link. Moje strony (pisane w technologii Next.js) otwierają się w 1.2 sekundy. Zanim strona Twojej konkurencji w ogóle załaduje logo, Twój klient już klika „Zadzwoń”.',
     },
     {
-      title: isDevMode ? 'Manual Data Processing' : 'Straty czasu na ręczną pracę',
-      desc: isDevMode
-        ? 'Lack of ETL/Webhooks forces human operators to manually sync CRM, ERP, and payment data, causing fatal error rates.'
-        : 'Twój zespół traci dziesiątki godzin na ręczne przepisywanie danych i obsługę procesów, które można zautomatyzować.',
+      icon: <Edit3 className="w-6 h-6" />,
+      title: 'Samodzielna edycja bez ryzyka zepsucia',
+      desc: 'Dostajesz ultra-prosty panel (Headless CMS). Wpisujesz nową cenę, dodajesz zdjęcie z realizacji i klikasz "Zapisz". Całość zajmuje 30 sekund. System jest zaprojektowany tak, że fizycznie nie da się w nim "rozjechać" grafiki.',
     },
     {
-      title: isDevMode ? 'High Latency & State Loss' : 'Wolne strony i gubienie sesji',
-      desc: isDevMode
-        ? 'Poor client state management leads to session drops on mobile WebKit, dramatically increasing cart abandonment.'
-        : 'Strona ładuje się zbyt długo, a klienci rezygnują z zakupu przez frustrujący, zacinający się koszyk na telefonach.',
+      icon: <MessageSquare className="w-6 h-6" />,
+      title: 'Automatyczna obsługa zapytań',
+      desc: 'Spinam formularz na Twojej stronie z Twoim telefonem i kalendarzem. Klient rezerwuje termin -> Ty dostajesz gotowego SMS-a, a dane same wskakują do arkusza. Oszczędzasz około 10 godzin powtarzalnej klikaniny w miesiącu.',
     }
   ];
 
@@ -32,7 +30,7 @@ export function ProblemSection({ isDevMode }: { isDevMode: boolean }) {
       
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.02]">
         <div className="text-[25vw] font-black text-white leading-none whitespace-nowrap tracking-tighter select-none">
-          {isDevMode ? 'DEBT' : 'LIMITS'}
+          ROZWIĄZANIA
         </div>
       </div>
 
@@ -44,9 +42,9 @@ export function ProblemSection({ isDevMode }: { isDevMode: boolean }) {
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.1] mb-8"
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1] mb-8"
           >
-            {isDevMode ? 'Identifying Legacy Anti-Patterns.' : 'Technologia nie powinna Cię spowalniać.'}
+            Dlaczego tradycyjne strony z szablonów niszczą Twój biznes <span className="text-orange-500">(i jak to naprawiam)</span>
           </motion.h2>
           
           <motion.div
@@ -64,9 +62,7 @@ export function ProblemSection({ isDevMode }: { isDevMode: boolean }) {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-lg md:text-xl font-light text-zinc-400 leading-relaxed"
           >
-            {isDevMode 
-              ? 'Recognizing architectural flaws in monolithic deployments is step one. Step two is destroying them.'
-              : 'Zbyt wiele biznesów zatrzymuje się przez niewłaściwie dobraną, starą infrastrukturę. Znamy te problemy na wylot.'}
+            Zbyt wiele biznesów zatrzymuje się przez niewłaściwie dobraną, powolną infrastrukturę, frustrując zarówno Ciebie jak i Twoich klientów. Znamy te problemy na wylot i niszczymy je u podstaw.
           </motion.p>
         </div>
 
@@ -81,8 +77,8 @@ export function ProblemSection({ isDevMode }: { isDevMode: boolean }) {
               className={`group flex items-start gap-6 p-6 rounded-3xl border border-white/5 bg-zinc-950/50 backdrop-blur-md hover:bg-zinc-900/80 transition-all duration-500 ${idx === 1 ? 'lg:ml-12' : ''} ${idx === 2 ? 'lg:ml-24' : ''}`}
             >
               <div className="shrink-0 mt-1">
-                <div className="text-xs font-mono text-orange-500 opacity-50 group-hover:opacity-100 transition-opacity">
-                  0{idx + 1}
+                <div className="text-orange-500 opacity-50 group-hover:opacity-100 transition-opacity p-3 bg-orange-500/10 rounded-xl">
+                  {prob.icon}
                 </div>
               </div>
               <div>

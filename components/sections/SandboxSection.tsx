@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Database, ShoppingCart, Mail, CheckCircle2, Server, ArrowRight } from 'lucide-react';
 
-export function SandboxSection({ isDevMode }: { isDevMode: boolean }) {
+export function SandboxSection() {
   const [isRunning, setIsRunning] = useState(false);
   const [activeStep, setActiveStep] = useState<number>(-1);
 
@@ -39,10 +39,10 @@ export function SandboxSection({ isDevMode }: { isDevMode: boolean }) {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-black text-[#F5F5F7] tracking-tight mb-6">
-            {isDevMode ? 'Interactive Pipeline Simulator' : 'Przetestuj interaktywny symulator procesu'}
+            Przetestuj interaktywny symulator procesu
           </h2>
           <p className="text-[#A1A1A5] text-lg max-w-2xl mx-auto font-light leading-relaxed">
-            {isDevMode ? 'Trigger the simulated n8n workflow below to visualize data routing and API integrations in real-time.' : 'Zobacz na żywo, jak automatyzacja zastępuje pracę ręczną. Kliknij przycisk poniżej, aby zasymulować przepływ zamówienia.'}
+            Zobacz na żywo, jak automatyzacja zastępuje pracę ręczną. Kliknij przycisk poniżej, aby zasymulować przepływ zamówienia.
           </p>
         </div>
 
@@ -59,7 +59,7 @@ export function SandboxSection({ isDevMode }: { isDevMode: boolean }) {
               disabled={isRunning}
               className="flex items-center gap-2 bg-[#FF6900] text-black px-6 py-2 rounded-lg font-bold text-sm uppercase tracking-wider hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isRunning ? 'Przetwarzanie...' : (isDevMode ? 'Execute Node' : 'Uruchom automatyzację')}
+              {isRunning ? 'Przetwarzanie...' : 'Uruchom automatyzację'}
               {!isRunning && <Play size={16} />}
             </button>
           </div>
@@ -98,10 +98,10 @@ export function SandboxSection({ isDevMode }: { isDevMode: boolean }) {
                   
                   <div className="text-center">
                     <div className="text-sm font-bold text-[#F5F5F7] mb-1">
-                      {isDevMode ? node.devTitle : node.title}
+                      {node.title}
                     </div>
                     <div className="text-xs text-[#A1A1A5] font-mono">
-                      {isDevMode ? node.devDesc : node.desc}
+                      {node.desc}
                     </div>
                   </div>
                   

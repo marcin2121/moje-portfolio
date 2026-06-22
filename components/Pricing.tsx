@@ -2,138 +2,149 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, Info, ShieldCheck, Zap, Code, Blocks } from 'lucide-react';
+import { Check, Star, Code, Briefcase, Rocket } from 'lucide-react';
+import { pushGTMEvent } from '@/app/page';
 
-export default function Pricing({ isDevMode = false }: { isDevMode?: boolean }) {
+const TIERS = [
+  {
+    name: 'WIZYTÓWKA',
+    price: '2 500',
+    icon: <Briefcase className="w-5 h-5" />,
+    target: 'Mechanik, geodeta, fryzjer, terapeuta. Chcesz po prostu świetnie wyglądać w Google i sprawić, by klient łatwo Cię znalazł.',
+    features: [
+      'Indywidualny projekt graficzny (0 gotowych szablonów)',
+      'Napisanie tekstów zorientowanych na sprzedaż',
+      'Czas ładowania poniżej 1.5s (gwarancja wysokich pozycji w Google)',
+      'Formularz kontaktowy spięty z Twoim e-mailem/telefonem',
+      'Pełna zgodność z RODO i wdrożenie polityki prywatności',
+      '6 miesięcy darmowej opieki technicznej'
+    ],
+    ctaText: 'Zapytaj o ten pakiet',
+    highlighted: false
+  },
+  {
+    name: 'MASZYNA SPRZEDAŻOWA',
+    price: '5 500',
+    icon: <Rocket className="w-5 h-5 text-orange-500" />,
+    target: 'Butik, rzemiosło, wynajem aut, usługi na zapisy. Chcesz przyjmować zamówienia i płatności automatycznie, nawet o 2:00 w nocy.',
+    features: [
+      'Wszystko to, co w pakiecie "Wizytówka" +',
+      'Ultraszybki sklep internetowy / System rezerwacji',
+      'Podpięte natychmiastowe płatności (BLIK, Apple Pay, Przelewy24)',
+      'Automatyczne generowanie etykiet do Paczkomatów i kurierów',
+      'Prosty panel do zarządzania magazynem i promocjami',
+      'Gwarancja: 0% prowizji od sprzedaży (cały zysk zostaje u Ciebie)',
+      'Wideo-szkolenie: "Jak dodać nowy produkt w 60 sekund"'
+    ],
+    ctaText: 'Wybieram ten pakiet',
+    highlighted: true,
+    badge: 'NAJCZĘSTSZY WYBÓR'
+  },
+  {
+    name: 'AUTOMATYZACJA PRO',
+    price: '9 500',
+    icon: <Code className="w-5 h-5" />,
+    target: 'Biura rachunkowe, małe hurtownie, niszowa produkcja. Toniesz w papierach, a Twoi ludzie robią w kółko to samo w Excelu.',
+    features: [
+      'Dedykowana aplikacja napisana ściśle pod Twój proces',
+      'Integracja Twojego CRM z fakturowaniem, mailem i kalendarzami',
+      'Automatyczne powiadomienia SMS dla Twoich klientów i pracowników',
+      'Gwarancja SLA (Czas reakcji na krytyczną usterkę: do 4 godzin)',
+      'Przekazanie pełnych, nieograniczonych praw do kodu źródłowego'
+    ],
+    ctaText: 'Porozmawiajmy o automatyzacji',
+    highlighted: false
+  }
+];
+
+export default function Pricing() {
   return (
-    <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col items-center">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col items-center border-t border-white/5">
       
       {/* Header */}
       <div className="text-center mb-16 relative z-10 w-full flex flex-col items-center">
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white mb-6">
-          {isDevMode ? 'Transparent Pricing. Zero hidden fees.' : 'Czyste zasady. Żadnych gwiazdek.'}
+          Jasne zasady. Transparentne ceny.<br />Wybierz rozwiązanie dla swojej skali.
         </h2>
         <p className="text-zinc-400 font-light max-w-2xl text-lg mb-10">
-          {isDevMode 
-            ? 'Whether you are launching a micro-SaaS or scaling an Enterprise B2B platform, you deserve Top 1% engineering without the agency overhead.' 
-            : 'Niezależnie od tego, czy budujesz lokalną markę, czy rozwijasz ogólnokrajowe B2B – zasługujesz na technologię Top 1% bez korporacyjnej marży.'}
+          Podane ceny to kwoty "od", ustalane na twardo przed linijką kodu. Żadnych niespodzianek na fakturze końcowej.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full mb-16">
-        
-        {/* Main Base Package (Asymmetrical 8 cols) */}
-        <div className="lg:col-span-7 bg-zinc-950/60 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 md:p-12 shadow-2xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 blur-[100px] -z-10 group-hover:bg-orange-500/20 transition-all duration-700" />
-          
-          <div className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-500 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mb-8 border border-orange-500/20">
-            <Zap className="w-3 h-3" /> {isDevMode ? 'Core Architecture' : 'Fundament Technologiczny'}
-          </div>
-
-          <h3 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
-            {isDevMode ? <React.Fragment>Flat rate for a perfect start.<br/>Scale on demand.</React.Fragment> : <React.Fragment>Jedna stawka za perfekcyjny start. <br/>Rośnij, kiedy potrzebujesz.</React.Fragment>}
-          </h3>
-          <p className="text-zinc-400 font-light mb-10 text-sm md:text-base leading-relaxed">
-            {isDevMode
-              ? 'You get a powerful Next.js App Router codebase that loads instantly and ranks flawlessly. This level of architecture costs multiples more at traditional agencies.'
-              : 'Dostajesz potężne narzędzie, które normalnie kosztuje wielokrotność tej ceny w dużych agencjach. Idealne odpalenie aplikacji, która ładuje się w ułamku sekundy, z zielonymi wynikami w Google.'}
-          </p>
-
-          <div className="space-y-6 mb-12">
-            <div className="flex items-center justify-between p-4 rounded-xl bg-zinc-900/50 border border-white/5">
-              <div className="flex items-center gap-3">
-                <Code className="w-5 h-5 text-zinc-400" />
-                <span className="text-zinc-200 font-medium">Projekt i wdrożenie (Next.js)</span>
+      {/* Pricing Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto">
+        {TIERS.map((tier, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: idx * 0.2 }}
+            className={`relative flex flex-col bg-zinc-950 rounded-3xl overflow-hidden transition-all duration-300 ${
+              tier.highlighted 
+                ? 'border-2 border-orange-500 shadow-[0_0_40px_rgba(234,88,12,0.15)] md:scale-105 z-10' 
+                : 'border border-white/10 hover:border-white/20'
+            }`}
+          >
+            {tier.badge && (
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-orange-500 text-black text-[10px] font-black tracking-widest uppercase px-4 py-1.5 rounded-b-lg">
+                {tier.badge}
               </div>
-              <div className="text-right">
-                <div className="text-xl font-black text-white">1 000 zł</div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-widest">Jednorazowo</div>
+            )}
+
+            <div className="p-8 pb-0">
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 ${tier.highlighted ? 'bg-orange-500/10 text-orange-500' : 'bg-zinc-900 text-zinc-400'}`}>
+                {tier.icon}
               </div>
+              <h3 className="text-xl font-bold tracking-tight text-white mb-2">{tier.name}</h3>
+              
+              <div className="flex items-baseline gap-2 mb-6">
+                <span className="text-sm text-zinc-500 font-medium">od</span>
+                <span className={`text-4xl font-black tracking-tighter ${tier.highlighted ? 'text-white' : 'text-zinc-200'}`}>
+                  {tier.price}
+                </span>
+                <span className="text-sm text-zinc-500 font-medium">zł netto</span>
+              </div>
+
+              <div className="h-px w-full bg-white/5 mb-6" />
+
+              <p className="text-sm text-zinc-400 font-light leading-relaxed mb-6 min-h-[80px]">
+                {tier.target}
+              </p>
             </div>
 
-            <div className="flex items-center justify-between p-4 rounded-xl bg-zinc-900/50 border border-white/5">
-              <div className="flex items-center gap-3">
-                <ShieldCheck className="w-5 h-5 text-zinc-400" />
-                <span className="text-zinc-200 font-medium">Hosting i opieka techniczna</span>
-              </div>
-              <div className="text-right">
-                <div className="text-xl font-black text-white">500 zł</div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-widest">Rocznie</div>
-              </div>
+            <div className="px-8 pb-8 flex-1 flex flex-col">
+              <ul className="space-y-4 mb-8 flex-1">
+                {tier.features.map((feat, fIdx) => (
+                  <li key={fIdx} className="flex items-start gap-3">
+                    <Check className={`w-4 h-4 shrink-0 mt-0.5 ${tier.highlighted ? 'text-orange-500' : 'text-zinc-500'}`} />
+                    <span className={`text-sm leading-relaxed ${tier.highlighted && fIdx === 0 ? 'text-white font-medium' : 'text-zinc-300'}`}>
+                      {feat}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <button 
+                onClick={() => {
+                  pushGTMEvent(`cennik_pakiet_${idx}_klikniecie`);
+                  const el = document.getElementById('kontakt');
+                  if(el) {
+                    el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className={`w-full py-4 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${
+                  tier.highlighted 
+                    ? 'bg-orange-500 text-black hover:bg-orange-400' 
+                    : 'bg-white/5 text-white hover:bg-white/10'
+                }`}
+              >
+                {tier.ctaText}
+              </button>
             </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-end sm:items-center justify-between gap-6 pt-8 border-t border-white/10">
-            <div>
-              <div className="text-sm text-zinc-400 font-light mb-1">Razem za pierwszy rok:</div>
-              <div className="flex items-end gap-2">
-                <span className="text-5xl font-black tracking-tighter text-white leading-none">1 500</span>
-                <span className="text-xl font-bold text-white mb-1">zł</span>
-                <span className="text-xs text-zinc-500 font-mono mb-1.5 ml-1">netto</span>
-              </div>
-            </div>
-            
-            <button className="w-full sm:w-auto px-8 py-4 rounded-xl text-xs font-black uppercase tracking-widest bg-orange-500 text-black hover:bg-orange-600 shadow-[0_0_20px_rgba(234,88,12,0.3)] transition-all">
-              Rozpocznij współpracę
-            </button>
-          </div>
-        </div>
-
-        {/* Add-ons (Asymmetrical 5 cols) */}
-        <div className="lg:col-span-5 bg-zinc-900/40 backdrop-blur-md border border-white/5 rounded-[2rem] p-8 md:p-10 flex flex-col justify-between">
-          <div>
-            <div className="flex items-center gap-3 mb-6">
-              <Blocks className="w-6 h-6 text-orange-500" />
-              <h3 className="text-2xl font-bold tracking-tight text-white">Moduły rozszerzone (Add-ons)</h3>
-            </div>
-            <p className="text-sm text-zinc-400 font-light mb-8 leading-relaxed">
-              Fundament jest tak potężny, że w dowolnym momencie możesz go rozbudować o zaawansowane funkcje bez przepisywania aplikacji od zera.
-            </p>
-
-            <ul className="space-y-5">
-              <li className="flex items-start justify-between gap-4">
-                <div className="flex items-start gap-3">
-                  <Check className="w-4 h-4 text-orange-500 mt-1 shrink-0" />
-                  <span className="text-sm text-zinc-300">Dodatkowy unikalny landing page</span>
-                </div>
-                <span className="text-sm font-mono text-white whitespace-nowrap">+ 500 zł</span>
-              </li>
-              <li className="flex items-start justify-between gap-4">
-                <div className="flex items-start gap-3">
-                  <Check className="w-4 h-4 text-orange-500 mt-1 shrink-0" />
-                  <span className="text-sm text-zinc-300">Wdrożenie autorskiego systemu rezerwacji</span>
-                </div>
-                <span className="text-sm font-mono text-white whitespace-nowrap">od 1500 zł</span>
-              </li>
-              <li className="flex items-start justify-between gap-4">
-                <div className="flex items-start gap-3">
-                  <Check className="w-4 h-4 text-orange-500 mt-1 shrink-0" />
-                  <span className="text-sm text-zinc-300">Automatyzacja procesów (n8n / CRM)</span>
-                </div>
-                <span className="text-sm font-mono text-white whitespace-nowrap">od 2000 zł</span>
-              </li>
-              <li className="flex items-start justify-between gap-4">
-                <div className="flex items-start gap-3">
-                  <Check className="w-4 h-4 text-orange-500 mt-1 shrink-0" />
-                  <span className="text-sm text-zinc-300">Zaawansowany panel klienta (SaaS)</span>
-                </div>
-                <span className="text-sm font-mono text-white whitespace-nowrap">od 3000 zł</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="mt-12 pt-6 border-t border-white/10">
-             <div className="flex items-center gap-3 text-zinc-400">
-               <Info className="w-4 h-4" />
-               <span className="text-xs font-light">
-                 Masz specyficzne wymagania? <strong className="text-white">Przygotuję indywidualną wycenę.</strong>
-               </span>
-             </div>
-          </div>
-        </div>
-
+          </motion.div>
+        ))}
       </div>
-
     </div>
   );
 }

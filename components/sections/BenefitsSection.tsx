@@ -2,30 +2,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export function BenefitsSection({ isDevMode }: { isDevMode: boolean }) {
+export function BenefitsSection() {
   const benefits = [
     {
-      value: isDevMode ? '0ms' : 'Błysk',
-      title: isDevMode ? 'Client-Side Navigation' : 'Płynność bez przeładowania',
-      desc: isDevMode
-        ? 'SPA-like transitions with Next.js prefetching. Eliminates full page reloads, driving up conversion rates and perceived performance.'
-        : 'Strona nie ładuje się od nowa przy każdym kliknięciu. Użytkownik przechodzi przez nią płynnie jak w aplikacji mobilnej, co drastycznie zwiększa sprzedaż.',
+      value: 'Błysk',
+      title: 'Płynność bez przeładowania',
+      desc: 'Strona nie ładuje się od nowa przy każdym kliknięciu. Użytkownik przechodzi przez nią płynnie jak w aplikacji mobilnej, co drastycznie zwiększa sprzedaż.',
       colSpan: 'lg:col-span-2'
     },
     {
-      value: isDevMode ? '∞' : '100%',
-      title: isDevMode ? 'Headless Flexibility' : 'Pełna personalizacja',
-      desc: isDevMode
-        ? 'Decoupled architecture means no CMS limitations. If you can design it, we can build it. Complete freedom from WordPress constraints.'
-        : 'Zapomnij o ograniczeniach gotowych szablonów. Każdy element jest zaprogramowany pod Twoje specyficzne procesy biznesowe.',
+      value: '100%',
+      title: 'Pełna personalizacja',
+      desc: 'Zapomnij o ograniczeniach gotowych szablonów. Każdy element jest zaprogramowany pod Twoje specyficzne procesy biznesowe.',
       colSpan: 'lg:col-span-1'
     },
     {
-      value: isDevMode ? 'Zero' : 'Bez',
-      title: isDevMode ? 'Cookie-less Analytics' : 'Analityka bez ciasteczek',
-      desc: isDevMode
-        ? 'Self-hosted Umami tracking bypasses GDPR/CCPA cookie consent banners, offering pure UX and accurate metrics without ad-blocker interference.'
-        : 'Zbierasz dokładne dane o klientach, zachowując 100% zgodności z RODO, bez brzydkich, odstraszających banerów cookies.',
+      value: 'Bez',
+      title: 'Analityka bez ciasteczek',
+      desc: 'Zbierasz dokładne dane o klientach, zachowując 100% zgodności z RODO, bez brzydkich, odstraszających banerów cookies.',
       colSpan: 'lg:col-span-3'
     }
   ];
@@ -40,7 +34,7 @@ export function BenefitsSection({ isDevMode }: { isDevMode: boolean }) {
             viewport={{ once: true }}
             className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight"
           >
-            {isDevMode ? 'Measurable Impact.' : 'Przewaga technologiczna.'}
+            Przewaga technologiczna.
           </motion.h2>
         </div>
 
@@ -57,7 +51,6 @@ export function BenefitsSection({ isDevMode }: { isDevMode: boolean }) {
               <div className="mb-12">
                 <div className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
                   {ben.value}
-                  {ben.value === '0ms' && <span className="text-orange-500 text-5xl">.</span>}
                   {ben.value === '100%' && <span className="text-orange-500 text-5xl">.</span>}
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">{ben.title}</h3>

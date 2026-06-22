@@ -2,28 +2,24 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Plus, Minus } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const FAQ_ITEMS = [
   {
-    question: "Dlaczego Next.js, a nie WordPress?",
-    answer: "WordPress to stary standard. Next.js to szybkość, najwyższe bezpieczeństwo i brak ograniczeń w designie. Twoja strona będzie klasą premium, a nie szablonem."
+    question: "Co jeśli zapłacę zaliczkę, a projekt mi się nie spodoba?",
+    answer: "Chroni Cię \"Gwarancja 7 dni\". Po przedstawieniu przeze mnie wstępnego projektu graficznego masz prawo powiedzieć: „Marcin, to zupełnie nie moja bajka”. W ciągu 24 godzin odsyłam 100% wpłaconej zaliczki na Twoje konto. Zero ryzyka."
   },
   {
-    question: "Czy będę mógł sam edytować treści?",
-    answer: "Tak. Wdrażam dedykowane panele administracyjne (CMS), gdzie zmiana tekstu czy zdjęcia jest tak prosta jak edycja dokumentu Word."
+    question: "Czy po oddaniu strony będę uwiązany jakimś abonamentem?",
+    answer: "Nie. Kod strony jest w 100% Twoją własnością. Nie ma żadnych \"ukrytych licencji\" ani opłat za utrzymanie u mnie. Jeśli za rok zechcesz oddać tę stronę pod opiekę innemu programistowi – jednym kliknięciem przekazuję mu komplet uprawnień."
   },
   {
-    question: "Jak długo trwa budowa profesjonalnego systemu?",
-    answer: "Dzięki autorskiemu systemowi MDK, zaawansowane aplikacje wdrażam od kilku dni do miesiąca."
+    question: "Dlaczego nie robisz stron na WordPressie? Mój znajomy mi to polecał.",
+    answer: "Ponieważ 80% wszystkich ataków hakerskich w internecie dotyczy WordPressa, a jego darmowe wtyczki po aktualizacji potrafią \"wyłożyć\" sklep w najgorętszym okresie sprzedaży. Buduję strony w technologii Next.js (używa jej m.in. Netflix czy Nike). Dzięki temu Twoja strona jest praktycznie niemożliwa do zhakowania i działa z prędkością światła."
   },
   {
-    question: "Czy moje dane i płatności będą bezpieczne?",
-    answer: "Bezpieczeństwo to fundament mojej architektury. Korzystam z izolowanych baz danych Supabase z rygorystycznymi politykami RLS (Row Level Security), szyfrowania danych w spoczynku oraz certyfikowanych bramek płatniczych (Stripe / Przelewy24). Całość opiera się na statycznym renderowaniu Next.js, co eliminuje większość podatności typowych dla systemów CMS takich jak WordPress."
-  },
-  {
-    question: "Co jeśli będę potrzebował rozbudowy w przyszłości?",
-    answer: "Moje systemy są modułowe. Skalowanie biznesu nie wymaga pisania wszystkiego od nowa – po prostu dodajemy nowe funkcje do istniejącego fundamentu."
+    question: "Co się stanie, jeśli po 3 miesiącach coś na stronie przestałoby działać?",
+    answer: "W cenie każdego projektu dostajesz ode mnie 6 miesięcy opieki technicznej. Jeśli cokolwiek z winy kodu przestanie funkcjonować prawidłowo – naprawiam to na swój koszt. Po upływie pół roku możesz wykupić pakiet stałej opieki, ale nie musisz; te strony są tak stabilne, że psują się raz na kilka lat."
   }
 ];
 
@@ -31,16 +27,16 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="w-full min-h-screen lg:h-screen h-auto flex flex-col items-center justify-center px-6 sm:px-10 lg:px-20 bg-transparent relative overflow-hidden border-t border-white/5">
-      <div className="max-w-4xl mx-auto w-full py-20 lg:py-0 lg:overflow-y-auto lg:max-h-full scrollbar-hide">
+    <section id="faq" className="w-full py-24 sm:py-32 px-6 sm:px-10 lg:px-20 bg-transparent relative overflow-hidden border-t border-white/5">
+      <div className="max-w-4xl mx-auto w-full">
         <div className="flex flex-col items-center text-center mb-10 lg:mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-            <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">Współpraca / FAQ</span>
+            <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">FAQ</span>
           </div>
-          <h2 className="text-4xl sm:text-6xl text-white tracking-tighter mb-6">Odpowiedzi na obawy</h2>
+          <h2 className="text-4xl sm:text-6xl text-white tracking-tighter mb-6 font-black">Odpowiedzi na obawy</h2>
           <p className="text-zinc-400 text-sm sm:text-base font-light max-w-2xl">
-            Inwestycja w nowoczesną technologię to klucz do przewagi rynkowej. Oto wyjaśnienie najczęstszych kwestii technicznych w języku biznesu.
+            Inwestycja w nowoczesną stronę to odpowiedzialna decyzja. Oto wyjaśnienie najczęstszych kwestii, bez owijania w bawełnę.
           </p>
         </div>
 
@@ -59,7 +55,7 @@ export default function FAQ() {
                   <span className={`text-lg sm:text-xl font-medium transition-colors duration-300 ${isOpen ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
                     {item.question}
                   </span>
-                  <div className={`p-2 rounded-full transition-transform duration-500 ${isOpen ? 'bg-orange-500 rotate-180 text-white' : 'bg-zinc-900 text-zinc-600'}`}>
+                  <div className={`p-2 rounded-full transition-transform duration-500 shrink-0 ml-4 ${isOpen ? 'bg-orange-500 rotate-180 text-black' : 'bg-zinc-900 text-zinc-600'}`}>
                     <ChevronDown size={20} />
                   </div>
                 </button>
