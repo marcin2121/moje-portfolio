@@ -83,37 +83,37 @@
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.92 0.004 286.32);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: #0B0B0C;
+  --foreground: #F5F5F7;
+  --card: #161618;
+  --card-foreground: #F5F5F7;
+  --popover: #161618;
+  --popover-foreground: #F5F5F7;
+  --primary: #FF6900;
+  --primary-foreground: #000000;
+  --secondary: #222225;
+  --secondary-foreground: #F5F5F7;
+  --muted: #222225;
+  --muted-foreground: #A1A1A5;
+  --accent: #222225;
+  --accent-foreground: #FF6900;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.552 0.016 285.938);
+  --border: #222225;
+  --input: #222225;
+  --ring: #FF6900;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.552 0.016 285.938);
+  --sidebar: #161618;
+  --sidebar-foreground: #F5F5F7;
+  --sidebar-primary: #FF6900;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #222225;
+  --sidebar-accent-foreground: #F5F5F7;
+  --sidebar-border: #222225;
+  --sidebar-ring: #FF6900;
 }
 
 @layer base {
@@ -152,4 +152,17 @@ body {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.animate-logo-pulse {
+  animation: logoPulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

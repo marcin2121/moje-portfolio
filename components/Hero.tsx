@@ -12,6 +12,7 @@ const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: fals
 
 interface HeroProps {
   onNavigate: (index: number) => void;
+  isDevMode?: boolean;
 }
 
 const TECH_STACK = [
@@ -23,7 +24,7 @@ const TECH_STACK = [
   { name: 'GSAP', color: '#88ce02' },
 ];
 
-export default function Hero({ onNavigate }: HeroProps) {
+export default function Hero({ onNavigate, isDevMode = false }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [orbitRadius, setOrbitRadius] = useState(160);
   const [isMounted, setIsMounted] = useState(false);
@@ -62,7 +63,7 @@ export default function Hero({ onNavigate }: HeroProps) {
     <section 
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="w-full lg:w-1/2 min-h-screen lg:h-full flex flex-col items-start justify-center relative overflow-hidden px-8 sm:px-16 lg:px-20 py-20 lg:py-0 text-left"
+      className="w-full lg:w-1/3 min-h-screen lg:h-full flex flex-col items-start justify-center relative overflow-hidden px-8 sm:px-16 lg:px-20 py-20 lg:py-0 text-left"
     >
       <Particles color="#ea580c" />
       
@@ -106,7 +107,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0 }}
             className="overflow-hidden whitespace-nowrap"
           >
-            &gt; Precyzja.
+            {isDevMode ? '> Engineering.' : '> Precyzja.'}
           </motion.div>
 
           <motion.div 
@@ -115,7 +116,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
             className="overflow-hidden whitespace-nowrap text-transparent bg-clip-text bg-linear-to-r from-zinc-400 via-zinc-100 to-white"
           >
-            &gt; Wydajność.
+            {isDevMode ? '> Architecture.' : '> Wydajność.'}
           </motion.div>
 
           <motion.div 
@@ -124,7 +125,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.8 }}
             className="overflow-hidden whitespace-nowrap flex items-center"
           >
-            &gt; Rezultat.
+            {isDevMode ? '> Delivery.' : '> Rezultat.'}
             <motion.span
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
@@ -135,7 +136,10 @@ export default function Hero({ onNavigate }: HeroProps) {
 
         {/* LCP element — rendered immediately, no animation delay */}
           <p className="font-mono text-zinc-300 text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-12 max-w-lg">
-            Projektuję ekosystemy cyfrowe dla web i mobile. Odrzucam kompromisy i szablony, dostarczając kod, który <strong className="text-white font-medium">ładuje się natychmiast i pracuje na Twój wynik biznesowy.</strong>
+            {isDevMode 
+              ? "Projektuję i wdrażam interaktywne aplikacje PWA, zaawansowane platformy e-commerce (Next.js) oraz bezbłędne automatyzacje procesów biznesowych (n8n/Python). Dostarczam architekturę klasy enterprise w pojedynkę – szybciej, precyzyjniej i bez narzutu komunikacyjnego agencji."
+              : <>Projektuję ekosystemy cyfrowe dla web i mobile. Odrzucam kompromisy i szablony, dostarczając kod, który <strong className="text-white font-medium">ładuje się natychmiast i pracuje na Twój wynik biznesowy.</strong></>
+            }
           </p>
 
           <motion.div 

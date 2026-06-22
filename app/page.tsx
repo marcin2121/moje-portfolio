@@ -14,6 +14,12 @@ import TiltCard from '@/components/ui/TiltCard';
 import BottomSheet from '@/components/ui/BottomSheet';
 import Configurator from '@/components/ui/Configurator';
 import FAQ from '@/components/ui/FAQ';
+import Pricing from '@/components/Pricing';
+import { HeaderToggle } from '@/components/sections/HeaderToggle';
+import { ProblemSection } from '@/components/sections/ProblemSection';
+import { SandboxSection } from '@/components/sections/SandboxSection';
+import { HowItWorksSection } from '@/components/sections/HowItWorksSection';
+import { BenefitsSection } from '@/components/sections/BenefitsSection';
 
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
 const UrwisModel = dynamic(() => import('@/components/UrwisModel'), { ssr: false });
@@ -42,16 +48,20 @@ type DemoConfig = {
 
 const NAV_DOTS = [
   { id: 0, title: 'Start' },
-  { id: 1, title: 'Usługi' },
-  { id: 2, title: 'O mnie' },
-  { id: 3, title: 'Portfolio' },
-  { id: 4, title: 'Sklep Urwis' },
-  { id: 5, title: 'zamowtu.pl' },
-  { id: 6, title: 'RLT Polska' },
-  { id: 7, title: 'Zielnik' },
-  { id: 8, title: 'Opal' },
-  { id: 9, title: 'FAQ' },
-  { id: 10, title: 'Kontakt' },
+  { id: 1, title: 'Problemy' },
+  { id: 2, title: 'Rozwiązania' },
+  { id: 3, title: 'Proces' },
+  { id: 4, title: 'Symulacja' },
+  { id: 5, title: 'Benefity' },
+  { id: 6, title: 'Portfolio' },
+  { id: 7, title: 'DzikiStyl.com' },
+  { id: 8, title: 'Sklep Urwis' },
+  { id: 9, title: 'zamowtu.pl' },
+  { id: 10, title: 'Opal' },
+  { id: 11, title: 'Referencje' },
+  { id: 12, title: 'Cennik' },
+  { id: 13, title: 'FAQ' },
+  { id: 14, title: 'Kontakt' },
 ] as const;
 
 export const pushGTMEvent = (eventName: string, params: Record<string, unknown> = {}) => {
@@ -75,6 +85,7 @@ export default function PortfolioHome() {
   const [openDemo, setOpenDemo]           = useState<DemoConfig | null>(null);
   const [viewMode, setViewMode]           = useState<'desktop' | 'mobile'>('desktop');
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const [isDevMode, setIsDevMode]         = useState(false);
 
   const playRef = useRef<(() => void) | null>(null);
   const playNavClick = useCallback(() => {
@@ -87,12 +98,11 @@ export default function PortfolioHome() {
     }).catch(() => {});
   }, []);
 
+  const snapPointsRef = useRef<number[]>(NAV_DOTS.map((_, i) => i / (NAV_DOTS.length - 1)));
   const rawProgress   = useMotionValue(0);
   const smoothProgress = useSpring(rawProgress, { stiffness: 80, damping: 18, mass: 0.8 });
   const lavaHeight    = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
   const lavaWidth     = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
-
-  const snapPointsRef = useRef<number[]>(NAV_DOTS.map((_, i) => i / (NAV_DOTS.length - 1)));
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -125,31 +135,42 @@ export default function PortfolioHome() {
         }
 
         const pts: number[] = [];
-        // 0: Hero = start of H1 pin
+        
+        // 0: Start
         pts[0] = h1.start / maxScr;
-        // 1: Usługi = end of H1 pin  
-        pts[1] = h1.end / maxScr;
-        // 2: O mnie = midpoint between pins
-        pts[2] = (h1.end + (h2.start - h1.end) * 0.5) / maxScr;
-        // 3-8: H2 pin (Portfolio intro + 5 projects, 6 sub-sections)
+        // 1: Problemy (middle of h1)
+        pts[1] = (h1.start + (h1.end - h1.start) * 0.5) / maxScr;
+        // 2: Rozwiązania (end of h1)
+        pts[2] = h1.end / maxScr;
+        
+        const getDomRatio = (id: string, fallback: number) => {
+          const el = document.getElementById(id);
+          return el ? (window.scrollY + el.getBoundingClientRect().top) / maxScr : fallback;
+        };
+
+        // 3: Proces
+        pts[3] = getDomRatio('proces', (h1.end + 10) / maxScr);
+        
+        // 4: Symulacja
+        pts[4] = getDomRatio('sandbox', (h1.end + 20) / maxScr);
+
+        // 5: Benefity
+        pts[5] = getDomRatio('benefits', (h1.end + 30) / maxScr);
+        
+        // 6-11: H2 pin (Portfolio intro + 5 projects)
         const h2Dur = h2.end - h2.start;
         for (let i = 0; i < 6; i++) {
-          pts[3 + i] = (h2.start + h2Dur * i / 5) / maxScr;
+          pts[6 + i] = (h2.start + h2Dur * i / 5) / maxScr;
         }
-        // 9-10: FAQ and Kontakt — use DOM positions for accuracy
-        const faqEl = document.getElementById('faq');
-        const kontaktEl = document.getElementById('kontakt');
-        if (faqEl) {
-          pts[9] = (window.scrollY + faqEl.getBoundingClientRect().top) / maxScr;
-        } else {
-          pts[9] = (h2.end + 10) / maxScr;
-        }
-        if (kontaktEl) {
-          pts[10] = Math.min((window.scrollY + kontaktEl.getBoundingClientRect().top) / maxScr, 1);
-        } else {
-          const vh = window.innerHeight;
-          pts[10] = Math.min((h2.end + vh) / maxScr, 1);
-        }
+
+        // 12: Cennik
+        pts[12] = getDomRatio('pricing', (h2.end + 10) / maxScr);
+        
+        // 13: FAQ
+        pts[13] = getDomRatio('faq', (h2.end + 20) / maxScr);
+        
+        // 14: Kontakt
+        pts[14] = Math.min(getDomRatio('kontakt', (h2.end + 30) / maxScr), 1);
 
         snapPointsRef.current = pts;
       };
@@ -157,7 +178,7 @@ export default function PortfolioHome() {
       const ctx = gsap.context(() => {
         const mm = gsap.matchMedia();
         mm.add('(min-width: 1024px)', () => {
-          gsap.to(horizontal1Ref.current, { xPercent: -50, ease: 'none', scrollTrigger: { trigger: horizontal1Ref.current, start: 'top top', end: '+=100%', pin: true, scrub: 0.5 } });
+          gsap.to(horizontal1Ref.current, { xPercent: -66.666, ease: 'none', scrollTrigger: { trigger: horizontal1Ref.current, start: 'top top', end: '+=200%', pin: true, scrub: 0.5 } });
           gsap.to(horizontal2Ref.current, { xPercent: -83.33, ease: 'none', scrollTrigger: { trigger: horizontal2Ref.current, start: 'top top', end: '+=500%', pin: true, scrub: 0.5 } });
         });
 
@@ -245,6 +266,7 @@ export default function PortfolioHome() {
 
   return (
     <>
+      <HeaderToggle isDevMode={isDevMode} setIsDevMode={setIsDevMode} />
       <div className="fixed inset-0 z-[-1] bg-zinc-950 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-size-[40px_40px] mask-[radial-gradient(ellipse_80%_80%_at_0%_50%,#000_30%,transparent_100%)] opacity-80 pointer-events-none" />
       </div>
@@ -379,9 +401,10 @@ export default function PortfolioHome() {
         </nav>
 
         <main className="pl-0 lg:pl-24 w-full overflow-x-hidden">
-          <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[200%] h-auto lg:h-screen">
-            <Hero onNavigate={scrollToSection} />
-            <section className="w-full lg:w-1/2 min-h-screen lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent">
+          <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[300%] h-auto lg:h-screen">
+            <Hero onNavigate={scrollToSection} isDevMode={isDevMode} />
+            <ProblemSection isDevMode={isDevMode} />
+            <section className="w-full lg:w-1/3 min-h-screen lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent">
               <div className="flex flex-col gap-8 lg:gap-10 max-w-5xl w-full relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 w-full">
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
@@ -390,10 +413,10 @@ export default function PortfolioHome() {
                       <span className="font-mono text-[10px] text-zinc-400">sys.module_01</span>
                     </div>
                     <h3 className="font-bold text-sm lg:text-base mb-3 text-white">
-                      <span className="text-orange-500 mr-2">&gt;</span>Strony WWW
+                      <span className="text-orange-500 mr-2">&gt;</span>{isDevMode ? 'Headless Commerce' : 'Dedykowany E-commerce'}
                     </h3>
                     <p className="text-xs text-zinc-300 font-light leading-relaxed">
-                      Architektura oparta o Next.js. Natychmiastowe ładowanie, przewaga w wynikach wyszukiwania i bezbłędny UX.
+                      {isDevMode ? 'Next.js App Router implementations with Service Workers for offline-first capabilities.' : 'Ultraszybkie aplikacje z pełną obsługą offline, powiadomieniami push i dynamicznym koszykiem.'}
                     </p>
                   </MagicBento>
 
@@ -403,10 +426,10 @@ export default function PortfolioHome() {
                       <span className="font-mono text-[10px] text-zinc-400">sys.module_02</span>
                     </div>
                     <h3 className="font-bold text-sm lg:text-base mb-3 text-white">
-                      <span className="text-orange-500 mr-2">&gt;</span>Aplikacje SaaS
+                      <span className="text-orange-500 mr-2">&gt;</span>{isDevMode ? 'Business Intelligence SaaS' : 'Zaawansowane Systemy SaaS'}
                     </h3>
                     <p className="text-xs text-zinc-300 font-light leading-relaxed">
-                      Systemy klasy Enterprise. Relacyjne bazy danych, bezpieczna autoryzacja i skomplikowane procesy w czystym UI.
+                      {isDevMode ? 'Custom dashboard architectures combining React Recharts with Node.js K-Means clustering algorithms.' : 'Kompletne panele analityczne, systemy rezerwacji i panele BI wspierające decyzje biznesowe.'}
                     </p>
                   </MagicBento>
 
@@ -416,10 +439,10 @@ export default function PortfolioHome() {
                       <span className="font-mono text-[10px] text-zinc-400">sys.module_03</span>
                     </div>
                     <h3 className="font-bold text-sm lg:text-base mb-3 text-white">
-                      <span className="text-orange-500 mr-2">&gt;</span>Optymalizacja
+                      <span className="text-orange-500 mr-2">&gt;</span>{isDevMode ? 'Core Web Vitals & Privacy' : 'Ekstremalna Wydajność'}
                     </h3>
                     <p className="text-xs text-zinc-300 font-light leading-relaxed">
-                      Głęboka refaktoryzacja kodu, redukcja długu technologicznego i optymalizacja pod najwyższe standardy Core Web Vitals.
+                      {isDevMode ? 'Edge caching guarantees < 1s LCP. Replacing GA4 with self-hosted Umami analytics (Zero Cookies).' : 'Szybkość ładująca się w milisekundach (95-100/100). Analityka w 100% zgodna z RODO bez banerów cookies.'}
                     </p>
                   </MagicBento>
 
@@ -429,10 +452,10 @@ export default function PortfolioHome() {
                       <span className="font-mono text-[10px] text-zinc-400">sys.module_04</span>
                     </div>
                     <h3 className="font-bold text-sm lg:text-base mb-3 text-white">
-                      <span className="text-orange-500 mr-2">&gt;</span>Narzędzia B2B
+                      <span className="text-orange-500 mr-2">&gt;</span>{isDevMode ? 'ETL & Automated Pipelines' : 'Inteligentna Automatyzacja'}
                     </h3>
                     <p className="text-xs text-zinc-300 font-light leading-relaxed">
-                      Dedykowane algorytmy, inteligentne konfiguratory ofert i kalkulatory zamieniające ruch w wartościowe zapytania.
+                      {isDevMode ? 'Intelligent webhooks parsing and robust n8n / Python middleware for ERP/Stripe integrations.' : 'Tworzenie mostów technologicznych łączących CRM, ERP i bramki płatnicze w samonaprawiający się ekosystem.'}
                     </p>
                   </MagicBento>
                 </div>
@@ -457,46 +480,9 @@ export default function PortfolioHome() {
             </section>
           </div>
 
-         <section className="w-screen h-screen flex flex-col items-center justify-center px-6 lg:px-10 py-20 bg-transparent relative overflow-hidden">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full opacity-[0.02] pointer-events-none text-[25vw] font-black text-center leading-none select-none tracking-tighter">
-              ROOT
-            </div>
-            <div className="relative z-10 w-full max-w-4xl flex flex-col items-center text-center">
-              
-              <div className="font-mono text-[10px] text-zinc-400 mb-8 flex items-center gap-2 tracking-[0.2em]">
-                <span className="text-orange-500">~/marcin-molenda</span>
-                <span className="text-zinc-400">/</span>
-                <Terminal size={12} className="text-zinc-400" />
-                <span className="text-zinc-400">whoami --full</span>
-              </div>
-              
-              <h2 className="text-4xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] mb-10 tracking-tighter text-white leading-[0.9] max-w-3xl">
-                <span className="text-orange-500 mr-4 font-mono font-light">&gt;</span>Kod pisany pod Twoje zasady.
-              </h2>
-              
-              <div className="space-y-6 max-w-2xl">
-                <p className="text-sm sm:text-lg lg:text-xl text-zinc-300 font-light leading-relaxed">
-                  Odrzucam gotowe szablony i ociężałe kreatory. Każdy projekt traktuję jak <span className="text-white font-medium">system krytyczny</span>, projektując logikę dopasowaną do realnych wyzwań Twojego biznesu.
-                </p>
-                <p className="text-xs sm:text-base text-zinc-400 font-light leading-relaxed">
-                  Moja rola zaczyna się tam, gdzie liczy się precyzja: od wdrażania <span className="text-orange-500">mikrousług</span>, po pełną <span className="text-orange-500">architekturę systemów SaaS</span>. Dostarczam technologię, która nie zna pojęcia kompromisu i skaluje się wraz z Twoim sukcesem.
-                </p>
-              </div>
-              
-              <div className="mt-16 flex flex-col items-center gap-8">
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-px bg-zinc-800" />
-                  <span className="font-mono text-[9px] text-zinc-400 uppercase tracking-[0.4em]">Ready for execution</span>
-                  <div className="w-8 h-px bg-zinc-800" />
-                </div>
-                
-                <div className="flex flex-col items-center gap-3 animate-bounce">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-orange-600">Scroll.init()</span>
-                  <ArrowRight className="w-4 h-4 rotate-90 text-orange-600" />
-                </div>
-              </div>
-            </div>
-          </section>
+          <HowItWorksSection isDevMode={isDevMode} />
+          <SandboxSection isDevMode={isDevMode} />
+          <BenefitsSection isDevMode={isDevMode} />
 
           <div ref={horizontal2Ref} className="flex flex-col lg:flex-row w-full lg:w-[600%] h-auto lg:h-screen bg-transparent">
             
@@ -515,13 +501,55 @@ export default function PortfolioHome() {
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">{isDevMode ? 'Headless Commerce / R2' : 'E-commerce B2B'}</span>
+                  </div>
+                  <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">DzikiStyl.com</h2>
+                  <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
+                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Klient potrzebował gruntownej przebudowy ociężałego systemu, aby skalować sprzedaż B2B. Problemem była obsługa gigabajtowych plików DTP &quot;zapychających&quot; serwery oraz brak elastyczności konfiguratora.</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Zaprojektowanie architektury &quot;Headless Commerce&quot; (Next.js). Wdrożenie zaawansowanego kreatora opartego na stanie URL (nuqs) i Direct-Upload plików do Cloudflare R2.</p>
+                    <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
+                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Skrócenie czasu ładowania strony o 70%. Całkowite odciążenie serwerów od przetwarzania plików DTP oraz drastyczna poprawa pozycjonowania SEO.</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-center lg:justify-start pt-4">
+                    <MagneticWrapper>
+                      <button onClick={() => {
+                        pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'DzikiStyl' });
+                        handleOpenDemo({ url: 'https://dzikistyl.com', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
+                      }} className="px-8 py-4 bg-orange-800 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg hover:bg-orange-700 transition-colors flex items-center gap-3">
+                        <Terminal size={14} />
+                        <span>Init Demo</span>
+                      </button>
+                    </MagneticWrapper>
+                  </div>
+                </div>
+                <div onClick={() => {
+                  pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'DzikiStyl' });
+                  handleOpenDemo({ url: 'https://dzikistyl.com', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
+                }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
+                  <Image src="/dzikistyl.webp" alt="DzikiStyl" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                  <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Execute</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0">
+              <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
+                <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">Grywalizacja / PWA</span>
+                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">{isDevMode ? 'PWA / WebGL / Gemini AI' : 'Grywalizacja / PWA'}</span>
                   </div>
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Sklep Urwis</h2>
-                  <div className="space-y-4 text-zinc-400 text-sm sm:text-base font-light leading-relaxed">
-                    <p>Zaawansowana platforma PWA łącząca e-commerce z potężnym systemem grywalizacji (HTML5 Games). Centralnym punktem doświadczenia użytkownika jest inteligentny chatbot AI ("Wirtualny Urwis") oparty na modelach Gemini, który precyzyjnie nawiguje klientów po asortymencie i strefie zabawy.</p>
-                    <p>W Strefie Zabawy wdrożyłem szereg autorskich mechanik: od edytora kolorowanek online, przez gry logiczno-zręcznościowe z globalnymi rankingami, po system WebAR z projekcją 3D maskotki sklepu. Całość dopełnia zaawansowana obsługa Offline Mode (Serwist), synchronizacja w tle i system powiadomień Push, tworząc unikalny ekosystem "Phygital".</p>
+                  <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
+                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Sklep stacjonarny potrzebował nowoczesnego kanału dotarcia do klientów, angażując dzieci i rodziców bez wymuszania instalacji ciężkich aplikacji z Google Play/App Store.</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Zakodowanie Progressive Web App (PWA) działającej offline. Wdrożenie 9 autorskich gier przeglądarkowych HTML5, systemu rozszerzonej rzeczywistości (WebAR) i chatbota opartego o modele Gemini.</p>
+                    <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
+                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Wyeliminowanie narzutu na manualną obsługę klienta (zero overhead w wydawaniu nagród). Natychmiastowy wzrost wizyt stacjonarnych dzięki grywalizacji.</p>
+                    </div>
                   </div>
                   <div className="flex justify-center lg:justify-start pt-4">
                     <MagneticWrapper>
@@ -561,11 +589,17 @@ export default function PortfolioHome() {
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">SaaS / Fintech</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">{isDevMode ? 'Next.js / Stripe / Supabase' : 'SaaS / Fintech'}</span>
                   </div>
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">zamowtu.pl</h2>
-                  <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Kompleksowa platforma SaaS potęgująca sprzedaż bezpośrednią dla branży gastronomicznej. Rozwiązanie to dając pełną swobodę uwalnia restauratorów wprowadzając cyfrową niezależność – od budowy i edycji menu, przez konfigurację ustawień lokalu, po bezproblemowe podłączenie natychmiastowych płatności online. Właściciele zyskują dostęp do zaawansowanego panelu do kompleksowego śledzenia statystyk biznesowych na żywo. Dla swoich stałych bywalców otrzymują interfejs błyskawicznego zamówienia, definitywnie przenosząc przestarzały ruch telefoniczny na pełną automatyzację.</p>
+                  <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
+                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Restauratorzy tracili gigantyczne prowizje na rzecz zewnętrznych portali dostaw, potrzebując niezależnego systemu transakcyjnego z możliwością edycji menu w locie.</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Zbudowanie kompleksowej platformy SaaS z obsługą natychmiastowych płatności (Stripe Connect) i bezpieczną architekturą dostępu (Supabase RLS).</p>
+                    <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
+                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Uwolnienie restauratorów od zewnętrznych opłat abonamentowych i drastyczny wzrost rentowności lokalnych biznesów.</p>
+                    </div>
+                  </div>
                   <div className="flex justify-center lg:justify-start pt-4">
                     <MagneticWrapper>
                       <button onClick={() => {
@@ -582,62 +616,10 @@ export default function PortfolioHome() {
                   pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'zamowtu.pl' });
                   handleOpenDemo({ url: 'https://zamówtu.pl/demo', title: 'zamowtu.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
                 }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
-                  <Image src="/zamowtu.webp" alt="Podgląd systemu zamówień Zamowtu" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                  <Image src="/zamowtu.webp" alt="zamowtu.pl" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                   <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl">Execute</span>
+                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Execute</span>
                   </div>
-                </div>
-              </div>
-            </section>
-
-            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
-              <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
-                <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">E-commerce / Migracja WordPress → Next.js</span>
-                  </div>
-                  <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">RLT Polska</h2>
-                  <div className="space-y-4 text-zinc-400 text-sm sm:text-base font-light leading-relaxed">
-                    <p>Ekskluzywny sklep internetowy z urządzeniami do terapii czerwonym światłem (LED). Stara strona działała na WordPressie – była wolna, ociężała i gubiła klientów przez powolne ładowanie. Przeniosłem ją na nowoczesny Next.js.</p>
-                    <p>Efekt? Sklep ładuje się w ułamku sekundy, koszyk i płatności działają bez odświeżania strony, a unikalny design klasy premium buduje natychmiastowe zaufanie. Klient zyskał stabilną, szybką maszynę do sprzedaży, która nie wymaga ciągłych aktualizacji wtyczek ani walki z błędami. Jeśli Twój obecny sklep na WordPressie Cię ogranicza – dokładnie taką zmianę mogę zrobić dla Ciebie.</p>
-                  </div>
-                  <div className="flex justify-center lg:justify-start pt-4">
-                    <MagneticWrapper>
-                      <button onClick={() => {
-                        pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'RLT Polska' });
-                        handleOpenDemo({ url: 'https://rltpolska.pl', title: 'rltpolska.pl', colorClass: 'text-red-500', bgClass: 'bg-red-950' });
-                      }} className="px-8 py-4 bg-red-950 text-white border border-red-500/20 font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg hover:bg-red-900 transition-colors flex items-center gap-3">
-                        <Terminal size={14} />
-                        <span>Init Demo</span>
-                      </button>
-                    </MagneticWrapper>
-                  </div>
-                </div>
-                <div onClick={() => {
-                  pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'RLT Polska' });
-                  handleOpenDemo({ url: 'https://rltpolska.pl', title: 'rltpolska.pl', colorClass: 'text-red-500', bgClass: 'bg-red-950' });
-                }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
-                  <Image src="/rltpolska.webp" alt="Podgląd sklepu RLT Polska" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
-                  <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-red-950 px-6 py-3 rounded-lg shadow-2xl border border-red-500/20">Execute</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
-              <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
-                <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">E-commerce / GreenTech</span>
-                  </div>
-                  <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Zielnik</h2>
-                  <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Zaawansowana aplikacja terenowa PWA dla pasjonatów przyrody, łącząca Google Gemini AI z precyzyjną kartografią Mazowsza. System wykorzystuje model Gemini Flash-Lite do inteligentnego skanowania roślin oraz interaktywnego czatu botanicznego w czasie rzeczywistym. Wdrożyłem unikalną mechanikę &quot;Mgły Wojny&quot; (Fog of War) na mapie, system grywalizacji odkryć oraz pełną obsługę Offline First z synchronizacją danych przez Supabase, tworząc elitarne narzędzie do cyfrowej dokumentacji flory.</p>
-                </div>
-                <div className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
-                  <AnimatedWebP src="/zielnik.webp" alt="Animacja projektu Zielnik" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                 </div>
               </div>
             </section>
@@ -647,19 +629,97 @@ export default function PortfolioHome() {
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">BI / Machine Learning</span>
+                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">{isDevMode ? 'K-Means Clustering / Node.js' : 'Business Intelligence'}</span>
                   </div>
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Opal</h2>
-                  <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">Zaawansowany panel analityczny Business Intelligence (BI) wykorzystujący nienadzorowane uczenie maszynowe (K-Means Clustering) do segmentacji rzeczywistych danych rynkowych. System, zbudowany w 100% w architekturze Node.js, eliminuje potrzebę zewnętrznych mikroserwisów Python, oferując błyskawiczną klasyfikację profili. Wdrożyłem interaktywny Cluster Explorer z diagnostyką Metody Łokcia (Elbow Method), wielowymiarowe wykresy profilowe oraz symulator &quot;What-If&quot;, dostarczając precyzyjnych wglądów biznesowych w czasie rzeczywistym.</p>
+                  <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
+                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Potrzeba potężnego panelu do analizy i segmentacji dużych zbiorów danych bez konieczności stawiania drogich, dedykowanych serwerów Python do analiz AI.</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Wdrożenie nienadzorowanego uczenia maszynowego bezpośrednio w architekturze środowiska Node.js z zaawansowanym wizualizatorem danych 3D.</p>
+                    <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
+                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Błyskawiczne, darmowe w utrzymaniu przetwarzanie danych analitycznych i precyzyjne prognozowanie bezpośrednio w przeglądarce klienta.</p>
+                    </div>
+                  </div>
                 </div>
                 <div className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
-                  <AnimatedWebP src="/opal.webp" alt="Animacja projektu Opal" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                  <AnimatedWebP src="/opal.webp" alt="Opal BI" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                 </div>
+              </div>
+            </section>
+
+            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
+              <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-7xl mx-auto relative z-10 gap-8 lg:gap-12 px-4">
+                
+                {/* Left side: Huge Photo */}
+                <div className="shrink-0 relative z-20">
+                  <a 
+                    href="https://dzikistyl.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 rounded-full border-[4px] border-orange-500 bg-[#0B0B0C] shadow-[0_0_60px_rgba(234,88,12,0.4)] relative group overflow-hidden transition-transform duration-500 hover:scale-105"
+                  >
+                    <Image 
+                      src="/DzikiMichał.jpg" 
+                      alt="Michał - DzikiStyl" 
+                      fill
+                      quality={100}
+                      priority
+                      sizes="(max-width: 768px) 256px, (max-width: 1024px) 384px, 512px"
+                      className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" 
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      {/* Pulsing subtle logo (0% to 20%) */}
+                      <Image 
+                        src="/dzikistyl-logo.png" 
+                        alt="DzikiStyl Logo Pulse" 
+                        fill 
+                        quality={100}
+                        sizes="(max-width: 768px) 256px, (max-width: 1024px) 384px, 512px"
+                        className="object-cover animate-logo-pulse group-hover:hidden" 
+                      />
+                      {/* Full opacity logo on hover */}
+                      <Image 
+                        src="/dzikistyl-logo.png" 
+                        alt="DzikiStyl Logo" 
+                        fill 
+                        quality={100}
+                        sizes="(max-width: 768px) 256px, (max-width: 1024px) 384px, 512px"
+                        className="object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
+                      />
+                    </div>
+                  </a>
+                </div>
+
+                {/* Right side: Speech Bubble Container */}
+                <div className="relative w-full lg:w-2/3 bg-[#121214] border border-white/5 rounded-3xl p-8 lg:p-12 shadow-2xl">
+                  {/* Left pointing triangle (visible on lg+) */}
+                  <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-[20px] w-0 h-0 border-y-[20px] border-y-transparent border-r-[20px] border-r-white/5"></div>
+                  <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-[19px] w-0 h-0 border-y-[19px] border-y-transparent border-r-[19px] border-r-[#121214] z-10"></div>
+                  
+                  {/* Header */}
+                  <div className="mb-6">
+                    <h3 className="text-orange-500 font-bold tracking-widest uppercase text-sm md:text-base">Komentarz Michała</h3>
+                    <p className="text-zinc-500 font-mono text-[10px] md:text-xs uppercase tracking-widest mt-1">Właściciel, DzikiStyl.com</p>
+                  </div>
+                  
+                  <div className="w-full h-px bg-white/5 mb-8" />
+
+                  {/* Quote */}
+                  <p className="text-sm md:text-base lg:text-lg font-light text-zinc-300 leading-relaxed italic text-justify">
+                    &quot;Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług i konfiguracji wydruków. To, co Marcin (Molenda Development) robi w pojedynkę, po prostu przekracza ludzkie pojęcie i <strong className="text-orange-500 font-medium">technologicznie wyprzedza nasze czasy o 5 lat do przodu!</strong> Innowacyjne rozwiązania z gigantycznym potencjałem AI, niewiarygodnie płynne, dynamiczne systemy aplikacji, automatyczne integracje programów i ułatwienia wykonujące zadania na bieżąco – to owoce tej współpracy, które widzicie naocznie. Do tego reakcja na jakiekolwiek sugestie była dosłownie błyskawiczna. Z całego serca polecam usługi Molenda Development każdemu, kto marzy o bezkompromisowej stronie www, dedykowanej aplikacji czy nowoczesnym sklepie. Wielkie dzięki – zrobiłeś absolutny kosmos!&quot;
+                  </p>
+                </div>
+
               </div>
             </section>
           </div>
 
-          <div id="faq" className="min-h-screen flex items-center border-t border-white/5">
+          <div id="pricing" className="min-h-screen flex items-center border-t border-white/5 bg-transparent">
+            <div className="w-full">
+              <Pricing isDevMode={isDevMode} />
+            </div>
+          </div>
+
+          <div id="faq" className="min-h-screen flex items-center border-t border-white/5 bg-transparent">
             <div className="w-full">
               <FAQ />
             </div>

@@ -1,0 +1,80 @@
+'use client';
+import React from 'react';
+import { motion } from 'framer-motion';
+
+export function BenefitsSection({ isDevMode }: { isDevMode: boolean }) {
+  const benefits = [
+    {
+      value: isDevMode ? '0ms' : 'Błysk',
+      title: isDevMode ? 'Client-Side Navigation' : 'Płynność bez przeładowania',
+      desc: isDevMode
+        ? 'SPA-like transitions with Next.js prefetching. Eliminates full page reloads, driving up conversion rates and perceived performance.'
+        : 'Strona nie ładuje się od nowa przy każdym kliknięciu. Użytkownik przechodzi przez nią płynnie jak w aplikacji mobilnej, co drastycznie zwiększa sprzedaż.',
+      colSpan: 'lg:col-span-2'
+    },
+    {
+      value: isDevMode ? '∞' : '100%',
+      title: isDevMode ? 'Headless Flexibility' : 'Pełna personalizacja',
+      desc: isDevMode
+        ? 'Decoupled architecture means no CMS limitations. If you can design it, we can build it. Complete freedom from WordPress constraints.'
+        : 'Zapomnij o ograniczeniach gotowych szablonów. Każdy element jest zaprogramowany pod Twoje specyficzne procesy biznesowe.',
+      colSpan: 'lg:col-span-1'
+    },
+    {
+      value: isDevMode ? 'Zero' : 'Bez',
+      title: isDevMode ? 'Cookie-less Analytics' : 'Analityka bez ciasteczek',
+      desc: isDevMode
+        ? 'Self-hosted Umami tracking bypasses GDPR/CCPA cookie consent banners, offering pure UX and accurate metrics without ad-blocker interference.'
+        : 'Zbierasz dokładne dane o klientach, zachowując 100% zgodności z RODO, bez brzydkich, odstraszających banerów cookies.',
+      colSpan: 'lg:col-span-3'
+    }
+  ];
+
+  return (
+    <section id="benefits" className="w-full py-24 sm:py-32 px-6 lg:px-12 bg-transparent relative border-t border-white/5">
+      <div className="max-w-6xl mx-auto flex flex-col gap-12">
+        <div className="w-full">
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight"
+          >
+            {isDevMode ? 'Measurable Impact.' : 'Przewaga technologiczna.'}
+          </motion.h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
+          {benefits.map((ben, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: idx * 0.15 }}
+              className={`flex flex-col justify-between p-8 md:p-10 bg-zinc-950/50 backdrop-blur-md border border-white/5 rounded-[2rem] hover:bg-zinc-900 transition-colors ${ben.colSpan}`}
+            >
+              <div className="mb-12">
+                <div className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
+                  {ben.value}
+                  {ben.value === '0ms' && <span className="text-orange-500 text-5xl">.</span>}
+                  {ben.value === '100%' && <span className="text-orange-500 text-5xl">.</span>}
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">{ben.title}</h3>
+                <p className="text-sm font-light text-zinc-400 leading-relaxed max-w-lg">{ben.desc}</p>
+              </div>
+              <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "100%" }}
+                  transition={{ duration: 1, delay: 0.5 + (idx * 0.2) }}
+                  className="h-full bg-orange-500"
+                />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
