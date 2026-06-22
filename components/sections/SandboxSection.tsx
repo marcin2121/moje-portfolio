@@ -120,14 +120,14 @@ export function SandboxSection() {
           <div className="mt-12 bg-[#0B0B0C] border border-[#222225] rounded-xl p-4 font-mono text-[10px] sm:text-xs text-[#A1A1A5] h-32 overflow-hidden flex flex-col justify-end relative">
             <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-[#0B0B0C] to-transparent z-10" />
             <div className="space-y-1">
-              <div className="text-zinc-600">Waiting for trigger...</div>
-              {activeStep >= 0 && <div className="text-green-500">[{new Date().toLocaleTimeString()}] Trigger fired. Initializing workflow.</div>}
-              {activeStep >= 0 && <div>[{new Date().toLocaleTimeString()}] Fetching WooCommerce Webhook... OK</div>}
-              {activeStep >= 1 && <div>[{new Date().toLocaleTimeString()}] Connecting to Supabase cluster... OK</div>}
-              {activeStep >= 1 && <div className="text-[#FF6900]">[{new Date().toLocaleTimeString()}] Executing INSERT query... Success</div>}
-              {activeStep >= 2 && <div>[{new Date().toLocaleTimeString()}] Sending request to Fakturownia API... OK</div>}
-              {activeStep >= 3 && <div>[{new Date().toLocaleTimeString()}] Generating PDF... Triggering Resend SMTP... OK</div>}
-              {activeStep > 3 && <div className="text-green-500">[{new Date().toLocaleTimeString()}] Workflow completed successfully in {(Math.random() * 0.5 + 1.2).toFixed(2)}s.</div>}
+              <div className="text-zinc-600">Oczekiwanie na zamówienie...</div>
+              {activeStep >= 0 && <div className="text-green-500">[SYSTEM] Zamówienie przyjęte. Inicjalizacja procesu.</div>}
+              {activeStep >= 0 && <div>[SYSTEM] Pobieranie danych ze sklepu... OK</div>}
+              {activeStep >= 1 && <div>[SYSTEM] Łączenie z bazą klientów... OK</div>}
+              {activeStep >= 1 && <div className="text-[#FF6900]">[SYSTEM] Zapisywanie zamówienia... Sukces</div>}
+              {activeStep >= 2 && <div>[SYSTEM] Komunikacja z programem księgowym... OK</div>}
+              {activeStep >= 3 && <div>[SYSTEM] Generowanie faktury PDF... Wysyłka na e-mail klienta... OK</div>}
+              {activeStep > 3 && <div className="text-green-500">[SYSTEM] Cały proces zakończony w 1.45 sekundy.</div>}
             </div>
           </div>
         </div>

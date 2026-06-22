@@ -16,7 +16,7 @@ export function ProblemSection() {
     {
       icon: <Edit3 className="w-6 h-6" />,
       title: 'Samodzielna edycja bez ryzyka zepsucia',
-      desc: 'Dostajesz ultra-prosty panel (Headless CMS). Wpisujesz nową cenę, dodajesz zdjęcie z realizacji i klikasz "Zapisz". Całość zajmuje 30 sekund. System jest zaprojektowany tak, że fizycznie nie da się w nim "rozjechać" grafiki.',
+      desc: 'Dostajesz ultra-prosty panel do edycji. Wpisujesz nową cenę, dodajesz zdjęcie z realizacji i klikasz "Zapisz". Całość zajmuje 30 sekund. System jest zaprojektowany tak, że fizycznie nie da się w nim "rozjechać" grafiki.',
     },
     {
       icon: <MessageSquare className="w-6 h-6" />,

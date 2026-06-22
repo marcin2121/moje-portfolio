@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Terminal } from 'lucide-react';
 import AnimatedWebP from '@/components/ui/AnimatedWebP';
+import Image from 'next/image';
 
 export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
   const projects = [
@@ -11,9 +12,9 @@ export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
       tags: ['Zaawansowana personalizacja', 'Migracja Next.js'],
       devTags: ['Headless Commerce', 'React Three Fiber', 'Direct-Upload R2'],
       desc: 'Drukarnia Online & Studio Graficzne',
-      challenge: 'Klient potrzebował gruntownej przebudowy ociężałego systemu, aby skalować sprzedaż B2B. Problemem była obsługa gigabajtowych plików DTP "zapychających" serwery oraz brak elastyczności w błyskawicznym zarządzaniu marżą netto/brutto w wielokrokowym konfiguratorem poligraficznym.',
+      challenge: 'Klient potrzebował gruntownej przebudowy ociężałego systemu, aby skalować sprzedaż B2B. Problemem była obsługa gigabajtowych plików graficznych &quot;zapychających&quot; serwery oraz brak elastyczności w błyskawicznym zarządzaniu marżą netto/brutto w wielokrokowym konfiguratorem poligraficznym.',
       solution: 'Zaprojektowanie dedykowanej architektury "Headless Commerce" (Next.js App Router). Wdrożenie zaawansowanego kreatora zamówień opartego na stanie w URL (nuqs) i globalnym stanie (Zustand), oraz architektury Direct-Upload przesyłającej pliki graficzne bezpośrednio do Cloudflare R2.',
-      result: 'Skrócenie czasu ładowania strony o 70% (milisekundy). Całkowite odciążenie serwerów od przetwarzania plików DTP oraz drastyczna poprawa pozycjonowania SEO i doświadczenia klienta agencyjnego (B2B).',
+      result: 'Skrócenie czasu ładowania strony o 70% (milisekundy). Całkowite odciążenie serwerów od przetwarzania plików graficznych oraz drastyczna poprawa pozycjonowania SEO i doświadczenia klienta agencyjnego (B2B).',
       img: '/dzikistyl.webp',
       link: 'https://dzikistyl.com'
     },
@@ -137,7 +138,7 @@ export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
           className="mt-32 p-8 md:p-16 rounded-[3rem] bg-[#0B0B0C] border border-[#222225] relative overflow-hidden text-center"
         >
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-[#FF6900]/10 blur-[100px] pointer-events-none" />
-          <div className="text-6xl text-[#FF6900] font-serif absolute top-8 left-8 opacity-20">"</div>
+          <div className="text-6xl text-[#FF6900] font-serif absolute top-8 left-8 opacity-20">&quot;</div>
           
           <p className="text-xl md:text-3xl font-light text-[#F5F5F7] leading-relaxed relative z-10 max-w-4xl mx-auto italic mb-10">
             Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług. To, co Marcin robi w pojedynkę, po prostu przekracza ludzkie pojęcie i <span className="text-[#FF6900] font-bold">technologicznie wyprzedza nasze czasy o 5 lat do przodu!</span> Z całego serca polecam usługi każdemu, kto marzy o bezkompromisowej aplikacji. Wielkie dzięki – zrobiłeś absolutny kosmos!
@@ -145,7 +146,7 @@ export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
           
           <div className="flex flex-col items-center justify-center gap-2 relative z-10">
             <div className="w-16 h-16 rounded-full bg-[#161618] border-2 border-[#FF6900] mb-2 overflow-hidden">
-              <img src="/dzikistyl.webp" alt="DzikiStyl" className="w-full h-full object-cover opacity-50" />
+              <Image src="/dzikistyl.webp" alt="DzikiStyl" width={64} height={64} className="w-full h-full object-cover opacity-50" />
             </div>
             <div className="text-[#F5F5F7] font-bold tracking-wide">Michał</div>
             <div className="text-[#A1A1A5] text-sm uppercase tracking-widest font-mono">Właściciel DzikiStyl.com</div>

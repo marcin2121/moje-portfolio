@@ -10,8 +10,8 @@ export function HowItWorksSection() {
   const steps = [
     {
       num: '01',
-      title: 'Krótka rozmowa (15 minut)',
-      desc: 'Dzwonimy się. Mówisz mi, co Cię denerwuje w Twojej obecnej stronie i na jakim produkcie/usłudze zarabiasz najwięcej.',
+      title: 'Szybka wycena (Asynchronicznie)',
+      desc: 'Wypełniasz 3 proste pola w formularzu na dole strony. Nie tracimy czasu na długie telefony. Analizuję Twój problem i w ciągu 24 godzin wysyłam Ci na maila konkretny plan działania i wstępne ramy cenowe.',
     },
     {
       num: '02',

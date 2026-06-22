@@ -1,11 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 
+const geistSans = Geist({
+  subsets: ["latin"],
+  display: 'swap',
+  variable: '--font-geist-sans',
+});
+
 const geistMono = Geist_Mono({
   subsets: ["latin"],
-  display: 'swap', // Prevents render-blocking font load
+  display: 'swap',
+  variable: '--font-geist-mono',
 });
 
 export const viewport: Viewport = {
@@ -67,8 +74,8 @@ import SmoothScroll from "@/components/LenisProvider";
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pl">
-      {/* Geist Mono applied globally */}
-      <body suppressHydrationWarning className={`${geistMono.className} bg-zinc-950 text-zinc-50 antialiased selection:bg-orange-500/30 selection:text-orange-200`}>
+      {/* Geist Sans applied globally */}
+      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} font-sans bg-zinc-950 text-zinc-50 antialiased selection:bg-orange-500/30 selection:text-orange-200`}>
          
          {/* Umami Analytics (cookie-free, GDPR-compliant) */}
          <Script 

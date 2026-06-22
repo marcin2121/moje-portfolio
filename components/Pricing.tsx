@@ -67,7 +67,7 @@ export default function Pricing() {
           Jasne zasady. Transparentne ceny.<br />Wybierz rozwiązanie dla swojej skali.
         </h2>
         <p className="text-zinc-400 font-light max-w-2xl text-lg mb-10">
-          Podane ceny to kwoty "od", ustalane na twardo przed linijką kodu. Żadnych niespodzianek na fakturze końcowej.
+          Podane ceny to kwoty &quot;od&quot;, ustalane na twardo przed linijką kodu. Żadnych niespodzianek na fakturze końcowej.
         </p>
       </div>
 
@@ -145,6 +145,31 @@ export default function Pricing() {
           </motion.div>
         ))}
       </div>
+
+      {/* Opcjonalna Opieka Techniczna (Retainer) */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="max-w-4xl mx-auto bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6"
+      >
+        <div className="flex-1 text-left">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
+              <span className="text-orange-500 text-sm">↻</span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">Miesięczna opieka techniczna</h3>
+          </div>
+          <p className="text-sm text-zinc-400 leading-relaxed max-w-2xl font-light">
+            Po darmowym okresie gwarancyjnym zapewniam stały monitoring, automatyczne kopie zapasowe, aktualizacje zabezpieczeń i drobne zmiany tekstów na życzenie. Zrezygnujesz w dowolnej chwili bez zobowiązań.
+          </p>
+        </div>
+        <div className="flex flex-col items-start md:items-end shrink-0 w-full md:w-auto mt-4 md:mt-0 pt-4 md:pt-0 border-t border-zinc-800 md:border-t-0">
+          <div className="text-2xl font-black text-white mb-1">od 150 <span className="text-sm font-light text-zinc-500 tracking-normal">zł netto / mc</span></div>
+          <div className="text-[10px] text-zinc-500 uppercase tracking-widest font-mono">Święty spokój 24/7</div>
+        </div>
+      </motion.div>
     </div>
   );
 }

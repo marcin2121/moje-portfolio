@@ -40,7 +40,7 @@ export default function ContactForm() {
             Porozmawiajmy o Twojej firmie. <br/><span className="text-zinc-500">Bez informatycznego żargonu.</span>
           </h2>
           <p className="text-zinc-400 font-light text-base md:text-lg max-w-xl mx-auto">
-            Zostaw swój numer. Zadzwonię do Ciebie w ciągu 3 godzin roboczych, zadam 4 proste pytania o Twój biznes i od razu podam wstępną ramę cenową.
+            Sprawdźmy, jak mogę ulepszyć Twój biznes. Bez informatycznego żargonu i bez wiszenia na telefonie. Zostaw swój adres e-mail i powiedz mi, z czym masz problem. Prześlę Ci wstępną wycenę i propozycję rozwiązania w ciągu maksymalnie 24 godzin roboczych. Bez presji i zobowiązań – w spokoju przeanalizujesz ofertę u siebie na skrzynce.
           </p>
         </div>
 
@@ -52,7 +52,7 @@ export default function ContactForm() {
           >
             <CheckCircle2 className="w-16 h-16 text-green-500" />
             <h3 className="text-2xl font-bold text-white tracking-tight">Sukces! Twój formularz został wysłany.</h3>
-            <p className="text-zinc-400 font-light">Spodziewaj się mojego telefonu w ciągu najbliższych 3 godzin roboczych.</p>
+            <p className="text-zinc-400 font-light">Spodziewaj się wiadomości z wyceną w ciągu najbliższych 24 godzin roboczych.</p>
           </motion.div>
         ) : (
           <motion.form 
@@ -82,27 +82,37 @@ export default function ContactForm() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="phone" className="text-xs font-mono tracking-widest text-zinc-400 uppercase">Numer telefonu</label>
+              <label htmlFor="email" className="text-xs font-mono tracking-widest text-zinc-400 uppercase">Twój adres e-mail</label>
               <input 
-                type="tel" 
-                id="phone" 
-                name="phone" 
+                type="email" 
+                id="email" 
+                name="email" 
                 required 
-                placeholder="+48 000 000 000"
+                placeholder="jan.kowalski@firma.pl"
                 className="w-full bg-zinc-950 border border-white/5 focus:border-orange-500/50 outline-none rounded-xl px-5 py-4 text-white font-light transition-all placeholder:text-zinc-700"
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="industry" className="text-xs font-mono tracking-widest text-zinc-400 uppercase">Czym zajmuje się firma? (np. Warsztat / Piekarnia)</label>
-              <input 
-                type="text" 
-                id="industry" 
-                name="industry" 
-                required 
-                placeholder="Mechanika pojazdowa..."
-                className="w-full bg-zinc-950 border border-white/5 focus:border-orange-500/50 outline-none rounded-xl px-5 py-4 text-white font-light transition-all placeholder:text-zinc-700"
-              />
+              <label htmlFor="blocker" className="text-xs font-mono tracking-widest text-zinc-400 uppercase">Co obecnie najbardziej blokuje Twój biznes?</label>
+              <div className="relative">
+                <select 
+                  id="blocker" 
+                  name="blocker" 
+                  required 
+                  defaultValue=""
+                  className="w-full appearance-none bg-zinc-950 border border-white/5 focus:border-orange-500/50 outline-none rounded-xl px-5 py-4 text-white font-light transition-all placeholder:text-zinc-700"
+                >
+                  <option value="" disabled className="text-zinc-700">Wybierz główny problem...</option>
+                  <option value="Wolna strona" className="bg-zinc-900 text-white">Wolna strona internetowa</option>
+                  <option value="Za dużo pracy ręcznej" className="bg-zinc-900 text-white">Za dużo pracy ręcznej (potrzebuję automatyzacji)</option>
+                  <option value="Potrzebuję sklepu" className="bg-zinc-900 text-white">Potrzebuję nowoczesnego sklepu B2B/B2C</option>
+                  <option value="Inne" className="bg-zinc-900 text-white">Inny problem technologiczny</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-zinc-400">
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                </div>
+              </div>
             </div>
 
             <button 
@@ -115,7 +125,7 @@ export default function ContactForm() {
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Wysyłanie...
                 </>
-              ) : 'Zamawiam bezpłatną wycenę'}
+              ) : 'Odbierz bezpłatną wycenę na e-mail'}
             </button>
           </motion.form>
         )}

@@ -391,7 +391,7 @@ export default function PortfolioHome() {
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
                     <div className="flex items-center justify-between mb-6">
                       <Zap className="text-orange-500 w-5 h-5 group-hover:scale-110 transition-transform" />
-                      <span className="font-mono text-[10px] text-zinc-400">sys.module_01</span>
+                      <span className="font-mono text-[10px] text-zinc-400">Rozwiązanie 01</span>
                     </div>
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
                       <span className="text-orange-500 mr-2">&gt;</span>Dedykowany E-commerce
@@ -404,7 +404,7 @@ export default function PortfolioHome() {
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
                     <div className="flex items-center justify-between mb-6">
                       <Smartphone className="text-orange-500 w-5 h-5 group-hover:scale-110 transition-transform" />
-                      <span className="font-mono text-[10px] text-zinc-400">sys.module_02</span>
+                      <span className="font-mono text-[10px] text-zinc-400">Rozwiązanie 02</span>
                     </div>
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
                       <span className="text-orange-500 mr-2">&gt;</span>Zaawansowane Systemy SaaS
@@ -417,7 +417,7 @@ export default function PortfolioHome() {
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
                     <div className="flex items-center justify-between mb-6">
                       <Gauge className="text-orange-500 w-5 h-5 group-hover:scale-110 transition-transform" />
-                      <span className="font-mono text-[10px] text-zinc-400">sys.module_03</span>
+                      <span className="font-mono text-[10px] text-zinc-400">Rozwiązanie 03</span>
                     </div>
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
                       <span className="text-orange-500 mr-2">&gt;</span>Ekstremalna Wydajność
@@ -430,7 +430,7 @@ export default function PortfolioHome() {
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
                     <div className="flex items-center justify-between mb-6">
                       <Code2 className="text-orange-500 w-5 h-5 group-hover:scale-110 transition-transform" />
-                      <span className="font-mono text-[10px] text-zinc-400">sys.module_04</span>
+                      <span className="font-mono text-[10px] text-zinc-400">Rozwiązanie 04</span>
                     </div>
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
                       <span className="text-orange-500 mr-2">&gt;</span>Inteligentna Automatyzacja
@@ -451,7 +451,7 @@ export default function PortfolioHome() {
                     <div className="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
                       <Terminal size={16} className="text-orange-500" />
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Scale_Logic:</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Gwarancja jakości:</span>
                   </div>
                   <p className="text-[11px] lg:text-xs text-zinc-400 font-light leading-relaxed text-center sm:text-left">
                     Moje wsparcie obejmuje pełne spektrum techniczne: od <span className="text-zinc-200">mikro-optymalizacji</span> (np. szybkość obrazów, poprawa LCP) po <span className="text-zinc-200">złożone systemy dedykowane</span>. Niezależnie od skali zadania, jakość kodu pozostaje bezkompromisowa.
@@ -471,7 +471,7 @@ export default function PortfolioHome() {
               <div className="absolute -top-40 -left-40 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-orange-900/10 blur-[120px] rounded-full pointer-events-none" />
               <div className="font-mono text-[10px] text-orange-500 mb-4 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
-                LIVE DEPLOYMENTS
+                WDROŻONE PROJEKTY
               </div>
               <h2 className="text-4xl sm:text-5xl md:text-6xl xl:text-[5.5rem] font-mono tracking-tighter leading-tight mb-8 text-white">
                 Case<br />Studies
@@ -486,11 +486,32 @@ export default function PortfolioHome() {
                     <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">E-commerce B2B</span>
                   </div>
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">DzikiStyl.com</h2>
-                  <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
-                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Klient potrzebował gruntownej przebudowy ociężałego systemu, aby skalować sprzedaż B2B. Problemem była obsługa gigabajtowych plików DTP &quot;zapychających&quot; serwery oraz brak elastyczności konfiguratora.</p>
-                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Zaprojektowanie architektury &quot;Headless Commerce&quot; (Next.js). Wdrożenie zaawansowanego kreatora opartego na stanie URL (nuqs) i Direct-Upload plików do Cloudflare R2.</p>
+                  <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed max-h-[50vh] lg:max-h-[60vh] overflow-y-auto pr-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/10 hover:[&::-webkit-scrollbar-thumb]:bg-orange-500/50">
+                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Tradycyjne studio graficzne i drukarnia, działające w oparciu o przestarzałe i powolne platformy sklepowe (Shoper/Wix), potrzebowało gruntownej przebudowy, by móc na dużą skalę obsługiwać wymagających klientów biznesowych (B2B) oraz agencje reklamowe. Głównym wyzwaniem była uciążliwa obsługa gigabajtowych plików graficznych od klientów, które &quot;zapychały&quot; standardowe serwery oraz bardzo czasochłonne, ręczne weryfikowanie tych plików przed drukiem. Ponadto brakowało elastyczności w błyskawicznym zarządzaniu cennikami netto/brutto, a proces zakupowy zmuszał klientów do wielokrotnego przeładowywania strony, co prowadziło do porzuconych koszyków. Celem było wyeliminowanie ręcznej pracy obsługi klienta i stworzenie bezbłędnej maszyny sprzedażowej.</p>
+                    
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie biznesowo-technologiczne:</strong> Zaprojektowałem i wdrożyłem od zera ultraszybką, niezależną platformę sprzedażową, która działa z prędkością nowoczesnych aplikacji bankowych. Kluczowe wdrożenia obejmowały:</p>
+                    
+                    <ul className="space-y-3 text-xs sm:text-sm pl-2">
+                      <li className="flex items-start gap-2">
+                        <span className="text-orange-500 mt-1">&gt;</span>
+                        <p className="text-zinc-400"><strong className="text-zinc-200">&quot;Frictionless Checkout&quot; (Koszyk bez opóźnień):</strong> Zbudowanie płynnego konfiguratora, w którym zmiany cen czy formatów odbywają się w ułamek sekundy bez przeładowywania strony. Dodano funkcję &quot;magicznego linku&quot; – pracownik może wyklikać parametry zamówienia i wysłać link bezpośrednio do szefa, który jednym kliknięciem akceptuje i opłaca gotowy koszyk.</p>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-orange-500 mt-1">&gt;</span>
+                        <p className="text-zinc-400"><strong className="text-zinc-200">Bezpieczna infrastruktura plików graficznych:</strong> Wdrożenie chmurowego systemu przesyłania plików, który pozwala na błyskawiczne wgrywanie potężnych projektów bezpośrednio do bezpiecznej chmury, całkowicie omijając obciążenie serwera sklepu. Skutkuje to brakiem awarii na łączach.</p>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-orange-500 mt-1">&gt;</span>
+                        <p className="text-zinc-400"><strong className="text-zinc-200">Płynny podgląd na żywo:</strong> Implementacja modułu, który realistycznie i błyskawicznie nakłada logo klienta na odzież i gadżety z uwzględnieniem cieni i fałd materiału, dając klientowi 100% pewności co do finalnego wyglądu produktu przed zamówieniem.</p>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-orange-500 mt-1">&gt;</span>
+                        <p className="text-zinc-400"><strong className="text-zinc-200">Zautomatyzowana linia produkcyjna:</strong> Wdrożenie inteligentnych skryptów, które automatycznie sprawdzają jakość plików wgranych przez klienta i dodają niezbędne marginesy (spady). Gotowe, bezbłędne zlecenie jest od razu kierowane na hale produkcyjną, pomijając etap ręcznego sprawdzania przez grafików.</p>
+                      </li>
+                    </ul>
+
                     <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
-                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Skrócenie czasu ładowania strony o 70%. Całkowite odciążenie serwerów od przetwarzania plików DTP oraz drastyczna poprawa pozycjonowania SEO.</p>
+                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy i ROI:</strong> Przekształcenie Dzikiego Stylu z lokalnego studia w wysoce skalowalną, zautomatyzowaną platformę poligraficzną. Nowa architektura drastycznie skróciła czas ładowania strony (poprawa wyników SEO i skok konwersji). Inteligentny konfigurator i funkcja udostępniania koszyka znacząco ułatwiły obsługę zamówień hurtowych, podnosząc sprzedaż B2B. Z kolei automatyczna weryfikacja plików i bezpośredni przesył danych wyeliminowały 90% kosztownych pomyłek w druku oraz zaoszczędziły setki godzin pracy działu obsługi klienta.</p>
                     </div>
                   </div>
                   <div className="flex justify-center lg:justify-start pt-4">
@@ -500,7 +521,7 @@ export default function PortfolioHome() {
                         handleOpenDemo({ url: 'https://dzikistyl.com', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
                       }} className="px-8 py-4 bg-orange-800 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg hover:bg-orange-700 transition-colors flex items-center gap-3">
                         <Terminal size={14} />
-                        <span>Init Demo</span>
+                        <span>Zobacz system na żywo</span>
                       </button>
                     </MagneticWrapper>
                   </div>
@@ -511,7 +532,7 @@ export default function PortfolioHome() {
                 }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
                   <Image src="/dzikistyl.webp" alt="DzikiStyl" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                   <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Execute</span>
+                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Sprawdź działanie</span>
                   </div>
                 </div>
               </div>
@@ -527,7 +548,7 @@ export default function PortfolioHome() {
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Sklep Urwis</h2>
                   <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
                     <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Sklep stacjonarny potrzebował nowoczesnego kanału dotarcia do klientów, angażując dzieci i rodziców bez wymuszania instalacji ciężkich aplikacji z Google Play/App Store.</p>
-                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Zakodowanie Progressive Web App (PWA) działającej offline. Wdrożenie 9 autorskich gier przeglądarkowych HTML5, systemu rozszerzonej rzeczywistości (WebAR) i chatbota opartego o modele Gemini.</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Stworzyłem angażującą aplikację przeglądarkową niewymagającą instalacji, wyposażoną w interaktywne gry, moduł rozszerzonej rzeczywistości i wirtualnego doradcę wspieranego sztuczną inteligencją.</p>
                     <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
                       <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Wyeliminowanie narzutu na manualną obsługę klienta (zero overhead w wydawaniu nagród). Natychmiastowy wzrost wizyt stacjonarnych dzięki grywalizacji.</p>
                     </div>
@@ -539,7 +560,7 @@ export default function PortfolioHome() {
                         handleOpenDemo({ url: 'https://www.sklep-urwis.pl', title: 'sklep-urwis.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
                       }} className="px-8 py-4 bg-orange-800 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg hover:bg-orange-700 transition-colors flex items-center gap-3">
                         <Terminal size={14} />
-                        <span>Init Demo</span>
+                        <span>Zobacz system na żywo</span>
                       </button>
                     </MagneticWrapper>
                   </div>
@@ -576,7 +597,7 @@ export default function PortfolioHome() {
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">zamowtu.pl</h2>
                   <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
                     <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Restauratorzy tracili gigantyczne prowizje na rzecz zewnętrznych portali dostaw, potrzebując niezależnego systemu transakcyjnego z możliwością edycji menu w locie.</p>
-                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Zbudowanie kompleksowej platformy SaaS z obsługą natychmiastowych płatności (Stripe Connect) i bezpieczną architekturą dostępu (Supabase RLS).</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Zbudowanie od zera kompleksowej platformy sprzedażowej z obsługą natychmiastowych, automatycznych płatności i w pełni bezpiecznym, niezależnym systemem kont dla menedżerów.</p>
                     <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
                       <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Uwolnienie restauratorów od zewnętrznych opłat abonamentowych i drastyczny wzrost rentowności lokalnych biznesów.</p>
                     </div>
@@ -588,7 +609,7 @@ export default function PortfolioHome() {
                         handleOpenDemo({ url: 'https://zamówtu.pl/demo', title: 'zamowtu.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
                       }} className="px-8 py-4 bg-orange-800 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg hover:bg-orange-700 transition-colors flex items-center gap-3">
                         <Terminal size={14} />
-                        <span>Init Demo</span>
+                        <span>Zobacz system na żywo</span>
                       </button>
                     </MagneticWrapper>
                   </div>
@@ -599,7 +620,7 @@ export default function PortfolioHome() {
                 }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
                   <Image src="/zamowtu.webp" alt="zamowtu.pl" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                   <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Execute</span>
+                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Sprawdź działanie</span>
                   </div>
                 </div>
               </div>
@@ -615,7 +636,7 @@ export default function PortfolioHome() {
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Opal</h2>
                   <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
                     <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Potrzeba potężnego panelu do analizy i segmentacji dużych zbiorów danych bez konieczności stawiania drogich, dedykowanych serwerów Python do analiz AI.</p>
-                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Wdrożenie nienadzorowanego uczenia maszynowego bezpośrednio w architekturze środowiska Node.js z zaawansowanym wizualizatorem danych 3D.</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Stworzyłem od podstaw wydajny silnik analityczny, który automatycznie grupuje ogromne ilości danych bez zewnętrznej infrastruktury, prezentując wyniki na interaktywnych wykresach.</p>
                     <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
                       <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Błyskawiczne, darmowe w utrzymaniu przetwarzanie danych analitycznych i precyzyjne prognozowanie bezpośrednio w przeglądarce klienta.</p>
                     </div>
@@ -684,7 +705,7 @@ export default function PortfolioHome() {
 
                   {/* Quote */}
                   <p className="text-sm md:text-base lg:text-lg font-light text-zinc-300 leading-relaxed italic text-justify">
-                    &quot;Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług i konfiguracji wydruków. To, co Marcin (Molenda Development) robi w pojedynkę, po prostu przekracza ludzkie pojęcie i <strong className="text-orange-500 font-medium">technologicznie wyprzedza nasze czasy o 5 lat do przodu!</strong> Innowacyjne rozwiązania z gigantycznym potencjałem AI, niewiarygodnie płynne, dynamiczne systemy aplikacji, automatyczne integracje programów i ułatwienia wykonujące zadania na bieżąco – to owoce tej współpracy, które widzicie naocznie. Do tego reakcja na jakiekolwiek sugestie była dosłownie błyskawiczna. Z całego serca polecam usługi Molenda Development każdemu, kto marzy o bezkompromisowej stronie www, dedykowanej aplikacji czy nowoczesnym sklepie. Wielkie dzięki – zrobiłeś absolutny kosmos!&quot;
+                    &quot;Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług i konfiguracji wydruków. <strong className="text-white font-medium">To, co Marcin (Molenda Development) robi w pojedynkę, po prostu przekracza ludzkie pojęcie i technologicznie wyprzedza nasze czasy o 5 lat do przodu!</strong> Innowacyjne rozwiązania z gigantycznym potencjałem AI, niewiarygodnie płynne, dynamiczne systemy aplikacji, automatyczne integracje programów i ułatwienia wykonujące zadania na bieżąco – to owoce tej współpracy, które widzicie naocznie. <strong className="text-white font-medium">Do tego reakcja na jakiekolwiek sugestie była dosłownie błyskawiczna.</strong> Z całego serca polecam usługi Molenda Development każdemu, kto marzy o bezkompromisowej stronie www, dedykowanej aplikacji czy nowoczesnym sklepie. <strong className="text-orange-500 font-medium">Wielkie dzięki – zrobiłeś absolutny kosmos!</strong>&quot;
                   </p>
                 </div>
 
@@ -704,7 +725,7 @@ export default function PortfolioHome() {
           <footer className="w-full py-8 text-[9px] md:text-[10px] text-zinc-600 font-mono uppercase tracking-[0.2em] text-center flex flex-col items-center gap-3 relative z-10 bg-zinc-950 border-t border-white/5">
             <div className="flex items-center gap-4">
               <span>&copy; {new Date().getFullYear()} Marcin Molenda // <span className="text-zinc-500">molendadevelopment.pl</span></span>
-              <span className="text-zinc-800">//</span>
+              <span className="text-zinc-800">{"//"}</span>
               <Link href="/polityka-prywatnosci" className="hover:text-orange-500 transition-colors underline-offset-4 hover:underline">Polityka Prywatności</Link>
             </div>
           </footer>
