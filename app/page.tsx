@@ -704,7 +704,7 @@ export default function PortfolioHome() {
                   <div className="w-full h-px bg-white/5 mb-8" />
 
                   {/* Quote */}
-                  <p className="text-sm md:text-base lg:text-lg font-light text-zinc-300 leading-relaxed italic text-justify">
+                  <p className="text-sm md:text-base lg:text-lg font-light text-zinc-300 leading-relaxed italic text-left">
                     &quot;Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług i konfiguracji wydruków. <strong className="text-white font-medium">To, co Marcin (Molenda Development) robi w pojedynkę, po prostu przekracza ludzkie pojęcie i technologicznie wyprzedza nasze czasy o 5 lat do przodu!</strong> Innowacyjne rozwiązania z gigantycznym potencjałem AI, niewiarygodnie płynne, dynamiczne systemy aplikacji, automatyczne integracje programów i ułatwienia wykonujące zadania na bieżąco – to owoce tej współpracy, które widzicie naocznie. <strong className="text-white font-medium">Do tego reakcja na jakiekolwiek sugestie była dosłownie błyskawiczna.</strong> Z całego serca polecam usługi Molenda Development każdemu, kto marzy o bezkompromisowej stronie www, dedykowanej aplikacji czy nowoczesnym sklepie. <strong className="text-orange-500 font-medium">Wielkie dzięki – zrobiłeś absolutny kosmos!</strong>&quot;
                   </p>
                 </div>

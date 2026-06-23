@@ -57,10 +57,11 @@ export function SandboxSection() {
             <button
               onClick={runSimulation}
               disabled={isRunning}
-              className="flex items-center gap-2 bg-[#FF6900] text-black px-6 py-2 rounded-lg font-bold text-sm uppercase tracking-wider hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-1 sm:gap-2 bg-[#FF6900] text-black px-3 sm:px-6 py-1.5 sm:py-2 rounded-md sm:rounded-lg font-bold text-[9px] sm:text-sm uppercase tracking-wider hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0 whitespace-nowrap"
             >
-              {isRunning ? 'Przetwarzanie...' : 'Uruchom automatyzację'}
-              {!isRunning && <Play size={16} />}
+              {isRunning ? 'Przetwarzanie...' : 'Uruchom'}
+              <span className="hidden sm:inline">&nbsp;automatyzację</span>
+              {!isRunning && <Play size={14} className="sm:w-4 sm:h-4" />}
             </button>
           </div>
 

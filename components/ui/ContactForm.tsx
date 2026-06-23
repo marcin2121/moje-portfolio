@@ -9,6 +9,7 @@ import { pushGTMEvent } from '@/app/page';
 export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [selectedBlocker, setSelectedBlocker] = useState('');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -93,25 +94,36 @@ export default function ContactForm() {
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="blocker" className="text-xs font-mono tracking-widest text-zinc-400 uppercase">Co obecnie najbardziej blokuje Twój biznes?</label>
-              <div className="relative">
-                <select 
-                  id="blocker" 
-                  name="blocker" 
-                  required 
-                  defaultValue=""
-                  className="w-full appearance-none bg-zinc-950 border border-white/5 focus:border-orange-500/50 outline-none rounded-xl px-5 py-4 text-white font-light transition-all placeholder:text-zinc-700"
-                >
-                  <option value="" disabled className="text-zinc-700">Wybierz główny problem...</option>
-                  <option value="Wolna strona" className="bg-zinc-900 text-white">Wolna strona internetowa</option>
-                  <option value="Za dużo pracy ręcznej" className="bg-zinc-900 text-white">Za dużo pracy ręcznej (potrzebuję automatyzacji)</option>
-                  <option value="Potrzebuję sklepu" className="bg-zinc-900 text-white">Potrzebuję nowoczesnego sklepu B2B/B2C</option>
-                  <option value="Inne" className="bg-zinc-900 text-white">Inny problem technologiczny</option>
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-zinc-400">
-                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                </div>
+            <div className="flex flex-col gap-3">
+              <label className="text-xs font-mono tracking-widest text-zinc-400 uppercase">Co obecnie najbardziej blokuje Twój biznes?</label>
+              <div className="flex flex-wrap gap-2 sm:gap-3">
+                {[
+                  { id: 'brak_strony', label: 'Nie mam jeszcze strony internetowej' },
+                  { id: 'wolna_strona', label: 'Wolna strona internetowa' },
+                  { id: 'praca_reczna', label: 'Za dużo pracy ręcznej (potrzebuję automatyzacji)' },
+                  { id: 'sklep', label: 'Potrzebuję nowoczesnego sklepu B2B/B2C' },
+                  { id: 'inne', label: 'Inny problem technologiczny' }
+                ].map((b) => (
+                  <label 
+                    key={b.id}
+                    className={`cursor-pointer px-4 py-3 rounded-xl border text-sm font-light transition-all ${
+                      selectedBlocker === b.label 
+                        ? 'bg-orange-500/10 border-orange-500 text-orange-500 shadow-[0_0_15px_rgba(255,105,0,0.1)]' 
+                        : 'bg-zinc-950 border-white/5 text-zinc-400 hover:border-white/20 hover:text-white'
+                    }`}
+                  >
+                    <input 
+                      type="radio" 
+                      name="blocker" 
+                      value={b.label} 
+                      className="sr-only" 
+                      required 
+                      onChange={(e) => setSelectedBlocker(e.target.value)}
+                      checked={selectedBlocker === b.label}
+                    />
+                    {b.label}
+                  </label>
+                ))}
               </div>
             </div>
 
