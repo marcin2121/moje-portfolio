@@ -394,10 +394,10 @@ export default function PortfolioHome() {
                       <span className="font-mono text-[10px] text-zinc-400">Rozwiązanie 01</span>
                     </div>
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
-                      <span className="text-orange-500 mr-2">&gt;</span>Dedykowany E-commerce
+                      <span className="text-orange-500 mr-2">&gt;</span>Sprzedaż bez przestojów 24/7
                     </h3>
                     <p className="text-zinc-400 font-light text-sm md:text-base leading-relaxed">
-                      Ultraszybkie aplikacje z pełną obsługą offline, powiadomieniami push i dynamicznym koszykiem.
+                      Zamiast ciężkiego WordPressa otrzymujesz ultraszybki sklep, w którym klienci kupują bez błędów czy zawieszeń, nawet w nocy.
                     </p>
                   </MagicBento>
 
@@ -407,10 +407,10 @@ export default function PortfolioHome() {
                       <span className="font-mono text-[10px] text-zinc-400">Rozwiązanie 02</span>
                     </div>
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
-                      <span className="text-orange-500 mr-2">&gt;</span>Zaawansowane Systemy SaaS
+                      <span className="text-orange-500 mr-2">&gt;</span>Koniec z papierologią
                     </h3>
                     <p className="text-zinc-400 font-light text-sm md:text-base leading-relaxed">
-                      Kompletne panele analityczne, systemy rezerwacji i panele BI wspierające decyzje biznesowe.
+                      Własne systemy rezerwacji i panele klienta, które same robią za Ciebie najgorszą papierkową robotę i pilnują terminów.
                     </p>
                   </MagicBento>
 
@@ -420,10 +420,10 @@ export default function PortfolioHome() {
                       <span className="font-mono text-[10px] text-zinc-400">Rozwiązanie 03</span>
                     </div>
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
-                      <span className="text-orange-500 mr-2">&gt;</span>Ekstremalna Wydajność
+                      <span className="text-orange-500 mr-2">&gt;</span>Zero straconych klientów
                     </h3>
                     <p className="text-zinc-400 font-light text-sm md:text-base leading-relaxed">
-                      Szybkość ładująca się w milisekundach (95-100/100). Analityka w 100% zgodna z RODO bez banerów cookies.
+                      Twoja oferta ładuje się w ułamek sekundy, zanim zniecierpliwiony klient zdąży kliknąć "Wstecz" i pójść do konkurencji.
                     </p>
                   </MagicBento>
 
@@ -436,7 +436,7 @@ export default function PortfolioHome() {
                       <span className="text-orange-500 mr-2">&gt;</span>Inteligentna Automatyzacja
                     </h3>
                     <p className="text-zinc-400 font-light text-sm md:text-base leading-relaxed">
-                      Tworzenie mostów technologicznych łączących CRM, ERP i bramki płatnicze w samonaprawiający się ekosystem.
+                      System sam wystawia faktury, wysyła maile do klientów i powiadomienia do księgowości, odzyskując Twoje wolne wieczory.
                     </p>
                   </MagicBento>
                 </div>

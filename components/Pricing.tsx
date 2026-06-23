@@ -69,6 +69,24 @@ export default function Pricing() {
         <p className="text-zinc-400 font-light max-w-2xl text-lg mb-10">
           Podane ceny to kwoty &quot;od&quot;, ustalane na twardo przed linijką kodu. Żadnych niespodzianek na fakturze końcowej.
         </p>
+
+        {/* Cost of Inaction */}
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-3xl w-full bg-red-950/20 border border-red-500/20 rounded-2xl p-5 md:p-6 text-left flex items-start gap-4 md:gap-5 mb-4"
+        >
+          <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center shrink-0 border border-red-500/20 mt-1">
+            <span className="text-red-500 font-black text-xl">!</span>
+          </div>
+          <div>
+            <h4 className="text-white font-bold mb-2 text-lg">Ile tracisz każdego miesiąca przez wolną stronę?</h4>
+            <p className="text-sm text-zinc-400 leading-relaxed font-light">
+              Jeśli z powodu braku formularza rezerwacji lub błędów technicznych rezygnuje z Ciebie zaledwie <strong className="text-zinc-200">5 klientów w miesiącu</strong> (przy usłudze 500 zł), tracisz rocznie <strong className="text-red-400">30 000 zł</strong>. Moja strona eliminuje ten koszt od pierwszego dnia.
+            </p>
+          </div>
+        </motion.div>
       </div>
 
       {/* Pricing Grid */}
@@ -174,7 +192,7 @@ export default function Pricing() {
           <div className="text-2xl font-black text-white mb-1">od 150 <span className="text-sm font-light text-zinc-500 tracking-normal">zł netto / mc</span></div>
           <div className="text-xs text-orange-500/80 mb-4 font-medium">(lub 2 miesiące gratis przy płatności za rok z góry)</div>
           <div className="text-[10px] text-zinc-500 uppercase tracking-widest font-mono text-left md:text-right max-w-[240px] leading-relaxed">
-            Święty spokój 24/7:<br/>Twoja strona jest bezpieczna, a Ty skupiasz się na biznesie.
+            To równowartość jednej dobrej kolacji w restauracji, a w zamian masz święty spokój 24/7 i ochronę przed awarią.
           </div>
         </div>
       </motion.div>
