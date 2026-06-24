@@ -45,17 +45,9 @@ export default function OfferPricing({ packages, companyName }: OfferPricingProp
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className={`relative p-8 rounded-[32px] border flex flex-col h-full ${
-                pkg.highlighted 
-                  ? 'bg-[#0B0B0C] border-orange-500 shadow-[0_0_50px_rgba(249,115,22,0.15)] ring-1 ring-orange-500' 
-                  : 'bg-zinc-900/50 border-white/10'
-              }`}
+              className="relative p-8 rounded-[32px] border flex flex-col h-full bg-zinc-900/50 border-white/10"
             >
-              {pkg.badge && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-orange-500 text-white text-xs font-bold tracking-widest uppercase rounded-full shadow-lg">
-                  {pkg.badge}
-                </div>
-              )}
+
 
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-white mb-2">{pkg.name}</h3>
@@ -82,7 +74,7 @@ export default function OfferPricing({ packages, companyName }: OfferPricingProp
               <ul className="space-y-4 mb-10 flex-grow">
                 {pkg.features.map((feature, fIdx) => (
                   <li key={fIdx} className="flex items-start gap-3 text-zinc-300 text-sm">
-                    <Check className={`shrink-0 mt-0.5 ${pkg.highlighted ? 'text-orange-500' : 'text-zinc-500'}`} size={18} />
+                    <Check className="shrink-0 mt-0.5 text-zinc-500" size={18} />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -90,11 +82,7 @@ export default function OfferPricing({ packages, companyName }: OfferPricingProp
 
               <button
                 onClick={() => handleSelectPackage(pkg.name)}
-                className={`w-full py-4 rounded-xl font-bold transition-all duration-300 hover:-translate-y-1 ${
-                  pkg.highlighted
-                    ? 'bg-orange-500 text-white shadow-[0_10px_20px_rgba(249,115,22,0.3)] hover:bg-orange-600'
-                    : 'bg-white text-black hover:bg-zinc-200'
-                }`}
+                className="w-full py-4 rounded-xl font-bold transition-all duration-300 hover:-translate-y-1 bg-white text-black hover:bg-zinc-200"
               >
                 {pkg.ctaText}
               </button>
