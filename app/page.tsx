@@ -518,7 +518,7 @@ export default function PortfolioHome() {
                     <MagneticWrapper>
                       <button onClick={() => {
                         pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'DzikiStyl' });
-                        handleOpenDemo({ url: 'https://dzikistyl.com', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
+                        handleOpenDemo({ url: 'https://dzikistyldemo.vercel.app/', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
                       }} className="px-8 py-4 bg-orange-800 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg hover:bg-orange-700 transition-colors flex items-center gap-3">
                         <Terminal size={14} />
                         <span>Zobacz system na żywo</span>
@@ -528,9 +528,9 @@ export default function PortfolioHome() {
                 </div>
                 <div onClick={() => {
                   pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'DzikiStyl' });
-                  handleOpenDemo({ url: 'https://dzikistyl.com', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
+                  handleOpenDemo({ url: 'https://dzikistyldemo.vercel.app/', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
                 }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
-                  <Image src="/dzikistyl.webp" alt="DzikiStyl" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                  <Image src="/dzikistyl.jpg" alt="DzikiStyl" fill priority quality={90} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                   <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Sprawdź działanie</span>
                   </div>
@@ -618,7 +618,7 @@ export default function PortfolioHome() {
                   pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'zamowtu.pl' });
                   handleOpenDemo({ url: 'https://zamówtu.pl/demo', title: 'zamowtu.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
                 }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
-                  <Image src="/zamowtu.webp" alt="zamowtu.pl" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                  <Image src="/zamowtu.webp" alt="zamowtu.pl" fill priority quality={90} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                   <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Sprawdź działanie</span>
                   </div>
@@ -654,7 +654,7 @@ export default function PortfolioHome() {
                 {/* Left side: Huge Photo */}
                 <div className="shrink-0 relative z-20">
                   <a 
-                    href="https://dzikistyl.com" 
+                    href="https://dzikistyldemo.vercel.app/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="block w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 rounded-full border-[4px] border-orange-500 bg-[#0B0B0C] shadow-[0_0_60px_rgba(234,88,12,0.4)] relative group overflow-hidden transition-transform duration-500 hover:scale-105"

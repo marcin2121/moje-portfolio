@@ -96,7 +96,7 @@ export default function ContactForm() {
                           onClick={() => handleSelect(opt.id, opt.label)}
                           className={`w-full text-left p-5 md:p-8 rounded-2xl md:rounded-3xl border transition-all flex items-center gap-4 md:gap-6 group relative overflow-hidden ${isSelected ? 'bg-orange-500/10 border-orange-500/50 scale-[0.98]' : 'bg-zinc-900/40 border-white/5 hover:border-white/20 hover:bg-zinc-800/40 hover:scale-[1.02]'}`}
                         >
-                          <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl shrink-0 ${isSelected ? 'bg-orange-500 text-black' : 'bg-white/5 text-zinc-400 group-hover:text-white group-hover:bg-white/10'} transition-colors`}>
+                          <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl shrink-0 ${isSelected ? 'bg-orange-500 text-zinc-100' : 'bg-white/5 text-zinc-400 group-hover:text-white group-hover:bg-white/10'} transition-colors`}>
                             <Icon size={24} className="md:w-7 md:h-7" strokeWidth={1.5} />
                           </div>
                           <div className="flex-1">
@@ -149,7 +149,7 @@ export default function ContactForm() {
                         onClick={() => setShowNotes(!showNotes)}
                         className="flex items-start text-left gap-3 text-zinc-500 hover:text-zinc-300 transition-colors text-[10px] md:text-xs font-mono uppercase tracking-widest leading-relaxed"
                       >
-                        <div className={`w-4 h-4 shrink-0 mt-[2px] rounded flex items-center justify-center transition-colors ${showNotes ? 'bg-orange-500 text-black' : 'border border-zinc-600'}`}>
+                        <div className={`w-4 h-4 shrink-0 mt-[2px] rounded flex items-center justify-center transition-colors ${showNotes ? 'bg-orange-500 text-zinc-100' : 'border border-zinc-600'}`}>
                           {showNotes && <Check size={12} strokeWidth={3} />}
                         </div>
                         <span>Mam dodatkowe uwagi lub chcę podać nazwę firmy / adres mojej obecnej strony / Facebooka (opcjonalnie)</span>

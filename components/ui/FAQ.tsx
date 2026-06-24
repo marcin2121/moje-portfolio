@@ -55,7 +55,7 @@ export default function FAQ() {
                   <span className={`text-lg sm:text-xl font-medium transition-colors duration-300 ${isOpen ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
                     {item.question}
                   </span>
-                  <div className={`p-2 rounded-full transition-transform duration-500 shrink-0 ml-4 ${isOpen ? 'bg-orange-500 rotate-180 text-black' : 'bg-zinc-900 text-zinc-600'}`}>
+                  <div className={`p-2 rounded-full transition-transform duration-500 shrink-0 ml-4 ${isOpen ? 'bg-orange-500 rotate-180 text-zinc-100' : 'bg-zinc-900 text-zinc-600'}`}>
                     <ChevronDown size={20} />
                   </div>
                 </button>

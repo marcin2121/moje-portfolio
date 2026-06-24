@@ -15,8 +15,8 @@ export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
       challenge: 'Klient potrzebował gruntownej przebudowy ociężałego systemu, aby skalować sprzedaż B2B. Problemem była obsługa gigabajtowych plików graficznych &quot;zapychających&quot; serwery oraz brak elastyczności w błyskawicznym zarządzaniu marżą netto/brutto w wielokrokowym konfiguratorem poligraficznym.',
       solution: 'Zaprojektowanie dedykowanej architektury "Headless Commerce" (Next.js App Router). Wdrożenie zaawansowanego kreatora zamówień opartego na stanie w URL (nuqs) i globalnym stanie (Zustand), oraz architektury Direct-Upload przesyłającej pliki graficzne bezpośrednio do Cloudflare R2.',
       result: 'Skrócenie czasu ładowania strony o 70% (milisekundy). Całkowite odciążenie serwerów od przetwarzania plików graficznych oraz drastyczna poprawa pozycjonowania SEO i doświadczenia klienta agencyjnego (B2B).',
-      img: '/dzikistyl.webp',
-      link: 'https://dzikistyl.com'
+      img: '/dzikistyl.jpg',
+      link: 'https://dzikistyldemo.vercel.app/'
     },
     {
       title: 'Sklep Urwis / Akademia',
@@ -146,7 +146,7 @@ export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
           
           <div className="flex flex-col items-center justify-center gap-2 relative z-10">
             <div className="w-16 h-16 rounded-full bg-[#161618] border-2 border-[#FF6900] mb-2 overflow-hidden">
-              <Image src="/dzikistyl.webp" alt="DzikiStyl" width={64} height={64} className="w-full h-full object-cover opacity-50" />
+              <Image src="/dzikistyl.jpg" alt="DzikiStyl" width={64} height={64} className="w-full h-full object-cover opacity-50" />
             </div>
             <div className="text-[#F5F5F7] font-bold tracking-wide">Michał</div>
             <div className="text-[#A1A1A5] text-sm uppercase tracking-widest font-mono">Właściciel DzikiStyl.com</div>

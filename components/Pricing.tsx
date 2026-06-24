@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Check, Star, Code, Briefcase, Rocket } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, Star, Code, Briefcase, Rocket, X, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { pushGTMEvent } from '@/app/page';
+import { sendContactEmail } from '@/app/actions/sendContactEmail';
 
 const TIERS = [
   {
@@ -20,7 +21,7 @@ const TIERS = [
       'Zaawansowane cyberbezpieczeństwo chmurowe: Twoja strona i dane klientów są w 100% odporne na ataki, a system posiada automatyczne, codzienne kopie zapasowe.',
       '6 miesięcy darmowej opieki technicznej'
     ],
-    ctaText: 'Zapytaj o ten pakiet',
+    ctaText: 'Wybieram ten pakiet',
     highlighted: false
   },
   {
@@ -60,6 +61,46 @@ const TIERS = [
 ];
 
 export default function Pricing() {
+  const [selectedTier, setSelectedTier] = useState<typeof TIERS[0] | null>(null);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleOpenModal = (tier: typeof TIERS[0], idx: number) => {
+    pushGTMEvent(`cennik_pakiet_${idx}_klikniecie`);
+    setSelectedTier(tier);
+    setStatus('idle');
+    setErrorMessage('');
+  };
+
+  const handleCloseModal = () => {
+    if (status === 'loading') return;
+    setSelectedTier(null);
+  };
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!selectedTier) return;
+    
+    setStatus('loading');
+    setErrorMessage('');
+    
+    pushGTMEvent(`cennik_pakiet_wysylka`, { pakiet: selectedTier.name });
+
+    const formData = new FormData(e.currentTarget);
+    formData.append('blocker', `Wybór pakietu: ${selectedTier.name}`);
+
+    const result = await sendContactEmail(formData);
+
+    if (result.success) {
+      setStatus('success');
+      pushGTMEvent(`cennik_pakiet_sukces`, { pakiet: selectedTier.name });
+    } else {
+      setStatus('error');
+      setErrorMessage(result.error || 'Wystąpił błąd podczas wysyłania.');
+      pushGTMEvent(`cennik_pakiet_blad`, { pakiet: selectedTier.name });
+    }
+  }
+
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col items-center border-t border-white/5">
       
@@ -107,7 +148,7 @@ export default function Pricing() {
             }`}
           >
             {tier.badge && (
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-orange-500 text-black text-[10px] font-black tracking-widest uppercase px-4 py-1.5 rounded-b-lg">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-orange-500 text-zinc-100 text-[10px] font-black tracking-widest uppercase px-4 py-1.5 rounded-b-lg">
                 {tier.badge}
               </div>
             )}
@@ -146,16 +187,10 @@ export default function Pricing() {
               </ul>
 
               <button 
-                onClick={() => {
-                  pushGTMEvent(`cennik_pakiet_${idx}_klikniecie`);
-                  const el = document.getElementById('kontakt');
-                  if(el) {
-                    el.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
+                onClick={() => handleOpenModal(tier, idx)}
                 className={`w-full py-4 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${
                   tier.highlighted 
-                    ? 'bg-orange-500 text-black hover:bg-orange-400' 
+                    ? 'bg-orange-500 text-zinc-100 hover:bg-orange-400' 
                     : 'bg-white/5 text-white hover:bg-white/10'
                 }`}
               >
@@ -165,6 +200,70 @@ export default function Pricing() {
           </motion.div>
         ))}
       </div>
+
+      {/* Rozwiązania szyte na miarę */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="max-w-4xl mx-auto w-full bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-6 md:p-8 flex flex-col gap-6 mt-16"
+      >
+        <div className="flex flex-col items-start gap-2">
+          <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight uppercase">Rozwiązania szyte na miarę</h3>
+          <p className="text-lg text-orange-500 font-medium">Masz już stronę, ale potrzebujesz chirurgicznej precyzji?</p>
+        </div>
+        
+        <p className="text-sm text-zinc-400 leading-relaxed font-light">
+          Nie każdy biznes potrzebuje budowy systemu od zera. Jeśli Twoja obecna strona nie dowozi wyników, ładuje się w nieskończoność lub toniesz w ręcznej papierologii, możemy wdrożyć punktowe rozwiązania:
+        </p>
+        
+        <ul className="space-y-4">
+          <li className="flex items-start gap-3">
+            <span className="text-xl shrink-0">🚀</span>
+            <p className="text-sm text-zinc-300 leading-relaxed font-light">
+              <strong className="text-white font-medium">Ekstremalne Przyspieszenie (Core Web Vitals):</strong> Każda dodatkowa sekunda ładowania to utrata 7% klientów. Zoptymalizuję Twój kod tak, by strona otwierała się w ułamku sekundy, co zagwarantuje Ci wyższe pozycje w Google i ucieczkę przed konkurencją.
+            </p>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="text-xl shrink-0">🤖</span>
+            <p className="text-sm text-zinc-300 leading-relaxed font-light">
+              <strong className="text-white font-medium">Sama Automatyzacja i AI:</strong> Wdrożenie chatbota AI, automatycznego umawiania spotkań lub kalkulatorów wycen do Twojej obecnej witryny.
+            </p>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="text-xl shrink-0">🔍</span>
+            <p className="text-sm text-zinc-300 leading-relaxed font-light">
+              <strong className="text-white font-medium">Płatny Audyt UX/SEO i Konwersji:</strong> Twoja strona ma ruch, ale nie sprzedaje? Prześwietlę ją i wskażę dokładne błędy, przez które tracisz pieniądze (tzw. wyciekające zapytania).
+            </p>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="text-xl shrink-0">⚙️</span>
+            <p className="text-sm text-zinc-300 leading-relaxed font-light">
+              <strong className="text-white font-medium">Zaawansowane integracje:</strong> Połączenie Twojej strony z CRM, systemami fakturowania lub narzędziami kurierskimi.
+            </p>
+          </li>
+        </ul>
+
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 border-t border-white/5">
+          <div className="text-center sm:text-left">
+            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-mono mb-1">Wycena</p>
+            <p className="text-white font-medium">Indywidualna <span className="text-zinc-400 font-light text-sm">(na podstawie bezpłatnej, 15-minutowej konsultacji)</span></p>
+          </div>
+          <button 
+            onClick={() => {
+              pushGTMEvent('rozwiazania_szyte_na_miare_klikniecie');
+              const el = document.getElementById('kontakt');
+              if(el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="w-full sm:w-auto px-8 py-4 bg-orange-500 hover:bg-orange-400 text-zinc-100 font-black uppercase tracking-widest text-[11px] rounded-xl transition-all shadow-[0_0_20px_rgba(234,88,12,0.2)]"
+          >
+            Porozmawiajmy o Twoim wyzwaniu
+          </button>
+        </div>
+      </motion.div>
 
       {/* Opcjonalna Opieka Techniczna (Retainer) */}
       <motion.div 
@@ -198,6 +297,111 @@ export default function Pricing() {
           </div>
         </div>
       </motion.div>
+      {/* Modal / Popup */}
+      <AnimatePresence>
+        {selectedTier && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleCloseModal}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-md bg-zinc-900 border border-white/10 rounded-3xl shadow-2xl overflow-hidden z-10"
+            >
+              <button 
+                onClick={handleCloseModal}
+                disabled={status === 'loading'}
+                className="absolute top-4 right-4 p-2 bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white rounded-full transition-colors z-20 disabled:opacity-50"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="p-6 md:p-8 text-left">
+                {status === 'success' ? (
+                  <motion.div 
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                    className="flex flex-col items-center text-center gap-4 py-8"
+                  >
+                    <CheckCircle2 className="w-16 h-16 text-green-500" />
+                    <h3 className="text-2xl font-bold text-white tracking-tight">Dzięki!</h3>
+                    <p className="text-zinc-400 font-light">W ciągu 24h wyślę Ci na maila propozycję wdrożenia pakietu <span className="text-white font-medium">{selectedTier.name}</span>.</p>
+                    <button 
+                      onClick={handleCloseModal}
+                      className="mt-4 px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-sm font-medium transition-colors"
+                    >
+                      Zamknij
+                    </button>
+                  </motion.div>
+                ) : (
+                  <>
+                    <h3 className="text-2xl font-black text-white mb-2 pr-8 leading-tight">
+                      Świetny wybór!
+                    </h3>
+                    <p className="text-sm text-zinc-400 mb-6 leading-relaxed">
+                      Pakiet <strong className="text-white">"{selectedTier.name}"</strong> idealnie zautomatyzuje Twój biznes. Podaj e-mail, a prześlę Ci darmową wycenę wdrożenia i plan działania.
+                    </p>
+
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                      {status === 'error' && (
+                        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3 text-red-400 text-xs leading-relaxed">
+                          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                          {errorMessage}
+                        </div>
+                      )}
+
+                      <div className="flex flex-col gap-1.5">
+                        <label htmlFor="modal-email" className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">Twój adres e-mail <span className="text-orange-500">*</span></label>
+                        <input 
+                          type="email" 
+                          id="modal-email"
+                          name="email" 
+                          required 
+                          disabled={status === 'loading'}
+                          placeholder="jan@firma.pl"
+                          className="w-full bg-zinc-950 border border-white/10 focus:border-orange-500/50 outline-none rounded-xl px-4 py-3 text-white text-sm transition-all"
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-1.5">
+                        <label htmlFor="modal-msg" className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">Krótki opis projektu (Opcjonalne)</label>
+                        <textarea 
+                          id="modal-msg"
+                          name="msg" 
+                          rows={3}
+                          disabled={status === 'loading'}
+                          placeholder="Link do Twojej obecnej strony, pytania..."
+                          className="w-full bg-zinc-950 border border-white/10 focus:border-orange-500/50 outline-none rounded-xl px-4 py-3 text-white text-sm transition-all resize-none"
+                        />
+                      </div>
+
+                      <button 
+                        type="submit" 
+                        disabled={status === 'loading'}
+                        className="w-full mt-2 bg-orange-500 hover:bg-orange-400 text-zinc-100 font-black uppercase tracking-widest text-[11px] py-4 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                      >
+                        {status === 'loading' ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Wysyłanie...
+                          </>
+                        ) : 'Odbierz plan wdrożenia'}
+                      </button>
+                    </form>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 }
