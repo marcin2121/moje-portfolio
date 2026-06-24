@@ -8,7 +8,7 @@ import { pushGTMEvent } from '@/app/page';
 const TIERS = [
   {
     name: 'WIZYTÓWKA',
-    price: '2 500',
+    price: '2 000',
     icon: <Briefcase className="w-5 h-5" />,
     target: 'Mechanik, geodeta, fryzjer, terapeuta. Chcesz po prostu świetnie wyglądać w Google i sprawić, by klient łatwo Cię znalazł.',
     features: [
@@ -17,6 +17,7 @@ const TIERS = [
       'Czas ładowania poniżej 1.5s (gwarancja wysokich pozycji w Google)',
       'Formularz kontaktowy spięty z Twoim e-mailem/telefonem',
       'Pełna zgodność z RODO i wdrożenie polityki prywatności',
+      'Zaawansowane cyberbezpieczeństwo chmurowe: Twoja strona i dane klientów są w 100% odporne na ataki, a system posiada automatyczne, codzienne kopie zapasowe.',
       '6 miesięcy darmowej opieki technicznej'
     ],
     ctaText: 'Zapytaj o ten pakiet',
@@ -24,35 +25,36 @@ const TIERS = [
   },
   {
     name: 'MASZYNA SPRZEDAŻOWA',
-    price: '5 500',
+    price: '5 000',
     icon: <Rocket className="w-5 h-5 text-orange-500" />,
-    target: 'Butik, rzemiosło, wynajem aut, usługi na zapisy. Chcesz przyjmować zamówienia i płatności automatycznie, nawet o 2:00 w nocy.',
+    target: 'Butik, rzemiosło, wynajem aut, usługi na zapisy. Chcesz przyjmować zamówienia i płatności automatycznie, nawet gdy jesteś zajęty pracą.',
     features: [
       'Wszystko to, co w pakiecie "Wizytówka" +',
-      'Ultraszybki sklep internetowy / System rezerwacji',
-      'Podpięte natychmiastowe płatności (BLIK, Apple Pay, Przelewy24)',
-      'Automatyczne generowanie etykiet do Paczkomatów i kurierów',
-      'Prosty panel do zarządzania magazynem i promocjami',
-      'Gwarancja: 0% prowizji od sprzedaży (cały zysk zostaje u Ciebie)',
-      'Wideo-szkolenie: "Jak dodać nowy produkt w 60 sekund"'
+      'Ultraszybki sklep internetowy / Zautomatyzowany System Rezerwacji',
+      'Podpięte natychmiastowe płatności online (BLIK, Apple Pay)',
+      'Integracja z kurierami i Paczkomatami',
+      'Prosty panel do zarządzania ofertą ze smartfona',
+      'Gwarancja: 0% prowizji systemowych od sprzedaży (ponosisz jedynie standardowe koszty operatora płatności, np. Przelewy24/Stripe).',
+      'Wideo-szkolenie: "Jak samodzielnie dodać produkt/usługę w 60 sekund"'
     ],
     ctaText: 'Wybieram ten pakiet',
     highlighted: true,
-    badge: 'NAJCZĘSTSZY WYBÓR'
+    badge: 'REKOMENDOWANY'
   },
   {
-    name: 'AUTOMATYZACJA PRO',
-    price: '9 500',
-    icon: <Code className="w-5 h-5" />,
-    target: 'Biura rachunkowe, małe hurtownie, niszowa produkcja. Toniesz w papierach, a Twoi ludzie robią w kółko to samo w Excelu.',
+    name: 'LIDER RYNKU',
+    price: '9 000',
+    icon: <Star className="w-5 h-5" />,
+    target: 'Kliniki, kancelarie, niszowa produkcja, firmy budowlane. Chcesz całkowicie zautomatyzować obsługę klienta, wyprzedzić konkurencję i odzyskać swój czas.',
     features: [
-      'Dedykowana aplikacja napisana ściśle pod Twój proces',
-      'Integracja Twojego CRM z fakturowaniem, mailem i kalendarzami',
-      'Automatyczne powiadomienia SMS dla Twoich klientów i pracowników',
-      'Gwarancja SLA (Czas reakcji na krytyczną usterkę: do 4 godzin)',
-      'Przekazanie pełnych, nieograniczonych praw do kodu źródłowego'
+      'Wszystko to, co w pakiecie "Maszyna Sprzedażowa" +',
+      'Wirtualny Asystent AI i Kalkulator Ofert: Inteligentne boty, które obsługują Twoich klientów 24/7 i filtrują tylko rentowne zlecenia.',
+      'Automat do opinii w Google: System sam prosi zadowolonych klientów o 5 gwiazdek, budując Twój autorytet w sieci.',
+      'Wsparcie w pozyskaniu dotacji: Pomagam przygotować pełną specyfikację technologiczną, jeśli ubiegasz się o dofinansowanie (np. z KPO) na cyfryzację firmy.',
+      'Dedykowane szkolenie dla pracowników: Zamiast suchej instrukcji, przeprowadzę warsztaty online dla Twojego zespołu, aby płynnie i bez stresu zaczął korzystać z nowych narzędzi.',
+      'Priorytetowa Opieka VIP: Otrzymujesz mój bezpośredni numer na WhatsApp i masz gwarancję reakcji na każde zgłoszenie w maksymalnie kilka godzin.'
     ],
-    ctaText: 'Porozmawiajmy o automatyzacji',
+    ctaText: 'Aplikuj o pakiet VIP',
     highlighted: false
   }
 ];

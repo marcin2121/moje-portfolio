@@ -1,10 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, ShieldCheck } from 'lucide-react';
-import MagneticWrapper from '@/components/ui/MagneticWrapper';
 import Image from 'next/image';
+import { ArrowRight, Check } from 'lucide-react';
 import { pushGTMEvent } from '@/app/page';
 
 interface HeroProps {
@@ -13,103 +11,125 @@ interface HeroProps {
 
 export default function Hero({ onNavigate }: HeroProps) {
   return (
-    <section className="w-full lg:w-screen min-h-[100dvh] lg:h-screen flex-shrink-0 flex flex-col justify-center relative overflow-hidden px-6 sm:px-10 lg:px-20 pt-32 pb-32 lg:pb-20 lg:py-0 bg-[#0A0F1E] z-0">
-      
-      {/* Aurora Background Effects */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#FF6900]/10 blur-[150px] rounded-full pointer-events-none -z-10" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#0A2540]/30 blur-[150px] rounded-full pointer-events-none -z-10" />
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] mix-blend-overlay pointer-events-none -z-10" />
+    <section className="w-full lg:w-screen flex-shrink-0 min-h-[100dvh] bg-transparent flex flex-col relative overflow-hidden z-0 font-sans">
 
-      <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-[1.4fr_0.6fr] gap-10 lg:gap-24 items-center relative z-10 flex-1 py-12 lg:py-0">
+      {/* Main Hero Content */}
+      <div className="flex-1 w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20 pt-24 pb-12 lg:py-16 flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20 relative z-10">
         
-        {/* Left Col: Text & CTA */}
-        <div className="flex flex-col items-start text-left">
+        {/* Left Column Text & CTA */}
+        <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
           
-          <div className="inline-flex items-center px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-6 lg:mb-10 backdrop-blur-sm">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#FF6900] mr-2" />
-            <span className="font-mono text-[10px] sm:text-xs text-[#A1A1A5] uppercase tracking-widest font-medium">
-              Molenda Development
-            </span>
-          </div>
-
-          <h1 className="text-4xl sm:text-6xl lg:text-[5rem] font-black tracking-tight leading-[1.15] text-[#E0E0E0] mb-6 lg:mb-8">
-            Zamień swoją stronę w niezawodną maszynę do sprzedaży 24/7.
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-zinc-100 leading-[1.15] mb-6 tracking-tight">
+            Zbuduję stronę, która przyspieszy Twoją sprzedaż.
           </h1>
-
-          <p className="text-[#A1A1A5] text-base sm:text-xl font-light leading-relaxed lg:leading-loose mb-10 lg:mb-12 max-w-2xl">
-            Ty rozwijasz swój biznes, ja biorę na siebie całą technologię. Dostajesz ultraszybki system pozbawiony awaryjnego WordPressa. Oszczędzasz czas i zarabiasz, podczas gdy ja czuwam nad kodem.
+          
+          <p className="text-lg sm:text-xl text-zinc-400 font-light leading-relaxed mb-10 max-w-2xl">
+            Uwalniam małe firmy od powolnych szablonów. Projektuję nowoczesne systemy, które odciążają Cię z ręcznej pracy i zdobywają klientów szybciej niż konkurencja. Płacisz raz, a maszyna działa bezawaryjnie.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 lg:gap-8 w-full sm:w-auto">
-            <MagneticWrapper>
-              <button
-                onClick={() => {
-                  pushGTMEvent('strona_glowna_wycena_klikniecie');
-                  onNavigate(14); // Index 14 to Kontakt
-                }}
-                className="group relative px-6 py-4 lg:px-8 bg-gradient-to-b from-[#FF7A00] to-[#CC5500] text-white font-bold uppercase tracking-widest text-[11px] sm:text-xs rounded-xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),_0_0_0_rgba(255,105,0,0)] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),_0_0_25px_rgba(255,105,0,0.5)] flex items-center justify-center gap-3 w-full sm:w-auto overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-                <span className="relative z-10">Zarezerwuj bezpłatną wycenę</span>
-                <ArrowRight size={16} className="relative z-10 group-hover:translate-x-1.5 transition-transform duration-300" />
-              </button>
-            </MagneticWrapper>
+          <ul className="flex flex-col gap-4 mb-10 text-left w-full sm:w-auto">
+            <li className="flex items-start gap-3 text-zinc-100 text-sm sm:text-base font-medium">
+              <div className="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center shrink-0 mt-0.5 border border-green-500/20">
+                <Check className="w-4 h-4 text-green-500 stroke-[3]" />
+              </div>
+              <span>Gwarancja zwrotu 100% zaliczki przez 7 dni.</span>
+            </li>
+            <li className="flex items-start gap-3 text-zinc-100 text-sm sm:text-base font-medium">
+              <div className="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center shrink-0 mt-0.5 border border-green-500/20">
+                <Check className="w-4 h-4 text-green-500 stroke-[3]" />
+              </div>
+              <span>Konkretna wycena na e-mail w 24 godziny.</span>
+            </li>
+          </ul>
 
-            {/* Trust Badge */}
-            <div className="flex items-center gap-3 lg:gap-4 text-[#A1A1A5]">
-              <ShieldCheck className="w-5 h-5 lg:w-6 lg:h-6 text-[#FF6900] shrink-0" />
-              <span className="text-[11px] sm:text-sm font-light leading-[1.6]">
-                Gwarancja 100% zwrotu zaliczki.<br/>
-                Wycena na mailu w max 24h.
-              </span>
-            </div>
-          </div>
+          <button 
+             onClick={() => {
+                pushGTMEvent('strona_glowna_wycena_klikniecie');
+                onNavigate(14); // Index 14 to Kontakt
+             }}
+             className="w-full sm:w-auto px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(249,115,22,0.2)] hover:shadow-[0_0_30px_rgba(249,115,22,0.4)] flex items-center justify-center gap-3 hover:-translate-y-0.5"
+          >
+            Odbierz bezpłatną wycenę na e-mail
+            <ArrowRight size={20} className="shrink-0" />
+          </button>
         </div>
 
-        {/* Right Col: Portrait with Organic Glow */}
-        <div className="relative w-full aspect-square max-w-[280px] sm:max-w-[400px] lg:max-w-[480px] mx-auto lg:ml-auto mt-4 lg:mt-0 lg:-translate-y-8">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#FF6900]/20 blur-[60px] lg:blur-[80px] -z-10 rounded-full" />
-          <div className="w-full h-full rounded-[3rem] lg:rounded-[4rem] overflow-hidden border border-[#2A2A2A] shadow-2xl relative bg-[#0B0B0C]">
+        {/* Right Column Portrait */}
+        <div className="w-full lg:w-1/2 flex justify-center lg:justify-end relative">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-zinc-500/10 blur-[100px] rounded-full -z-10" />
+          <div className="relative w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[440px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-zinc-800 bg-zinc-900">
             <Image
               src="/Marcin.jpg"
-              alt="Marcin Molenda - Ekspert od szybkich stron www"
+              alt="Marcin Molenda - Ekspert od szybkiej sprzedaży B2B"
               fill
-              priority={true}
+              priority
               quality={95}
-              className="object-cover scale-105"
+              className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1E] via-transparent to-transparent opacity-80 lg:opacity-60" />
           </div>
         </div>
 
       </div>
 
-      {/* Glassmorphism Bottom Stats Bar */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="w-full mt-10 lg:mt-0 lg:absolute lg:bottom-12 xl:bottom-16 lg:left-1/2 lg:-translate-x-1/2 lg:w-[calc(100%-3rem)] max-w-5xl z-20"
-      >
-        <div className="bg-[#0A0F1E]/80 lg:bg-[#0A0F1E]/60 backdrop-blur-xl border border-white/10 rounded-3xl lg:rounded-[2rem] p-4 sm:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-          {[
-            { label: 'Średni czas ładowania', value: '< 1.5s' },
-            { label: 'Wtyczek z WordPressa', value: '0' },
-            { label: 'Praw autorskich', value: '100%' },
-            { label: 'Opieka po starcie', value: '6 m-cy' },
-          ].map((proof, idx) => (
-            <div key={idx} className={`flex flex-col items-center justify-center text-center w-full ${idx !== 3 ? 'md:border-r md:border-white/5' : ''}`}>
-              <div className="text-2xl sm:text-4xl font-black text-white tracking-tight mb-1 lg:mb-2 drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]">
-                {proof.value}
+      {/* Trust Bar */}
+      <div className="w-full relative z-20 mt-auto mb-28 lg:mb-32 px-4 sm:px-10 lg:px-20">
+        <div className="max-w-[1400px] mx-auto bg-zinc-900/60 backdrop-blur-xl border border-white/10 rounded-2xl py-6 px-6 sm:px-10 flex flex-col md:flex-row items-center justify-center md:justify-between gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+          <span className="text-zinc-500 text-xs sm:text-sm font-medium uppercase tracking-widest text-center">
+            Zaufali mi przedsiębiorcy, którzy cenią swój czas:
+          </span>
+          <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
+            {/* DzikiStyl */}
+            <a href="https://dzikistyl.com" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-zinc-900 border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
+              <div className="absolute inset-0 rounded-full overflow-hidden">
+                <Image src="/dzikistyl-logo.png" alt="DzikiStyl" fill className="object-cover" />
               </div>
-              <div className="text-[8px] sm:text-[10px] text-[#A1A1A5] font-mono uppercase tracking-[0.1em] lg:tracking-[0.2em] px-2 lg:px-0">
-                {proof.label}
+              <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
+                <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
+                  DzikiStyl - studio graficzne i drukarnia online
+                </div>
               </div>
-            </div>
-          ))}
+            </a>
+            
+            {/* Sklep Urwis */}
+            <a href="https://sklep-urwis.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-zinc-900 border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
+              <div className="absolute inset-0 rounded-full overflow-hidden">
+                <Image src="/sklepurwis-logo.png" alt="Sklep Urwis" fill className="object-cover" />
+              </div>
+              <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
+                <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
+                  Sklep Urwis - sklep z zabawkami w Białobrzegach
+                </div>
+              </div>
+            </a>
+            
+            {/* Zamów Tu */}
+            <a href="https://zamowtu.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
+              <div className="absolute inset-0 rounded-full overflow-hidden">
+                <Image src="/zamowtu-logo.png" alt="Zamów Tu" fill className="object-contain p-2 md:p-2.5" />
+              </div>
+              <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
+                <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
+                  Zamówtu.pl - System zamówień online
+                </div>
+              </div>
+            </a>
+            
+            {/* RLT Polska */}
+            <a href="https://rltpolska.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
+              <div className="absolute inset-0 rounded-full overflow-hidden">
+                <Image src="/rltpolska-logo.png" alt="RLT Polska" fill className="object-contain p-2 md:p-2.5" />
+              </div>
+              <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
+                <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
+                  RLTPolska - sklep internetowy z urządzeniami do terapii światłem
+                </div>
+              </div>
+            </a>
+          </div>
         </div>
-      </motion.div>
+      </div>
+      
     </section>
   );
 }

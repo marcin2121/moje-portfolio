@@ -328,7 +328,7 @@ export default function PortfolioHome() {
             <div className="w-px h-5 bg-white/10 mx-2" />
 
             <button 
-              onClick={() => scrollToSection(10)}
+              onClick={() => scrollToSection(14)}
               className="group relative ml-1 px-6 py-2 bg-orange-500 text-white font-black uppercase text-[10px] tracking-[0.15em] rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(234,88,12,0.3)]"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
