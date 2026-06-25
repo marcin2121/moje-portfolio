@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { Github, ExternalLink } from 'lucide-react';
+import { fixOrphans } from '@/utils/typography';
 
 export function FooterSection({ isDevMode }: { isDevMode: boolean }) {
   return (
@@ -12,9 +13,9 @@ export function FooterSection({ isDevMode }: { isDevMode: boolean }) {
             {isDevMode ? 'Code Quality Verification' : 'Chcesz sprawdzić jakość mojego kodu?'}
           </h3>
           <p className="text-[#A1A1A5] text-sm font-light leading-relaxed">
-            {isDevMode 
+            {fixOrphans(isDevMode 
               ? 'Review my open-source contributions and production architectures on GitHub before scheduling a call.' 
-              : 'Zanim się skontaktujesz, zweryfikuj moją kulturę techniczną. Przejrzyj moje publiczne repozytoria na GitHubie (@marcin2121) lub przetestuj aplikacje z portfolio na żywo.'}
+              : 'Zanim się skontaktujesz, zweryfikuj moją kulturę techniczną. Przejrzyj moje publiczne repozytoria na GitHubie (@marcin2121) lub przetestuj aplikacje z portfolio na żywo.')}
           </p>
         </div>
 

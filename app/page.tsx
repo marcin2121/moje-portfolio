@@ -18,11 +18,14 @@ import Pricing from '@/components/Pricing';
 import { HeaderToggle } from '@/components/sections/HeaderToggle';
 import { ProblemSection } from '@/components/sections/ProblemSection';
 import { SandboxSection } from '@/components/sections/SandboxSection';
+import { FeaturesSection } from '@/components/sections/FeaturesSection';
 import { HowItWorksSection } from '@/components/sections/HowItWorksSection';
+import { ProcessSection } from '@/components/sections/ProcessSection';
+import { PortfolioSection } from '@/components/sections/PortfolioSection';
 import { BenefitsSection } from '@/components/sections/BenefitsSection';
+import { fixOrphans } from '@/utils/typography';
 
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
-const UrwisModel = dynamic(() => import('@/components/UrwisModel'), { ssr: false });
 
 const rIC = (cb: IdleRequestCallback): number => {
   if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
@@ -57,7 +60,7 @@ const NAV_DOTS = [
   { id: 7, title: 'DzikiStyl.com' },
   { id: 8, title: 'Sklep Urwis' },
   { id: 9, title: 'zamowtu.pl' },
-  { id: 10, title: 'Opal' },
+  { id: 10, title: 'Kajaki u Maćka' },
   { id: 11, title: 'Referencje' },
   { id: 12, title: 'Cennik' },
   { id: 13, title: 'FAQ' },
@@ -396,9 +399,10 @@ export default function PortfolioHome() {
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
                       <span className="text-orange-500 mr-2">&gt;</span>Sprzedaż bez przestojów 24/7
                     </h3>
-                    <p className="text-zinc-400 font-light text-sm md:text-base leading-relaxed">
-                      Zamiast ciężkiego WordPressa otrzymujesz ultraszybki sklep, w którym klienci kupują bez błędów czy zawieszeń, nawet w nocy.
-                    </p>
+                    <p 
+                      className="text-zinc-400 font-light text-sm md:text-base leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: fixOrphans("Zamiast ciężkiego WordPressa otrzymujesz ultraszybki sklep, w którym klienci kupują bez błędów czy zawieszeń, nawet w nocy.") }}
+                    />
                   </MagicBento>
 
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
@@ -409,9 +413,10 @@ export default function PortfolioHome() {
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
                       <span className="text-orange-500 mr-2">&gt;</span>Koniec z papierologią
                     </h3>
-                    <p className="text-zinc-400 font-light text-sm md:text-base leading-relaxed">
-                      Własne systemy rezerwacji i panele klienta, które same robią za Ciebie najgorszą papierkową robotę i pilnują terminów.
-                    </p>
+                    <p 
+                      className="text-zinc-400 font-light text-sm md:text-base leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: fixOrphans("Własne systemy rezerwacji i panele klienta, które same robią za Ciebie najgorszą papierkową robotę i pilnują terminów.") }}
+                    />
                   </MagicBento>
 
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
@@ -422,9 +427,10 @@ export default function PortfolioHome() {
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
                       <span className="text-orange-500 mr-2">&gt;</span>Zero straconych klientów
                     </h3>
-                    <p className="text-zinc-400 font-light text-sm md:text-base leading-relaxed">
-                      Twoja oferta ładuje się w ułamek sekundy, zanim zniecierpliwiony klient zdąży kliknąć "Wstecz" i pójść do konkurencji.
-                    </p>
+                    <p 
+                      className="text-zinc-400 font-light text-sm md:text-base leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: fixOrphans('Twoja oferta ładuje się w ułamek sekundy, zanim zniecierpliwiony klient zdąży kliknąć "Wstecz" i pójść do konkurencji.') }}
+                    />
                   </MagicBento>
 
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
@@ -435,9 +441,10 @@ export default function PortfolioHome() {
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2 flex items-center">
                       <span className="text-orange-500 mr-2">&gt;</span>Inteligentna Automatyzacja
                     </h3>
-                    <p className="text-zinc-400 font-light text-sm md:text-base leading-relaxed">
-                      System sam wystawia faktury, wysyła maile do klientów i powiadomienia do księgowości, odzyskując Twoje wolne wieczory.
-                    </p>
+                    <p 
+                      className="text-zinc-400 font-light text-sm md:text-base leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: fixOrphans("System sam wystawia faktury, wysyła maile do klientów i powiadomienia do księgowości, odzyskując Twoje wolne wieczory.") }}
+                    />
                   </MagicBento>
                 </div>
 
@@ -454,7 +461,7 @@ export default function PortfolioHome() {
                     <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Gwarancja jakości:</span>
                   </div>
                   <p className="text-[11px] lg:text-xs text-zinc-400 font-light leading-relaxed text-center sm:text-left">
-                    Moje wsparcie obejmuje pełne spektrum techniczne: od <span className="text-zinc-200">mikro-optymalizacji</span> (np. szybkość obrazów, poprawa LCP) po <span className="text-zinc-200">złożone systemy dedykowane</span>. Niezależnie od skali zadania, jakość kodu pozostaje bezkompromisowa.
+                    {fixOrphans(`Moje wsparcie obejmuje pełne spektrum techniczne: od `)}<span className="text-zinc-200">mikro-optymalizacji</span>{fixOrphans(` (np. szybkość obrazów, poprawa LCP) po `)}<span className="text-zinc-200">złożone systemy dedykowane</span>{fixOrphans(`. Niezależnie od skali zadania, jakość kodu pozostaje bezkompromisowa.`)}
                   </p>
                 </motion.div>
               </div>
@@ -473,8 +480,8 @@ export default function PortfolioHome() {
                 <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
                 WDROŻONE PROJEKTY
               </div>
-              <h2 className="text-4xl sm:text-5xl md:text-6xl xl:text-[5.5rem] font-mono tracking-tighter leading-tight mb-8 text-white">
-                Case<br />Studies
+              <h2 className="text-4xl sm:text-5xl md:text-6xl xl:text-[5.5rem] font-black tracking-tighter leading-tight mb-8 text-white">
+                Moje<br />realizacje
               </h2>
             </section>
 
@@ -487,31 +494,12 @@ export default function PortfolioHome() {
                   </div>
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">DzikiStyl.com</h2>
                   <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed max-h-[50vh] lg:max-h-[60vh] overflow-y-auto pr-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/10 hover:[&::-webkit-scrollbar-thumb]:bg-orange-500/50">
-                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Tradycyjne studio graficzne i drukarnia, działające w oparciu o przestarzałe i powolne platformy sklepowe (Shoper/Wix), potrzebowało gruntownej przebudowy, by móc na dużą skalę obsługiwać wymagających klientów biznesowych (B2B) oraz agencje reklamowe. Głównym wyzwaniem była uciążliwa obsługa gigabajtowych plików graficznych od klientów, które &quot;zapychały&quot; standardowe serwery oraz bardzo czasochłonne, ręczne weryfikowanie tych plików przed drukiem. Ponadto brakowało elastyczności w błyskawicznym zarządzaniu cennikami netto/brutto, a proces zakupowy zmuszał klientów do wielokrotnego przeładowywania strony, co prowadziło do porzuconych koszyków. Celem było wyeliminowanie ręcznej pracy obsługi klienta i stworzenie bezbłędnej maszyny sprzedażowej.</p>
+                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> {fixOrphans(`Przestarzała platforma (Shoper/Wix) nie radziła sobie z tysiącami wariantów produktów dla klientów B2B i "zapychała się" przy gigabajtowych plikach od agencji reklamowych.`)}</p>
                     
-                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie biznesowo-technologiczne:</strong> Zaprojektowałem i wdrożyłem od zera ultraszybką, niezależną platformę sprzedażową, która działa z prędkością nowoczesnych aplikacji bankowych. Kluczowe wdrożenia obejmowały:</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> {fixOrphans(`Stworzyłem od zera ultraszybką platformę z innowacyjnym konfiguratorem ("Frictionless Checkout"), podglądem znakowania na żywo i systemem automatycznej weryfikacji plików do druku w chmurze.`)}</p>
                     
-                    <ul className="space-y-3 text-xs sm:text-sm pl-2">
-                      <li className="flex items-start gap-2">
-                        <span className="text-orange-500 mt-1">&gt;</span>
-                        <p className="text-zinc-400"><strong className="text-zinc-200">&quot;Frictionless Checkout&quot; (Koszyk bez opóźnień):</strong> Zbudowanie płynnego konfiguratora, w którym zmiany cen czy formatów odbywają się w ułamek sekundy bez przeładowywania strony. Dodano funkcję &quot;magicznego linku&quot; – pracownik może wyklikać parametry zamówienia i wysłać link bezpośrednio do szefa, który jednym kliknięciem akceptuje i opłaca gotowy koszyk.</p>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-orange-500 mt-1">&gt;</span>
-                        <p className="text-zinc-400"><strong className="text-zinc-200">Bezpieczna infrastruktura plików graficznych:</strong> Wdrożenie chmurowego systemu przesyłania plików, który pozwala na błyskawiczne wgrywanie potężnych projektów bezpośrednio do bezpiecznej chmury, całkowicie omijając obciążenie serwera sklepu. Skutkuje to brakiem awarii na łączach.</p>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-orange-500 mt-1">&gt;</span>
-                        <p className="text-zinc-400"><strong className="text-zinc-200">Płynny podgląd na żywo:</strong> Implementacja modułu, który realistycznie i błyskawicznie nakłada logo klienta na odzież i gadżety z uwzględnieniem cieni i fałd materiału, dając klientowi 100% pewności co do finalnego wyglądu produktu przed zamówieniem.</p>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-orange-500 mt-1">&gt;</span>
-                        <p className="text-zinc-400"><strong className="text-zinc-200">Zautomatyzowana linia produkcyjna:</strong> Wdrożenie inteligentnych skryptów, które automatycznie sprawdzają jakość plików wgranych przez klienta i dodają niezbędne marginesy (spady). Gotowe, bezbłędne zlecenie jest od razu kierowane na hale produkcyjną, pomijając etap ręcznego sprawdzania przez grafików.</p>
-                      </li>
-                    </ul>
-
                     <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
-                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy i ROI:</strong> Przekształcenie Dzikiego Stylu z lokalnego studia w wysoce skalowalną, zautomatyzowaną platformę poligraficzną. Nowa architektura drastycznie skróciła czas ładowania strony (poprawa wyników SEO i skok konwersji). Inteligentny konfigurator i funkcja udostępniania koszyka znacząco ułatwiły obsługę zamówień hurtowych, podnosząc sprzedaż B2B. Z kolei automatyczna weryfikacja plików i bezpośredni przesył danych wyeliminowały 90% kosztownych pomyłek w druku oraz zaoszczędziły setki godzin pracy działu obsługi klienta.</p>
+                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> {fixOrphans(`Drastyczny skok konwersji dzięki poprawie szybkości. Automatyzacja wyeliminowała 90% pomyłek w druku i zaoszczędziła setki godzin pracy zespołu.`)}</p>
                     </div>
                   </div>
                   <div className="flex justify-center lg:justify-start pt-4">
@@ -547,10 +535,10 @@ export default function PortfolioHome() {
                   </div>
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Sklep Urwis</h2>
                   <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
-                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Sklep stacjonarny potrzebował nowoczesnego kanału dotarcia do klientów, angażując dzieci i rodziców bez wymuszania instalacji ciężkich aplikacji z Google Play/App Store.</p>
-                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Stworzyłem angażującą aplikację przeglądarkową niewymagającą instalacji, wyposażoną w interaktywne gry, moduł rozszerzonej rzeczywistości i wirtualnego doradcę wspieranego sztuczną inteligencją.</p>
-                    <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
-                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Wyeliminowanie narzutu na manualną obsługę klienta (zero overhead w wydawaniu nagród). Natychmiastowy wzrost wizyt stacjonarnych dzięki grywalizacji.</p>
+                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> {fixOrphans(`Sklep stacjonarny potrzebował nowoczesnego kanału dotarcia do klientów, angażując dzieci i rodziców bez wymuszania instalacji ciężkich aplikacji z Google Play/App Store.`)}</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> {fixOrphans(`Stworzyłem angażującą aplikację przeglądarkową niewymagającą instalacji, wyposażoną w interaktywne gry, moduł rozszerzonej rzeczywistości i wirtualnego doradcę wspieranego sztuczną inteligencją.`)}</p>
+                    <div className="p-4 rounded-xl bg-blue-500/10 border-l-4 border-l-blue-500 mt-4">
+                      <p className="text-blue-100 font-medium"><strong className="text-blue-500">Wynik Biznesowy:</strong> {fixOrphans(`Zbudowanie wysoce zaangażowanej bazy lojalnych klientów. Grywalizacja zauważalnie zwiększyła częstotliwość powrotów do sklepu i średnią wartość koszyka zakupowego.`)}</p>
                     </div>
                   </div>
                   <div className="flex justify-center lg:justify-start pt-4">
@@ -565,23 +553,16 @@ export default function PortfolioHome() {
                     </MagneticWrapper>
                   </div>
                 </div>
-                <div className="aspect-4/3 w-full bg-zinc-950/40 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
-                  <UrwisModel />
-                  <div className="absolute inset-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-end justify-between p-4 pointer-events-none">
-                    <button 
-                      onClick={() => {
-                        pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'Sklep Urwis' });
-                        handleOpenDemo({ url: 'https://www.sklep-urwis.pl', title: 'sklep-urwis.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
-                      }} 
-                      className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 hover:bg-orange-700 px-4 py-2 rounded-lg shadow-2xl transition-all cursor-pointer pointer-events-auto border border-white/10 hover:scale-105 active:scale-95"
-                    >
-                      Uruchom Demo
-                    </button>
-
-                    <div className="self-center font-mono text-[9px] text-zinc-300 uppercase tracking-widest bg-zinc-950/70 px-4 py-2 rounded-xl backdrop-blur-md border border-white/5 flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
-                      Przeciągnij by obrócić
-                    </div>
+                <div 
+                  className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2 cursor-pointer"
+                  onClick={() => {
+                    pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'Sklep Urwis' });
+                    handleOpenDemo({ url: 'https://www.sklep-urwis.pl', title: 'sklep-urwis.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
+                  }}
+                >
+                  <AnimatedWebP src="/sklepurwis.webp" alt="Sklep Urwis" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 object-cover" />
+                  <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Sprawdź działanie</span>
                   </div>
                 </div>
               </div>
@@ -596,10 +577,10 @@ export default function PortfolioHome() {
                   </div>
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">zamowtu.pl</h2>
                   <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
-                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Restauratorzy tracili gigantyczne prowizje na rzecz zewnętrznych portali dostaw, potrzebując niezależnego systemu transakcyjnego z możliwością edycji menu w locie.</p>
-                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Zbudowanie od zera kompleksowej platformy sprzedażowej z obsługą natychmiastowych, automatycznych płatności i w pełni bezpiecznym, niezależnym systemem kont dla menedżerów.</p>
+                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> {fixOrphans(`Restauratorzy tracili gigantyczne prowizje na rzecz zewnętrznych portali dostaw, potrzebując niezależnego systemu transakcyjnego z możliwością edycji menu w locie.`)}</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> {fixOrphans(`Zbudowanie od zera kompleksowej platformy sprzedażowej z obsługą natychmiastowych, automatycznych płatności i w pełni bezpiecznym, niezależnym systemem kont dla menedżerów.`)}</p>
                     <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
-                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Uwolnienie restauratorów od zewnętrznych opłat abonamentowych i drastyczny wzrost rentowności lokalnych biznesów.</p>
+                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> {fixOrphans(`Restauracje odzyskały do 30% marży z każdego zamówienia, uniezależniając się od monopolu rynkowych gigantów i zyskując bezpośredni kontakt ze swoimi klientami.`)}</p>
                     </div>
                   </div>
                   <div className="flex justify-center lg:justify-start pt-4">
@@ -630,83 +611,116 @@ export default function PortfolioHome() {
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">Business Intelligence</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">Wizerunek / SEO</span>
                   </div>
-                  <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Opal</h2>
+                  <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">Kajaki u Maćka</h2>
                   <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
-                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> Potrzeba potężnego panelu do analizy i segmentacji dużych zbiorów danych bez konieczności stawiania drogich, dedykowanych serwerów Python do analiz AI.</p>
-                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> Stworzyłem od podstaw wydajny silnik analityczny, który automatycznie grupuje ogromne ilości danych bez zewnętrznej infrastruktury, prezentując wyniki na interaktywnych wykresach.</p>
+                    <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> {fixOrphans(`Lokalny biznes turystyczny potrzebował nowoczesnego wizerunku w sieci oraz konfiguracji Social Mediów i map Google, by wyróżnić się na tle ogromnej konkurencji.`)}</p>
+                    <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> {fixOrphans(`Zbudowałem błyskawiczny landing page z automatycznym systemem pozyskiwania opinii. Skonfigurowałem fanpage i Wizytówkę Google z pełną spójnością wizualną i techniczną.`)}</p>
                     <div className="p-4 rounded-xl bg-orange-500/10 border-l-4 border-l-orange-500 mt-4">
-                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> Błyskawiczne, darmowe w utrzymaniu przetwarzanie danych analitycznych i precyzyjne prognozowanie bezpośrednio w przeglądarce klienta.</p>
+                      <p className="text-orange-100 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> {fixOrphans(`Skokowy wzrost zaufania u nowych klientów i błyskawiczne pozyskiwanie pozytywnych opinii (5 gwiazdek), co w pełni napędza rezerwacje na nadchodzące weekendy bez wydawania złotówki na reklamy.`)}</p>
                     </div>
                   </div>
+                  <div className="flex justify-center lg:justify-start pt-4">
+                    <MagneticWrapper>
+                      <button onClick={() => {
+                        pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'Kajaki u Maćka' });
+                        handleOpenDemo({ url: 'https://kajaki-u-macka.pl', title: 'kajaki-u-macka.pl', colorClass: 'text-emerald-500', bgClass: 'bg-emerald-800' });
+                      }} className="px-8 py-4 bg-orange-800 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg hover:bg-orange-700 transition-colors flex items-center gap-3">
+                        <Terminal size={14} />
+                        <span>Zobacz system na żywo</span>
+                      </button>
+                    </MagneticWrapper>
+                  </div>
                 </div>
-                <div className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2">
-                  <AnimatedWebP src="/opal.webp" alt="Opal BI" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                <div 
+                  className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl order-1 lg:order-2 cursor-pointer"
+                  onClick={() => {
+                    pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'Kajaki u Maćka' });
+                    handleOpenDemo({ url: 'https://kajaki-u-macka.pl', title: 'kajaki-u-macka.pl', colorClass: 'text-emerald-500', bgClass: 'bg-emerald-800' });
+                  }}
+                >
+                  <AnimatedWebP src="/kajaki.png" alt="Kajaki u Maćka" className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 object-cover" />
+                  <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Sprawdź działanie</span>
+                  </div>
                 </div>
               </div>
             </section>
 
-            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
-              <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-7xl mx-auto relative z-10 gap-8 lg:gap-12 px-4">
+            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-4 lg:px-12 py-20 lg:py-0 border-t lg:border-none">
+              <div className="flex flex-col w-full max-w-7xl mx-auto relative z-10 gap-8 px-2 overflow-y-auto max-h-screen py-10 lg:py-12 no-scrollbar">
                 
-                {/* Left side: Huge Photo */}
-                <div className="shrink-0 relative z-20">
-                  <a 
-                    href="https://dzikistyldemo.vercel.app/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="block w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 rounded-full border-[4px] border-orange-500 bg-[#0B0B0C] shadow-[0_0_60px_rgba(234,88,12,0.4)] relative group overflow-hidden transition-transform duration-500 hover:scale-105"
-                  >
-                    <Image 
-                      src="/DzikiMichał.jpg" 
-                      alt="Michał - DzikiStyl" 
-                      fill
-                      quality={100}
-                      priority
-                      sizes="(max-width: 768px) 256px, (max-width: 1024px) 384px, 512px"
-                      className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" 
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <Image 
-                        src="/dzikistyl-logo.png" 
-                        alt="DzikiStyl Logo Pulse" 
-                        fill 
-                        quality={100}
-                        sizes="(max-width: 768px) 256px, (max-width: 1024px) 384px, 512px"
-                        className="object-cover animate-logo-pulse group-hover:hidden" 
-                      />
-                      <Image 
-                        src="/dzikistyl-logo.png" 
-                        alt="DzikiStyl Logo" 
-                        fill 
-                        quality={100}
-                        sizes="(max-width: 768px) 256px, (max-width: 1024px) 384px, 512px"
-                        className="object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
-                      />
+                {/* Michał - DzikiStyl */}
+                <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-6 lg:gap-10">
+                  <div className="shrink-0 relative z-20">
+                    <a href="https://dzikistyldemo.vercel.app/" target="_blank" rel="noopener noreferrer" className="block w-40 h-40 lg:w-56 lg:h-56 rounded-full border-[3px] border-orange-500 bg-[#0B0B0C] shadow-[0_0_40px_rgba(234,88,12,0.3)] relative group overflow-hidden transition-transform duration-500 hover:scale-105">
+                      <Image src="/DzikiMichał.jpg" alt="Michał - DzikiStyl" fill quality={90} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <Image src="/dzikistyl-logo.png" alt="DzikiStyl Logo" fill quality={90} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      </div>
+                    </a>
+                  </div>
+                  <div className="relative w-full lg:w-2/3 bg-[#121214] border border-white/5 rounded-3xl p-6 lg:p-8 shadow-2xl">
+                    <div className="hidden lg:block absolute top-12 -left-[16px] w-0 h-0 border-y-[16px] border-y-transparent border-r-[16px] border-r-white/5"></div>
+                    <div className="hidden lg:block absolute top-12 -left-[15px] w-0 h-0 border-y-[15px] border-y-transparent border-r-[15px] border-r-[#121214] z-10"></div>
+                    <div className="mb-4">
+                      <h3 className="text-orange-500 font-bold tracking-widest uppercase text-sm">Komentarz Michała</h3>
+                      <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mt-1">Właściciel, DzikiStyl.com</p>
                     </div>
-                  </a>
+                    <div className="w-full h-px bg-white/5 mb-4" />
+                    <p className="text-sm font-light text-zinc-300 leading-relaxed italic text-left">
+                      &quot;{fixOrphans(`Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji. `)}<strong className="text-white font-medium">{fixOrphans(`To, co Marcin (Molenda Development) robi w pojedynkę, po prostu przekracza ludzkie pojęcie i technologicznie wyprzedza nasze czasy o 5 lat do przodu!`)}</strong>{fixOrphans(` Z całego serca polecam usługi Molenda Development każdemu. `)}<strong className="text-orange-500 font-medium">{fixOrphans(`Wielkie dzięki – zrobiłeś absolutny kosmos!`)}</strong>&quot;
+                    </p>
+                  </div>
                 </div>
 
-                {/* Right side: Speech Bubble Container */}
-                <div className="relative w-full lg:w-2/3 bg-[#121214] border border-white/5 rounded-3xl p-8 lg:p-12 shadow-2xl">
-                  {/* Left pointing triangle (visible on lg+) */}
-                  <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-[20px] w-0 h-0 border-y-[20px] border-y-transparent border-r-[20px] border-r-white/5"></div>
-                  <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-[19px] w-0 h-0 border-y-[19px] border-y-transparent border-r-[19px] border-r-[#121214] z-10"></div>
-                  
-                  {/* Header */}
-                  <div className="mb-6">
-                    <h3 className="text-orange-500 font-bold tracking-widest uppercase text-sm md:text-base">Komentarz Michała</h3>
-                    <p className="text-zinc-500 font-mono text-[10px] md:text-xs uppercase tracking-widest mt-1">Właściciel, DzikiStyl.com</p>
+                {/* Krzysztof - Sklep Urwis */}
+                <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-6 lg:gap-10">
+                  <div className="shrink-0 relative z-20">
+                    <a href="https://www.sklep-urwis.pl" target="_blank" rel="noopener noreferrer" className="block w-40 h-40 lg:w-56 lg:h-56 rounded-full border-[3px] border-blue-500 bg-[#0B0B0C] shadow-[0_0_40px_rgba(59,130,246,0.3)] relative group overflow-hidden transition-transform duration-500 hover:scale-105">
+                      <Image src="/Krzysztof_Urwis.jpg" alt="Krzysztof - Sklep Urwis" fill quality={90} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <Image src="/sklepurwis-logo.png" alt="Urwis Logo" fill quality={90} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      </div>
+                    </a>
                   </div>
-                  
-                  <div className="w-full h-px bg-white/5 mb-8" />
+                  <div className="relative w-full lg:w-2/3 bg-[#121214] border border-white/5 rounded-3xl p-6 lg:p-8 shadow-2xl">
+                    <div className="hidden lg:block absolute top-12 -left-[16px] w-0 h-0 border-y-[16px] border-y-transparent border-r-[16px] border-r-white/5"></div>
+                    <div className="hidden lg:block absolute top-12 -left-[15px] w-0 h-0 border-y-[15px] border-y-transparent border-r-[15px] border-r-[#121214] z-10"></div>
+                    <div className="mb-4">
+                      <h3 className="text-blue-500 font-bold tracking-widest uppercase text-sm">Komentarz Krzysztofa</h3>
+                      <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mt-1">Właściciel, Sklep-Urwis.pl</p>
+                    </div>
+                    <div className="w-full h-px bg-white/5 mb-4" />
+                    <p className="text-sm font-light text-zinc-300 leading-relaxed italic text-left">
+                      &quot;{fixOrphans(`Polecam z całego serca. Marcin stworzył dla mojego sklepu z zabawkami aplikację, która ma w sobie wszystko (i jeszcze więcej!) - koło fortuny z rabatami, strefę zabawy z grami na telefon i kolorowanki z naszym Urwisem. `)}<strong className="text-white font-medium">{fixOrphans(`Zarówno strona sklepu, jak i aplikacja PWA przeszły moje najśmielsze oczekiwania`)}</strong> - <strong className="text-blue-500 font-medium">{fixOrphans(`czysty profesjonalizm i masa bajerów.`)}</strong>&quot;
+                    </p>
+                  </div>
+                </div>
 
-                  {/* Quote */}
-                  <p className="text-sm md:text-base lg:text-lg font-light text-zinc-300 leading-relaxed italic text-left">
-                    &quot;Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług i konfiguracji wydruków. <strong className="text-white font-medium">To, co Marcin (Molenda Development) robi w pojedynkę, po prostu przekracza ludzkie pojęcie i technologicznie wyprzedza nasze czasy o 5 lat do przodu!</strong> Innowacyjne rozwiązania z gigantycznym potencjałem AI, niewiarygodnie płynne, dynamiczne systemy aplikacji, automatyczne integracje programów i ułatwienia wykonujące zadania na bieżąco – to owoce tej współpracy, które widzicie naocznie. <strong className="text-white font-medium">Do tego reakcja na jakiekolwiek sugestie była dosłownie błyskawiczna.</strong> Z całego serca polecam usługi Molenda Development każdemu, kto marzy o bezkompromisowej stronie www, dedykowanej aplikacji czy nowoczesnym sklepie. <strong className="text-orange-500 font-medium">Wielkie dzięki – zrobiłeś absolutny kosmos!</strong>&quot;
-                  </p>
+                {/* Maciek - Kajaki u Maćka */}
+                <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-6 lg:gap-10 pb-12">
+                  <div className="shrink-0 relative z-20">
+                    <a href="https://kajaki-u-macka.pl" target="_blank" rel="noopener noreferrer" className="block w-40 h-40 lg:w-56 lg:h-56 rounded-full border-[3px] border-emerald-500 bg-[#0B0B0C] shadow-[0_0_40px_rgba(16,185,129,0.3)] relative overflow-hidden transition-transform duration-500 hover:scale-105">
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4">
+                        <Image src="/kajaki-u-macka-logo.png" alt="Kajaki u Maćka Logo" fill quality={90} className="object-cover" />
+                      </div>
+                    </a>
+                  </div>
+                  <div className="relative w-full lg:w-2/3 bg-[#121214] border border-white/5 rounded-3xl p-6 lg:p-8 shadow-2xl">
+                    <div className="hidden lg:block absolute top-12 -left-[16px] w-0 h-0 border-y-[16px] border-y-transparent border-r-[16px] border-r-white/5"></div>
+                    <div className="hidden lg:block absolute top-12 -left-[15px] w-0 h-0 border-y-[15px] border-y-transparent border-r-[15px] border-r-[#121214] z-10"></div>
+                    <div className="mb-4">
+                      <h3 className="text-emerald-500 font-bold tracking-widest uppercase text-sm">Komentarz Maćka</h3>
+                      <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mt-1">Właściciel, Kajaki u Maćka</p>
+                    </div>
+                    <div className="w-full h-px bg-white/5 mb-4" />
+                    <p className="text-sm font-light text-zinc-300 leading-relaxed italic text-left">
+                      &quot;{fixOrphans(`O stary, `)}<strong className="text-white font-medium">{fixOrphans(`ta strona jest tak kozak, niespodziewałem się aż takiego efektu!`)}</strong>{fixOrphans(` Wygląda naprawdę obłędnie. `)}<br></br>{fixOrphans(`Oprócz zjawiskowej strony, Marcin od zera założył i skonfigurował moją Wizytówkę Google i Fanpage na Facebooku, zachowując ten sam świetny motyw wizualny. Dał mi też potężne, praktyczne rady jak z nich korzystać, żeby skutecznie ściągać klientów na rzekę. `)}<strong className="text-emerald-500 font-medium">{fixOrphans(`Jest klasa, jesteś szef po prostu!`)}</strong>&quot;
+                    </p>
+                  </div>
                 </div>
 
               </div>

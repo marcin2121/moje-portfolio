@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
+import { fixOrphans } from '@/utils/typography';
 
 export function ProcessSection({ isDevMode }: { isDevMode: boolean }) {
   const steps = [
@@ -35,7 +36,7 @@ export function ProcessSection({ isDevMode }: { isDevMode: boolean }) {
             {isDevMode ? 'Engineering Lifecycle' : 'Proces nastawiony na wyniki'}
           </h2>
           <p className="text-[#A1A1A5] text-lg max-w-2xl mx-auto font-light leading-relaxed">
-            {isDevMode ? 'A rigorous, systematic approach to software delivery ensuring zero downtime and high maintainability.' : 'Brak ukrytych kosztów i niedotrzymanych terminów. Pracujemy na czystych zasadach, według sprawdzonego schematu inżynieryjnego.'}
+            {fixOrphans(isDevMode ? 'A rigorous, systematic approach to software delivery ensuring zero downtime and high maintainability.' : 'Brak ukrytych kosztów i niedotrzymanych terminów. Pracujemy na czystych zasadach, według sprawdzonego schematu inżynieryjnego.')}
           </p>
         </div>
 
@@ -61,7 +62,7 @@ export function ProcessSection({ isDevMode }: { isDevMode: boolean }) {
                     {isDevMode ? step.devTitle : step.bizTitle}
                   </h3>
                   <p className="text-[#A1A1A5] font-light leading-relaxed">
-                    {isDevMode ? step.devDesc : step.bizDesc}
+                    {fixOrphans(isDevMode ? step.devDesc : step.bizDesc)}
                   </p>
                 </div>
               </motion.div>

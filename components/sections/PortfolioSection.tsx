@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ExternalLink, Terminal } from 'lucide-react';
 import AnimatedWebP from '@/components/ui/AnimatedWebP';
 import Image from 'next/image';
+import { fixOrphans } from '@/utils/typography';
 
 export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
   const projects = [
@@ -12,9 +13,9 @@ export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
       tags: ['Zaawansowana personalizacja', 'Migracja Next.js'],
       devTags: ['Headless Commerce', 'React Three Fiber', 'Direct-Upload R2'],
       desc: 'Drukarnia Online & Studio Graficzne',
-      challenge: 'Klient potrzebował gruntownej przebudowy ociężałego systemu, aby skalować sprzedaż B2B. Problemem była obsługa gigabajtowych plików graficznych &quot;zapychających&quot; serwery oraz brak elastyczności w błyskawicznym zarządzaniu marżą netto/brutto w wielokrokowym konfiguratorem poligraficznym.',
-      solution: 'Zaprojektowanie dedykowanej architektury "Headless Commerce" (Next.js App Router). Wdrożenie zaawansowanego kreatora zamówień opartego na stanie w URL (nuqs) i globalnym stanie (Zustand), oraz architektury Direct-Upload przesyłającej pliki graficzne bezpośrednio do Cloudflare R2.',
-      result: 'Skrócenie czasu ładowania strony o 70% (milisekundy). Całkowite odciążenie serwerów od przetwarzania plików graficznych oraz drastyczna poprawa pozycjonowania SEO i doświadczenia klienta agencyjnego (B2B).',
+      challenge: 'Klient potrzebował szybkiej platformy B2B. Problemem była obsługa wielkich plików graficznych zapychających serwery oraz brak elastyczności konfiguratora.',
+      solution: 'Zaprojektowaliśmy system "Headless Commerce" w Next.js. Wdrożyliśmy płynny kreator zamówień B2B i architekturę zrzucającą ciężar plików graficznych bezpośrednio do chmury (Cloudflare R2).',
+      result: 'Skrócenie czasu ładowania do ułamków sekund, odciążenie serwerów oraz drastyczna poprawa wyników pozycjonowania SEO.',
       img: '/dzikistyl.jpg',
       link: 'https://dzikistyldemo.vercel.app/'
     },
@@ -41,31 +42,36 @@ export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
       link: 'https://zamowtu.pl'
     },
     {
-      title: 'Opal',
-      tags: ['BI', 'Analiza Danych', 'Node.js'],
-      devTags: ['K-Means Clustering', 'Data Visualization', 'No-Python ML'],
-      desc: 'Business Intelligence Panel',
-      challenge: 'Potrzeba potężnego panelu do analizy i segmentacji dużych zbiorów danych bez konieczności stawiania zewnętrznych, drogich serwerów Python do machine learningu.',
-      solution: 'Wdrożenie nienadzorowanego uczenia maszynowego (K-Means z diagnostyką Metody Łokcia) bezpośrednio w architekturze Node.js, dostarczając interaktywne wykresy profilowe i symulator What-If.',
-      result: 'Błyskawiczne, darmowe w utrzymaniu przetwarzanie danych analitycznych i precyzyjne prognozowanie bezpośrednio w przeglądarce klienta.',
-      img: '/opal.webp',
-      link: '#'
+      title: 'Kajaki u Maćka',
+      tags: ['Strona Wizerunkowa', 'Wizytówka Google'],
+      devTags: ['Next.js', 'SEO', 'Social Media'],
+      desc: 'Spływy Kajakowe Pilicą w Biejkowie',
+      challenge: 'Lokalny biznes turystyczny potrzebował nowoczesnego wizerunku w sieci oraz pełnej konfiguracji Social Mediów i map Google, by wyróżnić się na tle ogromnej, lokalnej konkurencji na Pilicy.',
+      solution: 'Zbudowanie superszybkiego landing page\'a z systemem automatycznego pozyskiwania opinii. Pełna konfiguracja fanpage\'a i Wizytówki Google ze zintegrowanym, spójnym motywem wizualnym.',
+      result: 'Niewiarygodny skok zaufania u nowych klientów i błyskawiczne pozyskiwanie pozytywnych opinii (5 gwiazdek) z wyszukiwarki Google, co napędza rezerwacje na nadchodzący weekend bez żadnego budżetu reklamowego.',
+      img: '/kajaki.png',
+      link: 'https://kajaki-u-macka.pl'
     }
   ];
 
   return (
     <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-[#161618] border-t border-[#222225]">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="text-3xl md:text-5xl font-black text-[#F5F5F7] tracking-tight mb-6">
-            {isDevMode ? 'Production Deployments' : 'Wybrane wdrożenia produkcyjne'}
-          </h2>
-          <p className="text-[#A1A1A5] text-lg max-w-2xl mx-auto font-light leading-relaxed">
-            {isDevMode 
-              ? 'Analyzing real-world bottlenecks solved via custom monolithic-to-headless migrations and heavy API integrations.' 
-              : 'Nie obiecuję niemożliwego – dowożę mierzalne rezultaty. Przeczytaj, jak moje realizacje zmieniły operacje w firmach klientów.'}
-          </p>
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <div className="flex items-center gap-2 text-orange-500 font-mono tracking-widest uppercase text-sm mb-4">
+          <Terminal size={16} />
+          <span>Moje realizacje</span>
         </div>
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white mb-16">
+          Wybrane<br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600">
+            projekty B2B
+          </span>
+        </h2>
+          <p className="text-[#A1A1A5] text-lg max-w-2xl mx-auto font-light leading-relaxed mb-20">
+            {fixOrphans(isDevMode 
+              ? 'Analyzing real-world bottlenecks solved via custom monolithic-to-headless migrations and heavy API integrations.' 
+              : 'Nie obiecuję niemożliwego – dowożę mierzalne rezultaty. Przeczytaj, jak moje realizacje zmieniły operacje w firmach klientów.')}
+          </p>
 
         <div className="space-y-24">
           {projects.map((project, idx) => (
@@ -108,19 +114,19 @@ export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
                     <h4 className="text-sm font-mono text-[#A1A1A5] uppercase tracking-widest mb-2 flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> {isDevMode ? 'Issue / Challenge' : 'Wyzwanie'}
                     </h4>
-                    <p className="text-[#F5F5F7] font-light leading-relaxed">{project.challenge}</p>
+                    <p className="text-[#F5F5F7] font-light leading-relaxed">{fixOrphans(project.challenge)}</p>
                   </div>
                   <div>
                     <h4 className="text-sm font-mono text-[#A1A1A5] uppercase tracking-widest mb-2 flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> {isDevMode ? 'Technical Implementation' : 'Rozwiązanie techniczne'}
                     </h4>
-                    <p className="text-[#F5F5F7] font-light leading-relaxed">{project.solution}</p>
+                    <p className="text-[#F5F5F7] font-light leading-relaxed">{fixOrphans(project.solution)}</p>
                   </div>
                   <div className="p-6 rounded-xl bg-[#0B0B0C] border border-[#222225] border-l-4 border-l-[#FF6900]">
                     <h4 className="text-sm font-mono text-[#FF6900] uppercase tracking-widest mb-2 flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FF6900]" /> {isDevMode ? 'ROI & Business Impact' : 'Wynik Biznesowy i ROI'}
                     </h4>
-                    <p className="text-[#F5F5F7] font-bold leading-relaxed">{project.result}</p>
+                    <p className="text-[#F5F5F7] font-bold leading-relaxed">{fixOrphans(project.result)}</p>
                   </div>
                 </div>
               </div>
@@ -141,7 +147,7 @@ export function PortfolioSection({ isDevMode }: { isDevMode: boolean }) {
           <div className="text-6xl text-[#FF6900] font-serif absolute top-8 left-8 opacity-20">&quot;</div>
           
           <p className="text-xl md:text-3xl font-light text-[#F5F5F7] leading-relaxed relative z-10 max-w-4xl mx-auto italic mb-10">
-            Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług. To, co Marcin robi w pojedynkę, po prostu przekracza ludzkie pojęcie i <span className="text-[#FF6900] font-bold">technologicznie wyprzedza nasze czasy o 5 lat do przodu!</span> Z całego serca polecam usługi każdemu, kto marzy o bezkompromisowej aplikacji. Wielkie dzięki – zrobiłeś absolutny kosmos!
+            {fixOrphans(`Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług. To, co Marcin robi w pojedynkę, po prostu przekracza ludzkie pojęcie i `)}<span className="text-[#FF6900] font-bold">{fixOrphans(`technologicznie wyprzedza nasze czasy o 5 lat do przodu!`)}</span>{fixOrphans(` Z całego serca polecam usługi każdemu, kto marzy o bezkompromisowej aplikacji. Wielkie dzięki – zrobiłeś absolutny kosmos!`)}
           </p>
           
           <div className="flex flex-col items-center justify-center gap-2 relative z-10">

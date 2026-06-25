@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Configurator from '@/components/ui/Configurator';
+import { fixOrphans } from '@/utils/typography';
 
 export function CTASection({ isDevMode }: { isDevMode: boolean }) {
   return (
@@ -16,9 +17,9 @@ export function CTASection({ isDevMode }: { isDevMode: boolean }) {
           }
         </h2>
         <p className="text-[#A1A1A5] font-light leading-relaxed text-base md:text-xl mx-auto mb-10 max-w-2xl">
-          {isDevMode 
+          {fixOrphans(isDevMode 
             ? 'Skip the sales calls. Define your tech stack, outline your architectural requirements, and I will return with a precise implementation roadmap and system design.' 
-            : 'Masz dość technologii, która Cię ogranicza? Opisz mi w kilku krokach swój projekt, a wrócę do Ciebie z gotowym, bezkompromisowym planem działania.'}
+            : 'Masz dość technologii, która Cię ogranicza? Opisz mi w kilku krokach swój projekt, a wrócę do Ciebie z gotowym, bezkompromisowym planem działania.')}
         </p>
         <a href="mailto:kontakt@molendadevelopment.pl" className="text-sm font-mono text-[#A1A1A5] hover:text-[#FF6900] transition-colors underline underline-offset-4">
           kontakt@molendadevelopment.pl

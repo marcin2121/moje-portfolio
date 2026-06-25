@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { LayoutTemplate, Bot, LineChart } from 'lucide-react';
+import { fixOrphans } from '@/utils/typography';
 
 export function FeaturesSection({ isDevMode }: { isDevMode: boolean }) {
   const features = [
@@ -55,7 +56,7 @@ export function FeaturesSection({ isDevMode }: { isDevMode: boolean }) {
                 {isDevMode ? feat.devTitle : feat.bizTitle}
               </h3>
               <p className="text-[#A1A1A5] font-light leading-relaxed">
-                {isDevMode ? feat.devDesc : feat.bizDesc}
+                {fixOrphans(isDevMode ? feat.devDesc : feat.bizDesc)}
               </p>
             </motion.div>
           ))}

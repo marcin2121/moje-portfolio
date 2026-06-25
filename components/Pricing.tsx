@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Star, Code, Briefcase, Rocket, X, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { pushGTMEvent } from '@/app/page';
 import { sendContactEmail } from '@/app/actions/sendContactEmail';
+import { fixOrphans } from '@/utils/typography';
 
 const TIERS = [
   {
@@ -16,6 +17,7 @@ const TIERS = [
       'Indywidualny projekt graficzny (0 gotowych szablonów)',
       'Napisanie tekstów zorientowanych na sprzedaż',
       'Czas ładowania poniżej 1.5s (gwarancja wysokich pozycji w Google)',
+      'Założenie i optymalizacja Wizytówki Google (Google Moja Firma)',
       'Formularz kontaktowy spięty z Twoim e-mailem/telefonem',
       'Pełna zgodność z RODO i wdrożenie polityki prywatności',
       'Zaawansowane cyberbezpieczeństwo chmurowe: Twoja strona i dane klientów są w 100% odporne na ataki, a system posiada automatyczne, codzienne kopie zapasowe.',
@@ -110,7 +112,7 @@ export default function Pricing() {
           Jasne zasady. Transparentne ceny.<br />Wybierz rozwiązanie dla swojej skali.
         </h2>
         <p className="text-zinc-400 font-light max-w-2xl text-lg mb-10">
-          Podane ceny to kwoty &quot;od&quot;, ustalane na twardo przed linijką kodu. Żadnych niespodzianek na fakturze końcowej.
+          {fixOrphans(`Podane ceny to kwoty "od", ustalane na twardo przed linijką kodu. Żadnych niespodzianek na fakturze końcowej.`)}
         </p>
 
         {/* Cost of Inaction */}
@@ -126,7 +128,7 @@ export default function Pricing() {
           <div>
             <h4 className="text-white font-bold mb-2 text-lg">Ile tracisz każdego miesiąca przez wolną stronę?</h4>
             <p className="text-sm text-zinc-400 leading-relaxed font-light">
-              Jeśli z powodu braku formularza rezerwacji lub błędów technicznych rezygnuje z Ciebie zaledwie <strong className="text-zinc-200">5 klientów w miesiącu</strong> (przy usłudze 500 zł), tracisz rocznie <strong className="text-red-400">30 000 zł</strong>. Moja strona eliminuje ten koszt od pierwszego dnia.
+              {fixOrphans(`Jeśli z powodu braku formularza rezerwacji lub błędów technicznych rezygnuje z Ciebie zaledwie `)}<strong className="text-zinc-200">{fixOrphans(`5 klientów w miesiącu`)}</strong>{fixOrphans(` (przy usłudze 500 zł), tracisz rocznie `)}<strong className="text-red-400">{fixOrphans(`30 000 zł`)}</strong>{fixOrphans(`. Moja strona eliminuje ten koszt od pierwszego dnia.`)}
             </p>
           </div>
         </motion.div>
@@ -170,7 +172,7 @@ export default function Pricing() {
               <div className="h-px w-full bg-white/5 mb-6" />
 
               <p className="text-sm text-zinc-400 font-light leading-relaxed mb-6 min-h-[80px]">
-                {tier.target}
+                {fixOrphans(tier.target)}
               </p>
             </div>
 
@@ -180,7 +182,7 @@ export default function Pricing() {
                   <li key={fIdx} className="flex items-start gap-3">
                     <Check className={`w-4 h-4 shrink-0 mt-0.5 ${tier.highlighted ? 'text-orange-500' : 'text-zinc-500'}`} />
                     <span className={`text-sm leading-relaxed ${tier.highlighted && fIdx === 0 ? 'text-white font-medium' : 'text-zinc-300'}`}>
-                      {feat}
+                      {fixOrphans(feat)}
                     </span>
                   </li>
                 ))}
@@ -215,32 +217,32 @@ export default function Pricing() {
         </div>
         
         <p className="text-sm text-zinc-400 leading-relaxed font-light">
-          Nie każdy biznes potrzebuje budowy systemu od zera. Jeśli Twoja obecna strona nie dowozi wyników, ładuje się w nieskończoność lub toniesz w ręcznej papierologii, możemy wdrożyć punktowe rozwiązania:
+          {fixOrphans(`Nie każdy biznes potrzebuje budowy systemu od zera. Jeśli Twoja obecna strona nie dowozi wyników, ładuje się w nieskończoność lub toniesz w ręcznej papierologii, możemy wdrożyć punktowe rozwiązania:`)}
         </p>
         
         <ul className="space-y-4">
           <li className="flex items-start gap-3">
             <span className="text-xl shrink-0">🚀</span>
             <p className="text-sm text-zinc-300 leading-relaxed font-light">
-              <strong className="text-white font-medium">Ekstremalne Przyspieszenie (Core Web Vitals):</strong> Każda dodatkowa sekunda ładowania to utrata 7% klientów. Zoptymalizuję Twój kod tak, by strona otwierała się w ułamku sekundy, co zagwarantuje Ci wyższe pozycje w Google i ucieczkę przed konkurencją.
+              <strong className="text-white font-medium">Ekstremalne Przyspieszenie (Core Web Vitals):</strong> {fixOrphans(`Każda dodatkowa sekunda ładowania to utrata 7% klientów. Zoptymalizuję Twój kod tak, by strona otwierała się w ułamku sekundy, co zagwarantuje Ci wyższe pozycje w Google i ucieczkę przed konkurencją.`)}
             </p>
           </li>
           <li className="flex items-start gap-3">
             <span className="text-xl shrink-0">🤖</span>
             <p className="text-sm text-zinc-300 leading-relaxed font-light">
-              <strong className="text-white font-medium">Sama Automatyzacja i AI:</strong> Wdrożenie chatbota AI, automatycznego umawiania spotkań lub kalkulatorów wycen do Twojej obecnej witryny.
+              <strong className="text-white font-medium">Sama Automatyzacja i AI:</strong> {fixOrphans(`Wdrożenie chatbota AI, automatycznego umawiania spotkań lub kalkulatorów wycen do Twojej obecnej witryny.`)}
             </p>
           </li>
           <li className="flex items-start gap-3">
             <span className="text-xl shrink-0">🔍</span>
             <p className="text-sm text-zinc-300 leading-relaxed font-light">
-              <strong className="text-white font-medium">Płatny Audyt UX/SEO i Konwersji:</strong> Twoja strona ma ruch, ale nie sprzedaje? Prześwietlę ją i wskażę dokładne błędy, przez które tracisz pieniądze (tzw. wyciekające zapytania).
+              <strong className="text-white font-medium">Płatny Audyt UX/SEO i Konwersji:</strong> {fixOrphans(`Twoja strona ma ruch, ale nie sprzedaje? Prześwietlę ją i wskażę dokładne błędy, przez które tracisz pieniądze (tzw. wyciekające zapytania).`)}
             </p>
           </li>
           <li className="flex items-start gap-3">
             <span className="text-xl shrink-0">⚙️</span>
             <p className="text-sm text-zinc-300 leading-relaxed font-light">
-              <strong className="text-white font-medium">Zaawansowane integracje:</strong> Połączenie Twojej strony z CRM, systemami fakturowania lub narzędziami kurierskimi.
+              <strong className="text-white font-medium">Zaawansowane integracje:</strong> {fixOrphans(`Połączenie Twojej strony z CRM, systemami fakturowania lub narzędziami kurierskimi.`)}
             </p>
           </li>
         </ul>

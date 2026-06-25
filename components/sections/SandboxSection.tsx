@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Database, ShoppingCart, Mail, CheckCircle2, Server, ArrowRight } from 'lucide-react';
+import { fixOrphans } from '@/utils/typography';
 
 export function SandboxSection() {
   const [isRunning, setIsRunning] = useState(false);
@@ -28,10 +29,10 @@ export function SandboxSection() {
   }, [isRunning, activeStep]);
 
   const nodes = [
-    { id: 0, title: 'WooCommerce', devTitle: 'Webhook (POST)', icon: <ShoppingCart size={20} />, desc: 'Nowe zamówienie', devDesc: 'Payload: { id: 8932, total: 1500 }' },
-    { id: 1, title: 'Baza Danych', devTitle: 'Supabase Insert', icon: <Database size={20} />, desc: 'Zapis w systemie', devDesc: 'INSERT INTO orders ...' },
-    { id: 2, title: 'Księgowość', devTitle: 'Fakturownia API', icon: <Server size={20} />, desc: 'Generowanie faktury', devDesc: 'Status: 201 Created' },
-    { id: 3, title: 'Powiadomienie', devTitle: 'Resend SMTP', icon: <Mail size={20} />, desc: 'Wysyłka e-maila do klienta', devDesc: 'sendEmail(customer@...)' },
+    { id: 0, title: 'WooCommerce', devTitle: 'Webhook (POST)', icon: <ShoppingCart size={20} />, desc: fixOrphans('Nowe zamówienie'), devDesc: 'Payload: { id: 8932, total: 1500 }' },
+    { id: 1, title: 'Baza Danych', devTitle: 'Supabase Insert', icon: <Database size={20} />, desc: fixOrphans('Zapis w systemie'), devDesc: 'INSERT INTO orders ...' },
+    { id: 2, title: 'Księgowość', devTitle: 'Fakturownia API', icon: <Server size={20} />, desc: fixOrphans('Generowanie faktury'), devDesc: 'Status: 201 Created' },
+    { id: 3, title: 'Powiadomienie', devTitle: 'Resend SMTP', icon: <Mail size={20} />, desc: fixOrphans('Wysyłka e-maila do klienta'), devDesc: 'sendEmail(customer@...)' },
   ];
 
   return (
@@ -42,7 +43,7 @@ export function SandboxSection() {
             Przetestuj interaktywny symulator procesu
           </h2>
           <p className="text-[#A1A1A5] text-lg max-w-2xl mx-auto font-light leading-relaxed">
-            Zobacz na żywo, jak automatyzacja zastępuje pracę ręczną. Kliknij przycisk poniżej, aby zasymulować przepływ zamówienia.
+            {fixOrphans(`Zobacz na żywo, jak automatyzacja zastępuje pracę ręczną. Kliknij przycisk poniżej, aby zasymulować przepływ zamówienia.`)}
           </p>
         </div>
 

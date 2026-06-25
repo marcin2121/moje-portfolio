@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Target, Clock, FileWarning, Rocket, ArrowRight, CheckCircle2, ArrowLeft, Mail, Check } from 'lucide-react';
 import MagneticWrapper from '@/components/ui/MagneticWrapper';
 import { pushGTMEvent } from '@/app/page';
+import { fixOrphans } from '@/utils/typography';
 
 const PROBLEMS = [
   { id: 'brak_klientow', icon: Target, label: 'Brak klientów z sieci', desc: 'Ruch nie przekłada się na zapytania i zyski.' },
@@ -56,7 +57,7 @@ export default function Configurator() {
           <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12 text-green-500" />
         </motion.div>
         <h3 className="text-2xl md:text-3xl text-white font-bold mb-4">Wiadomość wysłana!</h3>
-        <p className="text-base md:text-lg text-zinc-400 max-w-lg">Wkrótce otrzymasz wstępną wycenę i plan działania na podany adres e-mail.</p>
+        <p className="text-base md:text-lg text-zinc-400 max-w-lg">{fixOrphans(`Wkrótce otrzymasz wstępną wycenę i plan działania na podany adres e-mail.`)}</p>
       </div>
     );
   }
@@ -77,7 +78,7 @@ export default function Configurator() {
           <motion.div key="step1" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col w-full px-2 md:px-0">
             <div className="text-center mb-8 md:mb-12 relative">
               <h3 className="text-2xl md:text-5xl text-white font-bold mb-3 md:mb-4">Z czym obecnie masz największy problem?</h3>
-              <p className="text-zinc-500 md:text-zinc-400 font-mono text-[10px] md:text-sm uppercase tracking-widest">Wybierz jedną opcję poniżej</p>
+              <p className="text-zinc-500 md:text-zinc-400 font-mono text-[10px] md:text-sm uppercase tracking-widest">{fixOrphans(`Wybierz jedną opcję poniżej`)}</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5 max-w-4xl mx-auto w-full">
@@ -95,7 +96,7 @@ export default function Configurator() {
                     </div>
                     <div className="flex-1">
                       <div className={`text-base md:text-xl font-bold mb-1 md:mb-2 ${isSelected ? 'text-white' : 'text-zinc-200'}`}>{opt.label}</div>
-                      <div className="text-[11px] md:text-sm text-zinc-500 leading-relaxed">{opt.desc}</div>
+                      <div className="text-[11px] md:text-sm text-zinc-500 leading-relaxed">{fixOrphans(opt.desc)}</div>
                     </div>
                   </button>
                 );
@@ -108,7 +109,7 @@ export default function Configurator() {
           <motion.div key="step2" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col w-full max-w-2xl mx-auto px-4 md:px-0">
             <div className="text-center mb-8 md:mb-12">
               <h3 className="text-3xl md:text-5xl text-white font-bold mb-3 md:mb-4">Świetnie, mam na to rozwiązanie.</h3>
-              <p className="text-zinc-400 text-sm md:text-xl">Gdzie mam wysłać wycenę i plan działania?</p>
+              <p className="text-zinc-400 text-sm md:text-xl">{fixOrphans(`Gdzie mam wysłać wycenę i plan działania?`)}</p>
             </div>
             
             <form onSubmit={handleSubmit} className="space-y-4 w-full">

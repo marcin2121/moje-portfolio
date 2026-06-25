@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 
@@ -9,11 +9,7 @@ const plusJakarta = Plus_Jakarta_Sans({
   variable: '--font-plus-jakarta',
 });
 
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  display: 'swap',
-  variable: '--font-geist-mono',
-});
+
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -75,7 +71,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="pl">
       {/* Plus Jakarta Sans applied globally */}
-      <body suppressHydrationWarning className={`${plusJakarta.variable} ${geistMono.variable} font-sans bg-zinc-950 text-zinc-50 antialiased selection:bg-orange-500/30 selection:text-orange-200`}>
+      <body suppressHydrationWarning className={`${plusJakarta.variable} font-sans bg-zinc-950 text-zinc-50 antialiased selection:bg-orange-500/30 selection:text-orange-200`}>
          
          {/* Umami Analytics (cookie-free, GDPR-compliant) */}
          <Script 

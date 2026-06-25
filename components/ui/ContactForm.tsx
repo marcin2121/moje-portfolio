@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { sendContactEmail } from '@/app/actions/sendContactEmail';
 import { CheckCircle2, AlertCircle, Loader2, Target, Clock, FileWarning, Rocket, Mail, Check, ArrowLeft, ArrowRight } from 'lucide-react';
 import { pushGTMEvent } from '@/app/page';
+import { fixOrphans } from '@/utils/typography';
 
 const PROBLEMS = [
   { id: 'brak_klientow', icon: Target, label: 'Brak klientów z sieci', desc: 'Ruch nie przekłada się na zapytania i zyski.' },
@@ -60,7 +61,7 @@ export default function ContactForm() {
           >
             <CheckCircle2 className="w-16 h-16 text-green-500" />
             <h3 className="text-2xl font-bold text-white tracking-tight">Wiadomość wysłana!</h3>
-            <p className="text-zinc-400 font-light">Spodziewaj się wiadomości z wyceną i planem w ciągu najbliższych 24 godzin roboczych.</p>
+            <p className="text-zinc-400 font-light">{fixOrphans(`Spodziewaj się wiadomości z wyceną i planem w ciągu najbliższych 24 godzin roboczych.`)}</p>
           </motion.div>
         ) : (
           <div className="w-full flex flex-col items-center relative">
@@ -82,7 +83,7 @@ export default function ContactForm() {
                       Z czym obecnie masz <span className="text-orange-500">największy problem?</span>
                     </h2>
                     <p className="text-zinc-400 font-mono text-[10px] md:text-sm uppercase tracking-widest">
-                      Wybierz jedną opcję poniżej
+                      {fixOrphans(`Wybierz jedną opcję poniżej`)}
                     </p>
                   </div>
                   
@@ -101,7 +102,7 @@ export default function ContactForm() {
                           </div>
                           <div className="flex-1">
                             <div className={`text-base md:text-xl font-bold mb-1 md:mb-2 ${isSelected ? 'text-white' : 'text-zinc-200'}`}>{opt.label}</div>
-                            <div className="text-[11px] md:text-sm text-zinc-500 leading-relaxed">{opt.desc}</div>
+                            <div className="text-[11px] md:text-sm text-zinc-500 leading-relaxed">{fixOrphans(opt.desc)}</div>
                           </div>
                         </button>
                       );
@@ -117,7 +118,7 @@ export default function ContactForm() {
                       Świetnie, mam na to <span className="text-orange-500">rozwiązanie.</span>
                     </h2>
                     <p className="text-zinc-400 font-light text-base md:text-xl">
-                      Gdzie mam wysłać bezpłatną wycenę i plan działania?
+                      {fixOrphans(`Gdzie mam wysłać bezpłatną wycenę i plan działania?`)}
                     </p>
                   </div>
                   

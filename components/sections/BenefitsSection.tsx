@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
+import { fixOrphans } from '@/utils/typography';
 
 export function BenefitsSection() {
   const benefits = [
@@ -54,7 +55,7 @@ export function BenefitsSection() {
                   {ben.value === '100%' && <span className="text-orange-500 text-5xl">.</span>}
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">{ben.title}</h3>
-                <p className="text-sm font-light text-zinc-400 leading-relaxed max-w-lg">{ben.desc}</p>
+                <p className="text-sm font-light text-zinc-400 leading-relaxed max-w-lg">{fixOrphans(ben.desc)}</p>
               </div>
               <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
                 <motion.div 

@@ -139,6 +139,7 @@ export const offers: Record<string, ClientOffer> = {
           "Indywidualny, nowoczesny projekt graficzny budujący status premium przystani w Biejkowie (zero powtarzalnych szablonów)",
           "Teksty sprzedażowe precyzyjnie trafiające w potrzeby firm szukających integracji oraz ekip organizujących weekendowe wypady",
           "Czas ładowania strony poniżej 1.5s – bezbłędne działanie na smartfonach klientów stojących nad rzeką przy słabym zasięgu LTE",
+          "Założenie i optymalizacja Wizytówki Google (Google Moja Firma)",
           "Ultra-prosty formularz kontaktowy z natychmiastowym powiadomieniem na Twój e-mail i telefon",
           "Pełne wdrożenie polityki prywatności i zgodności z RODO dla pełnego bezpieczeństwa prawnego",
           "Pancerne zabezpieczenia chmurowe odporne na ataki konkurencji i automatyczne, codzienne kopie zapasowe bazy danych",

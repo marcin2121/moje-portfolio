@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { fixOrphans } from '@/utils/typography';
 
 const FAQ_ITEMS = [
   {
@@ -19,7 +20,7 @@ const FAQ_ITEMS = [
   },
   {
     question: "Co się stanie, jeśli po 3 miesiącach coś na stronie przestałoby działać?",
-    answer: "W cenie każdego projektu dostajesz ode mnie 6 miesięcy opieki technicznej. Jeśli cokolwiek z winy kodu przestanie funkcjonować prawidłowo – naprawiam to na swój koszt. Po upływie pół roku możesz wykupić pakiet stałej opieki, ale nie musisz; te strony są tak stabilne, że psują się raz na kilka lat."
+    answer: "W cenie każdego projektu dostajesz ode mnie 6 miesięcy opieki technicznej. Jeśli cokolwiek z winy kodu przestanie funkcjonować prawidłowo – naprawiam to na swój koszt. Po upływie pół roku możesz wykupić pakiet stałej opieki, ale nie dlatego, że się psują (bo są tak stabilne!), tylko po to abym mógł na bieżąco wprowadzać aktualizacje, które w tak szybko pędzącym świecie technologii pozwolą Ci zawsze być na topie i być zawsze o krok przed konkurencją."
   }
 ];
 
@@ -36,7 +37,7 @@ export default function FAQ() {
           </div>
           <h2 className="text-4xl sm:text-6xl text-white tracking-tighter mb-6 font-black">Odpowiedzi na obawy</h2>
           <p className="text-zinc-400 text-sm sm:text-base font-light max-w-2xl">
-            Inwestycja w nowoczesną stronę to odpowiedzialna decyzja. Oto wyjaśnienie najczęstszych kwestii, bez owijania w bawełnę.
+            {fixOrphans(`Inwestycja w nowoczesną stronę to odpowiedzialna decyzja. Oto wyjaśnienie najczęstszych kwestii, bez owijania w bawełnę.`)}
           </p>
         </div>
 
@@ -53,7 +54,7 @@ export default function FAQ() {
                   className="w-full flex items-center justify-between p-6 sm:p-8 text-left"
                 >
                   <span className={`text-lg sm:text-xl font-medium transition-colors duration-300 ${isOpen ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
-                    {item.question}
+                    {fixOrphans(item.question)}
                   </span>
                   <div className={`p-2 rounded-full transition-transform duration-500 shrink-0 ml-4 ${isOpen ? 'bg-orange-500 rotate-180 text-zinc-100' : 'bg-zinc-900 text-zinc-600'}`}>
                     <ChevronDown size={20} />
@@ -70,7 +71,7 @@ export default function FAQ() {
                       className="overflow-hidden"
                     >
                       <div className="px-6 pb-8 sm:px-8 text-zinc-400 text-sm sm:text-base leading-relaxed font-light border-t border-white/5 pt-6">
-                        {item.answer}
+                        {fixOrphans(item.answer)}
                       </div>
                     </motion.div>
                   )}

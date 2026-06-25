@@ -2,6 +2,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Smartphone, Edit3, MessageSquare } from 'lucide-react';
+import { fixOrphans } from '@/utils/typography';
 
 export function ProblemSection() {
   const ref = useRef(null);
@@ -44,7 +45,7 @@ export function ProblemSection() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1] mb-8"
           >
-            Dlaczego tradycyjne strony z szablonów niszczą Twój biznes <span className="text-orange-500">(i jak to naprawiam)</span>
+            Dlaczego tradycyjne strony z&nbsp;szablonów niszczą Twój biznes <span className="text-orange-500">(i&nbsp;jak to naprawiam)</span>
           </motion.h2>
           
           <motion.div
@@ -62,7 +63,7 @@ export function ProblemSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-lg md:text-xl font-light text-zinc-400 leading-relaxed"
           >
-            Zbyt wiele biznesów zatrzymuje się przez niewłaściwie dobraną, powolną infrastrukturę, frustrując zarówno Ciebie jak i Twoich klientów. Znamy te problemy na wylot i niszczymy je u podstaw.
+            Zbyt wiele biznesów zatrzymuje się przez niewłaściwie dobraną, powolną infrastrukturę, frustrując zarówno Ciebie jak i&nbsp;Twoich klientów. Znamy te problemy na wylot i&nbsp;niszczymy je u&nbsp;podstaw.
           </motion.p>
         </div>
 
@@ -86,7 +87,7 @@ export function ProblemSection() {
                   {prob.title}
                 </h3>
                 <p className="text-sm font-light text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">
-                  {prob.desc}
+                  {fixOrphans(prob.desc)}
                 </p>
               </div>
             </motion.div>

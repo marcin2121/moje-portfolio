@@ -3,6 +3,8 @@
 import React, { Suspense, useEffect, useState, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Center } from '@react-three/drei';
+import Image from 'next/image';
+import { useGpuAcceleration } from '@/hooks/useGpuAcceleration';
 
 function Model({ url }: { url: string }) {
   const { scene } = useGLTF(url);
@@ -11,6 +13,7 @@ function Model({ url }: { url: string }) {
 
 export default function UrwisModel() {
   const [isInView, setIsInView] = useState(false);
+  const hasGpu = useGpuAcceleration();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,6 +39,10 @@ export default function UrwisModel() {
       {!isInView ? (
         <div className="w-full h-full flex items-center justify-center animate-pulse bg-zinc-900">
           <span className="text-zinc-600 font-mono text-xs">Wczytywanie sceny...</span>
+        </div>
+      ) : !hasGpu ? (
+        <div className="w-full h-full relative">
+          <Image src="/sklepurwis.png" alt="Sklep Urwis Model Fallback" fill className="object-cover" />
         </div>
       ) : (
         <Canvas

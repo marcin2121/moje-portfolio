@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Target, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { ClientOffer } from '@/data/offers';
+import { fixOrphans } from '@/utils/typography';
 
 interface OfferDiagnosisProps {
   painPoints: ClientOffer['painPoints'];
@@ -27,13 +28,13 @@ export default function OfferDiagnosis({ painPoints, competitorAnalysis, solutio
               <AlertTriangle size={24} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Główne Wyzwania</h2>
-            <p className="text-zinc-400">Podsumowanie tego, co obecnie powstrzymuje Twój biznes przed skalowaniem, na podstawie naszej diagnozy.</p>
+            <p className="text-zinc-400">{fixOrphans(`Podsumowanie tego, co obecnie powstrzymuje Twój biznes przed skalowaniem, na podstawie naszej diagnozy.`)}</p>
           </div>
           <div className="space-y-4">
             {painPoints.map((point, idx) => (
               <div key={idx} className="p-6 rounded-2xl bg-zinc-900/50 border border-white/5 flex gap-4">
                 <span className="text-red-500 font-mono mt-1">0{idx + 1}</span>
-                <p className="text-zinc-300">{point}</p>
+                <p className="text-zinc-300">{fixOrphans(point)}</p>
               </div>
             ))}
           </div>
@@ -51,7 +52,7 @@ export default function OfferDiagnosis({ painPoints, competitorAnalysis, solutio
               <Target size={24} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Analiza Konkurencji</h2>
-            <p className="text-zinc-400">Sprawdziłem, gdzie dokładnie Twoja konkurencja buduje przewagę technologiczną w internecie.</p>
+            <p className="text-zinc-400">{fixOrphans(`Sprawdziłem, gdzie dokładnie Twoja konkurencja buduje przewagę technologiczną w internecie.`)}</p>
           </div>
           <div className="space-y-6">
             {competitorAnalysis.map((comp, idx) => (
@@ -64,7 +65,7 @@ export default function OfferDiagnosis({ painPoints, competitorAnalysis, solutio
                   {comp.whatTheyDoBetter.map((item, i) => (
                     <li key={i} className="text-zinc-400 flex gap-3 items-start">
                       <span className="text-orange-500 mt-1">→</span>
-                      {item}
+                      {fixOrphans(item)}
                     </li>
                   ))}
                 </ul>
@@ -85,13 +86,13 @@ export default function OfferDiagnosis({ painPoints, competitorAnalysis, solutio
               <CheckCircle2 size={24} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Rozwiązanie</h2>
-            <p className="text-zinc-400">Oto dokładny plan działania, który wdrożę, aby zdominować rynek i odzyskać Twój czas.</p>
+            <p className="text-zinc-400">{fixOrphans(`Oto dokładny plan działania, który wdrożę, aby zdominować rynek i odzyskać Twój czas.`)}</p>
           </div>
           <div className="space-y-4">
             {solutionSteps.map((step, idx) => (
               <div key={idx} className="p-6 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 flex gap-4">
                 <CheckCircle2 className="text-emerald-500 shrink-0 mt-0.5" size={20} />
-                <p className="text-zinc-200 font-medium">{step}</p>
+                <p className="text-zinc-200 font-medium">{fixOrphans(step)}</p>
               </div>
             ))}
           </div>

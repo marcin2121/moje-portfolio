@@ -1,6 +1,7 @@
 'use client';
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { fixOrphans } from '@/utils/typography';
 
 export function HowItWorksSection() {
   const ref = useRef(null);
@@ -10,7 +11,7 @@ export function HowItWorksSection() {
   const steps = [
     {
       num: '01',
-      title: 'Szybka wycena (Asynchronicznie)',
+      title: 'Szybka wycena (Online)',
       desc: 'Wypełniasz 3 proste pola w formularzu na dole strony. Nie tracimy czasu na długie telefony. Analizuję Twój problem i w ciągu 24 godzin wysyłam Ci na maila konkretny plan działania i wstępne ramy cenowe.',
     },
     {
@@ -45,7 +46,7 @@ export function HowItWorksSection() {
             Cały proces w 4 prostych krokach.
           </h2>
           <p className="text-zinc-400 font-light text-lg relative z-10 max-w-2xl mx-auto">
-            Mówimy po polsku, nie po programistycznemu. 
+            {fixOrphans(`Mówimy po polsku, nie po programistycznemu.`)}
           </p>
         </div>
 
@@ -72,7 +73,9 @@ export function HowItWorksSection() {
                     {step.num}
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
-                  <p className="text-zinc-400 font-light text-sm leading-relaxed">{step.desc}</p>
+                  <p className="text-zinc-400 font-light text-sm leading-relaxed">
+                    {fixOrphans(step.desc)}
+                  </p>
                 </div>
               </motion.div>
             );

@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { ArrowRight, Check } from 'lucide-react';
 import { pushGTMEvent } from '@/app/page';
+import { fixOrphans } from '@/utils/typography';
 
 interface HeroProps {
   onNavigate: (index: number) => void;
@@ -24,7 +25,7 @@ export default function Hero({ onNavigate }: HeroProps) {
           </h1>
           
           <p className="text-lg sm:text-xl text-zinc-400 font-light leading-relaxed mb-10 max-w-2xl">
-            Uwalniam małe firmy od powolnych szablonów. Projektuję nowoczesne systemy, które odciążają Cię z ręcznej pracy i zdobywają klientów szybciej niż konkurencja. Płacisz raz, a maszyna działa bezawaryjnie.
+            {fixOrphans(`Uwalniam małe firmy od powolnych szablonów. Projektuję nowoczesne systemy, które odciążają Cię z ręcznej pracy i zdobywają klientów szybciej niż konkurencja. Płacisz raz, a maszyna działa bezawaryjnie.`)}
           </p>
 
           <ul className="flex flex-col gap-4 mb-10 text-left w-full sm:w-auto">
@@ -32,13 +33,13 @@ export default function Hero({ onNavigate }: HeroProps) {
               <div className="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center shrink-0 mt-0.5 border border-green-500/20">
                 <Check className="w-4 h-4 text-green-500 stroke-[3]" />
               </div>
-              <span>Gwarancja zwrotu 100% zaliczki przez 7 dni.</span>
+              <span dangerouslySetInnerHTML={{ __html: fixOrphans("Gwarancja zwrotu 100% zaliczki przez 7 dni.") }} />
             </li>
             <li className="flex items-start gap-3 text-zinc-100 text-sm sm:text-base font-medium">
               <div className="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center shrink-0 mt-0.5 border border-green-500/20">
                 <Check className="w-4 h-4 text-green-500 stroke-[3]" />
               </div>
-              <span>Konkretna wycena na e-mail w 24 godziny.</span>
+              <span dangerouslySetInnerHTML={{ __html: fixOrphans("Konkretna wycena na e-mail w 24 godziny.") }} />
             </li>
           </ul>
 
@@ -59,7 +60,7 @@ export default function Hero({ onNavigate }: HeroProps) {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-zinc-500/10 blur-[100px] rounded-full -z-10" />
           <div className="relative w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[440px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-zinc-800 bg-zinc-900">
             <Image
-              src="/Marcin.jpg"
+              src="/Marcin_Molenda_Development.png"
               alt="Marcin Molenda - Ekspert od szybkiej sprzedaży B2B"
               fill
               priority
@@ -106,7 +107,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             {/* Zamów Tu */}
             <a href="https://zamowtu.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
               <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/zamowtu-logo.png" alt="Zamów Tu" fill sizes="80px" quality={90} className="object-contain p-2 md:p-2.5" />
+                <Image src="/zamowtu-logo.png" alt="Zamów Tu" fill sizes="80px" quality={90} className="object-contain" />
               </div>
               <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
                 <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
@@ -118,11 +119,23 @@ export default function Hero({ onNavigate }: HeroProps) {
             {/* RLT Polska */}
             <a href="https://rltpolska.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
               <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/rltpolska-logo.png" alt="RLT Polska" fill sizes="80px" quality={90} className="object-contain p-2 md:p-2.5" />
+                <Image src="/rltpolska-logo.png" alt="RLT Polska" fill sizes="80px" quality={90} className="object-contain" />
               </div>
               <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
                 <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
                   RLTPolska - sklep internetowy z urządzeniami do terapii światłem
+                </div>
+              </div>
+            </a>
+
+            {/* Kajaki u Maćka */}
+            <a href="https://kajaki-u-macka.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-emerald-500/30 transition-all duration-300">
+              <div className="absolute inset-0 rounded-full overflow-hidden">
+                <Image src="/kajaki-u-macka-logo.png" alt="Kajaki u Maćka" fill sizes="80px" quality={90} className="object-cover scale-100" />
+              </div>
+              <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
+                <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
+                  Kajaki u Maćka - spływy kajakowe Pilicą
                 </div>
               </div>
             </a>

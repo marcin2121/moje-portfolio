@@ -6,6 +6,7 @@ import { Check } from 'lucide-react';
 import Link from 'next/link';
 import Pricing from '@/components/Pricing';
 import { ClientOffer } from '@/data/offers';
+import { fixOrphans } from '@/utils/typography';
 
 interface OfferPricingProps {
   packages: ClientOffer['packages'];
@@ -33,7 +34,7 @@ export default function OfferPricing({ packages, companyName }: OfferPricingProp
             Dedykowana Wycena
           </h2>
           <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
-            Wybierz wariant współpracy, który najlepiej odpowiada Twojemu obecnemu budżetowi i apetytowi na rozwój.
+            {fixOrphans(`Wybierz wariant współpracy, który najlepiej odpowiada Twojemu obecnemu budżetowi i apetytowi na rozwój.`)}
           </p>
         </div>
 
@@ -51,7 +52,7 @@ export default function OfferPricing({ packages, companyName }: OfferPricingProp
 
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-white mb-2">{pkg.name}</h3>
-                <p className="text-zinc-400 text-sm">{pkg.target}</p>
+                <p className="text-zinc-400 text-sm">{fixOrphans(pkg.target)}</p>
               </div>
 
               <div className="mb-8">
@@ -75,7 +76,7 @@ export default function OfferPricing({ packages, companyName }: OfferPricingProp
                 {pkg.features.map((feature, fIdx) => (
                   <li key={fIdx} className="flex items-start gap-3 text-zinc-300 text-sm">
                     <Check className="shrink-0 mt-0.5 text-zinc-500" size={18} />
-                    <span>{feature}</span>
+                    <span>{fixOrphans(feature)}</span>
                   </li>
                 ))}
               </ul>
