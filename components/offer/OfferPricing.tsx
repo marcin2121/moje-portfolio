@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Check } from 'lucide-react';
 import Link from 'next/link';
 import Pricing from '@/components/Pricing';
@@ -15,12 +15,28 @@ interface OfferPricingProps {
 
 export default function OfferPricing({ packages, companyName }: OfferPricingProps) {
   const [showGeneralOffer, setShowGeneralOffer] = useState(false);
+  const [acceptedTier, setAcceptedTier] = useState<string | null>(null);
 
-  // Funkcja wywołująca się po kliknięciu wyboru pakietu
-  const handleSelectPackage = (pkgName: string) => {
-    const subject = encodeURIComponent(`Akceptacja pakietu: ${pkgName} - ${companyName}`);
-    const body = encodeURIComponent(`Cześć,\n\nAkceptuję wycenę z oferty i wybieram pakiet: ${pkgName}.\nProszę o informację o kolejnych krokach (umowa/faktura).\n\nPozdrawiam,`);
-    window.location.href = `mailto:kontakt@molendadevelopment.pl?subject=${subject}&body=${body}`;
+  const handleSelectPackage = async (pkgName: string, price: string) => {
+    // 1. Zdarzenie Umami
+    if (typeof window !== 'undefined' && (window as any).umami) {
+      const slug = pkgName.toLowerCase().replace(/\s+/g, '_');
+      (window as any).umami.track(`oferta_click_tier_${slug}`);
+    }
+
+    // 2. Pokazanie panelu w interfejsie
+    setAcceptedTier(pkgName);
+
+    // 3. Wysłanie powiadomienia Resend
+    try {
+      await fetch('/api/accept-offer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ companyName, packageName: pkgName, price })
+      });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -82,11 +98,30 @@ export default function OfferPricing({ packages, companyName }: OfferPricingProp
               </ul>
 
               <button
-                onClick={() => handleSelectPackage(pkg.name)}
+                onClick={() => handleSelectPackage(pkg.name, pkg.price)}
                 className="w-full py-4 rounded-xl font-bold transition-all duration-300 hover:-translate-y-1 bg-white text-black hover:bg-zinc-200"
               >
                 {pkg.ctaText}
               </button>
+
+              <AnimatePresence>
+                {acceptedTier === pkg.name && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: 'auto', marginTop: 16 }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm leading-relaxed">
+                      <p className="font-bold mb-1">Świetny wybór.</p>
+                      <p>
+                        Zablokowałem dla Ciebie ten pakiet w cenie partnerskiej ({pkg.price} zł). Marcin dostał właśnie powiadomienie systemowe - odezwie się do Ciebie w ciągu kilku godzin.
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           ))}
         </div>
