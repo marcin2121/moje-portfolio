@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: 'System Ofertowy <kontakt@molendadevelopment.pl>',
+      from: 'Acme <onboarding@resend.dev>',
       to: ['kontakt@molendadevelopment.pl'],
       subject: `🔥 Nowa akceptacja oferty: ${companyName}`,
       html: `
@@ -27,11 +27,13 @@ export async function POST(request: Request) {
     });
 
     if (error) {
+      console.error("Resend Error:", error);
       return NextResponse.json({ error }, { status: 400 });
     }
 
     return NextResponse.json({ success: true, data });
   } catch (error) {
+    console.error("Server Error:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
