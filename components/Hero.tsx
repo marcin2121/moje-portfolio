@@ -64,7 +64,7 @@ export default function Hero({ onNavigate }: HeroProps) {
               alt="Marcin Molenda - Ekspert od szybkiej sprzedaży B2B"
               fill
               priority
-              quality={95}
+              quality={80}
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
@@ -83,7 +83,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             {/* DzikiStyl */}
             <a href="https://dzikistyldemo.vercel.app/" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-zinc-900 border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
               <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/dzikistyl-logo.png" alt="DzikiStyl" fill sizes="80px" quality={90} className="object-cover" />
+                <Image src="/dzikistyl-logo.png" alt="DzikiStyl" fill sizes="80px" quality={80} className="object-cover" />
               </div>
               <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
                 <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
@@ -95,7 +95,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             {/* Sklep Urwis */}
             <a href="https://sklep-urwis.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-zinc-900 border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
               <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/sklepurwis-logo.png" alt="Sklep Urwis" fill sizes="80px" quality={90} className="object-cover" />
+                <Image src="/sklepurwis-logo.png" alt="Sklep Urwis" fill sizes="80px" quality={80} className="object-cover" />
               </div>
               <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
                 <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
@@ -107,7 +107,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             {/* Zamów Tu */}
             <a href="https://zamowtu.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
               <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/zamowtu-logo.png" alt="Zamów Tu" fill sizes="80px" quality={90} className="object-contain" />
+                <Image src="/zamowtu-logo.png" alt="Zamów Tu" fill sizes="80px" quality={80} className="object-contain" />
               </div>
               <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
                 <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
@@ -119,7 +119,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             {/* RLT Polska */}
             <a href="https://rltpolska.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
               <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/rltpolska-logo.png" alt="RLT Polska" fill sizes="80px" quality={90} className="object-contain" />
+                <Image src="/rltpolska-logo.png" alt="RLT Polska" fill sizes="80px" quality={80} className="object-contain" />
               </div>
               <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
                 <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
@@ -131,7 +131,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             {/* Kajaki u Maćka */}
             <a href="https://kajaki-u-macka.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-emerald-500/30 transition-all duration-300">
               <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/kajaki-u-macka-logo.png" alt="Kajaki u Maćka" fill sizes="80px" quality={90} className="object-cover scale-100" />
+                <Image src="/kajaki-u-macka-logo.png" alt="Kajaki u Maćka" fill sizes="80px" quality={80} className="object-cover scale-100" />
               </div>
               <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
                 <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">

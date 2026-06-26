@@ -518,7 +518,7 @@ export default function PortfolioHome() {
                   pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'DzikiStyl' });
                   handleOpenDemo({ url: 'https://dzikistyldemo.vercel.app/', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
                 }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
-                  <Image src="/dzikistyl.jpg" alt="DzikiStyl" fill priority quality={90} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                  <Image src="/dzikistyl.jpg" alt="DzikiStyl" fill priority quality={80} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                   <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Sprawdź działanie</span>
                   </div>
@@ -599,7 +599,7 @@ export default function PortfolioHome() {
                   pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'zamowtu.pl' });
                   handleOpenDemo({ url: 'https://zamówtu.pl/demo', title: 'zamowtu.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-800' });
                 }} className="aspect-4/3 w-full bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden relative group shadow-2xl cursor-pointer order-1 lg:order-2">
-                  <Image src="/zamowtu.webp" alt="zamowtu.pl" fill priority quality={90} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                  <Image src="/zamowtu.webp" alt="zamowtu.pl" fill priority quality={80} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                   <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-800 px-6 py-3 rounded-lg shadow-2xl border border-orange-500/20">Sprawdź działanie</span>
                   </div>
@@ -656,9 +656,9 @@ export default function PortfolioHome() {
                 <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-6 lg:gap-10">
                   <div className="shrink-0 relative z-20">
                     <a href="https://dzikistyldemo.vercel.app/" target="_blank" rel="noopener noreferrer" className="block w-40 h-40 lg:w-56 lg:h-56 rounded-full border-[3px] border-orange-500 bg-[#0B0B0C] shadow-[0_0_40px_rgba(234,88,12,0.3)] relative group overflow-hidden transition-transform duration-500 hover:scale-105">
-                      <Image src="/DzikiMichał.jpg" alt="Michał - DzikiStyl" fill quality={90} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
+                      <Image src="/DzikiMichał.jpg" alt="Michał - DzikiStyl" fill sizes="224px" quality={80} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <Image src="/dzikistyl-logo.png" alt="DzikiStyl Logo" fill quality={90} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <Image src="/dzikistyl-logo.png" alt="DzikiStyl Logo" fill sizes="224px" quality={80} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </div>
                     </a>
                   </div>
@@ -680,9 +680,9 @@ export default function PortfolioHome() {
                 <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-6 lg:gap-10">
                   <div className="shrink-0 relative z-20">
                     <a href="https://www.sklep-urwis.pl" target="_blank" rel="noopener noreferrer" className="block w-40 h-40 lg:w-56 lg:h-56 rounded-full border-[3px] border-blue-500 bg-[#0B0B0C] shadow-[0_0_40px_rgba(59,130,246,0.3)] relative group overflow-hidden transition-transform duration-500 hover:scale-105">
-                      <Image src="/Krzysztof_Urwis.jpg" alt="Krzysztof - Sklep Urwis" fill quality={90} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
+                      <Image src="/Krzysztof_Urwis.jpg" alt="Krzysztof - Sklep Urwis" fill sizes="224px" quality={80} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <Image src="/sklepurwis-logo.png" alt="Urwis Logo" fill quality={90} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <Image src="/sklepurwis-logo.png" alt="Urwis Logo" fill sizes="224px" quality={80} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </div>
                     </a>
                   </div>
@@ -705,7 +705,7 @@ export default function PortfolioHome() {
                   <div className="shrink-0 relative z-20">
                     <a href="https://kajaki-u-macka.pl" target="_blank" rel="noopener noreferrer" className="block w-40 h-40 lg:w-56 lg:h-56 rounded-full border-[3px] border-emerald-500 bg-[#0B0B0C] shadow-[0_0_40px_rgba(16,185,129,0.3)] relative overflow-hidden transition-transform duration-500 hover:scale-105">
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4">
-                        <Image src="/kajaki-u-macka-logo.png" alt="Kajaki u Maćka Logo" fill quality={90} className="object-cover" />
+                        <Image src="/kajaki-u-macka-logo.png" alt="Kajaki u Maćka Logo" fill sizes="224px" quality={80} className="object-cover" />
                       </div>
                     </a>
                   </div>

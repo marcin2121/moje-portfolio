@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   compress: true,
   
   images: {
-    qualities: [75, 95, 100],
+    formats: ['image/avif', 'image/webp'],
   },
 
   experimental: {
@@ -45,10 +45,6 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https:; font-src 'self' data:; connect-src 'self' https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl; frame-src 'self' https://www.youtube.com https://n8n.molendadevelopment.pl;",
           }
         ],
       },
