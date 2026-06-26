@@ -22,7 +22,7 @@ export async function POST(request: Request) {
         <p><strong>Wybrany pakiet:</strong> ${packageName}</p>
         <p><strong>Kwota pakietu:</strong> ${price} zł</p>
         <br/>
-        <p><em>Zablokowano pakiet. Odezwiij się do klienta w ciągu kilku godzin.</em></p>
+        <p><em>Wybrano pakiet. Odezwij się do klienta w ciągu kilku godzin.</em></p>
       `,
     });
 
