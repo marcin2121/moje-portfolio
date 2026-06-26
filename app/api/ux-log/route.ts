@@ -1,31 +1,29 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { z } from 'zod';
+import { withValidation } from '@/lib/apiWrapper';
 
-export async function POST(request: Request) {
-  try {
-    // Top 1%: Zabezpieczenie pamięci RAM (max 25KB)
-    const contentLength = request.headers.get('content-length');
-    if (contentLength && parseInt(contentLength, 10) > 25000) {
-      return NextResponse.json({ error: 'Payload too large' }, { status: 413 });
-    }
+const LogSchema = z.object({
+  session_id: z.string(),
+  device: z.string(),
+  duration_seconds: z.number(),
+  max_scroll_depth: z.string(),
+  journey: z.array(z.record(z.string(), z.any())).optional(),
+});
 
-    const data = await request.text();
-    
-    // Top 1%: Sanitaryzacja wejścia zapobiegająca zatrutym enterom w JSONL
-    const parsedData = JSON.parse(data);
-    const safeJsonLine = JSON.stringify(parsedData) + '\n';
-
-    const logsDir = path.join(process.cwd(), 'logs');
-    if (!fs.existsSync(logsDir)) {
-      fs.mkdirSync(logsDir, { recursive: true });
-    }
-
-    const filePath = path.join(logsDir, 'ux-logs.jsonl');
-    fs.appendFileSync(filePath, safeJsonLine);
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    return NextResponse.json({ success: false, error: 'Invalid payload' }, { status: 400 });
+const postHandler = async (data: z.infer<typeof LogSchema>) => {
+  const safeJsonLine = JSON.stringify(data) + '\n';
+  
+  const logsDir = path.join(process.cwd(), 'logs');
+  if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true });
   }
-}
+
+  const filePath = path.join(logsDir, 'ux-logs.jsonl');
+  fs.appendFileSync(filePath, safeJsonLine);
+
+  return NextResponse.json({ success: true });
+};
+
+export const POST = withValidation(LogSchema, postHandler);

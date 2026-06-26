@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains; preload',
+            value: 'max-age=63072000; includeSubDomains; preload',
           },
           {
             key: 'X-Frame-Options',
@@ -45,6 +45,15 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
+          }
+        ],
+      },
+      {
+        source: '/(.*\\.(?:png|jpg|jpeg|gif|webp|avif|ico|svg|woff|woff2))',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           }
         ],
       },
