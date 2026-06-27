@@ -55,6 +55,7 @@ export default function AudytPage() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 150000); // 2.5 minuty max na frontendzie
 
+      const startTime = Date.now();
       const res = await fetch('/api/audit-master', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,15 +66,21 @@ export default function AudytPage() {
       clearTimeout(timeoutId);
       
       const data = await res.json();
+      const elapsedTime = Date.now() - startTime;
       
-      // Zapewniamy, że animacja dojdzie do końca dla dramatyzmu
-      clearInterval(stepInterval);
-      setScanStep(scanSteps.length - 1);
-      
+      // LABOR ILLUSION: Wymuszamy minimum 14 sekund skanowania, żeby wyglądało to profesjonalnie.
+      const MIN_WAIT_TIME = 14000;
+      const remainingWait = Math.max(0, MIN_WAIT_TIME - elapsedTime);
+
       setTimeout(() => {
-        setResult(data);
-        setIsScanning(false);
-      }, 800);
+        clearInterval(stepInterval);
+        setScanStep(scanSteps.length - 1);
+        
+        setTimeout(() => {
+          setResult(data);
+          setIsScanning(false);
+        }, 1000);
+      }, remainingWait);
 
     } catch (err) {
       clearInterval(stepInterval);
