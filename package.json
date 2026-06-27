@@ -13,6 +13,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/genai": "^2.10.0",
     "@gsap/react": "^2.1.2",
     "@next/third-parties": "^16.1.6",
     "@studio-freight/lenis": "^1.0.42",

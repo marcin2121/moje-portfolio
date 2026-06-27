@@ -12,15 +12,15 @@ const TIERS = [
     name: 'WIZYTÓWKA',
     price: '2 000',
     icon: <Briefcase className="w-5 h-5" />,
-    target: 'Mechanik, geodeta, fryzjer, terapeuta. Chcesz po prostu świetnie wyglądać w Google i sprawić, by klient łatwo Cię znalazł.',
+    target: 'Chcesz po prostu świetnie wyglądać w Google i sprawić, by klient łatwo Cię znalazł.',
     features: [
       'Indywidualny projekt graficzny (0 gotowych szablonów)',
       'Napisanie tekstów zorientowanych na sprzedaż',
-      'Czas ładowania poniżej 1.5s (gwarancja wysokich pozycji w Google)',
-      'Założenie i optymalizacja Wizytówki Google (Google Moja Firma)',
-      'Formularz kontaktowy spięty z Twoim e-mailem/telefonem',
-      'Pełna zgodność z RODO i wdrożenie polityki prywatności',
-      'Zaawansowane cyberbezpieczeństwo chmurowe: Twoja strona i dane klientów są w 100% odporne na ataki, a system posiada automatyczne, codzienne kopie zapasowe.',
+      'Czas ładowania poniżej 1.5s',
+      'Założenie i optymalizacja Wizytówki Google',
+      'Formularz kontaktowy spięty z Twoim e-mailem',
+      'Pełna zgodność z RODO i polityka prywatności',
+      'Zaawansowane cyberbezpieczeństwo i codzienne backupy',
       '6 miesięcy darmowej opieki technicznej'
     ],
     ctaText: 'Wybieram ten pakiet',
@@ -30,15 +30,15 @@ const TIERS = [
     name: 'MASZYNA SPRZEDAŻOWA',
     price: '5 000',
     icon: <Rocket className="w-5 h-5 text-orange-500" />,
-    target: 'Butik, rzemiosło, wynajem aut, usługi na zapisy. Chcesz przyjmować zamówienia i płatności automatycznie, nawet gdy jesteś zajęty pracą.',
+    target: 'Chcesz przyjmować zamówienia i płatności automatycznie, nawet gdy jesteś zajęty pracą.',
     features: [
       'Wszystko to, co w pakiecie "Wizytówka" +',
-      'Ultraszybki sklep internetowy / Zautomatyzowany System Rezerwacji',
-      'Podpięte natychmiastowe płatności online (BLIK, Apple Pay)',
-      'Integracja z kurierami i Paczkomatami',
-      'Prosty panel do zarządzania ofertą ze smartfona',
-      'Gwarancja: 0% prowizji systemowych od sprzedaży (ponosisz jedynie standardowe koszty operatora płatności, np. Przelewy24/Stripe).',
-      'Wideo-szkolenie: "Jak samodzielnie dodać produkt/usługę w 60 sekund"'
+      'Ultraszybki sklep internetowy / System Rezerwacji',
+      'Podpięte natychmiastowe płatności (BLIK, Apple Pay)',
+      'Pełna integracja z kurierami i InPost',
+      'Prosty panel do zarządzania ze smartfona',
+      'Gwarancja 0% prowizji systemowych od sprzedaży',
+      'Dedykowane wideo-szkolenie z obsługi platformy'
     ],
     ctaText: 'Wybieram ten pakiet',
     highlighted: true,
@@ -48,14 +48,14 @@ const TIERS = [
     name: 'LIDER RYNKU',
     price: '9 000',
     icon: <Star className="w-5 h-5" />,
-    target: 'Kliniki, kancelarie, niszowa produkcja, firmy budowlane. Chcesz całkowicie zautomatyzować obsługę klienta, wyprzedzić konkurencję i odzyskać swój czas.',
+    target: 'Chcesz zautomatyzować obsługę klienta, wyprzedzić konkurencję i odzyskać swój czas.',
     features: [
       'Wszystko to, co w pakiecie "Maszyna Sprzedażowa" +',
-      'Wirtualny Asystent AI i Kalkulator Ofert: Inteligentne boty, które obsługują Twoich klientów 24/7 i filtrują tylko rentowne zlecenia.',
-      'Automat do opinii w Google: System sam prosi zadowolonych klientów o 5 gwiazdek, budując Twój autorytet w sieci.',
-      'Wsparcie w pozyskaniu dotacji: Pomagam przygotować pełną specyfikację technologiczną, jeśli ubiegasz się o dofinansowanie (np. z KPO) na cyfryzację firmy.',
-      'Dedykowane szkolenie dla pracowników: Zamiast suchej instrukcji, przeprowadzę warsztaty online dla Twojego zespołu, aby płynnie i bez stresu zaczął korzystać z nowych narzędzi.',
-      'Priorytetowa Opieka VIP: Otrzymujesz mój bezpośredni numer na WhatsApp i masz gwarancję reakcji na każde zgłoszenie w maksymalnie kilka godzin.'
+      'Wirtualny Asystent AI i Kalkulator Ofert 24/7',
+      'Automatyczny pozyskiwacz opinii 5★ w Google',
+      'Wsparcie w pozyskaniu dotacji na cyfryzację (np. KPO)',
+      'Dedykowane szkolenie wdrożeniowe dla zespołu',
+      'Priorytetowa Opieka VIP (Bezpośredni WhatsApp)'
     ],
     ctaText: 'Aplikuj o pakiet VIP',
     highlighted: false
@@ -156,10 +156,12 @@ export default function Pricing() {
             )}
 
             <div className="p-8 pb-0">
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 ${tier.highlighted ? 'bg-orange-500/10 text-orange-500' : 'bg-zinc-900 text-zinc-400'}`}>
-                {tier.icon}
+              <div className="flex items-center gap-2.5 mt-2 mb-2">
+                <div className={tier.highlighted ? 'text-orange-500' : 'text-zinc-400'}>
+                  {tier.icon}
+                </div>
+                <h3 className="text-xl font-bold tracking-tight text-white">{tier.name}</h3>
               </div>
-              <h3 className="text-xl font-bold tracking-tight text-white mb-2">{tier.name}</h3>
               
               <div className="flex items-baseline gap-2 mb-6">
                 <span className="text-sm text-zinc-500 font-medium">od</span>
@@ -171,17 +173,17 @@ export default function Pricing() {
 
               <div className="h-px w-full bg-white/5 mb-6" />
 
-              <p className="text-sm text-zinc-400 font-light leading-relaxed mb-6 min-h-[80px]">
+              <p className="text-xs text-zinc-400 leading-normal line-clamp-2 min-h-[2.5rem] mb-6">
                 {fixOrphans(tier.target)}
               </p>
             </div>
 
             <div className="px-8 pb-8 flex-1 flex flex-col">
-              <ul className="space-y-4 mb-8 flex-1">
+              <ul className="space-y-2.5 my-6 flex-1 text-sm leading-snug text-zinc-300">
                 {tier.features.map((feat, fIdx) => (
                   <li key={fIdx} className="flex items-start gap-3">
                     <Check className={`w-4 h-4 shrink-0 mt-0.5 ${tier.highlighted ? 'text-orange-500' : 'text-zinc-500'}`} />
-                    <span className={`text-sm leading-relaxed ${tier.highlighted && fIdx === 0 ? 'text-white font-medium' : 'text-zinc-300'}`}>
+                    <span className={tier.highlighted && fIdx === 0 ? 'text-white font-medium' : ''}>
                       {fixOrphans(feat)}
                     </span>
                   </li>

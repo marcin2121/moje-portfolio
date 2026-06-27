@@ -75,70 +75,33 @@ export default function Hero({ onNavigate }: HeroProps) {
 
       {/* Trust Bar */}
       <div className="w-full relative z-20 mt-auto mb-28 lg:mb-32 px-4 sm:px-10 lg:px-20">
-        <div className="max-w-[1400px] mx-auto bg-zinc-900/60 backdrop-blur-xl border border-white/10 rounded-2xl py-6 px-6 sm:px-10 flex flex-col md:flex-row items-center justify-center md:justify-between gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-          <span className="text-zinc-500 text-xs sm:text-sm font-medium uppercase tracking-widest text-center">
+        <div className="max-w-[1000px] mx-auto bg-zinc-900/60 backdrop-blur-2xl border border-white/10 rounded-[2rem] py-8 px-6 sm:px-10 flex flex-col items-center justify-center gap-8 shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
+          <span className="text-zinc-400 text-xs sm:text-sm font-medium uppercase tracking-[0.2em] text-center">
             Zaufali mi przedsiębiorcy, którzy cenią swój czas:
           </span>
-          <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
-            {/* DzikiStyl */}
-            <a href="https://dzikistyldemo.vercel.app/" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-zinc-900 border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
-              <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/dzikistyl-logo.png" alt="DzikiStyl" fill sizes="80px" quality={80} className="object-cover" />
-              </div>
-              <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
-                <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
-                  DzikiStyl - studio graficzne i drukarnia online
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-3 sm:gap-4 md:gap-8 lg:gap-10 w-full">
+            {[
+              { name: 'DzikiStyl', desc: 'studio graficzne i drukarnia online', link: 'https://dzikistyldemo.vercel.app/', img: '/dzikistyl-logo.png', desktopBg: 'lg:bg-zinc-900', hoverBorder: 'hover:border-orange-500/30', imgClass: 'object-cover' },
+              { name: 'Sklep Urwis', desc: 'sklep z zabawkami w Białobrzegach', link: 'https://sklep-urwis.pl', img: '/sklepurwis-logo.png', desktopBg: 'lg:bg-zinc-900', hoverBorder: 'hover:border-orange-500/30', imgClass: 'object-cover' },
+              { name: 'Zamów Tu', desc: 'System zamówień online', link: 'https://zamowtu.pl', img: '/zamowtu-logo.png', desktopBg: 'lg:bg-black', hoverBorder: 'hover:border-orange-500/30', imgClass: 'object-contain' },
+              { name: 'RLT Polska', desc: 'sklep internetowy z urządzeniami do terapii światłem', link: 'https://rltpolska.pl', img: '/rltpolska-logo.png', desktopBg: 'lg:bg-black', hoverBorder: 'hover:border-orange-500/30', imgClass: 'object-contain' },
+              { name: 'Kajaki u Maćka', desc: 'spływy kajakowe Pilicą', link: 'https://kajaki-u-macka.pl', img: '/kajaki-u-macka-logo.png', desktopBg: 'lg:bg-black', hoverBorder: 'hover:border-emerald-500/30', imgClass: 'object-cover scale-100' },
+            ].map((client, i) => (
+              <a key={i} href={client.link} target="_blank" rel="noopener noreferrer" className={`group relative flex items-center gap-4 w-full lg:w-auto p-3 lg:p-0 rounded-2xl lg:rounded-full bg-white/5 ${client.desktopBg} border border-white/5 lg:border-white/10 shadow-lg hover:scale-[1.02] lg:hover:scale-105 ${client.hoverBorder} transition-all duration-300`}>
+                <div className="relative shrink-0 w-12 h-12 lg:w-20 lg:h-20 rounded-full overflow-hidden bg-black/20 lg:bg-transparent">
+                  <Image src={client.img} alt={client.name} fill sizes="80px" quality={80} className={client.imgClass} />
                 </div>
-              </div>
-            </a>
-            
-            {/* Sklep Urwis */}
-            <a href="https://sklep-urwis.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-zinc-900 border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
-              <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/sklepurwis-logo.png" alt="Sklep Urwis" fill sizes="80px" quality={80} className="object-cover" />
-              </div>
-              <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
-                <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
-                  Sklep Urwis - sklep z zabawkami w Białobrzegach
+                <div className="lg:hidden flex flex-col items-start text-left flex-1 min-w-0">
+                  <span className="text-sm font-semibold text-zinc-200 truncate w-full">{client.name}</span>
+                  <span className="text-xs text-zinc-400 line-clamp-2">{client.desc}</span>
                 </div>
-              </div>
-            </a>
-            
-            {/* Zamów Tu */}
-            <a href="https://zamowtu.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
-              <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/zamowtu-logo.png" alt="Zamów Tu" fill sizes="80px" quality={80} className="object-contain" />
-              </div>
-              <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
-                <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
-                  Zamówtu.pl - System zamówień online
+                <div className="hidden lg:block absolute -top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
+                  <div className="bg-zinc-800 text-zinc-200 text-xs font-mono px-3 py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
+                    {client.name} - {client.desc}
+                  </div>
                 </div>
-              </div>
-            </a>
-            
-            {/* RLT Polska */}
-            <a href="https://rltpolska.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-orange-500/30 transition-all duration-300">
-              <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/rltpolska-logo.png" alt="RLT Polska" fill sizes="80px" quality={80} className="object-contain" />
-              </div>
-              <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
-                <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
-                  RLTPolska - sklep internetowy z urządzeniami do terapii światłem
-                </div>
-              </div>
-            </a>
-
-            {/* Kajaki u Maćka */}
-            <a href="https://kajaki-u-macka.pl" target="_blank" rel="noopener noreferrer" className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full bg-black border border-white/10 shadow-lg hover:scale-105 hover:border-emerald-500/30 transition-all duration-300">
-              <div className="absolute inset-0 rounded-full overflow-hidden">
-                <Image src="/kajaki-u-macka-logo.png" alt="Kajaki u Maćka" fill sizes="80px" quality={80} className="object-cover scale-100" />
-              </div>
-              <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
-                <div className="bg-zinc-800 text-zinc-200 text-[9px] md:text-xs font-mono px-3 py-1.5 md:py-2 rounded-lg whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-2">
-                  Kajaki u Maćka - spływy kajakowe Pilicą
-                </div>
-              </div>
-            </a>
+              </a>
+            ))}
           </div>
         </div>
       </div>

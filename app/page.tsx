@@ -83,6 +83,7 @@ export default function PortfolioHome() {
   const [openDemo, setOpenDemo]           = useState<DemoConfig | null>(null);
   const [viewMode, setViewMode]           = useState<'desktop' | 'mobile'>('desktop');
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
 
   const playRef = useRef<(() => void) | null>(null);
   const playNavClick = useCallback(() => {
@@ -141,7 +142,7 @@ export default function PortfolioHome() {
         pts[6 + i] = (h2.start + h2Dur * i / 5) / maxScr;
       }
 
-      pts[12] = getDomRatio('pricing', (h2.end + 10) / maxScr);
+      pts[12] = getDomRatio('cennik', (h2.end + 10) / maxScr);
       pts[13] = getDomRatio('faq', (h2.end + 20) / maxScr);
       pts[14] = Math.min(getDomRatio('kontakt', (h2.end + 30) / maxScr), 1);
 
@@ -196,6 +197,23 @@ export default function PortfolioHome() {
     gsap.to(window, { scrollTo: targetY, duration: 1.2, ease: 'power3.inOut', overwrite: 'auto' });
   }, [playNavClick]);
 
+  // Obsługa URL z hashem (np. /#cennik) dla poprawnego scrollowania GSAP z innych podstron
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash;
+      if (hash === '#cennik') scrollToSection(12);
+      if (hash === '#faq') scrollToSection(13);
+    };
+
+    // Lekkie opóźnienie na start, aby ScrollTrigger policzył wysokości
+    const timeout = setTimeout(handleHash, 600);
+    window.addEventListener('hashchange', handleHash);
+    
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener('hashchange', handleHash);
+    };
+  }, [scrollToSection]);
 
   // Keyboard: arrows navigate sections, Escape closes demo
   useEffect(() => {
@@ -229,9 +247,7 @@ export default function PortfolioHome() {
       <div ref={containerRef} className="relative text-zinc-50 font-sans selection:bg-orange-500 selection:text-white">
         
         <nav className="hidden lg:flex fixed left-0 top-0 bottom-0 w-24 bg-zinc-950 border-r border-white/5 z-50 flex-col items-center justify-center">
-          <div className="absolute top-10 w-full text-center text-[8px] font-black uppercase tracking-widest text-zinc-400 italic px-2 leading-tight">
-            Marcin Molenda<br />Development
-          </div>
+
           <div className="relative h-[60vh] w-4 mt-8">
             <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-white/5 rounded-full" />
             <motion.div className="absolute left-1/2 -translate-x-1/2 top-0 w-1 bg-orange-500 rounded-full origin-top z-0" style={{ height: lavaHeight }} />
@@ -264,17 +280,8 @@ export default function PortfolioHome() {
           </div>
         </nav>
 
-        {/* ─── Floating Desktop Nav: Section Name + CTA + Arrows ─── */}
-        <div className="hidden lg:flex fixed bottom-10 left-1/2 -translate-x-1/2 z-50 items-center gap-3">
-          {/* Arrow Up */}
-          <button 
-            onClick={() => scrollToSection(Math.max(0, activeDot - 1))}
-            disabled={activeDot === 0}
-            className="w-9 h-9 flex items-center justify-center rounded-full bg-zinc-900/80 backdrop-blur-md border border-white/10 text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-20 disabled:hover:bg-zinc-900/80 transition-all active:scale-90"
-            aria-label="Poprzednia sekcja (↑)"
-          >
-            <ChevronUp size={16} />
-          </button>
+        {/* ─── Floating Desktop Nav: Section Name + Socials + CTA ─── */}
+        <div className="hidden lg:flex fixed bottom-10 left-1/2 -translate-x-1/2 z-50 items-center">
 
           {/* Main pill: section name + Socials + CTA */}
           <div className="flex items-center bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-full px-2 py-1.5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8),0_0_20px_rgba(255,255,255,0.02)]">
@@ -288,9 +295,6 @@ export default function PortfolioHome() {
             <div className="w-px h-5 bg-white/10 mx-2" />
             
             <div className="flex items-center gap-1.5 px-2">
-              <a href="https://github.com/marcin2121" target="_blank" rel="noopener noreferrer" className="p-1.5 text-zinc-500 hover:text-white transition-colors" title="GitHub">
-                <Github size={14} />
-              </a>
               <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" rel="noopener noreferrer" className="p-1.5 text-zinc-500 hover:text-white transition-colors" title="LinkedIn">
                 <Linkedin size={14} />
               </a>
@@ -306,36 +310,59 @@ export default function PortfolioHome() {
               className="group relative ml-1 px-6 py-2 bg-orange-500 text-white font-black uppercase text-[10px] tracking-[0.15em] rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(234,88,12,0.3)]"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-              <span className="relative z-10">Wyceń Projekt</span>
+              <span className="relative z-10">DARMOWA WYCENA</span>
             </button>
           </div>
-
-          {/* Arrow Down */}
-          <button 
-            onClick={() => scrollToSection(Math.min(NAV_DOTS.length - 1, activeDot + 1))}
-            disabled={activeDot === NAV_DOTS.length - 1}
-            className="w-9 h-9 flex items-center justify-center rounded-full bg-zinc-900/80 backdrop-blur-md border border-white/10 text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-20 disabled:hover:bg-zinc-900/80 transition-all active:scale-90"
-            aria-label="Następna sekcja (↓)"
-          >
-            <ChevronDown size={16} />
-          </button>
         </div>
 
+        {/* Mobile TOC Popover */}
+        <AnimatePresence>
+          {isMobileTocOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="flex lg:hidden fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-[320px] bg-zinc-900/95 backdrop-blur-3xl border border-white/10 rounded-2xl z-40 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex-col"
+            >
+              <div className="max-h-[50vh] overflow-y-auto py-2 px-2 custom-scrollbar">
+                {NAV_DOTS.map((dot, idx) => (
+                  <button
+                    key={dot.id}
+                    onClick={() => {
+                      scrollToSection(dot.id);
+                      setIsMobileTocOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-3 rounded-xl text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase transition-colors flex items-center justify-between ${
+                      activeDot === idx ? 'bg-orange-500/10 text-orange-500' : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+                    }`}
+                  >
+                    <span className="truncate pr-2">{dot.title}</span>
+                    {activeDot === idx && <div className="w-1.5 h-1.5 shrink-0 rounded-full bg-orange-500 shadow-[0_0_8px_#ea580c]" />}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <nav className="flex lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-[440px] bg-zinc-900/90 backdrop-blur-2xl border border-white/10 rounded-2xl z-50 items-center justify-between px-3 py-3 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.8)]">
-          <div className="flex flex-col gap-1.5 w-[35%] overflow-hidden pl-1">
-            <div className="text-[9px] font-mono font-bold text-zinc-400 uppercase tracking-widest truncate">
-              {NAV_DOTS[activeDot]?.title || 'Przewijaj'}
+          <button 
+            onClick={() => setIsMobileTocOpen(!isMobileTocOpen)}
+            className="flex flex-col gap-1.5 w-[35%] overflow-hidden pl-2 text-left group"
+          >
+            <div className="text-[9px] font-mono font-bold text-zinc-300 group-hover:text-white transition-colors uppercase tracking-widest truncate flex items-center gap-1.5 w-full">
+              <span className="w-1 h-1 shrink-0 rounded-full bg-orange-500 shadow-[0_0_4px_#ea580c]" />
+              <span className="truncate">{NAV_DOTS[activeDot]?.title || 'Przewijaj'}</span>
+              <ChevronUp size={10} className={`shrink-0 text-zinc-500 transition-transform duration-300 ${isMobileTocOpen ? 'rotate-180' : ''}`} />
             </div>
             <div className="relative w-full h-1 flex items-center shrink-0">
               <div className="absolute left-0 right-0 h-full bg-white/10 rounded-full" />
               <motion.div className="absolute left-0 h-full bg-orange-500 rounded-full z-0 shadow-[0_0_8px_#ea580c]" style={{ width: lavaWidth }} />
             </div>
-          </div>
+          </button>
 
           <div className="flex items-center gap-1 scale-[0.85] opacity-80">
-            <a href="https://github.com/marcin2121" target="_blank" rel="noopener noreferrer" className="p-1 text-zinc-400 hover:text-white transition-colors" aria-label="GitHub">
-              <Github size={16} />
-            </a>
             <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" rel="noopener noreferrer" className="p-1 text-zinc-400 hover:text-white transition-colors" aria-label="LinkedIn">
               <Linkedin size={16} />
             </a>
@@ -351,7 +378,7 @@ export default function PortfolioHome() {
             }} 
             className="px-4 py-2.5 bg-orange-500 text-white font-black uppercase text-[10px] tracking-widest rounded-xl shadow-lg transition-all active:scale-95 whitespace-nowrap shadow-[0_4px_12px_rgba(234,88,12,0.3)]"
           >
-            Wyceń
+            DARMOWA WYCENA
           </button>
         </nav>
 
@@ -698,14 +725,18 @@ export default function PortfolioHome() {
             </section>
           </div>
 
-          <div id="pricing" className="min-h-screen flex items-center border-t border-white/5 bg-transparent">
+          <div id="cennik" className="min-h-screen flex items-center border-t border-white/5 bg-transparent">
             <div className="w-full">
               <Pricing />
             </div>
           </div>
 
-          <FAQ />
-          <ContactForm />
+          <div id="faq">
+            <FAQ />
+          </div>
+          <div id="kontakt">
+            <ContactForm />
+          </div>
 
           <footer className="w-full py-8 text-[9px] md:text-[10px] text-zinc-600 font-mono uppercase tracking-[0.2em] text-center flex flex-col items-center gap-3 relative z-10 bg-zinc-950 border-t border-white/5">
             <div className="flex items-center gap-4">

@@ -7,12 +7,12 @@ export default function UxLogger() {
     t0: Date.now(),
     maxS: 0,
     dev: typeof window !== 'undefined' ? (window.innerWidth < 768 ? 'mobile' : 'desktop') : 'unknown',
-    log: [{ t: "0s", action: "session_start", meta: "App initialized" }]
+    log: [{ timestamp: Date.now(), action: "session_start", metadata_summary: "App initialized" }]
   });
 
   useEffect(() => {
     const s = state.current;
-    const push = (a: string, m?: string) => s.log.push({ t: `${Math.round((Date.now() - s.t0) / 1000)}s`, action: a, meta: m || "" });
+    const push = (a: string, m?: string) => s.log.push({ timestamp: Date.now(), action: a, metadata_summary: m || "" });
     
     let scrollT: NodeJS.Timeout;
     const onScroll = () => {
