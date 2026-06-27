@@ -29,6 +29,10 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+}
+
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
 
 // Usunięto rIC i cIC

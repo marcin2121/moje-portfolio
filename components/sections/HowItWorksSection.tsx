@@ -60,7 +60,7 @@ export function HowItWorksSection() {
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-20px" }}
+                viewport={{ once: true, margin: "0px" }}
                 transition={{ duration: 0.6, delay: idx * 0.15 }}
                 className={`flex flex-col lg:flex-row gap-6 lg:gap-0 items-start lg:items-center relative w-full ${isEven ? 'lg:justify-start' : 'lg:justify-end'}`}
               >

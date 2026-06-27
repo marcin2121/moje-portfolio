@@ -3,6 +3,7 @@
 import { ReactLenis } from 'lenis/react';
 import { ReactNode, useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   const lenisRef = useRef<any>(null);
@@ -13,9 +14,21 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     }
 
     gsap.ticker.add(update);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       gsap.ticker.remove(update);
+    };
+  }, []);
+
+  useEffect(() => {
+    const lenis = lenisRef.current?.lenis;
+    if (!lenis) return;
+    
+    lenis.on('scroll', ScrollTrigger.update);
+    
+    return () => {
+      lenis.off('scroll', ScrollTrigger.update);
     };
   }, []);
 
