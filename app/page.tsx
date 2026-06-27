@@ -14,15 +14,15 @@ import TiltCard from '@/components/ui/TiltCard';
 import BottomSheet from '@/components/ui/BottomSheet';
 import { HeaderToggle } from '@/components/sections/HeaderToggle';
 import { ProblemSection } from '@/components/sections/ProblemSection';
-const ContactForm = dynamic(() => import('@/components/ui/ContactForm'), { ssr: true });
-const FAQ = dynamic(() => import('@/components/ui/FAQ'), { ssr: true });
-const Pricing = dynamic(() => import('@/components/Pricing'), { ssr: true });
-const SandboxSection = dynamic(() => import('@/components/sections/SandboxSection').then(mod => mod.SandboxSection), { ssr: true });
-const FeaturesSection = dynamic(() => import('@/components/sections/FeaturesSection').then(mod => mod.FeaturesSection), { ssr: true });
-const HowItWorksSection = dynamic(() => import('@/components/sections/HowItWorksSection').then(mod => mod.HowItWorksSection), { ssr: true });
-const ProcessSection = dynamic(() => import('@/components/sections/ProcessSection').then(mod => mod.ProcessSection), { ssr: true });
-const PortfolioSection = dynamic(() => import('@/components/sections/PortfolioSection').then(mod => mod.PortfolioSection), { ssr: true });
-const BenefitsSection = dynamic(() => import('@/components/sections/BenefitsSection').then(mod => mod.BenefitsSection), { ssr: true });
+import ContactForm from '@/components/ui/ContactForm';
+import FAQ from '@/components/ui/FAQ';
+import Pricing from '@/components/Pricing';
+import { SandboxSection } from '@/components/sections/SandboxSection';
+import { FeaturesSection } from '@/components/sections/FeaturesSection';
+import { HowItWorksSection } from '@/components/sections/HowItWorksSection';
+import { ProcessSection } from '@/components/sections/ProcessSection';
+import { PortfolioSection } from '@/components/sections/PortfolioSection';
+import { BenefitsSection } from '@/components/sections/BenefitsSection';
 import { fixOrphans } from '@/utils/typography';
 
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
@@ -650,7 +650,7 @@ export default function PortfolioHome() {
             </section>
 
             <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-4 lg:px-12 py-20 lg:py-0 border-t lg:border-none">
-              <div className="flex flex-col w-full max-w-7xl mx-auto relative z-10 gap-8 px-2 overflow-y-auto max-h-screen py-10 lg:py-12 no-scrollbar">
+              <div className="flex flex-col w-full max-w-7xl mx-auto relative z-10 gap-8 px-2 py-10 lg:py-12">
                 
                 {/* Michał - DzikiStyl */}
                 <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-6 lg:gap-10">
