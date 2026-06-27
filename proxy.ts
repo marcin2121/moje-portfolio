@@ -25,10 +25,11 @@ export async function proxy(request: NextRequest) {
   const nonce = btoa(crypto.randomUUID());
   const isDev = process.env.NODE_ENV === 'development';
   
-  // 2. Definiujemy rygorystyczne CSP z Nonce oraz zablokowanym object-src
+  // Dodajemy 'unsafe-inline' ponieważ strona jest statyczna (SSG). 
+  // W stronach SSG Next.js nie wstrzykuje nonce do wygenerowanego HTML-a podczas zapytania.
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' ${isDev ? "'unsafe-eval'" : ''} https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl;
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https:;
     font-src 'self' data:;
