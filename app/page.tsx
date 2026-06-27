@@ -388,7 +388,7 @@ export default function PortfolioHome() {
           <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[300%] h-auto lg:h-screen bg-transparent">
             <Hero onNavigate={scrollToSection} />
             <ProblemSection />
-            <section className="w-full lg:w-1/3 min-h-screen lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent">
+            <section className="w-full lg:w-1/3 h-auto lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent">
               <div className="flex flex-col gap-8 lg:gap-10 max-w-5xl w-full relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 w-full">
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
@@ -474,7 +474,7 @@ export default function PortfolioHome() {
 
           <div ref={horizontal2Ref} className="flex flex-col lg:flex-row w-full lg:w-[600%] h-auto lg:h-screen bg-transparent">
             
-            <section className="w-full lg:w-1/6 min-h-[50vh] lg:h-full flex flex-col items-center justify-center bg-transparent relative overflow-hidden py-20 lg:py-0 border-y lg:border-none border-white/5">
+            <section className="w-full lg:w-1/6 h-auto lg:h-full flex flex-col items-center justify-center bg-transparent relative overflow-hidden py-20 lg:py-0 border-y lg:border-none border-white/5">
               <div className="absolute -top-40 -left-40 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-orange-900/10 blur-[120px] rounded-full pointer-events-none" />
               <div className="font-mono text-[10px] text-orange-500 mb-4 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
@@ -485,7 +485,7 @@ export default function PortfolioHome() {
               </h2>
             </section>
 
-            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0">
+            <section className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
@@ -526,7 +526,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0">
+            <section className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
@@ -568,7 +568,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
+            <section className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
@@ -607,7 +607,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
+            <section className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mx-auto lg:mx-0">
@@ -649,7 +649,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section className="w-full lg:w-1/6 min-h-screen lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-4 lg:px-12 py-20 lg:py-0 border-t lg:border-none">
+            <section className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l-2 border-white/10 px-4 lg:px-12 py-20 lg:py-0 border-t lg:border-none">
               <div className="flex flex-col w-full max-w-7xl mx-auto relative z-10 gap-8 px-2 py-10 lg:py-12">
                 
                 {/* Michał - DzikiStyl */}
