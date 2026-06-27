@@ -101,19 +101,7 @@ export default function PortfolioHome() {
   const lavaHeight    = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
   const lavaWidth     = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
 
-  const [isReady, setIsReady] = useState(false);
-  useEffect(() => {
-    if (document.readyState === 'complete') {
-      setIsReady(true);
-    } else {
-      const handleLoad = () => setIsReady(true);
-      window.addEventListener('load', handleLoad);
-      return () => window.removeEventListener('load', handleLoad);
-    }
-  }, []);
-
   useGSAP(() => {
-    if (!isReady) return;
 
     window.scrollTo(0, 0);
     gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollToPlugin);
@@ -189,7 +177,14 @@ export default function PortfolioHome() {
       buildSnapPoints();
     }, 100);
 
-  }, { scope: containerRef, dependencies: [isReady] });
+    const handleLoad = () => {
+      ScrollTrigger.refresh();
+      buildSnapPoints();
+    };
+    window.addEventListener('load', handleLoad);
+    return () => window.removeEventListener('load', handleLoad);
+
+  }, { scope: containerRef, dependencies: [] });
 
   const scrollToSection = useCallback((index: number) => {
     const gsap = gsapRef.current;
