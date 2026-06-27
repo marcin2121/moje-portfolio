@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
+import * as cheerio from 'cheerio'; // Bezpieczny, błyskawiczny parser HTML
 
 export async function POST(req: Request) {
   try {
@@ -8,166 +9,187 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'URL jest wymagany' }, { status: 400 });
     }
 
-    // Upewnij się, że adres ma protokół
     const targetUrl = url.startsWith('http') ? url : `https://${url}`;
     const apiKey = process.env.PAGESPEED_API_KEY;
 
-    // 1. Zbadaj Szybkość i SEO (Lighthouse / PageSpeed API)
-    let performanceScore = 0;
-    let seoScore = 0;
-    
+    let performanceScore = 45;
+    let seoScore = 55;
+    let securityScore = 30;
+    let scalabilityScore = 30;
+    let automationScore = 30;
+    let html = '';
+    let pageTitle = '';
+    let pageDesc = '';
+    let detectedPlatform = 'Własny kod / Nierozpoznano';
+    let codeSmells = { jquery: false, badScripts: 0, h1Count: 0, inlineStyles: 0 };
+    let wafDetected = false;
+
+    // Helper: PageSpeed
     const fetchPageSpeed = async (retries = 2): Promise<any> => {
       const psUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(targetUrl)}&strategy=desktop&category=performance&category=seo${apiKey ? `&key=${apiKey}` : ''}`;
-      
       for (let i = 0; i < retries; i++) {
         try {
-          const psRes = await fetch(psUrl, { 
-            cache: 'no-store', 
+          const psRes = await fetch(psUrl, {
+            cache: 'no-store',
             signal: AbortSignal.timeout(120000),
-            headers: {
-              'Referer': 'https://molendadevelopment.pl/'
-            }
+            headers: { 'Referer': 'https://molendadevelopment.pl/' }
           });
           if (!psRes.ok) throw new Error(`HTTP Error: ${psRes.status}`);
           return await psRes.json();
         } catch (err: any) {
           if (i === retries - 1) throw err;
-          console.warn(`PageSpeed API fetch attempt ${i + 1} failed. Retrying...`, err.message);
-          await new Promise(resolve => setTimeout(resolve, 2000)); // wait 2s before retry
+          await new Promise(resolve => setTimeout(resolve, 2000));
         }
       }
     };
 
-    try {
-      const psData = await fetchPageSpeed(2);
-      
-      performanceScore = (psData?.lighthouseResult?.categories?.performance?.score || 0.4) * 100;
-      seoScore = (psData?.lighthouseResult?.categories?.seo?.score || 0.5) * 100;
-    } catch (err) {
-      console.error('PageSpeed API Error:', err);
-      // Fallback w przypadku awarii API
-      performanceScore = 45; 
-      seoScore = 55;
-    }
-
-    // 2. Fetch HTML i Nagłówków dla pozostałych filarów
-    let securityScore = 30;
-    let scalabilityScore = 30;
-    let automationScore = 30;
-    let html = '';
-    
-    try {
-      // Pobieramy kod strony z nagłówkiem podszywającym się pod standardową przeglądarkę, max 15 sekund
-      const siteRes = await fetch(targetUrl, { 
+    // Helper: HTML
+    const fetchSiteHTML = async () => {
+      const siteRes = await fetch(targetUrl, {
         cache: 'no-store',
         signal: AbortSignal.timeout(15000),
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        }
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36' }
       });
-      
-      html = await siteRes.text();
-      
-      // Bezpieczeństwo - sprawdzamy nagłówki HTTP
-      let secScore = 20;
-      if (siteRes.headers.get('strict-transport-security')) secScore += 30;
-      if (siteRes.headers.get('content-security-policy')) secScore += 30;
-      if (siteRes.headers.get('x-frame-options')) secScore += 20;
-      securityScore = secScore;
+      const htmlText = await siteRes.text();
+      return { siteRes, htmlText };
+    };
 
-      // Tech Stack Detection (Skalowalność i Automatyzacja)
-      const isWordPress = html.includes('wp-content') || html.includes('wp-includes');
-      const isNextJs = html.includes('__NEXT_DATA__') || html.includes('next/router');
-      const isShopify = html.includes('Shopify.shop') || html.includes('cdn.shopify.com');
+    const [psDataResult, siteHtmlResult] = await Promise.allSettled([
+      fetchPageSpeed(2),
+      fetchSiteHTML()
+    ]);
+
+    if (psDataResult.status === 'fulfilled' && psDataResult.value) {
+      performanceScore = (psDataResult.value?.lighthouseResult?.categories?.performance?.score || 0.4) * 100;
+      seoScore = (psDataResult.value?.lighthouseResult?.categories?.seo?.score || 0.5) * 100;
+    }
+
+    if (siteHtmlResult.status === 'fulfilled' && siteHtmlResult.value) {
+      const { siteRes, htmlText } = siteHtmlResult.value;
+      html = htmlText;
+
+      const isCloudflare = html.includes('Just a moment...') || html.includes('Attention Required!') || siteRes.status === 403;
       
-      if (isNextJs) {
-        scalabilityScore = 95;
-        automationScore = 90;
-      } else if (isShopify) {
+      if (isCloudflare) {
+        wafDetected = true;
+        detectedPlatform = 'Zabezpieczenie WAF / Cloudflare';
+        securityScore = 95;
         scalabilityScore = 80;
-        automationScore = 70;
-      } else if (isWordPress) {
-        scalabilityScore = 40;
-        automationScore = 30;
-      } else {
-        // Nieznany system - zakładamy bezpieczną, ale niską wartość
-        scalabilityScore = 50;
         automationScore = 50;
-      }
+      } else {
+        let secScore = 20;
+        if (siteRes.headers.get('strict-transport-security')) secScore += 30;
+        if (siteRes.headers.get('content-security-policy')) secScore += 30;
+        if (siteRes.headers.get('x-frame-options')) secScore += 20;
+        securityScore = secScore;
 
-    } catch (err) {
-      console.error('Site Fetch Error:', err);
-      // Jeśli domena nie odpowiada / blokuje CORS, zaniżamy wynik
-      securityScore = 25;
-      scalabilityScore = 45;
-      automationScore = 45;
+        // BŁYSKAWICZNA ANALIZA CHEERIO (Zamiast niebezpiecznych Regexów)
+        const $ = cheerio.load(html);
+        pageTitle = $('title').first().text().trim();
+        pageDesc = $('meta[name="description"]').attr('content')?.trim() || '';
+
+        codeSmells.jquery = html.toLowerCase().includes('jquery');
+        codeSmells.h1Count = $('h1').length;
+        codeSmells.inlineStyles = $('[style]').length;
+
+        // Liczymy skrypty bez async/defer
+        $('script[src]').each((_, el) => {
+          const isAsync = $(el).attr('async') !== undefined;
+          const isDefer = $(el).attr('defer') !== undefined;
+          if (!isAsync && !isDefer) codeSmells.badScripts++;
+        });
+
+        // Detekcja platform
+        if (html.includes('__NEXT_DATA__') || html.includes('/_next/static/')) {
+          scalabilityScore = 95; automationScore = 95; detectedPlatform = 'Next.js / React (Serverless)';
+        } else if (html.includes('cdn.shopify.com')) {
+          scalabilityScore = 80; automationScore = 70; detectedPlatform = 'Shopify';
+        } else if (html.includes('wp-content')) {
+          scalabilityScore = 40; automationScore = 30; detectedPlatform = 'WordPress / WooCommerce';
+        }
+      }
     }
 
     const avgScore = Math.round((performanceScore + seoScore + securityScore + scalabilityScore + automationScore) / 5);
-    const estimatedLoss = Math.round((100 - avgScore) * 185); 
+    const lossPercentage = Math.max(5, Math.round((100 - avgScore) / 1.5));
 
-    // --- INTEGRACJA GEMINI AI ---
+    // --- GEMINI AI (Poprawione wyjście Markdown) ---
     let aiReport = '';
     const geminiKey = process.env.GEMINI_API_KEY;
-    if (geminiKey) {
-      const prompt = `
-Jesteś Marcinem Molendą, wybitnym Senior Frontend Architectem. 
-Oto wyniki audytu technologicznego sklepu pod adresem: ${targetUrl}.
-Średni wynik: ${avgScore}/100.
-Filary:
-- Szybkość: ${Math.round(performanceScore)}/100
-- SEO: ${Math.round(seoScore)}/100
-- Skalowalność: ${Math.round(scalabilityScore)}/100
-- Automatyzacja: ${Math.round(automationScore)}/100
-- Bezpieczeństwo: ${Math.round(securityScore)}/100
 
-Twoje zadanie: Napisz zwięzły, brutalnie szczery i profesjonalny werdykt z perspektywy inżyniera, kierowany do właściciela biznesu.
-Jeśli wynik przekracza 80, pogratuluj im świetnej architektury i zaproponuj jedynie wsparcie przy specyficznych integracjach B2B, nie wymyślaj problemów na siłę.
-Jeśli wynik jest słaby (np. poniżej 60), uświadom ich bez litości, jak wolne ładowanie i przestarzały stack niszczą ich wskaźnik konwersji (CR) i powodują realne straty (szacunkowa utrata: ${estimatedLoss} PLN/mc).
-Zasugeruj, że jedynym solidnym rozwiązaniem jest przejście na autorskie środowisko Serverless Edge (Next.js). Bądź ekspertem, który dostrzega uciekające pieniądze, a nie nachalnym akwizytorem. Użyj formatowania HTML (np. <strong>, <p>, <ul>, <br>), aby odpowiedź była od razu gotowa do wklejenia w interfejsie reacta. Nie używaj znaczników markdown (\`\`\`).
-Bądź zwięzły, max 4-5 zdań.`;
+    if (geminiKey) {
+      const codeSmellsText = wafDetected
+        ? "UWAGA: Serwis chroniony przez WAF/Cloudflare. Skan struktury kodu zablokowany."
+        : `Dług Technologiczny (Code Smells):\n- Przestarzałe jQuery: ${codeSmells.jquery ? 'TAK (Krytyczne!)' : 'NIE'}\n- Skrypty blokujące renderowanie: ${codeSmells.badScripts} szt.\n- Nagłówki H1: ${codeSmells.h1Count}\n- Style inline: ${codeSmells.inlineStyles} szt.`;
+
+      const prompt = `Jesteś Marcinem Molendą, Senior Frontend Architectem. Oto wyniki audytu sklepu: ${targetUrl}
+Tytuł (Branża): ${pageTitle || 'Brak danych'}
+Opis: ${pageDesc || 'Brak danych'}
+Platforma: ${detectedPlatform} | Średni wynik: ${avgScore}/100
+
+${codeSmellsText}
+
+Zadanie: Napisz krótki (max 4 zdania), brutalnie szczery werdykt inżynieryjny kierowany do właściciela biznesu. Wskaż wady architektury (np. skrypty blokujące czy stary monolit) i uświadom mu, że traci przez to szacunkowo ${lossPercentage}% potencjalnych klientów. Zaproponuj przejście na autorskie środowisko Serverless Edge (Next.js) jako jedyną drogę rozwoju.
+
+FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak jakiegokolwiek HTML-a, brak znaczników \`\`\`markdown.`;
 
       const ai = new GoogleGenAI({ apiKey: geminiKey });
       try {
         const response = await ai.models.generateContent({
-          model: 'gemini-3.1-flash-lite',
+          model: 'gemini-3.1-flash-lite', // Istniejący, potężny model rynkowy
           contents: prompt,
-          config: {
-            temperature: 0.7,
-          }
+          config: { temperature: 0.6 }
         });
-
-        aiReport = response.text || `<p>Otrzymano puste dane z analizatora AI. Wymagana ręczna konsultacja architektoniczna.</p>`;
+        aiReport = response.text || 'Brak diagnozy AI. Wymagana audytorska weryfikacja manualna.';
       } catch (aiErr: any) {
-        console.error("Gemini SDK Error:", aiErr);
-        aiReport = `<p>Niestety, silnik analityczny AI jest w tej chwili przeciążony (Błąd: ${aiErr?.message || 'Nieznany'}). Jednak Twoje wyniki mówią same za siebie. Umów bezpłatną konsultację.</p>`;
+        aiReport = `*Silnik analityczny AI jest w tej chwili przeciążony. Twoje wskaźniki techniczne mówią jednak same za siebie – umów bezpośrednią konsultację.*`;
       }
     } else {
-      aiReport = `<p>Moduł sztucznej inteligencji nie jest skonfigurowany. Skontaktuj się z administratorem.</p>`;
+      aiReport = `*Moduł sztucznej inteligencji nie został skonfigurowany w środowisku.*`;
     }
 
     const getInterpretation = (score: number, pillar: string) => {
-      if (score >= 80) return `Znakomity wynik. Infrastruktura wspiera sprzedaż w obszarze ${pillar}.`;
-      if (score >= 50) return `Przeciętnie. Potencjalne wąskie gardło obniżające wskaźnik konwersji.`;
-      return `Krytyczne zagrożenie dla sprzedaży. Natychmiastowa interwencja zalecana.`;
+      switch (pillar) {
+        case 'Szybkość':
+          if (score >= 80) return 'Ułamek sekundy dzieli Cię od sprzedaży. Infrastruktura doskonale utrzymuje uwagę klientów mobilnych.';
+          if (score >= 50) return 'Przeciętne tempo ładowania. Klienci ze słabszym łączem mogą porzucać koszyki przed wyświetleniem oferty.';
+          return 'Krytyczny dług technologiczny. Ułamki sekund opóźnienia dosłownie palą Twój budżet, odrzucając klientów B2B.';
+        case 'SEO':
+          if (score >= 80) return 'Znakomita optymalizacja. Kod bezbłędnie wspiera organiczne pozycjonowanie Twoich produktów w wyszukiwarce.';
+          if (score >= 50) return 'Zaniedbana struktura techniczna. Algorytmy mogą mieć problem z prawidłowym czytaniem i promowaniem Twojej oferty.';
+          return 'Strona jest niewidzialna dla nowoczesnych crawlerów. Błędy w architekturze blokują Ci darmowy ruch organiczny.';
+        case 'Skalowalność':
+          if (score >= 80) return 'Architektura odporna na piki ruchu. Nagły napływ użytkowników czy tysiące nowych produktów nie spowolnią platformy.';
+          if (score >= 50) return 'Architektura monolityczna. Przy zwiększonym ruchu lub dużej bazie produktów system zacznie łapać zadyszkę i opóźnienia.';
+          return 'Sztywny, zamknięty system. Jakikolwiek nagły wzrost obciążenia skutkuje natychmiastowym zawieszeniem procesu sprzedaży.';
+        case 'Automatyzacja':
+          if (score >= 80) return 'Nowoczesne środowisko (Headless/Edge). Bezproblemowa, tania w utrzymaniu integracja z dowolnym ERP czy PIM po API.';
+          if (score >= 50) return 'Utrudnione integracje. Łączenie z ERP wymaga karkołomnych obejść lub płatnych wtyczek obniżających wydajność.';
+          return 'Ręczna robota i blokada rozwoju. Brak elastycznych API wymusza manualną obsługę procesów, co drastycznie zawyża koszty.';
+        case 'Bezpieczeństwo':
+          if (score >= 80) return 'Żelazne nagłówki i nowoczesne protokoły. Dane Twoich kontrahentów B2B są zabezpieczone na poziomie korporacyjnym.';
+          if (score >= 50) return 'Brak kluczowych polityk bezpieczeństwa (CSP/HSTS). System umiarkowanie podatny na przechwytywanie sesji klientów.';
+          return 'Brak podstawowych standardów ochrony. Narażasz firmę na wycieki danych i surowe konsekwencje naruszenia RODO.';
+        default:
+          return 'Wymagana analiza.';
+      }
     };
 
     return NextResponse.json({
       url: targetUrl,
       overallScore: avgScore,
-      estimatedLoss,
+      lossPercentage,
       aiReport,
       pillars: [
-        { name: 'Szybkość', score: Math.round(performanceScore), interpretation: getInterpretation(performanceScore, 'szybkości') },
+        { name: 'Szybkość', score: Math.round(performanceScore), interpretation: getInterpretation(performanceScore, 'Szybkość') },
         { name: 'SEO', score: Math.round(seoScore), interpretation: getInterpretation(seoScore, 'SEO') },
-        { name: 'Skalowalność', score: Math.round(scalabilityScore), interpretation: getInterpretation(scalabilityScore, 'skalowalności') },
-        { name: 'Automatyzacja', score: Math.round(automationScore), interpretation: getInterpretation(automationScore, 'automatyzacji') },
-        { name: 'Bezpieczeństwo', score: Math.round(securityScore), interpretation: getInterpretation(securityScore, 'bezpieczeństwa') }
+        { name: 'Skalowalność', score: Math.round(scalabilityScore), interpretation: getInterpretation(scalabilityScore, 'Skalowalność') },
+        { name: 'Automatyzacja', score: Math.round(automationScore), interpretation: getInterpretation(automationScore, 'Automatyzacja') },
+        { name: 'Bezpieczeństwo', score: Math.round(securityScore), interpretation: getInterpretation(securityScore, 'Bezpieczeństwo') }
       ]
     });
 
   } catch (error) {
-    console.error('Audit Engine Error:', error);
-    return NextResponse.json({ error: 'Błąd serwera podczas audytu' }, { status: 500 });
+    return NextResponse.json({ error: 'Błąd silnika podczas audytu' }, { status: 500 });
   }
 }

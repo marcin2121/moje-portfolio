@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Zap, Search, Server, Settings, ArrowRight, Loader2, RefreshCcw } from 'lucide-react';
+import { Shield, Zap, Search, Server, Settings, ArrowRight, Loader2, RefreshCcw, Activity } from 'lucide-react';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
 
 type Pillar = {
   name: string;
@@ -11,10 +12,10 @@ type Pillar = {
   interpretation: string;
 };
 
-type AuditResult = {
+interface AuditResult {
   url: string;
   overallScore: number;
-  estimatedLoss: number;
+  lossPercentage: number;
   aiReport: string;
   pillars: Pillar[];
   error?: string;
@@ -85,7 +86,7 @@ export default function AudytPage() {
     } catch (err) {
       clearInterval(stepInterval);
       setIsScanning(false);
-      setResult({ url, overallScore: 0, estimatedLoss: 0, pillars: [], aiReport: '', error: "Wystąpił błąd podczas komunikacji z API." });
+      setResult({ url, overallScore: 0, lossPercentage: 0, pillars: [], aiReport: '', error: "Wystąpił błąd podczas komunikacji z API." });
     }
   };
 
@@ -197,9 +198,7 @@ export default function AudytPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
           >
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-              
-              <div className="lg:col-span-1 bg-zinc-900 border border-zinc-800 rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+              {/* Przeniesiony kalkulator na dół */}              <div className="lg:col-span-1 bg-zinc-900 border border-zinc-800 rounded-3xl p-8 flex flex-col justify-center items-center text-center">
                 <p className="text-zinc-500 font-mono text-sm uppercase tracking-widest mb-4">Wynik Główny</p>
                 <div className={`text-7xl font-black mb-2 ${getScoreColor(result.overallScore)}`}>
                   {result.overallScore}<span className="text-3xl text-zinc-600">/100</span>
@@ -217,10 +216,9 @@ export default function AudytPage() {
                   <h3 className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-4 flex items-center gap-2">
                     <Shield className="w-4 h-4" /> Werdykt Architekta (Analiza AI)
                   </h3>
-                  <div 
-                    className="prose prose-invert prose-orange max-w-none text-zinc-300 leading-relaxed text-lg"
-                    dangerouslySetInnerHTML={{ __html: result.aiReport }}
-                  />
+                  <div className="prose prose-invert prose-orange max-w-none text-zinc-300 leading-relaxed text-lg prose-p:mb-4 prose-strong:text-white prose-ul:my-4 prose-li:my-1">
+                    <ReactMarkdown>{result.aiReport}</ReactMarkdown>
+                  </div>
                 </div>
               </div>
             </div>
@@ -249,6 +247,23 @@ export default function AudytPage() {
                   </p>
                 </motion.div>
               ))}
+            </div>
+
+            {/* Kalkulator Straty na pełną szerokość pod spodem */}
+            <div className="w-full bg-red-500/10 border border-red-500/30 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between mt-8 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/5 to-red-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+              
+              <div className="flex-1">
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Technologiczny Dług</h3>
+                <p className="text-zinc-400">Przez opóźnienia, błędy architektoniczne i brak automatyzacji, Twój biznes traci potencjał z każdym kliknięciem.</p>
+              </div>
+              
+              <div className="text-center md:text-right mt-6 md:mt-0 flex flex-col items-center md:items-end">
+                <span className="text-sm font-medium text-red-500 mb-1 tracking-wider uppercase">Szacowana strata konwersji</span>
+                <div className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+                  {result.lossPercentage}% <span className="text-xl text-red-500">klientów</span>
+                </div>
+              </div>
             </div>
 
             <div className="bg-gradient-to-r from-orange-950/40 to-zinc-900 border border-orange-500/20 rounded-3xl p-10 text-center">
