@@ -250,35 +250,64 @@ export default function AudytPage() {
               ))}
             </div>
 
-            {/* Kalkulator Straty na pełną szerokość pod spodem */}
-            <div className="w-full bg-red-500/10 border border-red-500/30 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between mt-8 relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/5 to-red-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-              
-              <div className="flex-1">
-                <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Technologiczny Dług</h3>
-                <p className="text-zinc-400">Przez opóźnienia, błędy architektoniczne i brak automatyzacji, Twój biznes traci potencjał z każdym kliknięciem.</p>
-              </div>
-              
-              <div className="text-center md:text-right mt-6 md:mt-0 flex flex-col items-center md:items-end">
-                <span className="text-sm font-medium text-red-500 mb-1 tracking-wider uppercase">Szacowana strata konwersji</span>
-                <div className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-                  {result.lossPercentage}% <span className="text-xl text-red-500">klientów</span>
+            {/* Warunkowy Kalkulator Straty / Baner Elite */}
+            {result.overallScore >= 85 ? (
+              /* WERSJA DLA TOP 1% SKLEPÓW (Zielona/Złota) */
+              <div className="w-full bg-emerald-950/20 border border-emerald-500/30 rounded-2xl p-8 mt-8">
+                <div className="flex flex-col md:flex-row justify-between items-center">
+                  <div className="mb-6 md:mb-0 text-center md:text-left">
+                    <h2 className="text-2xl font-bold text-emerald-400">Architektura Klasy Premium</h2>
+                    <p className="mt-1 text-zinc-300">
+                      Twój sklep wyprzedza rynkowe standardy. Nie potrzebujesz klasycznego software house'u do poprawek.
+                    </p>
+                  </div>
+                  <div className="text-center md:text-right">
+                    <span className="text-xs uppercase tracking-widest text-emerald-500">Status Systemu</span>
+                    <p className="text-3xl font-extrabold text-white">ELITA</p>
+                  </div>
+                </div>
+                <div className="mt-8 border-t border-emerald-500/20 pt-6 flex flex-col md:flex-row justify-between items-center">
+                  <p className="text-sm text-zinc-400 mb-4 md:mb-0 text-center md:text-left">Szukasz partnera do budowy dedykowanych narzędzi AI lub ekspansji B2B?</p>
+                  <Link 
+                    href="/#kontakt"
+                    className="bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-3 rounded-xl font-bold transition whitespace-nowrap"
+                  >
+                    Porozmawiajmy o skalowaniu R&D →
+                  </Link>
                 </div>
               </div>
-            </div>
+            ) : (
+              <>
+                <div className="w-full bg-red-500/10 border border-red-500/30 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between mt-8 relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/5 to-red-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                  
+                  <div className="flex-1 text-center md:text-left">
+                    <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Technologiczny Dług</h3>
+                    <p className="text-zinc-400">Przez opóźnienia, błędy architektoniczne i brak automatyzacji, Twój biznes traci potencjał z każdym kliknięciem.</p>
+                  </div>
+                  
+                  <div className="text-center md:text-right mt-6 md:mt-0 flex flex-col items-center md:items-end">
+                    <span className="text-sm font-medium text-red-500 mb-1 tracking-wider uppercase">Szacowana strata konwersji</span>
+                    <div className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+                      {result.lossPercentage}% <span className="text-xl text-red-500">klientów</span>
+                    </div>
+                  </div>
+                </div>
 
-            <div className="bg-gradient-to-r from-orange-950/40 to-zinc-900 border border-orange-500/20 rounded-3xl p-10 text-center">
-              <h2 className="text-3xl font-bold text-white mb-4">Czas wyleczyć ten system.</h2>
-              <p className="text-zinc-400 text-lg mb-8 max-w-2xl mx-auto">
-                Nie pozwól, aby przestarzała technologia paliła Twój budżet marketingowy. Zamów bezpłatną konsultację architektury, a pokażę Ci, jak przejść na nowoczesny Serverless Edge i zlikwidować te straty.
-              </p>
-              <Link 
-                href="/#kontakt"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-zinc-950 font-bold rounded-xl hover:bg-orange-400 transition-colors text-lg"
-              >
-                Pobierz pełny raport naprawczy <ArrowRight className="w-5 h-5" />
-              </Link>
-            </div>
+                <div className="bg-gradient-to-r from-orange-950/40 to-zinc-900 border border-orange-500/20 rounded-3xl p-10 text-center mt-8">
+                  <h2 className="text-3xl font-bold text-white mb-4">Czas wyleczyć ten system.</h2>
+                  <p className="text-zinc-400 text-lg mb-8 max-w-2xl mx-auto">
+                    Nie pozwól, aby przestarzała technologia paliła Twój budżet marketingowy. Zamów bezpłatną konsultację architektury, a pokażę Ci, jak przejść na nowoczesny Serverless Edge i zlikwidować te straty.
+                  </p>
+                  <Link 
+                    href="/#kontakt"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-zinc-950 font-bold rounded-xl hover:bg-orange-400 transition-colors text-lg"
+                  >
+                    Pobierz pełny raport naprawczy <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </div>
+              </>
+            )}
 
           </motion.div>
         )}

@@ -122,14 +122,15 @@ export async function POST(req: Request) {
         ? "UWAGA: Serwis chroniony przez WAF/Cloudflare. Skan struktury kodu zablokowany."
         : `Dług Technologiczny (Code Smells):\n- Przestarzałe jQuery: ${codeSmells.jquery ? 'TAK (Krytyczne!)' : 'NIE'}\n- Skrypty blokujące renderowanie: ${codeSmells.badScripts} szt.\n- Nagłówki H1: ${codeSmells.h1Count}\n- Style inline: ${codeSmells.inlineStyles} szt.`;
 
-      const prompt = `Jesteś Marcinem Molendą, Senior Frontend Architectem. Oto wyniki audytu sklepu: ${targetUrl}
-Tytuł (Branża): ${pageTitle || 'Brak danych'}
-Opis: ${pageDesc || 'Brak danych'}
-Platforma: ${detectedPlatform} | Średni wynik: ${avgScore}/100
+      const isEliteScore = avgScore >= 85;
 
-${codeSmellsText}
+      const prompt = isEliteScore 
+        ? `Jesteś Marcinem Molendą, Senior Frontend Architectem. Sklep ${targetUrl} uzyskał elitarny wynik ${avgScore}/100 (Szybkość: ${Math.round(performanceScore)}, SEO: ${Math.round(seoScore)}). Stack: ${detectedPlatform}.
+Zadanie: Napisz 3 zdania najwyższego uznania. Pogratuluj właścicielowi rewelacyjnej, bezkompromisowej infrastruktury. Zaznacz, że należą do promila najlepszych stron w sieci. Jako jedyny obszar współpracy zaproponuj ultra-zaawansowane skalowanie B2B lub dedykowane systemy AI, skoro fundament mają już perfekcyjny. ABSOLUTNIE NIE sugeruj żadnej migracji ani przebudowy!
 
-Zadanie: Napisz krótki (max 4 zdania), brutalnie szczery werdykt inżynieryjny kierowany do właściciela biznesu. Wskaż wady architektury (np. skrypty blokujące czy stary monolit) i uświadom mu, że traci przez to szacunkowo ${lossPercentage}% potencjalnych klientów. Zaproponuj przejście na autorskie środowisko Serverless Edge (Next.js) jako jedyną drogę rozwoju.
+FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak jakiegokolwiek HTML-a, brak znaczników \`\`\`markdown.`
+        : `Jesteś Marcinem Molendą, Senior Frontend Architectem. Sklep ${targetUrl} uzyskał słaby wynik ${avgScore}/100. Platforma: ${detectedPlatform}. Dług techniczny: ${codeSmellsText}.
+Zadanie: Napisz 3-4 zdania brutalnej diagnozy inżynieryjnej. Wytknij powolne ładowanie i przestarzały kod. Uświadom właściciela, że przez wąskie gardła traci szacunkowo ${lossPercentage}% klientów. Zaproponuj migrację na Twoje autorskie środowisko Serverless Edge (Next.js) jako jedyną drogę ucieczki przed spadkiem sprzedaży.
 
 FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak jakiegokolwiek HTML-a, brak znaczników \`\`\`markdown.`;
 
