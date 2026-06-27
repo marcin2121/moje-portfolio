@@ -25,29 +25,13 @@ import { PortfolioSection } from '@/components/sections/PortfolioSection';
 import { BenefitsSection } from '@/components/sections/BenefitsSection';
 import { fixOrphans } from '@/utils/typography';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-}
-
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
 
-const rIC = (cb: IdleRequestCallback): number => {
-  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-    return window.requestIdleCallback(cb);
-  }
-  return setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 50 }), 50) as unknown as number;
-};
-
-const cIC = (id: number): void => {
-  if (typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
-    window.cancelIdleCallback(id);
-  } else {
-    clearTimeout(id);
-  }
-};
+// Usunięto rIC i cIC
 
 type DemoConfig = {
   url: string;
@@ -113,110 +97,82 @@ export default function PortfolioHome() {
   const lavaHeight    = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
   const lavaWidth     = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
 
-  useEffect(() => {
+  useGSAP(() => {
     window.scrollTo(0, 0);
-    let isMounted = true;
-    let idleId: number = -1;
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    
+    gsapRef.current = gsap;
+    stRef.current = ScrollTrigger;
 
-    idleId = rIC(() => {
-      if (!isMounted) return; 
+    const buildSnapPoints = () => {
+      const maxScr = ScrollTrigger.maxScroll(window);
+      if (maxScr === 0) return;
 
-      gsapRef.current = gsap;
-      stRef.current   = ScrollTrigger;
+      const allST = ScrollTrigger.getAll();
+      const h1 = allST.find(t => t.trigger === horizontal1Ref.current);
+      const h2 = allST.find(t => t.trigger === horizontal2Ref.current);
 
-      /** Rebuild snap progress array from real pin positions */
-      const buildSnapPoints = () => {
-        const maxScr = ScrollTrigger.maxScroll(window);
-        if (maxScr === 0) return;
+      if (!h1 || !h2) {
+        snapPointsRef.current = NAV_DOTS.map((_, i) => i / (NAV_DOTS.length - 1));
+        return;
+      }
 
-        const allST = ScrollTrigger.getAll();
-        const h1 = allST.find(t => t.trigger === horizontal1Ref.current);
-        const h2 = allST.find(t => t.trigger === horizontal2Ref.current);
-
-        if (!h1 || !h2) {
-          // Mobile fallback: equal division
-          snapPointsRef.current = NAV_DOTS.map((_, i) => i / (NAV_DOTS.length - 1));
-          return;
-        }
-
-        const pts: number[] = [];
-        
-        // 0: Start
-        pts[0] = h1.start / maxScr;
-        // 1: Problemy (middle of h1)
-        pts[1] = (h1.start + (h1.end - h1.start) * 0.5) / maxScr;
-        // 2: Rozwiązania (end of h1)
-        pts[2] = h1.end / maxScr;
-        
-        const getDomRatio = (id: string, fallback: number) => {
-          const el = document.getElementById(id);
-          return el ? (window.scrollY + el.getBoundingClientRect().top) / maxScr : fallback;
-        };
-
-        // 3: Proces
-        pts[3] = getDomRatio('proces', (h1.end + 10) / maxScr);
-        
-        // 4: Symulacja
-        pts[4] = getDomRatio('sandbox', (h1.end + 20) / maxScr);
-
-        // 5: Benefity
-        pts[5] = getDomRatio('benefits', (h1.end + 30) / maxScr);
-        
-        // 6-11: H2 pin (Portfolio intro + 5 projects)
-        const h2Dur = h2.end - h2.start;
-        for (let i = 0; i < 6; i++) {
-          pts[6 + i] = (h2.start + h2Dur * i / 5) / maxScr;
-        }
-
-        // 12: Cennik
-        pts[12] = getDomRatio('pricing', (h2.end + 10) / maxScr);
-        
-        // 13: FAQ
-        pts[13] = getDomRatio('faq', (h2.end + 20) / maxScr);
-        
-        // 14: Kontakt
-        pts[14] = Math.min(getDomRatio('kontakt', (h2.end + 30) / maxScr), 1);
-
-        snapPointsRef.current = pts;
+      const pts: number[] = [];
+      pts[0] = h1.start / maxScr;
+      pts[1] = (h1.start + (h1.end - h1.start) * 0.5) / maxScr;
+      pts[2] = h1.end / maxScr;
+      
+      const getDomRatio = (id: string, fallback: number) => {
+        const el = document.getElementById(id);
+        return el ? (window.scrollY + el.getBoundingClientRect().top) / maxScr : fallback;
       };
 
-      const ctx = gsap.context(() => {
-        const mm = gsap.matchMedia();
-        mm.add('(min-width: 1024px)', () => {
-          gsap.to(horizontal1Ref.current, { xPercent: -66.666, ease: 'none', scrollTrigger: { trigger: horizontal1Ref.current, start: 'top top', end: '+=200%', pin: true, scrub: 0.5 } });
-          gsap.to(horizontal2Ref.current, { xPercent: -83.33, ease: 'none', scrollTrigger: { trigger: horizontal2Ref.current, start: 'top top', end: '+=500%', pin: true, scrub: 0.5 } });
-        });
+      pts[3] = getDomRatio('proces', (h1.end + 10) / maxScr);
+      pts[4] = getDomRatio('sandbox', (h1.end + 20) / maxScr);
+      pts[5] = getDomRatio('benefits', (h1.end + 30) / maxScr);
+      
+      const h2Dur = h2.end - h2.start;
+      for (let i = 0; i < 6; i++) {
+        pts[6 + i] = (h2.start + h2Dur * i / 5) / maxScr;
+      }
 
-        ScrollTrigger.create({
-          start: 0,
-          end: 'max',
-          onRefresh: buildSnapPoints,
+      pts[12] = getDomRatio('pricing', (h2.end + 10) / maxScr);
+      pts[13] = getDomRatio('faq', (h2.end + 20) / maxScr);
+      pts[14] = Math.min(getDomRatio('kontakt', (h2.end + 30) / maxScr), 1);
 
-          onUpdate: (self) => {
-            rawProgress.set(self.progress);
-            const pts = snapPointsRef.current;
-            let closestIdx = 0;
-            let minDist = Infinity;
-            pts.forEach((p, i) => {
-              const d = Math.abs(self.progress - p);
-              if (d < minDist) { minDist = d; closestIdx = i; }
-            });
-            setActiveDot(prev => prev !== closestIdx ? closestIdx : prev);
-          },
-        });
+      snapPointsRef.current = pts;
+    };
 
-        // Initial build after triggers exist
-        buildSnapPoints();
-      }, containerRef);
-      ctxRef.current = ctx;
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 1024px)', () => {
+      gsap.to(horizontal1Ref.current, { xPercent: -66.666, ease: 'none', scrollTrigger: { trigger: horizontal1Ref.current, start: 'top top', end: '+=200%', pin: true, scrub: 0.5 } });
+      gsap.to(horizontal2Ref.current, { xPercent: -83.33, ease: 'none', scrollTrigger: { trigger: horizontal2Ref.current, start: 'top top', end: '+=500%', pin: true, scrub: 0.5 } });
     });
 
-    return () => {
-      isMounted = false;
-      if (idleId !== -1) cIC(idleId);
-      ctxRef.current?.revert();
-    };
-  }, [rawProgress]);
+    ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      onRefresh: buildSnapPoints,
+      onUpdate: (self) => {
+        rawProgress.set(self.progress);
+        const pts = snapPointsRef.current;
+        let closestIdx = 0;
+        let minDist = Infinity;
+        pts.forEach((p, i) => {
+          const d = Math.abs(self.progress - p);
+          if (d < minDist) { minDist = d; closestIdx = i; }
+        });
+        setActiveDot(prev => prev !== closestIdx ? closestIdx : prev);
+      },
+    });
+
+    // Small delay to ensure DOM paints before calculating layout
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+      buildSnapPoints();
+    }, 100);
+
+  }, { scope: containerRef, dependencies: [] });
 
   const scrollToSection = useCallback((index: number) => {
     const gsap = gsapRef.current;

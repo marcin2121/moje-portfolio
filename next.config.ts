@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
 
   experimental: {
     // Tree-shake heavy dependencies — only import used exports
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
+    optimizePackageImports: ['lucide-react'],
   },
 
   // Definiujemy pancerne nagłówki HTTP
