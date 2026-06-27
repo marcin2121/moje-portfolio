@@ -21,7 +21,13 @@ export async function POST(req: Request) {
       
       for (let i = 0; i < retries; i++) {
         try {
-          const psRes = await fetch(psUrl, { cache: 'no-store', signal: AbortSignal.timeout(120000) });
+          const psRes = await fetch(psUrl, { 
+            cache: 'no-store', 
+            signal: AbortSignal.timeout(120000),
+            headers: {
+              'Referer': 'https://molendadevelopment.pl/'
+            }
+          });
           if (!psRes.ok) throw new Error(`HTTP Error: ${psRes.status}`);
           return await psRes.json();
         } catch (err: any) {
