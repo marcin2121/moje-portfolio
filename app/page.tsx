@@ -30,7 +30,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
 if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+  gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollToPlugin);
 }
 
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
@@ -347,7 +347,7 @@ export default function PortfolioHome() {
           </button>
         </nav>
 
-        <main className="pl-0 lg:pl-24 w-full overflow-x-hidden">
+        <main className="pl-0 lg:pl-24 w-full overflow-clip">
           <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[300%] h-auto lg:h-screen bg-transparent">
             <Hero onNavigate={scrollToSection} />
             <ProblemSection />
@@ -456,7 +456,7 @@ export default function PortfolioHome() {
                     <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">E-commerce B2B</span>
                   </div>
                   <h2 className="text-4xl sm:text-6xl text-white tracking-tighter">DzikiStyl.com</h2>
-                  <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed max-h-[50vh] lg:max-h-[60vh] overflow-y-auto pr-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/10 hover:[&::-webkit-scrollbar-thumb]:bg-orange-500/50">
+                  <div className="space-y-4 text-sm sm:text-base font-light leading-relaxed">
                     <p className="text-zinc-400"><strong className="text-white">Wyzwanie:</strong> {fixOrphans(`Przestarzała platforma (Shoper/Wix) nie radziła sobie z tysiącami wariantów produktów dla klientów B2B i "zapychała się" przy gigabajtowych plikach od agencji reklamowych.`)}</p>
                     
                     <p className="text-zinc-400"><strong className="text-white">Rozwiązanie:</strong> {fixOrphans(`Stworzyłem od zera ultraszybką platformę z innowacyjnym konfiguratorem ("Frictionless Checkout"), podglądem znakowania na żywo i systemem automatycznej weryfikacji plików do druku w chmurze.`)}</p>

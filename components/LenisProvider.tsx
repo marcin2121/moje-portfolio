@@ -9,26 +9,29 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
   const lenisRef = useRef<any>(null);
 
   useEffect(() => {
-    function update(time: number) {
-      lenisRef.current?.lenis?.raf(time * 1000);
-    }
-
-    gsap.ticker.add(update);
+    let checkLenis: NodeJS.Timeout;
+    
+    const updateLenis = (time: number) => lenisRef.current?.lenis?.raf(time * 1000);
+    gsap.ticker.add(updateLenis);
     gsap.ticker.lagSmoothing(0);
 
-    return () => {
-      gsap.ticker.remove(update);
+    const initLenisSync = () => {
+      const lenis = lenisRef.current?.lenis;
+      if (lenis) {
+        lenis.on('scroll', ScrollTrigger.update);
+        clearInterval(checkLenis);
+      }
     };
-  }, []);
 
-  useEffect(() => {
-    const lenis = lenisRef.current?.lenis;
-    if (!lenis) return;
-    
-    lenis.on('scroll', ScrollTrigger.update);
+    // W React 18 / Next.js instancja lenis może pojawić się milisekundy po montażu rodzica
+    checkLenis = setInterval(initLenisSync, 50);
+    initLenisSync();
     
     return () => {
-      lenis.off('scroll', ScrollTrigger.update);
+      clearInterval(checkLenis);
+      const lenis = lenisRef.current?.lenis;
+      if (lenis) lenis.off('scroll', ScrollTrigger.update);
+      gsap.ticker.remove(updateLenis);
     };
   }, []);
 
