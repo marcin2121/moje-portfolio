@@ -30,7 +30,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
 if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+  gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollToPlugin);
 }
 
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
@@ -101,9 +101,22 @@ export default function PortfolioHome() {
   const lavaHeight    = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
   const lavaWidth     = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
 
+  const [isReady, setIsReady] = useState(false);
+  useEffect(() => {
+    if (document.readyState === 'complete') {
+      setIsReady(true);
+    } else {
+      const handleLoad = () => setIsReady(true);
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
+    }
+  }, []);
+
   useGSAP(() => {
+    if (!isReady) return;
+
     window.scrollTo(0, 0);
-    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollToPlugin);
     
     gsapRef.current = gsap;
     stRef.current = ScrollTrigger;
@@ -174,9 +187,9 @@ export default function PortfolioHome() {
     setTimeout(() => {
       ScrollTrigger.refresh();
       buildSnapPoints();
-    }, 100);
+    }, 200);
 
-  }, { scope: containerRef, dependencies: [] });
+  }, { scope: containerRef, dependencies: [isReady] });
 
   const scrollToSection = useCallback((index: number) => {
     const gsap = gsapRef.current;
