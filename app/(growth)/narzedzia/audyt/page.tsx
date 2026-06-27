@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Zap, Search, Server, Settings, ArrowRight, Loader2, RefreshCcw, Activity } from 'lucide-react';
+import { Shield, Zap, Search, Server, Settings, ArrowRight, Loader2, RefreshCcw } from 'lucide-react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 
@@ -198,7 +198,8 @@ export default function AudytPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
           >
-              {/* Przeniesiony kalkulator na dół */}              <div className="lg:col-span-1 bg-zinc-900 border border-zinc-800 rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+              <div className="lg:col-span-1 bg-zinc-900 border border-zinc-800 rounded-3xl p-8 flex flex-col justify-center items-center text-center">
                 <p className="text-zinc-500 font-mono text-sm uppercase tracking-widest mb-4">Wynik Główny</p>
                 <div className={`text-7xl font-black mb-2 ${getScoreColor(result.overallScore)}`}>
                   {result.overallScore}<span className="text-3xl text-zinc-600">/100</span>
