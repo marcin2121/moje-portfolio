@@ -24,6 +24,13 @@ import { ProcessSection } from '@/components/sections/ProcessSection';
 import { PortfolioSection } from '@/components/sections/PortfolioSection';
 import { BenefitsSection } from '@/components/sections/BenefitsSection';
 import { fixOrphans } from '@/utils/typography';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+}
 
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
 
@@ -111,13 +118,9 @@ export default function PortfolioHome() {
     let isMounted = true;
     let idleId: number = -1;
 
-    idleId = rIC(async () => {
-      const { default: gsap }  = await import('gsap');
-      const { ScrollTrigger }  = await import('gsap/ScrollTrigger');
-      const { ScrollToPlugin } = await import('gsap/ScrollToPlugin');
+    idleId = rIC(() => {
       if (!isMounted) return; 
 
-      gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
       gsapRef.current = gsap;
       stRef.current   = ScrollTrigger;
 
