@@ -122,17 +122,30 @@ export async function POST(req: Request) {
         ? "UWAGA: Serwis chroniony przez WAF/Cloudflare. Skan struktury kodu zablokowany."
         : `Dług Technologiczny (Code Smells):\n- Przestarzałe jQuery: ${codeSmells.jquery ? 'TAK (Krytyczne!)' : 'NIE'}\n- Skrypty blokujące renderowanie: ${codeSmells.badScripts} szt.\n- Nagłówki H1: ${codeSmells.h1Count}\n- Style inline: ${codeSmells.inlineStyles} szt.`;
 
-      const isEliteScore = avgScore >= 85;
+      let prompt = '';
 
-      const prompt = isEliteScore 
-        ? `Jesteś Marcinem Molendą, Senior Frontend Architectem. Sklep ${targetUrl} uzyskał elitarny wynik ${avgScore}/100 (Szybkość: ${Math.round(performanceScore)}, SEO: ${Math.round(seoScore)}). Stack: ${detectedPlatform}.
+      if (avgScore >= 85) {
+        // 1. STREFA ZŁOTA (Elita Top 1%)
+        prompt = `Jesteś Marcinem Molendą, Senior Frontend Architectem. Sklep ${targetUrl} uzyskał elitarny wynik ${avgScore}/100 (Szybkość: ${Math.round(performanceScore)}, SEO: ${Math.round(seoScore)}). Stack: ${detectedPlatform}.
 Zadanie: Napisz 3 zdania najwyższego uznania. Pogratuluj właścicielowi rewelacyjnej, bezkompromisowej infrastruktury. Zaznacz, że należą do promila najlepszych stron w sieci. Jako jedyny obszar współpracy zaproponuj ultra-zaawansowane skalowanie B2B lub dedykowane systemy AI, skoro fundament mają już perfekcyjny. ABSOLUTNIE NIE sugeruj żadnej migracji ani przebudowy!
+FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak HTML-a, brak znaczników \`\`\`markdown.`;
 
-FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak jakiegokolwiek HTML-a, brak znaczników \`\`\`markdown.`
-        : `Jesteś Marcinem Molendą, Senior Frontend Architectem. Sklep ${targetUrl} uzyskał słaby wynik ${avgScore}/100. Platforma: ${detectedPlatform}. Dług techniczny: ${codeSmellsText}.
-Zadanie: Napisz 3-4 zdania brutalnej diagnozy inżynieryjnej. Wytknij powolne ładowanie i przestarzały kod. Uświadom właściciela, że przez wąskie gardła traci szacunkowo ${lossPercentage}% klientów. Zaproponuj migrację na Twoje autorskie środowisko Serverless Edge (Next.js) jako jedyną drogę ucieczki przed spadkiem sprzedaży.
+      } else if (avgScore >= 60 && avgScore < 85) {
+        // 2. STREFA NIEBIESKA (Solidny fundament, wymaga szlifu - przypadek RLT Polska)
+        prompt = `Jesteś Marcinem Molendą, Senior Architectem. Sklep ${targetUrl} uzyskał przyzwoity wynik ${avgScore}/100. Platforma: ${detectedPlatform} (bardzo dobry stack). 
+Zadanie: Pochwal ich za dobry wybór technologii, ale wskaż konkretne wąskie gardła. Wyjaśnij, że mają świetną bazę, ale tracą ok. ${lossPercentage}% konwersji przez brak końcowej optymalizacji i detali architektonicznych (np. brakujące nagłówki bezpieczeństwa czy opóźnienia LCP). Zaproponuj usługę "Performance & Security Tuning" (inżynieryjny szlif), a ABSOLUTNIE NIE sugeruj budowania od nowa ani pełnej migracji!
+FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak HTML-a, brak znaczników \`\`\`markdown.`;
 
+      } else {
+        // 3. STREFA CZERWONA (Agonia / stary monolit)
+        const migrationSuggestion = detectedPlatform.includes('Next.js')
+          ? `Zaproponuj gruntowny audyt kodu i ratunkową refaktoryzację ich obecnej aplikacji Next.js, aby wyeliminować dramatyczny dług technologiczny (Serverless Tuning).`
+          : `Zaproponuj pełną migrację na autorski Serverless Edge (Next.js) jako jedyną drogę ucieczki przed spadkiem sprzedaży.`;
+
+        prompt = `Jesteś Marcinem Molendą. Sklep ${targetUrl} ma fatalny wynik ${avgScore}/100. Stack: ${detectedPlatform}. Dług techniczny: ${codeSmellsText}. 
+Zadanie: Napisz brutalną diagnozę utraty pieniędzy i uświadom, że tracą szacunkowo ${lossPercentage}% klientów. ${migrationSuggestion}
 FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak jakiegokolwiek HTML-a, brak znaczników \`\`\`markdown.`;
+      }
 
       const ai = new GoogleGenAI({ apiKey: geminiKey });
       try {
