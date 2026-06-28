@@ -250,9 +250,9 @@ export default function AudytPage() {
               ))}
             </div>
 
-            {/* Warunkowy Kalkulator Straty / Baner Elite */}
+            {/* Warunkowy Kalkulator Straty / Banery */}
             {result.overallScore >= 85 ? (
-              /* WERSJA DLA TOP 1% SKLEPÓW (Zielona/Złota) */
+              /* WERSJA 1: ELITA (Top 1%) */
               <div className="w-full bg-emerald-950/20 border border-emerald-500/30 rounded-2xl p-8 mt-8">
                 <div className="flex flex-col md:flex-row justify-between items-center">
                   <div className="mb-6 md:mb-0 text-center md:text-left">
@@ -276,7 +276,35 @@ export default function AudytPage() {
                   </Link>
                 </div>
               </div>
+            ) : result.overallScore >= 60 ? (
+              /* WERSJA 2: ZŁOTY ŚRODEK (Wymaga Tuningu) */
+              <div className="w-full bg-blue-950/20 border border-blue-500/30 rounded-2xl p-8 mt-8">
+                <div className="flex flex-col md:flex-row justify-between items-center">
+                  <div className="mb-6 md:mb-0 text-center md:text-left">
+                    <h2 className="text-2xl font-bold text-blue-400">Solidny Fundament, Brak Szlifu</h2>
+                    <p className="mt-1 text-zinc-300">
+                      Masz bardzo dobrą architekturę, ale brakuje inżynieryjnej precyzji w detalach. Przez to nie wykorzystujesz w pełni potencjału technologii.
+                    </p>
+                  </div>
+                  <div className="text-center md:text-right">
+                    <span className="text-xs uppercase tracking-widest text-blue-500">Niewykorzystany Potencjał</span>
+                    <p className="text-3xl font-extrabold text-white tracking-tight">
+                      ~{result.lossPercentage}% <span className="text-lg text-blue-400 font-normal">straty konwersji</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-8 border-t border-blue-500/20 pt-6 flex flex-col md:flex-row justify-between items-center">
+                  <p className="text-sm text-zinc-400 mb-4 md:mb-0 text-center md:text-left">Zamknijmy luki bezpieczeństwa i zoptymalizujmy infrastrukturę w ramach szybkiego tuningu.</p>
+                  <Link 
+                    href="/#kontakt"
+                    className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold transition whitespace-nowrap"
+                  >
+                    Zamów Performance & Security Tuning →
+                  </Link>
+                </div>
+              </div>
             ) : (
+              /* WERSJA 3: AGONIA (Czerwony Dług Technologiczny) */
               <>
                 <div className="w-full bg-red-500/10 border border-red-500/30 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between mt-8 relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/5 to-red-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
