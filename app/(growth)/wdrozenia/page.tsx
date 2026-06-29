@@ -26,7 +26,7 @@ const caseStudies = [
       result: 'Obsługa skokowego ruchu z TV / Meta',
     },
     insight: 'Zaimplementowaliśmy rendering brzegowy (Edge). Serwujemy kluczowe zasoby medyczne bez uderzania w główny serwer bazy danych, całkowicie eliminując błędy typu Resource Limit Is Reached.',
-    link: '#', // Placeholder for the actual case study link
+    link: '/wdrozenia/rltpolska',
   }
 ];
 
