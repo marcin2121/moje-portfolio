@@ -12,7 +12,7 @@ interface HeroProps {
 
 export default function Hero({ onNavigate }: HeroProps) {
   return (
-    <section className="w-full lg:w-screen flex-shrink-0 min-h-[100dvh] bg-transparent flex flex-col relative overflow-hidden z-0 font-sans">
+    <section className="w-full lg:w-1/4 flex-shrink-0 min-h-[100dvh] bg-transparent flex flex-col relative overflow-hidden z-0 font-sans">
 
       {/* Main Hero Content */}
       <div className="flex-1 w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20 pt-24 pb-12 lg:py-16 flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20 relative z-10">

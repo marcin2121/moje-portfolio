@@ -14,6 +14,7 @@ import TiltCard from '@/components/ui/TiltCard';
 import BottomSheet from '@/components/ui/BottomSheet';
 import { HeaderToggle } from '@/components/sections/HeaderToggle';
 import { ProblemSection } from '@/components/sections/ProblemSection';
+import { AboutMeSection } from '@/components/sections/AboutMeSection';
 import ContactForm from '@/components/ui/ContactForm';
 import FAQ from '@/components/ui/FAQ';
 import Pricing from '@/components/Pricing';
@@ -48,18 +49,19 @@ const NAV_DOTS = [
   { id: 0, title: 'Start' },
   { id: 1, title: 'Problemy' },
   { id: 2, title: 'Rozwiązania' },
-  { id: 3, title: 'Proces' },
-  { id: 4, title: 'Symulacja' },
-  { id: 5, title: 'Benefity' },
-  { id: 6, title: 'Portfolio' },
-  { id: 7, title: 'DzikiStyl.com' },
-  { id: 8, title: 'Sklep Urwis' },
-  { id: 9, title: 'zamowtu.pl' },
-  { id: 10, title: 'Kajaki u Maćka' },
-  { id: 11, title: 'Referencje' },
-  { id: 12, title: 'Cennik' },
-  { id: 13, title: 'FAQ' },
-  { id: 14, title: 'Kontakt' },
+  { id: 3, title: 'O Mnie' },
+  { id: 4, title: 'Proces' },
+  { id: 5, title: 'Symulacja' },
+  { id: 6, title: 'Benefity' },
+  { id: 7, title: 'Portfolio' },
+  { id: 8, title: 'DzikiStyl.com' },
+  { id: 9, title: 'Sklep Urwis' },
+  { id: 10, title: 'zamowtu.pl' },
+  { id: 11, title: 'Kajaki u Maćka' },
+  { id: 12, title: 'Referencje' },
+  { id: 13, title: 'Cennik' },
+  { id: 14, title: 'FAQ' },
+  { id: 15, title: 'Kontakt' },
 ] as const;
 
 export const pushGTMEvent = (eventName: string, params: Record<string, unknown> = {}) => {
@@ -125,33 +127,34 @@ export default function PortfolioHome() {
 
       const pts: number[] = [];
       pts[0] = h1.start / maxScr;
-      pts[1] = (h1.start + (h1.end - h1.start) * 0.5) / maxScr;
-      pts[2] = h1.end / maxScr;
+      pts[1] = (h1.start + (h1.end - h1.start) * (1/3)) / maxScr;
+      pts[2] = (h1.start + (h1.end - h1.start) * (2/3)) / maxScr;
+      pts[3] = h1.end / maxScr;
       
       const getDomRatio = (id: string, fallback: number) => {
         const el = document.getElementById(id);
         return el ? (window.scrollY + el.getBoundingClientRect().top) / maxScr : fallback;
       };
 
-      pts[3] = getDomRatio('proces', (h1.end + 10) / maxScr);
-      pts[4] = getDomRatio('sandbox', (h1.end + 20) / maxScr);
-      pts[5] = getDomRatio('benefits', (h1.end + 30) / maxScr);
+      pts[4] = getDomRatio('proces', (h1.end + 10) / maxScr);
+      pts[5] = getDomRatio('sandbox', (h1.end + 20) / maxScr);
+      pts[6] = getDomRatio('benefits', (h1.end + 30) / maxScr);
       
       const h2Dur = h2.end - h2.start;
       for (let i = 0; i < 6; i++) {
-        pts[6 + i] = (h2.start + h2Dur * i / 5) / maxScr;
+        pts[7 + i] = (h2.start + h2Dur * i / 5) / maxScr;
       }
 
-      pts[12] = getDomRatio('cennik', (h2.end + 10) / maxScr);
-      pts[13] = getDomRatio('faq', (h2.end + 20) / maxScr);
-      pts[14] = Math.min(getDomRatio('kontakt', (h2.end + 30) / maxScr), 1);
+      pts[13] = getDomRatio('cennik', (h2.end + 10) / maxScr);
+      pts[14] = getDomRatio('faq', (h2.end + 20) / maxScr);
+      pts[15] = Math.min(getDomRatio('kontakt', (h2.end + 30) / maxScr), 1);
 
       snapPointsRef.current = pts;
     };
 
     const mm = gsap.matchMedia();
     mm.add('(min-width: 1024px)', () => {
-      gsap.to(horizontal1Ref.current, { xPercent: -66.666, ease: 'none', scrollTrigger: { trigger: horizontal1Ref.current, start: 'top top', end: '+=200%', pin: true, scrub: 0.5 } });
+      gsap.to(horizontal1Ref.current, { xPercent: -75, ease: 'none', scrollTrigger: { trigger: horizontal1Ref.current, start: 'top top', end: '+=300%', pin: true, scrub: 0.5 } });
       gsap.to(horizontal2Ref.current, { xPercent: -83.33, ease: 'none', scrollTrigger: { trigger: horizontal2Ref.current, start: 'top top', end: '+=500%', pin: true, scrub: 0.5 } });
     });
 
@@ -201,8 +204,8 @@ export default function PortfolioHome() {
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash;
-      if (hash === '#cennik') scrollToSection(12);
-      if (hash === '#faq') scrollToSection(13);
+      if (hash === '#cennik') scrollToSection(13);
+      if (hash === '#faq') scrollToSection(14);
     };
 
     // Lekkie opóźnienie na start, aby ScrollTrigger policzył wysokości
@@ -306,7 +309,7 @@ export default function PortfolioHome() {
             <div className="w-px h-5 bg-white/10 mx-2" />
 
             <button 
-              onClick={() => scrollToSection(14)}
+              onClick={() => scrollToSection(15)}
               className="group relative ml-1 px-6 py-2 bg-orange-500 text-white font-black uppercase text-[10px] tracking-[0.15em] rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(234,88,12,0.3)]"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
@@ -383,10 +386,10 @@ export default function PortfolioHome() {
         </nav>
 
         <main className="pl-0 lg:pl-24 w-full overflow-clip">
-          <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[300%] h-auto lg:h-screen bg-transparent">
+          <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[400%] h-auto lg:h-screen bg-transparent">
             <Hero onNavigate={scrollToSection} />
             <ProblemSection />
-            <section className="w-full lg:w-1/3 h-auto lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent">
+            <section className="w-full lg:w-1/4 h-auto lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent shrink-0">
               <div className="flex flex-col gap-8 lg:gap-10 max-w-5xl w-full relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 w-full">
                   <MagicBento className="bg-zinc-950 border border-white/5 hover:border-orange-500/40 transition-all group">
@@ -464,6 +467,7 @@ export default function PortfolioHome() {
                 </motion.div>
               </div>
             </section>
+            <AboutMeSection />
           </div>
 
           <HowItWorksSection />
