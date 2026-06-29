@@ -7,8 +7,8 @@ import { fixOrphans } from '@/utils/typography';
 
 const FAQ_ITEMS = [
   {
-    question: "Co jeśli zapłacę zaliczkę, a projekt mi się nie spodoba?",
-    answer: "Chroni Cię \"Gwarancja 7 dni\". Po przedstawieniu przeze mnie wstępnego projektu graficznego masz prawo powiedzieć: „Marcin, to zupełnie nie moja bajka”. W ciągu 24 godzin odsyłam 100% wpłaconej zaliczki na Twoje konto. Zero ryzyka."
+    question: "Jak wyglądają kwestie płatności i zaliczki? Co, jeśli projekt mi się nie spodoba?",
+    answer: "Pracujemy na absolutnie przejrzystych zasadach B2B, bez ukrytych gwiazdek. Aby zarezerwować termin i rozpocząć prace, pobieram standardową zaliczkę (zazwyczaj 30-40%). Twoje pieniądze są jednak w pełni bezpieczne, bo chroni Cię Żelazna Gwarancja 7 Dni. Jeśli po tygodniu od przedstawienia wstępnego projektu graficznego powiesz: „Marcin, to zupełnie nie moja bajka” – bez zadawania pytań odsyłam 100% zaliczki w 24 godziny. To ja ponoszę ryzyko. Resztę kwoty rozliczamy dopiero na samym końcu, gdy strona jest gotowa, przetestowana i w pełni spełnia Twoje oczekiwania."
   },
   {
     question: "Czy po oddaniu strony będę uwiązany jakimś abonamentem?",

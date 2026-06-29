@@ -7,55 +7,115 @@ import { pushGTMEvent } from '@/app/page';
 import { sendContactEmail } from '@/app/actions/sendContactEmail';
 import { fixOrphans } from '@/utils/typography';
 
-const TIERS = [
+const TIERS_SERVICES = [
   {
-    name: 'WIZYTÓWKA',
-    price: '2 000',
+    name: 'WIZYTÓWKA SPRZEDAŻOWA',
+    price: '2 500',
     icon: <Briefcase className="w-5 h-5" />,
-    target: 'Chcesz po prostu świetnie wyglądać w Google i sprawić, by klient łatwo Cię znalazł.',
+    target: 'Dla małych firm i rzemiosła. Chcesz przestać przepalać budżet na reklamy i błyskawicznie zamieniać odwiedzających w dzwoniących klientów.',
     features: [
-      'Indywidualny projekt graficzny (0 gotowych szablonów)',
-      'Napisanie tekstów zorientowanych na sprzedaż',
-      'Czas ładowania poniżej 1.5s',
-      'Założenie i optymalizacja Wizytówki Google',
-      'Formularz kontaktowy spięty z Twoim e-mailem',
-      'Pełna zgodność z RODO i polityka prywatności',
-      'Zaawansowane cyberbezpieczeństwo i codzienne backupy',
-      '6 miesięcy darmowej opieki technicznej'
+      'Unikalny projekt graficzny (zero gotowych szablonów) budujący prestiż marki',
+      'Strona zaprojektowana pod sprzedaż (układ eliminujący ucieczkę klientów)',
+      'Ułożenie Twoich tekstów pod kątem lokalnego pozycjonowania w Google',
+      'Gwarancja błyskawicznego ładowania (<1.5s), by nie tracić ruchu z reklam',
+      'Prosty formularz kontaktowy, który sam przesyła zapytania na Twój telefon',
+      'Założenie i zoptymalizowanie Wizytówki Google Maps dla lokalnego zasięgu',
+      'Spokój prawny (pełna zgodność z RODO i wdrożenie polityki prywatności)',
+      '6 miesięcy żelaznej gwarancji na bezawaryjne działanie kodu'
     ],
     ctaText: 'Wybieram ten pakiet',
     highlighted: false
   },
   {
     name: 'MASZYNA SPRZEDAŻOWA',
-    price: '5 000',
+    price: '5 400',
     icon: <Rocket className="w-5 h-5 text-orange-500" />,
-    target: 'Chcesz przyjmować zamówienia i płatności automatycznie, nawet gdy jesteś zajęty pracą.',
+    target: 'Chcesz, by strona automatycznie pozyskiwała klientów i przyjmowała rezerwacje 24/7, nawet gdy obsługujesz innych.',
     features: [
-      'Wszystko to, co w pakiecie "Wizytówka" +',
-      'Ultraszybki sklep internetowy / System Rezerwacji',
-      'Podpięte natychmiastowe płatności (BLIK, Apple Pay)',
-      'Pełna integracja z kurierami i InPost',
-      'Prosty panel do zarządzania ze smartfona',
-      'Gwarancja 0% prowizji systemowych od sprzedaży',
-      'Dedykowane wideo-szkolenie z obsługi platformy'
+      'Wszystko to, co w pakiecie "Wizytówka Sprzedażowa" +',
+      'Rozbudowana struktura (np. szczegółowe opisy zabiegów, pakiety i cenniki)',
+      'Napisanie profesjonalnych, sprzedażowych tekstów przez eksperta (język korzyści)',
+      'Błyskawiczny, bezawaryjny system rezerwacji wizyt (zero utraconych klientów)',
+      'Podpięte natychmiastowe płatności online (pobieranie zadatków, sprzedaż voucherów)',
+      'Prosty panel do samodzielnej edycji cen i usług bez ryzyka zepsucia układu strony',
+      'Zatrzymujesz 100% zysku z usług (0% ukrytych prowizji systemowych)',
+      <>12 miesięcy opieki technicznej i Twojego pełnego <strong>świętego spokoju</strong></>
     ],
     ctaText: 'Wybieram ten pakiet',
     highlighted: true,
     badge: 'REKOMENDOWANY'
   },
   {
-    name: 'LIDER RYNKU',
-    price: '9 000',
+    name: 'LIDER RYNKU / AUTOMATYZACJA PRO',
+    price: '8 900',
     icon: <Star className="w-5 h-5" />,
-    target: 'Chcesz zautomatyzować obsługę klienta, wyprzedzić konkurencję i odzyskać swój czas.',
+    target: 'Dla firm, które toną w papierologii i kalendarzach. Chcesz w pełni zautomatyzować obsługę, zdeklasować konkurencję i odzyskać swój czas.',
     features: [
-      'Wszystko to, co w pakiecie "Maszyna Sprzedażowa" +',
-      'Wirtualny Asystent AI i Kalkulator Ofert 24/7',
-      'Automatyczny pozyskiwacz opinii 5★ w Google',
-      'Wsparcie w pozyskaniu dotacji na cyfryzację (np. KPO)',
-      'Dedykowane szkolenie wdrożeniowe dla zespołu',
-      'Priorytetowa Opieka VIP (Bezpośredni WhatsApp)'
+      'Wszystko to, co w pakiecie "Maszyna Sprzedażowa" + Dedykowana Aplikacja Usługowa',
+      'Automatyczny obieg danych (spinamy platformę z Twoim systemem rezerwacji, kalendarzem lub fakturowaniem)',
+      'Twój Asystent AI 24/7 – inteligentny bot, który odciąża Cię z pytań o usługi i cennik',
+      'Automat do Google Maps – system sam prosi zadowolonych klientów o 5★ po wizycie',
+      'Gotowa specyfikacja techniczna pod dotacje na cyfryzację (np. z KPO)',
+      'Priorytetowe Wsparcie VIP: bezpośredni kanał na WhatsApp i gwarancja reakcji w max 2h',
+      'Dożywotnia Gwarancja Inżynieryjna na stabilność systemu (zero ukrytych wad)'
+    ],
+    ctaText: 'Aplikuj o pakiet VIP',
+    highlighted: false
+  }
+];
+
+const TIERS_ECOMMERCE = [
+  {
+    name: 'LANDING PAGE / KATALOG',
+    price: '3 500',
+    icon: <Briefcase className="w-5 h-5" />,
+    target: 'Chcesz przetestować nowy produkt na rynku, zbierać zapytania hurtowe (B2B) lub sprzedawać jeden flagowy produkt.',
+    features: [
+      'Unikalny projekt graficzny (zero gotowych szablonów) budujący prestiż marki',
+      'Strona zaprojektowana pod szybką sprzedaż (układ typu Long-Form)',
+      'Ułożenie Twoich tekstów pod kątem skutecznego pozycjonowania w Google',
+      'Gwarancja błyskawicznego ładowania (<1.5s), by nie tracić ruchu z reklam',
+      'Prosty formularz zamówień/zapytań, który powiadamia Cię SMS-em lub mailem',
+      'Założenie i zoptymalizowanie Wizytówki Google Maps dla Twojej firmy',
+      'Spokój prawny (pełna zgodność z RODO i wdrożenie polityki prywatności)',
+      '6 miesięcy żelaznej gwarancji na bezawaryjne działanie kodu'
+    ],
+    ctaText: 'Wybieram ten pakiet',
+    highlighted: false
+  },
+  {
+    name: 'MASZYNA SPRZEDAŻOWA',
+    price: '6 400',
+    icon: <Rocket className="w-5 h-5 text-orange-500" />,
+    target: 'Chcesz profesjonalnego sklepu, który sprzedaje automatycznie 24/7 i nigdy nie dzieli się Twoją marżą z pośrednikami.',
+    features: [
+      'Wszystko to, co w pakiecie "Landing Page / Katalog" +',
+      'Zbudowanie bazy do 30 produktów / wariantów gotowych do natychmiastowej sprzedaży',
+      'Napisanie profesjonalnych, sprzedażowych tekstów przez eksperta (język korzyści)',
+      'Błyskawiczny, bezawaryjny silnik koszyka (eliminacja porzuconych transakcji)',
+      'Podpięte natychmiastowe płatności online (BLIK, Apple Pay) prosto na Twoje konto',
+      'Pełna automatyzacja logistyki (Zintegrowany InPost i szybkie generowanie etykiet)',
+      'Zatrzymujesz 100% marży z produktów (0% ukrytych prowizji systemowych)',
+      'Prosty panel do zarządzania magazynem i cenami bez ryzyka zepsucia strony',
+      <>12 miesięcy opieki technicznej i Twojego pełnego <strong>świętego spokoju</strong></>
+    ],
+    ctaText: 'Wybieram ten pakiet',
+    highlighted: true,
+    badge: 'REKOMENDOWANY'
+  },
+  {
+    name: 'LIDER RYNKU / AUTOMATYZACJA PRO',
+    price: '10 900',
+    icon: <Star className="w-5 h-5" />,
+    target: 'Twój sklep szybko rośnie, a Ty toniesz w paczkach. Chcesz zautomatyzować logistykę, zdeklasować konkurencję i odzyskać swój czas.',
+    features: [
+      'Wszystko to, co w pakiecie "Maszyna Sprzedażowa" + Sklep bez limitu asortymentu (inżynieryjny import bazy danych)',
+      'Automatyczny obieg danych (spinamy sklep z systemem ERP, BaseLinkerem lub magazynem)',
+      'Twój Asystent AI 24/7 – inteligentny bot doradzający klientom w wyborze produktów',
+      'Automat do Google Maps – system sam prosi klientów o opinię 5★ po odebraniu paczki',
+      'Gotowa specyfikacja techniczna pod dotacje na cyfryzację (np. z KPO)',
+      'Priorytetowe Wsparcie VIP: bezpośredni kanał na WhatsApp i gwarancja reakcji w max 2h',
+      'Dożywotnia Gwarancja Inżynieryjna na stabilność systemu (zero ukrytych wad)'
     ],
     ctaText: 'Aplikuj o pakiet VIP',
     highlighted: false
@@ -63,11 +123,14 @@ const TIERS = [
 ];
 
 export default function Pricing() {
-  const [selectedTier, setSelectedTier] = useState<typeof TIERS[0] | null>(null);
+  const [tierType, setTierType] = useState<'services' | 'ecommerce'>('services');
+  const activeTiers = tierType === 'services' ? TIERS_SERVICES : TIERS_ECOMMERCE;
+
+  const [selectedTier, setSelectedTier] = useState<typeof TIERS_SERVICES[0] | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleOpenModal = (tier: typeof TIERS[0], idx: number) => {
+  const handleOpenModal = (tier: typeof TIERS_SERVICES[0], idx: number) => {
     pushGTMEvent(`cennik_pakiet_${idx}_klikniecie`);
     setSelectedTier(tier);
     setStatus('idle');
@@ -134,9 +197,54 @@ export default function Pricing() {
         </motion.div>
       </div>
 
+      {/* Tier Type Switch */}
+      <div className="flex justify-center mb-12 relative z-20">
+        <div className="relative flex items-center p-1 bg-zinc-900/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+          <button
+            onClick={() => setTierType('services')}
+            className={`relative z-10 px-4 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${
+              tierType === 'services' ? 'text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'
+            }`}
+          >
+            Biznes Lokalny i Usługi
+            {tierType === 'services' && (
+              <motion.div
+                layoutId="active-pill"
+                className="absolute inset-0 bg-white/10 rounded-xl"
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              />
+            )}
+          </button>
+          <button
+            onClick={() => setTierType('ecommerce')}
+            className={`relative z-10 px-4 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${
+              tierType === 'ecommerce' ? 'text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'
+            }`}
+          >
+            Sklep Internetowy (E-commerce)
+            {tierType === 'ecommerce' && (
+              <motion.div
+                layoutId="active-pill"
+                className="absolute inset-0 bg-white/10 rounded-xl"
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              />
+            )}
+          </button>
+        </div>
+      </div>
+
       {/* Pricing Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto">
-        {TIERS.map((tier, idx) => (
+      <div className="w-full max-w-6xl mx-auto">
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={tierType}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {activeTiers.map((tier, idx) => (
           <motion.div
             key={idx}
             initial={{ opacity: 0, y: 30 }}
@@ -184,7 +292,7 @@ export default function Pricing() {
                   <li key={fIdx} className="flex items-start gap-3">
                     <Check className={`w-4 h-4 shrink-0 mt-0.5 ${tier.highlighted ? 'text-orange-500' : 'text-zinc-500'}`} />
                     <span className={tier.highlighted && fIdx === 0 ? 'text-white font-medium' : ''}>
-                      {fixOrphans(feat)}
+                      {typeof feat === 'string' ? fixOrphans(feat) : feat}
                     </span>
                   </li>
                 ))}
@@ -202,7 +310,9 @@ export default function Pricing() {
               </button>
             </div>
           </motion.div>
-        ))}
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Rozwiązania szyte na miarę */}
