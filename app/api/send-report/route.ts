@@ -8,11 +8,21 @@ const resendApiKey = process.env.RESEND_API_KEY;
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const ReportSchema = z.object({
-  email: z.string().email(),
-  url: z.string().optional(),
-  projectedRevenueLost: z.number(),
-  inputs: z.any().optional(),
-  outputs: z.any().optional()
+  email: z.string().email().max(200),
+  url: z.string().max(500).optional(),
+  projectedRevenueLost: z.number().max(999999999),
+  // 🛡️ SECURITY FIX: Usunięto z.any() i wprowadzono ścisłe typowanie, by zapobiec Email HTML Injection (Phishing Relay)
+  inputs: z.object({
+    monthlyTraffic: z.number().optional(),
+    averageOrderValue: z.number().optional(),
+    conversionRate: z.number().optional(),
+    currentLoadTimeSeconds: z.number().optional(),
+  }).optional(),
+  outputs: z.object({
+    estimatedNextJsLoadTime: z.number().optional(),
+    estimatedConversionUplift: z.number().optional(),
+    estimatedROI: z.number().optional(),
+  }).optional()
 });
 
 const postHandler = async (data: z.infer<typeof ReportSchema>) => {

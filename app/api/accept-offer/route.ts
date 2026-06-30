@@ -28,7 +28,7 @@ const postHandler = async (data: z.infer<typeof OfferSchema>) => {
 
   if (error) {
     console.error("Resend Error:", error);
-    return NextResponse.json({ error }, { status: 400 });
+    return NextResponse.json({ error: 'Nie udało się wysłać oferty. Spróbuj ponownie później.' }, { status: 400 });
   }
 
   return NextResponse.json({ success: true, data: resendData });

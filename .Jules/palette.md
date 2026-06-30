@@ -1,0 +1,3 @@
+## 2026-06-30 - [Accessibility] Accessible Accordion Pattern
+**Learning:** Animated React components often strip or miss native HTML semantics. An accordion built with `framer-motion` needs explicit `aria-expanded`, `aria-controls` on the button, and `role="region"`, `aria-labelledby` on the expanding content panel to be understood by screen readers, even if the content mounts/unmounts dynamically via `<AnimatePresence>`.
+**Action:** When creating expanding panels/accordions in Next.js with `framer-motion`, always link the trigger button to the collapsible content using unique `id` and `aria-controls` pairs.

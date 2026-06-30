@@ -29,9 +29,7 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
   },
-  alternates: {
-    canonical: 'https://molendadevelopment.pl',
-  },
+  metadataBase: new URL('https://molendadevelopment.pl'),
   openGraph: {
     title: 'Marcin Molenda | Strony i Aplikacje Web & Mobile',
     description: 'Dedykowane strony i aplikacje webowe w Next.js 16. Szybkość ładowania < 1s. Obsługa firm z całej Polski.',

@@ -32,6 +32,19 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
+  // Lock body scroll when mobile menu is open (UX improvement)
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   return (
     <>
       <header
@@ -118,10 +131,12 @@ export default function Navbar() {
             </nav>
             
             <div className="mt-auto flex justify-center pb-6">
-              <Link href="/#kontakt" className="w-full">
-                <button onClick={() => setIsMobileMenuOpen(false)} className="w-full bg-orange-500 hover:bg-orange-600 text-black font-semibold py-4 rounded-2xl transition-colors shadow-[0_0_20px_rgba(249,115,22,0.3)]">
-                  Wyceń projekt
-                </button>
+              <Link 
+                href="/#kontakt" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full bg-orange-500 hover:bg-orange-600 text-black font-semibold py-4 rounded-2xl transition-colors shadow-[0_0_20px_rgba(249,115,22,0.3)] text-center flex items-center justify-center"
+              >
+                Wyceń projekt
               </Link>
             </div>
           </motion.div>

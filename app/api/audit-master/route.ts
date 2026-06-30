@@ -2,14 +2,64 @@ import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 import * as cheerio from 'cheerio'; // Bezpieczny, błyskawiczny parser HTML
 
+// 🛡️ SECURITY FIX: W-pamięciowy Rate Limiter
+const rateLimitMap = new Map<string, { count: number, timestamp: number }>();
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 godzina
+const MAX_REQUESTS = 10;
+
 export async function POST(req: Request) {
   try {
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown-ip';
+    const host = req.headers.get('host') || '';
+    
+    // 🛡️ SECURITY FIX: Zabezpieczenie przed wyczerpaniem limitów (Denial of Wallet)
+    const isLocalRequest = host.includes('localhost') || ip === '127.0.0.1' || ip === '::1';
+    
+    if (!isLocalRequest && ip !== 'unknown-ip') {
+      const now = Date.now();
+      const clientRecord = rateLimitMap.get(ip);
+      
+      if (clientRecord && now - clientRecord.timestamp < RATE_LIMIT_WINDOW) {
+        if (clientRecord.count >= MAX_REQUESTS) {
+          return NextResponse.json({ error: 'Przekroczono limit darmowych skanów (10/godzinę). Spróbuj ponownie później.' }, { status: 429 });
+        }
+        clientRecord.count++;
+      } else {
+        rateLimitMap.set(ip, { count: 1, timestamp: now });
+      }
+      
+      // Garbage collection dla Rate Limitera (zapobieganie wyciekom pamięci)
+      if (rateLimitMap.size > 1000) {
+        for (const [key, val] of rateLimitMap.entries()) {
+          if (now - val.timestamp >= RATE_LIMIT_WINDOW) rateLimitMap.delete(key);
+        }
+      }
+    }
+
     const { url } = await req.json();
-    if (!url) {
-      return NextResponse.json({ error: 'URL jest wymagany' }, { status: 400 });
+    
+    // 🛡️ SECURITY FIX: Walidacja długości i typu (Zapobieganie DoS / parser choke)
+    if (!url || typeof url !== 'string' || url.length > 500) {
+      return NextResponse.json({ error: 'URL jest nieprawidłowy lub zbyt długi' }, { status: 400 });
     }
 
     const targetUrl = url.startsWith('http') ? url : `https://${url}`;
+    
+    // 🛡️ SECURITY FIX: Zabezpieczenie przed SSRF (Server-Side Request Forgery)
+    try {
+      const parsedUrl = new URL(targetUrl);
+      const hostname = parsedUrl.hostname.toLowerCase();
+      
+      const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' || hostname === '0.0.0.0';
+      const isCloudProviderMeta = hostname === '169.254.169.254' || hostname === '100.100.100.200';
+      const isInternalIp = /^10\.|^172\.(1[6-9]|2[0-9]|3[0-1])\.|^192\.168\./.test(hostname);
+      
+      if (isLocalhost || isCloudProviderMeta || isInternalIp) {
+        return NextResponse.json({ error: 'Niedozwolony adres URL (ochrona SSRF).' }, { status: 403 });
+      }
+    } catch (err) {
+      return NextResponse.json({ error: 'Nieprawidłowy format adresu URL.' }, { status: 400 });
+    }
     const apiKey = process.env.PAGESPEED_API_KEY;
 
     let performanceScore = 45;

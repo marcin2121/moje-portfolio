@@ -735,12 +735,8 @@ export default function PortfolioHome() {
             </div>
           </div>
 
-          <div id="faq">
-            <FAQ />
-          </div>
-          <div id="kontakt">
-            <ContactForm />
-          </div>
+          <FAQ />
+          <ContactForm />
 
           <footer className="w-full py-8 text-[9px] md:text-[10px] text-zinc-600 font-mono uppercase tracking-[0.2em] text-center flex flex-col items-center gap-3 relative z-10 bg-zinc-950 border-t border-white/5">
             <div className="flex items-center gap-4">

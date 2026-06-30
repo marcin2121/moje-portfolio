@@ -11,16 +11,18 @@ export default function Particles({ color = '#f97316' }: { color?: string }) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
 
     const particles: { x: number, y: number, radius: number, speed: number, alpha: number }[] = [];
     
     // Tworzymy iskry
     for (let i = 0; i < 40; i++) {
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+        x: Math.random() * width,
+        y: Math.random() * height,
         radius: Math.random() * 2,
         speed: Math.random() * 0.5 + 0.1,
         alpha: Math.random() * 0.5 + 0.1,
@@ -28,32 +30,54 @@ export default function Particles({ color = '#f97316' }: { color?: string }) {
     }
 
     let animationFrameId: number;
+    let isVisible = true;
+
+    // ⚡ BOLT FIX: Zatrzymanie CPU, gdy sekcja znika z ekranu
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+    });
+    observer.observe(canvas);
+
+    // ⚡ BOLT FIX: Obsługa responsywności (zapobiega rozmyciu)
+    const handleResize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    };
+    window.addEventListener('resize', handleResize);
 
     const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = color;
+      if (isVisible) {
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = color;
 
-      particles.forEach((p) => {
-        // Ruch w górę
-        p.y -= p.speed;
-        if (p.y < 0) {
-          p.y = canvas.height;
-          p.x = Math.random() * canvas.width;
-        }
+        particles.forEach((p) => {
+          // Ruch w górę
+          p.y -= p.speed;
+          if (p.y < 0) {
+            p.y = height;
+            p.x = Math.random() * width;
+          }
 
-        ctx.globalAlpha = p.alpha;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
+          ctx.globalAlpha = p.alpha;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
 
       animationFrameId = window.requestAnimationFrame(render);
     };
 
     render();
 
-    return () => window.cancelAnimationFrame(animationFrameId);
+    return () => {
+      window.cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+      observer.disconnect();
+    };
   }, [color]);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none opacity-50 mix-blend-screen" />;
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none opacity-50 mix-blend-screen" />;
 }
