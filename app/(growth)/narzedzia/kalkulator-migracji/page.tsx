@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useQueryStates, parseAsInteger, parseAsFloat } from 'nuqs';
 import Link from 'next/link';
 import { calculateNextJsMigrationROI, MigrationCalculatorState, CalculatorSchemaGEO } from '@/types';
 import { GEOSchemaInjector } from '@/components/ui/GEOSchemaInjector';
@@ -12,13 +13,13 @@ const formatPLN = (val: number) =>
     .format(val)
     .replace(/\u00A0/g, ' ');
 
-export default function MigrationCalculatorPage() {
-  const [inputs, setInputs] = useState<MigrationCalculatorState>({
-    monthlyTraffic: 50000,
-    averageOrderValue: 250,
-    conversionRate: 1.2,
-    currentLoadTimeSeconds: 4.5
-  });
+function CalculatorContent() {
+  const [inputs, setInputs] = useQueryStates({
+    monthlyTraffic: parseAsInteger.withDefault(50000),
+    averageOrderValue: parseAsInteger.withDefault(250),
+    conversionRate: parseAsFloat.withDefault(1.2),
+    currentLoadTimeSeconds: parseAsFloat.withDefault(4.5)
+  }, { history: 'replace', shallow: true });
 
   const { trackSliderInteraction } = useFrictionTelemetry('calc_session_' + Date.now(), 'desktop');
 
@@ -250,5 +251,13 @@ function LeadCaptureBanner({ projectedRevenueLost, inputs, outputs }: { projecte
         </div>
       )}
     </motion.div>
+  );
+}
+
+export default function MigrationCalculatorPage() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center text-white/50">Ładowanie kalkulatora...</div>}>
+      <CalculatorContent />
+    </React.Suspense>
   );
 }

@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import UxLogger from "@/components/UxLogger";
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin", "latin-ext"],
@@ -80,33 +81,57 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             strategy="afterInteractive"
           />
         
-        {/* JSON-LD structured data for ProfessionalService schema */}
+        {/* Advanced JSON-LD structured data for E-E-A-T and GEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
              __html: JSON.stringify({
                "@context": "https://schema.org",
-               "@type": "ProfessionalService",
-               "name": "Marcin Molenda Development",
-               "image": "https://molendadevelopment.pl/og-image.jpg",
-               "@id": "https://molendadevelopment.pl",
-               "url": "https://molendadevelopment.pl",
-               "telephone": "+48665430469",
-               "address": {
-                 "@type": "PostalAddress",
-                 "addressLocality": "Zduńska Wola",
-                 "addressCountry": "PL"
-               },
-               "serviceType": ["Strony Internetowe", "Aplikacje Webowe", "Aplikacje Mobilne", "Optymalizacja SEO"]
+               "@graph": [
+                 {
+                   "@type": "Person",
+                   "@id": "https://molendadevelopment.pl/#person",
+                   "name": "Marcin Molenda",
+                   "url": "https://molendadevelopment.pl",
+                   "image": "https://molendadevelopment.pl/Marcin.jpg",
+                   "jobTitle": "Full-Stack Software Engineer",
+                   "description": "Niezależny Inżynier Oprogramowania specjalizujący się w systemach webowych opartych na Next.js.",
+                   "knowsAbout": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Web Development", "Optymalizacja SEO", "E-commerce"],
+                   "sameAs": [
+                     "https://www.linkedin.com/in/marcin-molenda-447251289/",
+                     "https://www.facebook.com/molendadevelopment/",
+                     "https://github.com/marcin2121"
+                   ]
+                 },
+                 {
+                   "@type": "ProfessionalService",
+                   "@id": "https://molendadevelopment.pl/#organization",
+                   "name": "Marcin Molenda Development",
+                   "url": "https://molendadevelopment.pl",
+                   "logo": "https://molendadevelopment.pl/og-image.jpg",
+                   "image": "https://molendadevelopment.pl/og-image.jpg",
+                   "founder": { "@id": "https://molendadevelopment.pl/#person" },
+                   "telephone": "+48665430469",
+                   "email": "kontakt@molendadevelopment.pl",
+                   "address": {
+                     "@type": "PostalAddress",
+                     "addressLocality": "Zduńska Wola",
+                     "addressCountry": "PL"
+                   },
+                   "serviceType": ["Strony Internetowe", "Aplikacje Webowe", "Aplikacje Mobilne", "Optymalizacja SEO"]
+                 }
+               ]
              })
           }}
         />
 
-        <UxLogger />
-        <Navbar />
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        <NuqsAdapter>
+          <UxLogger />
+          <Navbar />
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
+        </NuqsAdapter>
 
       </body>
     </html>
