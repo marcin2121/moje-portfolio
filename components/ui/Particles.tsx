@@ -4,10 +4,20 @@ import React, { useEffect, useRef } from 'react';
 
 export default function Particles({ color = '#f97316' }: { color?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isVisibleRef = useRef<boolean>(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    // Intersection Observer to track visibility
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        isVisibleRef.current = entry.isIntersecting;
+      });
+    });
+    observer.observe(canvas);
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -30,29 +40,34 @@ export default function Particles({ color = '#f97316' }: { color?: string }) {
     let animationFrameId: number;
 
     const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = color;
+      if (isVisibleRef.current) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = color;
 
-      particles.forEach((p) => {
-        // Ruch w górę
-        p.y -= p.speed;
-        if (p.y < 0) {
-          p.y = canvas.height;
-          p.x = Math.random() * canvas.width;
-        }
+        particles.forEach((p) => {
+          // Ruch w górę
+          p.y -= p.speed;
+          if (p.y < 0) {
+            p.y = canvas.height;
+            p.x = Math.random() * canvas.width;
+          }
 
-        ctx.globalAlpha = p.alpha;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
+          ctx.globalAlpha = p.alpha;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
 
       animationFrameId = window.requestAnimationFrame(render);
     };
 
     render();
 
-    return () => window.cancelAnimationFrame(animationFrameId);
+    return () => {
+      window.cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
+    };
   }, [color]);
 
   return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none opacity-50 mix-blend-screen" />;
