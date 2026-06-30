@@ -10,6 +10,23 @@ export async function POST(req: Request) {
     }
 
     const targetUrl = url.startsWith('http') ? url : `https://${url}`;
+
+    // 🛡️ SECURITY: Prevent SSRF by validating the target URL
+    try {
+      const parsedUrl = new URL(targetUrl);
+      const hostname = parsedUrl.hostname;
+
+      // Block local, loopback, and private IP ranges (including AWS metadata endpoint 169.254.169.254)
+      const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]' || hostname === '0.0.0.0';
+      const isPrivate = /^(10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|192\.168\.|169\.254\.)/.test(hostname);
+
+      if (isLocalhost || isPrivate || (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:')) {
+        return NextResponse.json({ error: 'Niedozwolony adres URL (zabroniony dostęp do zasobów wewnętrznych)' }, { status: 403 });
+      }
+    } catch {
+      return NextResponse.json({ error: 'Nieprawidłowy format URL' }, { status: 400 });
+    }
+
     const apiKey = process.env.PAGESPEED_API_KEY;
 
     let performanceScore = 45;

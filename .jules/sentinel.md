@@ -1,0 +1,4 @@
+## 2024-03-12 - [Critical] SSRF Vulnerability via URL Fetch
+**Vulnerability:** Found a Server-Side Request Forgery (SSRF) vulnerability in `app/api/audit-master/route.ts` where unvalidated user input (`targetUrl`) was passed directly to `fetch()`, allowing access to internal/private IPs (like `169.254.169.254`).
+**Learning:** External fetch calls initialized from user input must have their destination hostname thoroughly validated against local, private, and internal network ranges before establishing a connection.
+**Prevention:** Use the `URL` constructor to inspect the destination hostname. Block standard loopback and private IPv4 ranges (10.x.x.x, 192.168.x.x, 172.16.x.x, 169.254.x.x) and `localhost`/`0.0.0.0` at a minimum. Consider moving toward an allowlist approach or resolving DNS before validating the destination IP for stricter security against DNS rebinding.
