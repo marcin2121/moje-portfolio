@@ -50,8 +50,11 @@ export default function FAQ() {
                 className={`group border rounded-2xl transition-all duration-500 ${isOpen ? 'bg-zinc-900/40 border-white/10 shadow-2xl' : 'bg-transparent border-white/5 hover:border-white/10 hover:bg-zinc-900/20'}`}
               >
                 <button
+                  id={`faq-button-${index}`}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-content-${index}`}
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full flex items-center justify-between p-6 sm:p-8 text-left"
+                  className="w-full flex items-center justify-between p-6 sm:p-8 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 rounded-2xl"
                 >
                   <span className={`text-lg sm:text-xl font-medium transition-colors duration-300 ${isOpen ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
                     {fixOrphans(item.question)}
@@ -64,6 +67,9 @@ export default function FAQ() {
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
+                      id={`faq-content-${index}`}
+                      role="region"
+                      aria-labelledby={`faq-button-${index}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
