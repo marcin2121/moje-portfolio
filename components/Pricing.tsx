@@ -191,7 +191,7 @@ export default function Pricing() {
             <TrendingDown className="w-5 h-5 text-orange-600" />
           </div>
           <div className="relative">
-            <h4 className="text-slate-900 font-bold mb-2 md:mb-3 text-base md:text-lg tracking-tight">Ile tracisz każdego miesiąca przez wolną stronę?</h4>
+            <h3 className="text-slate-900 font-bold mb-2 md:mb-3 text-base md:text-lg tracking-tight">Ile tracisz każdego miesiąca przez wolną stronę?</h3>
             <p className="text-sm md:text-[15px] text-slate-600 leading-relaxed font-normal">
               {fixOrphans(`Jeśli z powodu braku formularza rezerwacji lub błędów technicznych rezygnuje z Ciebie zaledwie `)}<strong className="text-slate-900 font-semibold">{fixOrphans(`5 klientów w miesiącu`)}</strong>{fixOrphans(` (przy usłudze 500 zł), tracisz rocznie `)}<strong className="text-orange-600 font-bold">{fixOrphans(`30 000 zł`)}</strong>{fixOrphans(`. Moja strona eliminuje ten koszt od pierwszego dnia.`)}
             </p>

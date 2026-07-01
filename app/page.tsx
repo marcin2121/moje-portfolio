@@ -291,12 +291,12 @@ export default function PortfolioHome() {
             
             <div className="w-px h-5 bg-slate-200 mx-2" />
             
-            <div className="flex items-center gap-1.5 px-2">
-              <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" rel="noopener noreferrer" className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors" title="LinkedIn">
-                <Linkedin size={14} />
+            <div className="flex items-center px-1">
+              <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" rel="noopener noreferrer" className="w-11 h-11 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors" title="LinkedIn">
+                <Linkedin size={16} />
               </a>
-              <a href="https://www.facebook.com/molendadevelopment/" target="_blank" rel="noopener noreferrer" className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors" title="Facebook">
-                <Facebook size={14} />
+              <a href="https://www.facebook.com/molendadevelopment/" target="_blank" rel="noopener noreferrer" className="w-11 h-11 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors" title="Facebook">
+                <Facebook size={16} />
               </a>
             </div>
 
@@ -359,12 +359,12 @@ export default function PortfolioHome() {
             </div>
           </button>
 
-          <div className="flex items-center gap-1 scale-[0.85] opacity-80">
-            <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" rel="noopener noreferrer" className="p-1 text-slate-500 hover:text-slate-900 transition-colors" aria-label="LinkedIn">
-              <Linkedin size={16} />
+          <div className="flex items-center opacity-80">
+            <a href="https://www.linkedin.com/in/marcin-molenda-447251289/" target="_blank" rel="noopener noreferrer" className="w-11 h-11 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors" aria-label="LinkedIn">
+              <Linkedin size={18} />
             </a>
-            <a href="https://www.facebook.com/molendadevelopment/" target="_blank" rel="noopener noreferrer" className="p-1 text-slate-500 hover:text-slate-900 transition-colors" aria-label="Facebook">
-              <Facebook size={16} />
+            <a href="https://www.facebook.com/molendadevelopment/" target="_blank" rel="noopener noreferrer" className="w-11 h-11 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors" aria-label="Facebook">
+              <Facebook size={18} />
             </a>
           </div>
 
