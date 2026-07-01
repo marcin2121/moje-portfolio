@@ -72,7 +72,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="pl">
       {/* Plus Jakarta Sans applied globally */}
-      <body suppressHydrationWarning className={`${plusJakarta.variable} font-sans bg-slate-50 text-slate-900 antialiased selection:bg-orange-500 selection:text-white`}>
+      <body suppressHydrationWarning className={`${plusJakarta.variable} relative font-sans bg-slate-50 text-slate-900 antialiased overflow-x-clip selection:bg-orange-500 selection:text-white`}>
          
          {/* Umami Analytics (cookie-free, GDPR-compliant) */}
          <Script 

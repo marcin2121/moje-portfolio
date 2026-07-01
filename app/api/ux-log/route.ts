@@ -20,9 +20,7 @@ const postHandler = async (data: z.infer<typeof LogSchema>) => {
   const safeJsonLine = JSON.stringify(data) + '\n';
   
   const logsDir = path.join(process.cwd(), 'logs');
-  if (!fs.existsSync(logsDir)) {
-    fs.mkdirSync(logsDir, { recursive: true });
-  }
+  await fs.promises.mkdir(logsDir, { recursive: true });
 
   const filePath = path.join(logsDir, 'ux-logs.jsonl');
   await fs.promises.appendFile(filePath, safeJsonLine);

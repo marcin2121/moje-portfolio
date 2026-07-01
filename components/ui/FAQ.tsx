@@ -44,7 +44,7 @@ export default function FAQ() {
     <section id="faq" className="w-full py-24 sm:py-32 px-6 sm:px-10 lg:px-20 bg-transparent relative overflow-hidden border-t border-slate-200/50">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c') }}
       />
       <div className="max-w-4xl mx-auto w-full">
         <div className="flex flex-col items-center text-center mb-10 lg:mb-16">

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Code2, Smartphone, Zap, Gauge, ArrowRight, Facebook, Linkedin, Github, Monitor, Smartphone as PhoneIcon, X, Terminal, ChevronDown, ChevronUp } from 'lucide-react';
+import { Code2, Smartphone, Zap, Gauge, Facebook, Linkedin, Monitor, Smartphone as PhoneIcon, X, Terminal, ChevronUp } from 'lucide-react';
 import MagicBento from '@/components/ui/MagicBento';
 import Hero from '@/components/Hero';
 import MagneticWrapper from '@/components/ui/MagneticWrapper';
@@ -10,19 +10,14 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import AnimatedWebP from '@/components/ui/AnimatedWebP';
 import Link from 'next/link';
-import TiltCard from '@/components/ui/TiltCard';
 import BottomSheet from '@/components/ui/BottomSheet';
-import { HeaderToggle } from '@/components/sections/HeaderToggle';
 import { ProblemSection } from '@/components/sections/ProblemSection';
 import { AboutMeSection } from '@/components/sections/AboutMeSection';
 import ContactForm from '@/components/ui/ContactForm';
 import FAQ from '@/components/ui/FAQ';
 import Pricing from '@/components/Pricing';
 import { SandboxSection } from '@/components/sections/SandboxSection';
-import { FeaturesSection } from '@/components/sections/FeaturesSection';
 import { HowItWorksSection } from '@/components/sections/HowItWorksSection';
-import { ProcessSection } from '@/components/sections/ProcessSection';
-import { PortfolioSection } from '@/components/sections/PortfolioSection';
 import { BenefitsSection } from '@/components/sections/BenefitsSection';
 import { fixOrphans } from '@/utils/typography';
 import gsap from 'gsap';
@@ -34,7 +29,7 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollToPlugin);
 }
 
-const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
+// Usunięto Particles (dynamic import)
 
 // Usunięto rIC i cIC
 
@@ -79,7 +74,6 @@ export default function PortfolioHome() {
 
   const gsapRef = useRef<typeof import('gsap')['default'] | null>(null);
   const stRef = useRef<typeof import('gsap/ScrollTrigger').ScrollTrigger | null>(null);
-  const ctxRef = useRef<{ revert: () => void } | null>(null);
   
   const [activeDot, setActiveDot]         = useState(0);
   const [openDemo, setOpenDemo]           = useState<DemoConfig | null>(null);
@@ -90,7 +84,7 @@ export default function PortfolioHome() {
   const playRef = useRef<(() => void) | null>(null);
   const playNavClick = useCallback(() => {
     if (playRef.current) { playRef.current(); return; }
-    import('use-sound').then(({ default: useSoundFactory }) => {
+    import('use-sound').then(() => {
       const audio = new Audio('/sfx/click.mp3');
       audio.volume = 0.1;
       audio.play().catch(() => {});

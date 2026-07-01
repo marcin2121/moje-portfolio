@@ -27,10 +27,10 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     checkLenis = setInterval(initLenisSync, 50);
     initLenisSync();
     
+    const currentLenis = lenisRef.current?.lenis;
     return () => {
       clearInterval(checkLenis);
-      const lenis = lenisRef.current?.lenis;
-      if (lenis) lenis.off('scroll', ScrollTrigger.update);
+      if (currentLenis) currentLenis.off('scroll', ScrollTrigger.update);
       gsap.ticker.remove(updateLenis);
     };
   }, []);

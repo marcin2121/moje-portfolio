@@ -52,7 +52,8 @@ export default function Particles({ color = '#f97316' }: { color?: string }) {
         ctx.clearRect(0, 0, width, height);
         ctx.fillStyle = color;
 
-        particles.forEach((p) => {
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
           // Ruch w górę
           p.y -= p.speed;
           if (p.y < 0) {
@@ -64,7 +65,7 @@ export default function Particles({ color = '#f97316' }: { color?: string }) {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
           ctx.fill();
-        });
+        }
       }
 
       animationFrameId = window.requestAnimationFrame(render);

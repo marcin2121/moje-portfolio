@@ -30,9 +30,11 @@ export async function POST(req: Request) {
       
       // Garbage collection dla Rate Limitera (zapobieganie wyciekom pamięci)
       if (rateLimitMap.size > 1000) {
-        for (const [key, val] of rateLimitMap.entries()) {
-          if (now - val.timestamp >= RATE_LIMIT_WINDOW) rateLimitMap.delete(key);
-        }
+        setTimeout(() => {
+          for (const [key, val] of rateLimitMap.entries()) {
+            if (now - val.timestamp >= RATE_LIMIT_WINDOW) rateLimitMap.delete(key);
+          }
+        }, 0);
       }
     }
 
@@ -50,11 +52,12 @@ export async function POST(req: Request) {
       const parsedUrl = new URL(targetUrl);
       const hostname = parsedUrl.hostname.toLowerCase();
       
-      const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' || hostname === '0.0.0.0';
+      const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' || hostname === '0.0.0.0' || hostname.includes('::ffff:127.0.0.1');
       const isCloudProviderMeta = hostname === '169.254.169.254' || hostname === '100.100.100.200';
-      const isInternalIp = /^10\.|^172\.(1[6-9]|2[0-9]|3[0-1])\.|^192\.168\./.test(hostname);
+      const isInternalIp = /^10\.|^172\.(1[6-9]|2[0-9]|3[0-1])\.|^192\.168\./.test(hostname) || /^fc00:/i.test(hostname) || /^fe80:/i.test(hostname);
+      const isLocalDomain = hostname.endsWith('.local') || hostname.endsWith('.internal');
       
-      if (isLocalhost || isCloudProviderMeta || isInternalIp) {
+      if (isLocalhost || isCloudProviderMeta || isInternalIp || isLocalDomain) {
         return NextResponse.json({ error: 'Niedozwolony adres URL (ochrona SSRF).' }, { status: 403 });
       }
     } catch (err) {
@@ -71,7 +74,7 @@ export async function POST(req: Request) {
     let pageTitle = '';
     let pageDesc = '';
     let detectedPlatform = 'Własny kod / Nierozpoznano';
-    let codeSmells = { jquery: false, badScripts: 0, h1Count: 0, inlineStyles: 0 };
+    const codeSmells = { jquery: false, badScripts: 0, h1Count: 0, inlineStyles: 0 };
     let wafDetected = false;
 
     // Helper: PageSpeed

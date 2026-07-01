@@ -20,7 +20,7 @@ export default function UxLogger() {
       scrollT = setTimeout(() => {
         // Top 1%: Żelazny standard W3C zapobiegający Infinity i NaN (błąd body.scrollHeight)
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        let pct = docHeight > 0 ? Math.round((window.scrollY / docHeight) * 100) : 0;
+        const pct = docHeight > 0 ? Math.round((window.scrollY / docHeight) * 100) : 0;
         
         if (pct > s.maxS) { s.maxS = pct; push("scroll_to", `${pct}% depth`); }
       }, 1000);
@@ -31,7 +31,7 @@ export default function UxLogger() {
     let lastTarget = "";
     
     const onClick = (e: MouseEvent) => {
-      let target = (e.target as HTMLElement)?.innerText?.trim().slice(0, 30) || (e.target as HTMLElement)?.tagName;
+      const target = (e.target as HTMLElement)?.innerText?.trim().slice(0, 30) || (e.target as HTMLElement)?.tagName;
       
       // Top 1%: Jeśli target się zmienił, traktujemy to jako zupełnie nową serię kliknięć 
       // i zapisujemy stary target jeśli licznik > 0

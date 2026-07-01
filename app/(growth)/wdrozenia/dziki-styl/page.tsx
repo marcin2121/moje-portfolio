@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ZoomIn, Settings2, Network, Zap, Search, Eye, Sparkles } from 'lucide-react';
+import { ZoomIn } from 'lucide-react';
 
 export default function DzikiStylCaseStudy() {
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);

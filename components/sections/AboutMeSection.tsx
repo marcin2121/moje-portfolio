@@ -78,11 +78,11 @@ export function AboutMeSection() {
             className="lg:col-span-8 order-1 lg:order-2 bg-white/80 border border-slate-200 rounded-[2rem] p-6 lg:p-10 relative overflow-hidden shadow-premium-soft"
           >
             {/* Subtelny wzór tła */}
-            <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+            <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')]" />
             
             <div className="flex items-center gap-4 mb-6 relative z-10">
               <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 shrink-0 shadow-2xl overflow-hidden relative">
-                <Image src="/Marcin.jpg" alt="Marcin Molenda" fill className="object-cover" />
+                <Image src="/Marcin.jpg" alt="Marcin Molenda" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
               </div>
               <div>
                 <div className="text-xl font-bold text-slate-900 tracking-tight">Marcin Molenda</div>

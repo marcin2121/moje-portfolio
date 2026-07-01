@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+
 import { ParticlesClient } from '@/components/ui/ParticlesClient';
 
 export default function GrowthLayout({ children }: { children: React.ReactNode }) {
