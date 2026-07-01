@@ -9,7 +9,7 @@ const MAX_REQUESTS = 10;
 
 export async function POST(req: Request) {
   try {
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown-ip';
+    const ip = req.headers.get('x-real-ip') ?? req.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown-ip';
     const host = req.headers.get('host') || '';
     
     // 🛡️ SECURITY FIX: Zabezpieczenie przed wyczerpaniem limitów (Denial of Wallet)

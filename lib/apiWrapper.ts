@@ -12,7 +12,7 @@ export function withValidation<T>(
 
       if (!validation.success) {
         return NextResponse.json(
-          { error: 'Invalid Payload', details: validation.error.issues },
+          { error: 'Invalid Payload' },
           { status: 400 }
         );
       }

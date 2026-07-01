@@ -29,12 +29,13 @@ export async function proxy(request: NextRequest) {
   // W stronach SSG Next.js nie wstrzykuje nonce do wygenerowanego HTML-a podczas zapytania.
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl;
+    script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl;
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https:;
     font-src 'self' data:;
     connect-src 'self' https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl;
     frame-src 'self' https://www.youtube.com https://n8n.molendadevelopment.pl https://dzikistyldemo.vercel.app https://www.sklep-urwis.pl https://sklep-urwis.pl https://xn--zamwtu-dxa.pl https://kajaki-u-macka.pl https://www.kajaki-u-macka.pl;
+    frame-ancestors 'self';
     object-src 'none';
     base-uri 'self';
     form-action 'self';
@@ -60,7 +61,7 @@ export async function proxy(request: NextRequest) {
 
   // 4. Rate Limiting dla /api/ 
   if (request.nextUrl.pathname.startsWith('/api/') && ratelimit) {
-    const ip = request.headers.get('x-forwarded-for') ?? 'anonymous';
+    const ip = request.headers.get('x-real-ip') ?? request.headers.get('x-forwarded-for')?.split(',')[0] ?? 'anonymous';
     
     try {
       const { success, limit, reset, remaining } = await ratelimit.limit(`ratelimit_${ip}`);
@@ -85,6 +86,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
   ],
 };

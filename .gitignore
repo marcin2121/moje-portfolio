@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Security Audit exclusions
+logs/
+temp_*
+strix_runs/
+.Jules/

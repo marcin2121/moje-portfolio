@@ -7,6 +7,21 @@ import { Resend } from 'resend';
 const resendApiKey = process.env.RESEND_API_KEY;
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
+// 🛡️ SECURITY FIX: W-pamięciowy Rate Limiter (Ochrona przed Spam Relay)
+const rateLimitMap = new Map<string, { count: number, timestamp: number }>();
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 godzina
+const MAX_REQUESTS = 3; // Max 3 e-maile na godzinę z jednego IP
+
+function escapeHtml(unsafe: string | undefined): string {
+  if (!unsafe) return '';
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 const ReportSchema = z.object({
   email: z.string().email().max(200),
   url: z.string().max(500).optional(),
@@ -25,7 +40,32 @@ const ReportSchema = z.object({
   }).optional()
 });
 
-const postHandler = async (data: z.infer<typeof ReportSchema>) => {
+const postHandler = async (data: z.infer<typeof ReportSchema>, req: Request) => {
+  // 🛡️ SECURITY FIX: Sprawdzanie IP dla Rate Limitera
+  const ip = req.headers.get('x-real-ip') ?? req.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown-ip';
+  const now = Date.now();
+  
+  if (ip !== 'unknown-ip') {
+    const clientRecord = rateLimitMap.get(ip);
+    if (clientRecord && now - clientRecord.timestamp < RATE_LIMIT_WINDOW) {
+      if (clientRecord.count >= MAX_REQUESTS) {
+        return NextResponse.json({ error: 'Przekroczono limit wysyłania raportów. Spróbuj ponownie za godzinę.' }, { status: 429 });
+      }
+      clientRecord.count++;
+    } else {
+      rateLimitMap.set(ip, { count: 1, timestamp: now });
+    }
+    
+    // Garbage collection
+    if (rateLimitMap.size > 1000) {
+      for (const [key, val] of rateLimitMap.entries()) {
+        if (now - val.timestamp >= RATE_LIMIT_WINDOW) rateLimitMap.delete(key);
+      }
+    }
+  }
+
+  const safeEmail = escapeHtml(data.email);
+  const safeUrl = escapeHtml(data.url);
   if (resend) {
     try {
       // 1. Alert dla Ciebie (Marcin)
@@ -35,8 +75,8 @@ const postHandler = async (data: z.infer<typeof ReportSchema>) => {
         subject: `🔥 Nowy lead z kalkulatora (Strata: ${data.projectedRevenueLost} PLN)`,
         html: `
           <h2>🔥 Nowy lead z kalkulatora wycieku gotówki</h2>
-          <p><strong>E-mail klienta:</strong> ${data.email}</p>
-          <p><strong>Adres sklepu (URL):</strong> ${data.url || 'Nie podano'}</p>
+          <p><strong>E-mail klienta:</strong> ${safeEmail}</p>
+          <p><strong>Adres sklepu (URL):</strong> ${safeUrl || 'Nie podano'}</p>
           <hr />
           <h3>Parametry wejściowe:</h3>
           <ul>
@@ -56,7 +96,7 @@ const postHandler = async (data: z.infer<typeof ReportSchema>) => {
       });
 
       // 2. Raport Premium dla Klienta
-      await resend.emails.send({
+      const { error } = await resend.emails.send({
         from: 'Marcin Molenda <kontakt@molendadevelopment.pl>',
         to: [data.email],
         subject: 'Twój Raport: Wyciek gotówki z powodu wolnego ładowania',
@@ -107,6 +147,10 @@ const postHandler = async (data: z.infer<typeof ReportSchema>) => {
         `
       });
 
+      if (error) {
+        console.error("Resend API error:", error);
+        return NextResponse.json({ error: "Błąd podczas wysyłania e-maila." }, { status: 500 });
+      }
     } catch (e) {
       console.error("Resend delivery failed:", e);
     }
