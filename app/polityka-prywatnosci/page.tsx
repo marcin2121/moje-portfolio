@@ -34,22 +34,22 @@ export default function PrivacyPolicy() {
   ];
 
   return (
-    <main className="min-h-screen w-full bg-zinc-950 text-white font-sans overflow-x-hidden relative flex flex-col items-center">
+    <main className="min-h-screen w-full bg-slate-50 text-slate-900 font-sans overflow-x-hidden relative flex flex-col items-center">
       
       {/* GLOBALNA SIATKA */}
-      <div className="fixed inset-0 z-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-size-[40px_40px] mask-[radial-gradient(ellipse_80%_80%_at_0%_50%,#000_30%,transparent_100%)] opacity-80 pointer-events-none" />
+      <div className="fixed inset-0 z-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-size-[40px_40px] mask-[radial-gradient(ellipse_80%_80%_at_0%_50%,#000_30%,transparent_100%)] opacity-80 pointer-events-none" />
       <Particles color="#ea580c" />
 
       {/* TOP NAV / BACK */}
       <header className="w-full max-w-7xl px-6 py-8 flex items-center justify-between relative z-10">
         <MagneticWrapper>
           <Link href="/">
-            <button className="p-3 bg-zinc-900 border border-white/5 rounded-xl hover:border-zinc-700 transition-all flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-zinc-300">
+            <button className="p-3 bg-white border border-slate-200 rounded-xl hover:border-slate-300 transition-all flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-slate-500 shadow-sm">
               <MoveLeft size={14} /> Powrót
             </button>
           </Link>
         </MagneticWrapper>
-        <div className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+        <div className="font-mono text-[9px] text-slate-400 uppercase tracking-widest flex items-center gap-2">
           <Terminal size={14} className="text-orange-500" /> mm.dev // privacy_policy
         </div>
       </header>
@@ -63,13 +63,13 @@ export default function PrivacyPolicy() {
           viewport={{ once: true }}
           className="flex flex-col gap-4"
         >
-          <div className="w-12 h-12 rounded-xl bg-orange-600/10 border border-orange-500/20 flex items-center justify-center mb-2">
+          <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center mb-2">
             <ShieldAlert size={20} className="text-orange-500" />
           </div>
-          <h1 className="text-4xl sm:text-5xl font-mono tracking-tighter text-white">
+          <h1 className="text-4xl sm:text-5xl font-mono tracking-tighter text-slate-900">
             Polityka<br />Prywatności
           </h1>
-          <p className="text-xs font-mono text-zinc-500 uppercase tracking-widest">Wersja r.01 / Ostatnia zmiana: marzec 2026</p>
+          <p className="text-xs font-mono text-slate-500 uppercase tracking-widest">Wersja r.01 / Ostatnia zmiana: marzec 2026</p>
         </motion.div>
 
         <motion.div 
@@ -82,13 +82,13 @@ export default function PrivacyPolicy() {
           {sections.map((section, index) => (
             <div 
               key={index} 
-              className="p-6 bg-zinc-900/40 backdrop-blur-md border border-white/5 rounded-2xl flex flex-col gap-3 group hover:border-orange-500/20 transition-all"
+              className="p-6 bg-white backdrop-blur-md border border-slate-200 rounded-2xl flex flex-col gap-3 group hover:border-orange-200 shadow-sm transition-all"
             >
-              <h2 className="font-mono text-sm uppercase tracking-widest text-white flex items-center gap-2">
+              <h2 className="font-mono text-sm uppercase tracking-widest text-slate-900 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-orange-500 rounded-full group-hover:scale-125 transition-transform" />
                 {section.title}
               </h2>
-              <p className="text-sm font-light text-zinc-400 leading-relaxed pl-3.5">
+              <p className="text-sm font-light text-slate-600 leading-relaxed pl-3.5">
                 {section.content}
               </p>
             </div>
@@ -97,7 +97,7 @@ export default function PrivacyPolicy() {
       </article>
 
       {/* FOOTER */}
-      <footer className="w-full border-t border-white/5 py-6 mt-auto text-center font-mono text-[9px] text-zinc-500 uppercase tracking-[0.2em] relative z-10">
+      <footer className="w-full border-t border-slate-200/50 py-6 mt-auto text-center font-mono text-[9px] text-slate-400 uppercase tracking-[0.2em] relative z-10">
         &copy; {new Date().getFullYear()} Marcin Molenda // Molenda Development
       </footer>
     </main>

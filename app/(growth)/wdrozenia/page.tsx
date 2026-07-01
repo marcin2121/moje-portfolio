@@ -36,10 +36,10 @@ export default function WdrozeniaPage() {
       
       {/* Header */}
       <div className="text-center space-y-4">
-        <h1 className="text-4xl md:text-5xl font-black tracking-tight text-zinc-100">
+        <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900">
           Twarde dowody. <span className="text-orange-500">Nie obietnice.</span>
         </h1>
-        <p className="text-lg text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed">
+        <p className="text-lg text-slate-600 max-w-2xl mx-auto font-light leading-relaxed">
           Zobacz, jak zredukowaliśmy ciężar platform e-commerce o ponad 95% i ustabilizowaliśmy infrastrukturę ratując budżety reklamowe.
         </p>
       </div>
@@ -52,53 +52,53 @@ export default function WdrozeniaPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="group flex flex-col bg-zinc-950 border border-zinc-800 hover:border-zinc-700 rounded-3xl p-8 transition-colors relative overflow-hidden"
+            className="group flex flex-col bg-white/70 backdrop-blur-xl border border-slate-200/50 hover:bg-white/90 hover:shadow-premium-soft rounded-3xl p-8 transition-all duration-300 relative overflow-hidden shadow-sm"
           >
             {/* Ambient Background Glow */}
-            <div className="absolute -top-32 -right-32 w-64 h-64 bg-orange-500/5 rounded-full blur-[80px] pointer-events-none group-hover:bg-orange-500/10 transition-colors" />
+            <div className="absolute -top-32 -right-32 w-64 h-64 bg-orange-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-orange-500/20 transition-colors" />
 
             {/* Nagłówek */}
             <div className="flex justify-between items-start mb-8 relative z-10">
-              <h2 className="text-2xl font-bold text-zinc-100 tracking-tight">{study.title}</h2>
-              <span className="px-3 py-1 bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400 rounded-full tracking-wider uppercase">
+              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{study.title}</h2>
+              <span className="px-3 py-1 bg-slate-100 border border-slate-200 text-xs font-mono text-slate-500 rounded-full tracking-wider uppercase">
                 {study.category}
               </span>
             </div>
 
             {/* Performance Duel */}
-            <div className="bg-zinc-900/40 rounded-2xl p-5 mb-6 border border-white/5 relative z-10">
+            <div className="bg-slate-50 rounded-2xl p-5 mb-6 border border-slate-200/60 relative z-10">
               <div className="flex items-center gap-2 mb-4">
                 <TrendingUp className="w-4 h-4 text-orange-500" />
-                <span className="text-xs font-bold uppercase tracking-widest text-zinc-500">Performance Duel</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Performance Duel</span>
               </div>
               
               <div className="grid grid-cols-2 gap-4">
                 {/* Przed */}
-                <div className="space-y-1 pr-4 border-r border-zinc-800">
-                  <span className="text-[10px] uppercase text-zinc-500 font-mono flex items-center gap-1.5 mb-2">
+                <div className="space-y-1 pr-4 border-r border-slate-200">
+                  <span className="text-[10px] uppercase text-slate-500 font-mono flex items-center gap-1.5 mb-2">
                     {study.duel.before.icon} Przed
                   </span>
-                  <div className="text-xl font-medium text-rose-500 line-through decoration-rose-500/30">
+                  <div className="text-xl font-medium text-rose-600 line-through decoration-rose-600/30">
                     {study.duel.before.value}
                   </div>
-                  <div className="text-xs text-zinc-600 line-clamp-1">{study.duel.before.label}</div>
+                  <div className="text-xs text-slate-500 line-clamp-1">{study.duel.before.label}</div>
                 </div>
                 
                 {/* Po */}
                 <div className="space-y-1 pl-2">
-                  <span className="text-[10px] uppercase text-zinc-500 font-mono flex items-center gap-1.5 mb-2">
+                  <span className="text-[10px] uppercase text-slate-500 font-mono flex items-center gap-1.5 mb-2">
                     {study.duel.after.icon} Po (Next.js)
                   </span>
-                  <div className="text-xl font-bold text-emerald-400">
+                  <div className="text-xl font-bold text-emerald-600">
                     {study.duel.after.value}
                   </div>
-                  <div className="text-xs text-zinc-400 line-clamp-1">{study.duel.after.label}</div>
+                  <div className="text-xs text-slate-500 line-clamp-1">{study.duel.after.label}</div>
                 </div>
               </div>
 
               {/* Wynik */}
-              <div className="mt-4 pt-4 border-t border-zinc-800">
-                <p className="text-sm font-semibold text-orange-400 flex items-center gap-2">
+              <div className="mt-4 pt-4 border-t border-slate-200">
+                <p className="text-sm font-semibold text-orange-600 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-orange-500 rounded-full shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
                   {study.duel.result}
                 </p>
@@ -107,8 +107,8 @@ export default function WdrozeniaPage() {
 
             {/* Inżynierski Insight */}
             <div className="mb-8 flex-1 relative z-10">
-              <p className="text-sm text-zinc-400 leading-relaxed line-clamp-3">
-                <strong className="text-zinc-300 font-medium">Inżynierski Insight:</strong> {study.insight}
+              <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
+                <strong className="text-slate-900 font-medium">Inżynierski Insight:</strong> {study.insight}
               </p>
             </div>
 
@@ -116,7 +116,7 @@ export default function WdrozeniaPage() {
             <div className="relative z-10 mt-auto">
               <Link 
                 href={study.link} 
-                className="inline-flex items-center gap-2 text-sm font-bold text-zinc-100 hover:text-orange-500 transition-colors group/link"
+                className="inline-flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-orange-600 transition-colors group/link"
               >
                 Zobacz case study 
                 <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />

@@ -1,13 +1,15 @@
 'use client';
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { Suspense } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Terminal } from 'lucide-react';
 import AnimatedWebP from '@/components/ui/AnimatedWebP';
 import Image from 'next/image';
 import { fixOrphans } from '@/utils/typography';
+import { useQueryState } from 'nuqs';
 
 const PROJECTS = [
   {
+    category: 'e-commerce',
     title: 'DzikiStyl.com',
     tags: ['Zaawansowana personalizacja', 'Migracja Next.js'],
     devTags: ['Headless Commerce', 'React Three Fiber', 'Direct-Upload R2'],
@@ -19,6 +21,7 @@ const PROJECTS = [
     link: 'https://dzikistyldemo.vercel.app/'
   },
   {
+    category: 'pwa',
     title: 'Sklep Urwis / Akademia',
     tags: ['Grywalizacja', 'PWA', 'Smart-Automations'],
     devTags: ['PWA Offline Mode', 'WebGL Minigames', 'Gemini AI Assistant'],
@@ -30,6 +33,7 @@ const PROJECTS = [
     link: 'https://sklepurwis.pl'
   },
   {
+    category: 'saas',
     title: 'zamowtu.pl',
     tags: ['SaaS', 'Platforma Transakcyjna', 'Fintech'],
     devTags: ['Next.js', 'Stripe Connect', 'Supabase'],
@@ -41,6 +45,7 @@ const PROJECTS = [
     link: 'https://zamowtu.pl'
   },
   {
+    category: 'wizerunek',
     title: 'Kajaki u Maćka',
     tags: ['Strona Wizerunkowa', 'Wizytówka Google'],
     devTags: ['Next.js', 'SEO', 'Social Media'],
@@ -53,57 +58,75 @@ const PROJECTS = [
   }
 ];
 
-export function PortfolioSection() {
+const CATEGORIES = [
+  { id: 'wszystkie', label: 'Wszystkie' },
+  { id: 'e-commerce', label: 'E-commerce' },
+  { id: 'saas', label: 'SaaS' },
+  { id: 'pwa', label: 'PWA / Mobile' },
+  { id: 'wizerunek', label: 'Wizerunek' }
+];
 
+function PortfolioFilters() {
+  const [category, setCategory] = useQueryState('kategoria', { defaultValue: 'wszystkie', shallow: true });
+
+  const filteredProjects = category === 'wszystkie' 
+    ? PROJECTS 
+    : PROJECTS.filter(p => p.category === category);
 
   return (
-    <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-[#161618] border-t border-[#222225]">
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="flex items-center gap-2 text-orange-500 font-mono tracking-widest uppercase text-sm mb-4">
-          <Terminal size={16} />
-          <span>Moje realizacje</span>
-        </div>
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white mb-16">
-          Wybrane<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600">
-            projekty B2B
-          </span>
-        </h2>
-          <p className="text-[#A1A1A5] text-lg max-w-2xl mx-auto font-light leading-relaxed mb-20">
-            {fixOrphans('Nie obiecuję niemożliwego – dowożę mierzalne rezultaty. Przeczytaj, jak moje realizacje zmieniły operacje w firmach klientów.')}
-          </p>
+    <>
+      <div className="flex flex-wrap items-center justify-center gap-3 mb-16">
+        {CATEGORIES.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setCategory(cat.id === 'wszystkie' ? null : cat.id)}
+            className={`px-6 py-3 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+              category === cat.id 
+                ? 'bg-slate-900 text-white shadow-md scale-105' 
+                : 'bg-white text-slate-500 border border-slate-200 hover:border-slate-400 hover:text-slate-900'
+            }`}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
 
-        <div className="space-y-24">
-          {PROJECTS.map((project, idx) => (
-            <div key={idx} className={`flex flex-col ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 lg:gap-16 items-center`}>
+      <div className="space-y-24">
+        <AnimatePresence mode="popLayout">
+          {filteredProjects.map((project, idx) => (
+            <motion.div 
+              key={project.title}
+              layout
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className={`flex flex-col ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 lg:gap-16 items-center`}
+            >
               
               {/* Image side */}
               <div className="w-full lg:w-1/2">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8 }}
-                  className="aspect-[4/3] rounded-[2rem] bg-[#0B0B0C] border border-[#222225] overflow-hidden relative group shadow-2xl"
+                <div
+                  className="aspect-[4/3] rounded-[2rem] bg-slate-100 border border-slate-200 overflow-hidden relative group shadow-premium-soft"
                 >
                   <AnimatedWebP src={project.img} alt={project.title} className="opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0C] via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
                   <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
                     <h3 className="text-3xl font-black text-white tracking-tight">{project.title}</h3>
                     {project.link !== '#' && (
-                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#FF6900] text-black flex items-center justify-center hover:scale-110 transition-transform">
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#FF6900] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-sm">
                         <ExternalLink size={20} />
                       </a>
                     )}
                   </div>
-                </motion.div>
+                </div>
               </div>
 
               {/* Content side */}
               <div className="w-full lg:w-1/2">
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1 rounded-full bg-[#222225] border border-[#FF6900]/20 text-[#FF6900] text-[10px] uppercase font-bold tracking-widest">
+                    <span key={tag} className="px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-orange-600 text-[10px] uppercase font-bold tracking-widest">
                       {tag}
                     </span>
                   ))}
@@ -111,31 +134,57 @@ export function PortfolioSection() {
 
                 <div className="space-y-8">
                   <div>
-                    <h4 className="text-sm font-mono text-[#A1A1A5] uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <h4 className="text-sm font-mono text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> Wyzwanie
                     </h4>
-                    <p className="text-[#F5F5F7] font-light leading-relaxed">{fixOrphans(project.challenge)}</p>
+                    <p className="text-slate-700 font-light leading-relaxed">{fixOrphans(project.challenge)}</p>
                   </div>
                   
                   <div>
-                    <h4 className="text-sm font-mono text-[#A1A1A5] uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <h4 className="text-sm font-mono text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Rozwiązanie techniczne
                     </h4>
-                    <p className="text-[#F5F5F7] font-light leading-relaxed">{fixOrphans(project.solution)}</p>
+                    <p className="text-slate-700 font-light leading-relaxed">{fixOrphans(project.solution)}</p>
                   </div>
 
-                  <div className="p-6 rounded-xl bg-[#0B0B0C] border border-[#222225] border-l-4 border-l-[#FF6900]">
+                  <div className="p-6 rounded-xl bg-white border border-slate-200 border-l-4 border-l-[#FF6900] shadow-sm">
                     <h4 className="text-sm font-mono text-[#FF6900] uppercase tracking-widest mb-2 flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FF6900]" /> Wynik Biznesowy i ROI
                     </h4>
-                    <p className="text-[#F5F5F7] font-bold leading-relaxed">{fixOrphans(project.result)}</p>
+                    <p className="text-slate-900 font-bold leading-relaxed">{fixOrphans(project.result)}</p>
                   </div>
                 </div>
               </div>
 
-            </div>
+            </motion.div>
           ))}
+        </AnimatePresence>
+      </div>
+    </>
+  );
+}
+
+export function PortfolioSection() {
+  return (
+    <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-slate-50 border-t border-slate-200/50">
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <div className="flex items-center gap-2 text-orange-500 font-mono tracking-widest uppercase text-sm mb-4">
+          <Terminal size={16} />
+          <span>Moje realizacje</span>
         </div>
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900 mb-16">
+          Wybrane<br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-500 to-slate-700">
+            projekty B2B
+          </span>
+        </h2>
+        <p className="text-slate-600 text-lg max-w-2xl mx-auto font-light leading-relaxed mb-20">
+          {fixOrphans('Nie obiecuję niemożliwego – dowożę mierzalne rezultaty. Przeczytaj, jak moje realizacje zmieniły operacje w firmach klientów.')}
+        </p>
+
+        <Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400">Ładowanie projektów...</div>}>
+          <PortfolioFilters />
+        </Suspense>
 
         {/* Michał's Testimonial */}
         <motion.div
@@ -143,21 +192,21 @@ export function PortfolioSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mt-32 p-8 md:p-16 rounded-[3rem] bg-[#0B0B0C] border border-[#222225] relative overflow-hidden text-center"
+          className="mt-32 p-8 md:p-16 rounded-[3rem] bg-white/80 backdrop-blur-xl border border-slate-200 shadow-premium-soft relative overflow-hidden text-center"
         >
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-[#FF6900]/10 blur-[100px] pointer-events-none" />
           <div className="text-6xl text-[#FF6900] font-serif absolute top-8 left-8 opacity-20">&quot;</div>
           
-          <p className="text-xl md:text-3xl font-light text-[#F5F5F7] leading-relaxed relative z-10 max-w-4xl mx-auto italic mb-10">
+          <p className="text-xl md:text-3xl font-light text-slate-700 leading-relaxed relative z-10 max-w-4xl mx-auto italic mb-10">
             {fixOrphans(`Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług. To, co Marcin robi w pojedynkę, po prostu przekracza ludzkie pojęcie i `)}<span className="text-[#FF6900] font-bold">{fixOrphans(`technologicznie wyprzedza nasze czasy o 5 lat do przodu!`)}</span>{fixOrphans(` Z całego serca polecam usługi każdemu, kto marzy o bezkompromisowej aplikacji. Wielkie dzięki – zrobiłeś absolutny kosmos!`)}
           </p>
           
           <div className="flex flex-col items-center justify-center gap-2 relative z-10">
-            <div className="w-16 h-16 rounded-full bg-[#161618] border-2 border-[#FF6900] mb-2 overflow-hidden">
-              <Image src="/dzikistyl.jpg" alt="DzikiStyl" width={64} height={64} className="w-full h-full object-cover opacity-50" />
+            <div className="w-16 h-16 rounded-full bg-white border-2 border-[#FF6900] mb-2 overflow-hidden shadow-sm">
+              <Image src="/dzikistyl.jpg" alt="DzikiStyl" width={64} height={64} className="w-full h-full object-cover opacity-90" />
             </div>
-            <div className="text-[#F5F5F7] font-bold tracking-wide">Michał</div>
-            <div className="text-[#A1A1A5] text-sm uppercase tracking-widest font-mono">Właściciel DzikiStyl.com</div>
+            <div className="text-slate-900 font-bold tracking-wide">Michał</div>
+            <div className="text-slate-500 text-sm uppercase tracking-widest font-mono">Właściciel DzikiStyl.com</div>
           </div>
         </motion.div>
 

@@ -41,19 +41,19 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" className="w-full py-24 sm:py-32 px-6 sm:px-10 lg:px-20 bg-transparent relative overflow-hidden border-t border-white/5">
+    <section id="faq" className="w-full py-24 sm:py-32 px-6 sm:px-10 lg:px-20 bg-transparent relative overflow-hidden border-t border-slate-200/50">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
       <div className="max-w-4xl mx-auto w-full">
         <div className="flex flex-col items-center text-center mb-10 lg:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-md mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-md mb-6 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-            <span className="font-mono text-[9px] text-zinc-300 uppercase tracking-widest">FAQ</span>
+            <span className="font-mono text-[9px] text-slate-600 uppercase tracking-widest">FAQ</span>
           </div>
-          <h2 className="text-4xl sm:text-6xl text-white tracking-tighter mb-6 font-black">Odpowiedzi na obawy</h2>
-          <p className="text-zinc-400 text-sm sm:text-base font-light max-w-2xl">
+          <h2 className="text-4xl sm:text-6xl text-slate-900 tracking-tighter mb-6 font-black">Odpowiedzi na obawy</h2>
+          <p className="text-slate-600 text-sm sm:text-base font-light max-w-2xl">
             {fixOrphans(`Inwestycja w nowoczesną stronę to odpowiedzialna decyzja. Oto wyjaśnienie najczęstszych kwestii, bez owijania w bawełnę.`)}
           </p>
         </div>
@@ -64,7 +64,7 @@ export default function FAQ() {
             return (
               <div 
                 key={index}
-                className={`group border rounded-2xl transition-all duration-500 ${isOpen ? 'bg-zinc-900/40 border-white/10 shadow-2xl' : 'bg-transparent border-white/5 hover:border-white/10 hover:bg-zinc-900/20'}`}
+                className={`group border rounded-2xl transition-all duration-500 ${isOpen ? 'bg-white border-slate-200 shadow-premium-soft' : 'bg-transparent border-slate-200/50 hover:border-slate-300 hover:bg-white/40'}`}
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
@@ -73,10 +73,10 @@ export default function FAQ() {
                   aria-controls={`faq-answer-${index}`}
                   id={`faq-question-${index}`}
                 >
-                  <span className={`text-lg sm:text-xl font-medium transition-colors duration-300 ${isOpen ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
+                  <span className={`text-lg sm:text-xl font-medium transition-colors duration-300 ${isOpen ? 'text-slate-900' : 'text-slate-600 group-hover:text-slate-900'}`}>
                     {fixOrphans(item.question)}
                   </span>
-                  <div className={`p-2 rounded-full transition-transform duration-500 shrink-0 ml-4 ${isOpen ? 'bg-orange-500 rotate-180 text-zinc-100' : 'bg-zinc-900 text-zinc-600'}`}>
+                  <div className={`p-2 rounded-full transition-transform duration-500 shrink-0 ml-4 ${isOpen ? 'bg-orange-50 border border-orange-200 rotate-180 text-orange-600' : 'bg-white border border-slate-200 text-slate-400'}`}>
                     <ChevronDown size={20} />
                   </div>
                 </button>
@@ -93,7 +93,7 @@ export default function FAQ() {
                       transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-8 sm:px-8 text-zinc-400 text-sm sm:text-base leading-relaxed font-light border-t border-white/5 pt-6">
+                      <div className="px-6 pb-8 sm:px-8 text-slate-600 text-sm sm:text-base leading-relaxed font-light border-t border-slate-200/50 pt-6">
                         {fixOrphans(item.answer)}
                       </div>
                     </motion.div>

@@ -26,14 +26,14 @@ export function BenefitsSection() {
   ];
 
   return (
-    <section id="benefits" className="w-full py-24 sm:py-32 px-6 lg:px-12 bg-transparent relative border-t border-white/5">
+    <section id="benefits" className="w-full py-24 sm:py-32 px-6 lg:px-12 bg-transparent relative border-t border-slate-200/50">
       <div className="max-w-6xl mx-auto flex flex-col gap-12">
         <div className="w-full">
           <motion.h2 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight"
+            className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight"
           >
             Przewaga technologiczna.
           </motion.h2>
@@ -47,17 +47,17 @@ export function BenefitsSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: idx * 0.15 }}
-              className={`flex flex-col justify-between p-8 md:p-10 bg-zinc-950/50 backdrop-blur-md border border-white/5 rounded-[2rem] hover:bg-zinc-900 transition-colors ${ben.colSpan}`}
+              className={`flex flex-col justify-between p-8 md:p-10 bg-white/60 backdrop-blur-xl border border-slate-200/50 rounded-[2rem] hover:bg-white/90 shadow-premium-soft transition-colors ${ben.colSpan}`}
             >
               <div className="mb-12">
-                <div className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
+                <div className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tighter">
                   {ben.value}
                   {ben.value === '100%' && <span className="text-orange-500 text-5xl">.</span>}
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{ben.title}</h3>
-                <p className="text-sm font-light text-zinc-400 leading-relaxed max-w-lg">{fixOrphans(ben.desc)}</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{ben.title}</h3>
+                <p className="text-sm font-light text-slate-600 leading-relaxed max-w-lg">{fixOrphans(ben.desc)}</p>
               </div>
-              <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-slate-300 rounded-full overflow-hidden">
                 <motion.div 
                   initial={{ width: 0 }}
                   whileInView={{ width: "100%" }}

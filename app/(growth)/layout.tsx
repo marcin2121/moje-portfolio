@@ -4,7 +4,7 @@ import { ParticlesClient } from '@/components/ui/ParticlesClient';
 
 export default function GrowthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative min-h-screen bg-zinc-950 text-zinc-300 font-sans selection:bg-orange-500/30 overflow-hidden">
+    <div className="relative min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-orange-500 selection:text-white overflow-hidden">
       <div className="fixed inset-0 z-0 opacity-40 pointer-events-none">
         <ParticlesClient />
       </div>

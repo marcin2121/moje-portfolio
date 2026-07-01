@@ -34,7 +34,7 @@ export async function proxy(request: NextRequest) {
     img-src 'self' blob: data: https:;
     font-src 'self' data:;
     connect-src 'self' https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl;
-    frame-src 'self' https://www.youtube.com https://n8n.molendadevelopment.pl;
+    frame-src 'self' https://www.youtube.com https://n8n.molendadevelopment.pl https://dzikistyldemo.vercel.app https://www.sklep-urwis.pl https://sklep-urwis.pl https://xn--zamwtu-dxa.pl https://kajaki-u-macka.pl https://www.kajaki-u-macka.pl;
     object-src 'none';
     base-uri 'self';
     form-action 'self';

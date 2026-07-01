@@ -20,7 +20,7 @@ export default function MagicBento({ children, className = '' }: { children: Rea
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setOpacity(1)}
       onMouseLeave={() => setOpacity(0)}
-      className={`relative overflow-hidden rounded-4xl bg-zinc-900/50 border border-white/10 transition-colors duration-500 ${className}`}
+      className={`relative overflow-hidden rounded-4xl bg-white border border-slate-200 shadow-premium-soft transition-all duration-500 ${className}`}
     >
       {/* Poświata śledząca kursor */}
       <div

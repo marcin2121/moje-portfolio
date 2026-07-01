@@ -114,26 +114,26 @@ export default function AudytPage() {
   };
 
   return (
-    <main className="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-zinc-300 selection:bg-orange-500 selection:text-white">
-      <Link href="/narzedzia" className="inline-flex items-center text-sm font-mono text-zinc-500 hover:text-orange-500 transition-colors mb-12">
+    <main className="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-slate-600 selection:bg-orange-500 selection:text-white">
+      <Link href="/narzedzia" className="inline-flex items-center text-sm font-mono text-slate-500 hover:text-orange-600 transition-colors mb-12">
         ← Powrót do narzędzi
       </Link>
 
       <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-white">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-slate-900">
           Audyt Odporności Biznesowej
         </h1>
-        <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
+        <p className="text-xl text-slate-500 max-w-2xl mx-auto">
           Zdiagnozuj wąskie gardła swojego sklepu. Zobaczysz czarno na białym, jak błędy technologiczne pożerają Twoją konwersję i pieniądze.
         </p>
       </div>
 
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-8 backdrop-blur-xl mb-12 shadow-2xl relative overflow-hidden">
+      <div className="bg-white/70 border border-slate-200/50 rounded-[1.5rem] p-8 backdrop-blur-3xl mb-12 shadow-premium relative overflow-hidden">
         {/* Glow */}
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-400/10 blur-[100px] rounded-full pointer-events-none" />
 
         <form onSubmit={handleScan} className="relative z-10">
-          <label className="block text-sm font-bold text-zinc-400 mb-2 uppercase tracking-wider">
+          <label className="block text-sm font-bold text-slate-500 mb-2 uppercase tracking-wider">
             Adres sklepu / aplikacji (URL)
           </label>
           <div className="flex flex-col sm:flex-row gap-4">
@@ -143,7 +143,7 @@ export default function AudytPage() {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="np. dzikistyl.com"
-              className="flex-grow bg-zinc-950 border-2 border-zinc-800 focus:border-orange-500/50 rounded-xl py-4 px-6 text-white text-lg outline-none transition-colors"
+              className="flex-grow bg-white/80 border-2 border-slate-200 focus:border-orange-400/50 rounded-xl py-4 px-6 text-slate-900 text-lg outline-none transition-colors shadow-inner"
               disabled={isScanning}
             />
             <button
@@ -175,10 +175,10 @@ export default function AudytPage() {
               className="mt-8 pt-8 border-t border-zinc-800/50 overflow-hidden"
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-zinc-400 font-mono text-sm">{scanSteps[scanStep]}</span>
-                <span className="text-orange-500 font-mono font-bold">{Math.round((scanStep / scanSteps.length) * 100)}%</span>
+                <span className="text-slate-500 font-mono text-sm">{scanSteps[scanStep]}</span>
+                <span className="text-orange-600 font-mono font-bold">{Math.round((scanStep / scanSteps.length) * 100)}%</span>
               </div>
-              <div className="h-2 bg-zinc-950 rounded-full overflow-hidden">
+              <div className="h-2 bg-slate-200 rounded-full overflow-hidden shadow-inner">
                 <motion.div
                   className="h-full bg-orange-500"
                   initial={{ width: 0 }}
@@ -199,32 +199,32 @@ export default function AudytPage() {
             transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-              <div className="lg:col-span-1 bg-zinc-900 border border-zinc-800 rounded-3xl p-8 flex flex-col justify-center items-center text-center">
-                <p className="text-zinc-500 font-mono text-sm uppercase tracking-widest mb-4">Wynik Główny</p>
+              <div className="lg:col-span-1 bg-white/60 border border-slate-200/50 shadow-premium-soft rounded-[1.5rem] p-8 flex flex-col justify-center items-center text-center">
+                <p className="text-slate-500 font-mono text-sm uppercase tracking-widest mb-4">Wynik Główny</p>
                 <div className={`text-7xl font-black mb-2 ${getScoreColor(result.overallScore)}`}>
-                  {result.overallScore}<span className="text-3xl text-zinc-600">/100</span>
+                  {result.overallScore}<span className="text-3xl text-slate-400">/100</span>
                 </div>
-                <p className="text-zinc-400 text-sm mt-4">
+                <p className="text-slate-500 text-sm mt-4">
                   Średnia z 5 filarów odporności B2B.
                 </p>
               </div>
 
-              <div className="lg:col-span-2 bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-3xl p-8 md:p-12 relative overflow-hidden flex flex-col justify-center">
+              <div className="lg:col-span-2 bg-white/80 border border-slate-200/50 shadow-premium rounded-[1.5rem] p-8 md:p-12 relative overflow-hidden flex flex-col justify-center">
                 <div className="absolute top-0 right-0 p-8 opacity-5">
-                  <Server className="w-48 h-48 text-zinc-500" />
+                  <Server className="w-48 h-48 text-slate-900" />
                 </div>
                 <div className="relative z-10">
-                  <h3 className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-4 flex items-center gap-2">
+                  <h3 className="text-orange-600 font-bold tracking-widest uppercase text-sm mb-4 flex items-center gap-2">
                     <Shield className="w-4 h-4" /> Werdykt Architekta (Analiza AI)
                   </h3>
-                  <div className="prose prose-invert prose-orange max-w-none text-zinc-300 leading-relaxed text-lg prose-p:mb-4 prose-strong:text-white prose-ul:my-4 prose-li:my-1">
+                  <div className="prose max-w-none text-slate-600 leading-relaxed text-lg prose-p:mb-4 prose-strong:text-slate-900 prose-ul:my-4 prose-li:my-1">
                     <ReactMarkdown>{result.aiReport}</ReactMarkdown>
                   </div>
                 </div>
               </div>
             </div>
 
-            <h3 className="text-2xl font-bold text-white mb-6">Analiza Filarów (Szczegóły)</h3>
+            <h3 className="text-2xl font-bold text-slate-900 mb-6">Analiza Filarów (Szczegóły)</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
               {result.pillars.map((pillar, idx) => (
                 <motion.div 
@@ -239,11 +239,11 @@ export default function AudytPage() {
                       <div className={`${getScoreColor(pillar.score)}`}>
                         {getPillarIcon(pillar.name)}
                       </div>
-                      <span className="font-bold text-white">{pillar.name}</span>
+                      <span className="font-bold text-slate-900">{pillar.name}</span>
                     </div>
                     <span className={`text-2xl font-black ${getScoreColor(pillar.score)}`}>{pillar.score}</span>
                   </div>
-                  <p className="text-zinc-400 text-sm mt-auto leading-relaxed">
+                  <p className="text-slate-500 text-sm mt-auto leading-relaxed">
                     {pillar.interpretation}
                   </p>
                 </motion.div>
@@ -253,24 +253,24 @@ export default function AudytPage() {
             {/* Warunkowy Kalkulator Straty / Banery */}
             {result.overallScore >= 85 ? (
               /* WERSJA 1: ELITA (Top 1%) */
-              <div className="w-full bg-emerald-950/20 border border-emerald-500/30 rounded-2xl p-8 mt-8">
+              <div className="w-full bg-emerald-50/50 border border-emerald-200 shadow-premium-soft rounded-[1.5rem] p-8 mt-8">
                 <div className="flex flex-col md:flex-row justify-between items-center">
                   <div className="mb-6 md:mb-0 text-center md:text-left">
-                    <h2 className="text-2xl font-bold text-emerald-400">Architektura Klasy Premium</h2>
-                    <p className="mt-1 text-zinc-300">
+                    <h2 className="text-2xl font-bold text-emerald-600">Architektura Klasy Premium</h2>
+                    <p className="mt-1 text-slate-600">
                       Twój sklep wyprzedza rynkowe standardy. Nie potrzebujesz klasycznego software house'u do poprawek.
                     </p>
                   </div>
                   <div className="text-center md:text-right">
-                    <span className="text-xs uppercase tracking-widest text-emerald-500">Status Systemu</span>
-                    <p className="text-3xl font-extrabold text-white">ELITA</p>
+                    <span className="text-xs uppercase tracking-widest text-emerald-600">Status Systemu</span>
+                    <p className="text-3xl font-extrabold text-slate-900">ELITA</p>
                   </div>
                 </div>
-                <div className="mt-8 border-t border-emerald-500/20 pt-6 flex flex-col md:flex-row justify-between items-center">
-                  <p className="text-sm text-zinc-400 mb-4 md:mb-0 text-center md:text-left">Szukasz partnera do budowy dedykowanych narzędzi AI lub ekspansji B2B?</p>
+                <div className="mt-8 border-t border-emerald-200/50 pt-6 flex flex-col md:flex-row justify-between items-center">
+                  <p className="text-sm text-slate-500 mb-4 md:mb-0 text-center md:text-left">Szukasz partnera do budowy dedykowanych narzędzi AI lub ekspansji B2B?</p>
                   <Link 
                     href="/#kontakt"
-                    className="bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-3 rounded-xl font-bold transition whitespace-nowrap"
+                    className="bg-emerald-500 hover:bg-emerald-400 text-white px-6 py-3 rounded-xl font-bold transition whitespace-nowrap shadow-sm"
                   >
                     Porozmawiajmy o skalowaniu R&D →
                   </Link>
@@ -278,26 +278,26 @@ export default function AudytPage() {
               </div>
             ) : result.overallScore >= 60 ? (
               /* WERSJA 2: ZŁOTY ŚRODEK (Wymaga Tuningu) */
-              <div className="w-full bg-blue-950/20 border border-blue-500/30 rounded-2xl p-8 mt-8">
+              <div className="w-full bg-blue-50/50 border border-blue-200 shadow-premium-soft rounded-[1.5rem] p-8 mt-8">
                 <div className="flex flex-col md:flex-row justify-between items-center">
                   <div className="mb-6 md:mb-0 text-center md:text-left">
-                    <h2 className="text-2xl font-bold text-blue-400">Solidny Fundament, Brak Szlifu</h2>
-                    <p className="mt-1 text-zinc-300">
+                    <h2 className="text-2xl font-bold text-blue-600">Solidny Fundament, Brak Szlifu</h2>
+                    <p className="mt-1 text-slate-600">
                       Masz bardzo dobrą architekturę, ale brakuje inżynieryjnej precyzji w detalach. Przez to nie wykorzystujesz w pełni potencjału technologii.
                     </p>
                   </div>
                   <div className="text-center md:text-right">
-                    <span className="text-xs uppercase tracking-widest text-blue-500">Niewykorzystany Potencjał</span>
-                    <p className="text-3xl font-extrabold text-white tracking-tight">
-                      ~{result.lossPercentage}% <span className="text-lg text-blue-400 font-normal">straty konwersji</span>
+                    <span className="text-xs uppercase tracking-widest text-blue-600">Niewykorzystany Potencjał</span>
+                    <p className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                      ~{result.lossPercentage}% <span className="text-lg text-blue-500 font-normal">straty konwersji</span>
                     </p>
                   </div>
                 </div>
-                <div className="mt-8 border-t border-blue-500/20 pt-6 flex flex-col md:flex-row justify-between items-center">
-                  <p className="text-sm text-zinc-400 mb-4 md:mb-0 text-center md:text-left">Zamknijmy luki bezpieczeństwa i zoptymalizujmy infrastrukturę w ramach szybkiego tuningu.</p>
+                <div className="mt-8 border-t border-blue-200/50 pt-6 flex flex-col md:flex-row justify-between items-center">
+                  <p className="text-sm text-slate-500 mb-4 md:mb-0 text-center md:text-left">Zamknijmy luki bezpieczeństwa i zoptymalizujmy infrastrukturę w ramach szybkiego tuningu.</p>
                   <Link 
                     href="/#kontakt"
-                    className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold transition whitespace-nowrap"
+                    className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold transition whitespace-nowrap shadow-sm"
                   >
                     Zamów Performance & Security Tuning →
                   </Link>
@@ -306,30 +306,30 @@ export default function AudytPage() {
             ) : (
               /* WERSJA 3: AGONIA (Czerwony Dług Technologiczny) */
               <>
-                <div className="w-full bg-red-500/10 border border-red-500/30 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between mt-8 relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/5 to-red-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                <div className="w-full bg-rose-50/50 border border-rose-200 shadow-premium-soft rounded-[1.5rem] p-8 flex flex-col md:flex-row items-center justify-between mt-8 relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-rose-500/0 via-rose-500/5 to-rose-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   
-                  <div className="flex-1 text-center md:text-left">
-                    <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Technologiczny Dług</h3>
-                    <p className="text-zinc-400">Przez opóźnienia, błędy architektoniczne i brak automatyzacji, Twój biznes traci potencjał z każdym kliknięciem.</p>
+                  <div className="flex-1 text-center md:text-left relative z-10">
+                    <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">Technologiczny Dług</h3>
+                    <p className="text-slate-600">Przez opóźnienia, błędy architektoniczne i brak automatyzacji, Twój biznes traci potencjał z każdym kliknięciem.</p>
                   </div>
                   
-                  <div className="text-center md:text-right mt-6 md:mt-0 flex flex-col items-center md:items-end">
-                    <span className="text-sm font-medium text-red-500 mb-1 tracking-wider uppercase">Szacowana strata konwersji</span>
-                    <div className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-                      {result.lossPercentage}% <span className="text-xl text-red-500">klientów</span>
+                  <div className="text-center md:text-right mt-6 md:mt-0 flex flex-col items-center md:items-end relative z-10">
+                    <span className="text-sm font-medium text-rose-500 mb-1 tracking-wider uppercase">Szacowana strata konwersji</span>
+                    <div className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+                      {result.lossPercentage}% <span className="text-xl text-rose-500">klientów</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-orange-950/40 to-zinc-900 border border-orange-500/20 rounded-3xl p-10 text-center mt-8">
-                  <h2 className="text-3xl font-bold text-white mb-4">Czas wyleczyć ten system.</h2>
-                  <p className="text-zinc-400 text-lg mb-8 max-w-2xl mx-auto">
+                <div className="bg-orange-50/50 border border-orange-200 shadow-premium rounded-[1.5rem] p-10 text-center mt-8">
+                  <h2 className="text-3xl font-bold text-slate-900 mb-4">Czas wyleczyć ten system.</h2>
+                  <p className="text-slate-600 text-lg mb-8 max-w-2xl mx-auto">
                     Nie pozwól, aby przestarzała technologia paliła Twój budżet marketingowy. Zamów bezpłatną konsultację architektury, a pokażę Ci, jak przejść na nowoczesny Serverless Edge i zlikwidować te straty.
                   </p>
                   <Link 
                     href="/#kontakt"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-zinc-950 font-bold rounded-xl hover:bg-orange-400 transition-colors text-lg"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-400 transition-colors text-lg shadow-sm"
                   >
                     Pobierz pełny raport naprawczy <ArrowRight className="w-5 h-5" />
                   </Link>

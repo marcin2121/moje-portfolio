@@ -55,17 +55,17 @@ export default function Navbar() {
         <div 
           className={`w-full max-w-5xl flex items-center justify-between transition-all duration-500 rounded-full border ${
             isScrolled 
-              ? 'bg-[#0B0B0C]/80 backdrop-blur-2xl border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] py-3 px-6' 
+              ? 'bg-white/80 backdrop-blur-2xl border-slate-200 shadow-premium-soft py-3 px-6' 
               : 'bg-transparent border-transparent py-4 px-2'
           }`}
         >
           {/* Logo */}
           <Link href="/" className="group inline-flex items-center gap-1.5 font-mono tracking-tight select-none">
-            <span className="text-base font-bold tracking-wider text-zinc-100 group-hover:text-white transition-colors">
+            <span className="text-base font-bold tracking-wider text-slate-900 group-hover:text-black transition-colors">
               MOLENDA
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
-            <span className="text-xs md:text-sm font-medium tracking-normal text-zinc-500 group-hover:text-zinc-400 transition-colors uppercase">
+            <span className="text-xs md:text-sm font-medium tracking-normal text-slate-500 group-hover:text-slate-700 transition-colors uppercase">
               DEVELOPMENT
             </span>
           </Link>
@@ -80,8 +80,8 @@ export default function Navbar() {
                   href={link.href}
                   className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors ${
                     isActive 
-                      ? 'text-white bg-white/10' 
-                      : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                      ? 'text-slate-900 bg-slate-100' 
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                 >
                   {link.label}
@@ -93,7 +93,7 @@ export default function Navbar() {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-zinc-400 hover:text-white transition-colors rounded-full"
+            className="md:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors rounded-full"
             aria-label="Toggle mobile menu"
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -109,7 +109,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[90] bg-[#0B0B0C]/95 backdrop-blur-3xl pt-24 pb-8 px-6 flex flex-col md:hidden"
+            className="fixed inset-0 z-[90] bg-white/95 backdrop-blur-3xl pt-24 pb-8 px-6 flex flex-col md:hidden"
           >
             <nav className="flex flex-col gap-2 w-full">
               {NAV_LINKS.map((link) => {
@@ -120,8 +120,8 @@ export default function Navbar() {
                     href={link.href}
                     className={`px-6 py-4 rounded-2xl text-lg font-medium transition-colors ${
                       isActive
-                        ? 'bg-orange-500/10 text-orange-500 border border-orange-500/20'
-                        : 'bg-zinc-900/50 text-zinc-300 border border-white/5 hover:bg-zinc-800'
+                        ? 'bg-orange-50 text-orange-600 border border-orange-200'
+                        : 'bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100'
                     }`}
                   >
                     {link.label}
@@ -134,7 +134,7 @@ export default function Navbar() {
               <Link 
                 href="/#kontakt" 
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full bg-orange-500 hover:bg-orange-600 text-black font-semibold py-4 rounded-2xl transition-colors shadow-[0_0_20px_rgba(249,115,22,0.3)] text-center flex items-center justify-center"
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 rounded-2xl transition-colors shadow-[0_0_20px_rgba(249,115,22,0.3)] text-center flex items-center justify-center"
               >
                 Wyceń projekt
               </Link>

@@ -30,7 +30,7 @@ export function ProblemSection() {
     <section ref={ref} id="problem" className="w-full lg:w-1/4 h-auto lg:h-screen lg:min-h-[100dvh] flex-shrink-0 flex items-center justify-center relative overflow-x-hidden bg-transparent py-24 lg:py-0">
       
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.02]">
-        <div className="text-[13vw] sm:text-[11vw] md:text-[9vw] font-black text-white leading-none whitespace-nowrap tracking-tighter select-none opacity-50">
+        <div className="text-[13vw] sm:text-[11vw] md:text-[9vw] font-black text-slate-900 leading-none whitespace-nowrap tracking-tighter select-none opacity-50">
           ROZWIĄZANIA
         </div>
       </div>
@@ -43,7 +43,7 @@ export function ProblemSection() {
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1] mb-8"
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter leading-[1.1] mb-8"
           >
             Dlaczego tradycyjne strony z&nbsp;szablonów niszczą Twój biznes <span className="text-orange-500">(i&nbsp;jak to naprawiam)</span>
           </motion.h2>
@@ -52,7 +52,7 @@ export function ProblemSection() {
             initial={{ opacity: 0, width: 0 }}
             animate={isInView ? { opacity: 1, width: "100%" } : { opacity: 0, width: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="h-px bg-zinc-800 relative w-full mb-8"
+            className="h-px bg-slate-300 relative w-full mb-8"
           >
             <div className="absolute top-0 left-0 h-full w-1/3 bg-orange-500" />
           </motion.div>
@@ -61,7 +61,7 @@ export function ProblemSection() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-xl font-light text-zinc-400 leading-relaxed"
+            className="text-lg md:text-xl font-light text-slate-600 leading-relaxed"
           >
             Zbyt wiele biznesów zatrzymuje się przez niewłaściwie dobraną, powolną infrastrukturę, frustrując zarówno Ciebie jak i&nbsp;Twoich klientów. Znamy te problemy na wylot i&nbsp;niszczymy je u&nbsp;podstaw.
           </motion.p>
@@ -75,7 +75,7 @@ export function ProblemSection() {
               initial={{ opacity: 0, x: 50 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
               transition={{ duration: 0.6, delay: 0.3 + (idx * 0.15) }}
-              className={`group flex items-start gap-6 p-6 rounded-3xl border border-white/5 bg-zinc-950/50 backdrop-blur-md hover:bg-zinc-900/80 transition-all duration-500 ${idx === 1 ? 'lg:ml-12' : ''} ${idx === 2 ? 'lg:ml-24' : ''}`}
+              className={`group flex items-start gap-6 p-6 rounded-3xl border border-slate-200/50 bg-white/60 backdrop-blur-xl hover:bg-white/90 shadow-premium-soft transition-all duration-500 ${idx === 1 ? 'lg:ml-12' : ''} ${idx === 2 ? 'lg:ml-24' : ''}`}
             >
               <div className="shrink-0 mt-1">
                 <div className="text-orange-500 opacity-50 group-hover:opacity-100 transition-opacity p-3 bg-orange-500/10 rounded-xl">
@@ -83,10 +83,10 @@ export function ProblemSection() {
                 </div>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">
+                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-orange-600 transition-colors">
                   {prob.title}
                 </h3>
-                <p className="text-sm font-light text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">
+                <p className="text-sm font-light text-slate-600 leading-relaxed group-hover:text-slate-900 transition-colors">
                   {fixOrphans(prob.desc)}
                 </p>
               </div>

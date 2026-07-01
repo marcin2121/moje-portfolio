@@ -32,26 +32,26 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section id="proces" ref={ref} className="w-full py-24 sm:py-32 px-6 lg:px-12 bg-transparent relative border-t border-white/5">
+    <section id="proces" ref={ref} className="w-full py-24 sm:py-32 px-6 lg:px-12 bg-transparent relative border-t border-slate-200/50">
       <div className="max-w-4xl mx-auto flex flex-col gap-16">
         
         <div className="text-center">
           <motion.div 
             style={{ y: yOffset }}
-            className="text-[15vw] font-black text-white/5 leading-none absolute top-10 left-1/2 -translate-x-1/2 pointer-events-none select-none"
+            className="text-[15vw] font-black text-slate-900/5 leading-none absolute top-10 left-1/2 -translate-x-1/2 pointer-events-none select-none"
           >
             PROCES
           </motion.div>
-          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight relative z-10 mb-4">
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight relative z-10 mb-4">
             Cały proces w 4 prostych krokach.
           </h2>
-          <p className="text-zinc-400 font-light text-lg relative z-10 max-w-2xl mx-auto">
+          <p className="text-slate-600 font-light text-lg relative z-10 max-w-2xl mx-auto">
             {fixOrphans(`Mówimy po polsku, nie po programistycznemu.`)}
           </p>
         </div>
 
         <div className="flex flex-col gap-12 relative z-10 w-full mt-10">
-          <div className="absolute top-0 bottom-0 left-[23px] lg:left-1/2 w-px bg-white/10 hidden lg:block" />
+          <div className="absolute top-0 bottom-0 left-[23px] lg:left-1/2 w-px bg-slate-200 hidden lg:block" />
           
           {steps.map((step, idx) => {
             const isEven = idx % 2 === 0;
@@ -64,16 +64,16 @@ export function HowItWorksSection() {
                 transition={{ duration: 0.6, delay: idx * 0.15 }}
                 className={`flex flex-col lg:flex-row gap-6 lg:gap-0 items-start lg:items-center relative w-full ${isEven ? 'lg:justify-start' : 'lg:justify-end'}`}
               >
-                <div className={`hidden lg:flex absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full border border-orange-500/50 bg-[#0B0B0C] items-center justify-center font-mono text-orange-500 text-sm font-bold shadow-[0_0_20px_rgba(234,88,12,0.2)]`}>
+                <div className={`hidden lg:flex absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full border border-orange-200 bg-orange-50 items-center justify-center font-mono text-orange-600 text-sm font-bold shadow-sm`}>
                   {step.num}
                 </div>
                 
-                <div className={`w-full lg:w-5/12 bg-zinc-950 border border-white/5 p-8 rounded-3xl hover:border-orange-500/30 transition-colors shadow-2xl`}>
-                  <div className="lg:hidden w-10 h-10 rounded-full border border-orange-500/50 flex items-center justify-center font-mono text-orange-500 text-xs font-bold mb-4">
+                <div className={`w-full lg:w-5/12 bg-white/80 backdrop-blur-xl border border-slate-200 p-8 rounded-3xl hover:border-orange-300 transition-colors shadow-premium-soft`}>
+                  <div className="lg:hidden w-10 h-10 rounded-full border border-orange-200 bg-orange-50 flex items-center justify-center font-mono text-orange-600 text-xs font-bold mb-4">
                     {step.num}
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
-                  <p className="text-zinc-400 font-light text-sm leading-relaxed">
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">{step.title}</h3>
+                  <p className="text-slate-600 font-light text-sm leading-relaxed">
                     {fixOrphans(step.desc)}
                   </p>
                 </div>
