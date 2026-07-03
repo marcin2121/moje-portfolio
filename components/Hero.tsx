@@ -13,6 +13,14 @@ interface HeroProps {
 export default function Hero({ onNavigate }: HeroProps) {
   return (
     <section className="w-full lg:w-1/4 flex-shrink-0 min-h-[100dvh] bg-transparent flex flex-col relative overflow-hidden z-0 font-sans">
+      
+      {/* Background Watermark */}
+      <div className="absolute top-20 sm:top-32 lg:top-1/2 lg:-translate-y-1/2 left-1/2 -translate-x-1/2 pointer-events-none flex items-center justify-center opacity-[0.04] z-0 overflow-hidden w-full">
+        <div className="text-[24vw] sm:text-[20vw] lg:text-[14vw] font-black text-slate-900 leading-none whitespace-nowrap tracking-tighter select-none">
+          WZROST
+        </div>
+      </div>
+
 
       {/* Main Hero Content */}
       <div className="flex-1 w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20 pt-24 pb-12 lg:py-16 flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20 relative z-10">

@@ -118,6 +118,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                      "addressLocality": "Zduńska Wola",
                      "addressCountry": "PL"
                    },
+                   "hasMap": "https://share.google/RAsOVApwKNf2HkGKQ",
+                   "sameAs": [
+                     "https://share.google/RAsOVApwKNf2HkGKQ"
+                   ],
                    "serviceType": ["Strony Internetowe", "Aplikacje Webowe", "Aplikacje Mobilne", "Optymalizacja SEO"]
                  }
                ]

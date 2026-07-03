@@ -29,7 +29,7 @@ export function ProblemSection() {
   return (
     <section ref={ref} id="problem" className="w-full lg:w-1/4 h-auto lg:h-screen lg:min-h-[100dvh] flex-shrink-0 flex items-center justify-center relative overflow-x-hidden bg-transparent py-24 lg:py-0">
       
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.02]">
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.04]">
         <div className="text-[13vw] sm:text-[11vw] md:text-[9vw] font-black text-slate-900 leading-none whitespace-nowrap tracking-tighter select-none opacity-50">
           ROZWIĄZANIA
         </div>
