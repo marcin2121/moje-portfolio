@@ -125,6 +125,7 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className={`px-6 py-4 rounded-2xl text-lg font-medium transition-colors ${
                       isActive
                         ? 'bg-orange-50 text-orange-600 border border-orange-200'

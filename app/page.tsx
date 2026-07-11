@@ -110,12 +110,35 @@ export default function PortfolioHome() {
       const maxScr = ScrollTrigger.maxScroll(window);
       if (maxScr === 0) return;
 
+      const getDomRatio = (id: string, fallback: number) => {
+        const el = document.getElementById(id);
+        return el ? (window.scrollY + el.getBoundingClientRect().top) / maxScr : fallback;
+      };
+
       const allST = ScrollTrigger.getAll();
       const h1 = allST.find(t => t.trigger === horizontal1Ref.current);
       const h2 = allST.find(t => t.trigger === horizontal2Ref.current);
 
       if (!h1 || !h2) {
-        snapPointsRef.current = NAV_DOTS.map((_, i) => i / (NAV_DOTS.length - 1));
+        // Fallback for mobile where horizontal scroll doesn't exist
+        const pts: number[] = [];
+        pts[0] = getDomRatio('hero', 0);
+        pts[1] = getDomRatio('problemy', 1/15);
+        pts[2] = getDomRatio('rozwiazania', 2/15);
+        pts[3] = getDomRatio('o-mnie', 3/15);
+        pts[4] = getDomRatio('proces', 4/15);
+        pts[5] = getDomRatio('sandbox', 5/15);
+        pts[6] = getDomRatio('benefits', 6/15);
+        pts[7] = getDomRatio('portfolio', 7/15);
+        pts[8] = getDomRatio('dzikistyl', 8/15);
+        pts[9] = getDomRatio('sklepurwis', 9/15);
+        pts[10] = getDomRatio('zamowtu', 10/15);
+        pts[11] = getDomRatio('kajaki', 11/15);
+        pts[12] = getDomRatio('referencje', 12/15);
+        pts[13] = getDomRatio('cennik', 13/15);
+        pts[14] = getDomRatio('faq', 14/15);
+        pts[15] = Math.min(getDomRatio('kontakt', 1), 1);
+        snapPointsRef.current = pts;
         return;
       }
 
@@ -125,11 +148,6 @@ export default function PortfolioHome() {
       pts[2] = (h1.start + (h1.end - h1.start) * (2/3)) / maxScr;
       pts[3] = h1.end / maxScr;
       
-      const getDomRatio = (id: string, fallback: number) => {
-        const el = document.getElementById(id);
-        return el ? (window.scrollY + el.getBoundingClientRect().top) / maxScr : fallback;
-      };
-
       pts[4] = getDomRatio('proces', (h1.end + 10) / maxScr);
       pts[5] = getDomRatio('sandbox', (h1.end + 20) / maxScr);
       pts[6] = getDomRatio('benefits', (h1.end + 30) / maxScr);
@@ -159,13 +177,29 @@ export default function PortfolioHome() {
       onUpdate: (self) => {
         rawProgress.set(self.progress);
         const pts = snapPointsRef.current;
-        let closestIdx = 0;
-        let minDist = Infinity;
-        pts.forEach((p, i) => {
-          const d = Math.abs(self.progress - p);
-          if (d < minDist) { minDist = d; closestIdx = i; }
-        });
-        setActiveDot(prev => prev !== closestIdx ? closestIdx : prev);
+        let activeIdx = 0;
+
+        if (window.innerWidth < 1024) {
+          // Na mobile sekcje mają różne wysokości (np. Cennik jest długi).
+          // Znajdujemy najniższą sekcję, której punkt startowy przeszedł przez środek/górę ekranu.
+          const maxScr = ScrollTrigger.maxScroll(window);
+          const offsetRatio = maxScr > 0 ? (window.innerHeight * 0.4) / maxScr : 0;
+          for (let i = pts.length - 1; i >= 0; i--) {
+            if (self.progress + offsetRatio >= pts[i]) {
+              activeIdx = i;
+              break;
+            }
+          }
+        } else {
+          // Na desktopie (poziomy scroll) szukamy najbliższego punktu snapowania
+          let minDist = Infinity;
+          pts.forEach((p, i) => {
+            const d = Math.abs(self.progress - p);
+            if (d < minDist) { minDist = d; activeIdx = i; }
+          });
+        }
+
+        setActiveDot(prev => prev !== activeIdx ? activeIdx : prev);
       },
     });
 
@@ -315,13 +349,18 @@ export default function PortfolioHome() {
         {/* Mobile TOC Popover */}
         <AnimatePresence>
           {isMobileTocOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="flex lg:hidden fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-[320px] bg-white/95 backdrop-blur-3xl border border-slate-200 rounded-2xl z-40 overflow-hidden shadow-premium flex-col"
-            >
+            <>
+              <div 
+                className="fixed inset-0 z-30 lg:hidden" 
+                onClick={() => setIsMobileTocOpen(false)}
+              />
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="flex lg:hidden fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-[320px] bg-white/95 backdrop-blur-3xl border border-slate-200 rounded-2xl z-40 overflow-hidden shadow-premium flex-col"
+              >
               <div className="max-h-[50vh] overflow-y-auto py-2 px-2 custom-scrollbar">
                 {NAV_DOTS.map((dot, idx) => (
                   <button
@@ -340,6 +379,7 @@ export default function PortfolioHome() {
                 ))}
               </div>
             </motion.div>
+            </>
           )}
         </AnimatePresence>
 
@@ -381,9 +421,9 @@ export default function PortfolioHome() {
 
         <main className="pl-0 lg:pl-24 w-full overflow-clip">
           <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[400%] h-auto lg:h-screen bg-transparent">
-            <Hero onNavigate={scrollToSection} />
-            <ProblemSection />
-            <section className="w-full lg:w-1/4 h-auto lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent shrink-0">
+            <div id="hero" className="w-full lg:w-1/4 h-auto lg:h-full flex-shrink-0"><Hero onNavigate={scrollToSection} /></div>
+            <div id="problemy" className="w-full lg:w-1/4 h-auto lg:h-full flex-shrink-0"><ProblemSection /></div>
+            <section id="rozwiazania" className="w-full lg:w-1/4 h-auto lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent shrink-0">
               <div className="flex flex-col gap-8 lg:gap-10 max-w-5xl w-full relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 w-full">
                   <MagicBento className="md:col-span-2 bg-white border border-slate-200 hover:border-orange-300 transition-all group shadow-premium-soft">
@@ -461,7 +501,7 @@ export default function PortfolioHome() {
                 </motion.div>
               </div>
             </section>
-            <AboutMeSection />
+            <div id="o-mnie" className="w-full lg:w-1/4 h-auto lg:h-full flex-shrink-0"><AboutMeSection /></div>
           </div>
 
           <HowItWorksSection />
@@ -470,7 +510,7 @@ export default function PortfolioHome() {
 
           <div ref={horizontal2Ref} className="flex flex-col lg:flex-row w-full lg:w-[600%] h-auto lg:h-screen bg-transparent">
             
-            <section className="w-full lg:w-1/6 h-auto lg:h-full flex flex-col items-center justify-center bg-transparent relative py-20 lg:py-0 border-y lg:border-none border-slate-100">
+            <section id="portfolio" className="w-full lg:w-1/6 h-auto lg:h-full flex flex-col items-center justify-center bg-transparent relative py-20 lg:py-0 border-y lg:border-none border-slate-100">
               <div className="absolute -top-40 -left-40 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-orange-500/10 blur-[120px] rounded-full pointer-events-none" />
               <div className="font-mono text-[10px] text-orange-500 mb-4 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
@@ -481,7 +521,7 @@ export default function PortfolioHome() {
               </h2>
             </section>
 
-            <section className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0">
+            <section id="dzikistyl" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
@@ -522,7 +562,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0">
+            <section id="sklepurwis" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
@@ -564,7 +604,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
+            <section id="zamowtu" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
@@ -603,7 +643,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
+            <section id="kajaki" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
               <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
                 <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
@@ -645,7 +685,7 @@ export default function PortfolioHome() {
               </div>
             </section>
 
-            <section className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-4 lg:px-12 py-20 lg:py-0 border-t lg:border-none">
+            <section id="referencje" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-4 lg:px-12 py-20 lg:py-0 border-t lg:border-none">
               <div className="flex flex-col w-full max-w-7xl mx-auto relative z-10 gap-8 px-2 py-10 lg:py-12">
                 
                 {/* Michał - DzikiStyl */}
