@@ -214,7 +214,7 @@ export default function KasOfferPage() {
                 </div>
                 <div className="flex gap-3">
                   <Check className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
-                  <span className="text-slate-700 text-sm"><strong className="text-slate-900">System zapisów online z kalendarzem:</strong> Bezawaryjny moduł rezerwacji terminów w Next.js. Stabilna, gotowa do pracy alternatywa dla wyłączonego skryptu Kalendarz.php – działa bez przeładowań i chroni anonimowość podopiecznych.</span>
+                  <span className="text-slate-700 text-sm"><strong className="text-slate-900">System zapisów online z kalendarzem:</strong> Bezawaryjny moduł rezerwacji terminów w Next.js. Stabilna, gotowa do pracy alternatywa dla wyłączonego skryptu Kalendarz.php - działa bez przeładowań i chroni anonimowość podopiecznych.</span>
                 </div>
                 <div className="flex gap-3">
                   <Check className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
@@ -438,7 +438,7 @@ export default function KasOfferPage() {
           <div className="bg-slate-900 text-white rounded-[3rem] p-12 md:p-20 relative overflow-hidden flex flex-col items-center">
             
             <p className="text-slate-400 text-lg md:text-xl mb-10 max-w-3xl mx-auto relative z-10 leading-relaxed">
-              Jeśli chcą Państwo po prostu skonsultować techniczne aspekty działania czatu lub kalendarza – czekam na wiadomość. Szanuję Państwa czas: jeśli ten projekt nie jest teraz priorytetem, krótka informacja zwrotna (nawet jedno zdanie) będzie dla mnie niezwykle pomocna.
+              Jeśli chcą Państwo po prostu skonsultować techniczne aspekty działania czatu lub kalendarza - czekam na wiadomość. Szanuję Państwa czas: jeśli ten projekt nie jest teraz priorytetem, krótka informacja zwrotna (nawet jedno zdanie) będzie dla mnie niezwykle pomocna.
             </p>
             
             <div className="relative z-10 mb-16 w-full px-2">
@@ -452,7 +452,7 @@ export default function KasOfferPage() {
               <div className="flex flex-col items-center">
                 <DownloadPdfButton />
                 <p className="mt-4 text-sm text-slate-400 max-w-sm text-center">
-                  Dedykowany, czysty dokument sformatowany do druku A4 – idealny do rozdania na fizycznym spotkaniu decydentów
+                  Dedykowany, czysty dokument sformatowany do druku A4 - idealny do rozdania na fizycznym spotkaniu decydentów
                 </p>
               </div>
 
