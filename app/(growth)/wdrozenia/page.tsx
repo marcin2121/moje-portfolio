@@ -23,7 +23,7 @@ const caseStudies = [
     duel: {
       before: { value: 'Błędy 508', label: 'Ruch z reklam (Skoki)', icon: <AlertTriangle className="w-4 h-4 text-rose-500" /> },
       after: { value: '100% Uptime', label: 'Nielimitowana skala', icon: <ShieldCheck className="w-4 h-4 text-emerald-500" /> },
-      result: 'Obsługa skokowego ruchu z TV / Meta',
+      result: 'Obsługa skokowego ruchu z reklam Meta i Google Ads',
     },
     insight: 'Zaimplementowaliśmy rendering brzegowy (Edge). Serwujemy kluczowe zasoby medyczne bez uderzania w główny serwer bazy danych, całkowicie eliminując błędy typu Resource Limit Is Reached.',
     link: '/wdrozenia/rltpolska',
@@ -58,9 +58,9 @@ export default function WdrozeniaPage() {
             <div className="absolute -top-32 -right-32 w-64 h-64 bg-orange-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-orange-500/20 transition-colors" />
 
             {/* Nagłówek */}
-            <div className="flex justify-between items-start mb-8 relative z-10">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4 mb-8 relative z-10">
               <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{study.title}</h2>
-              <span className="px-3 py-1 bg-slate-100 border border-slate-200 text-xs font-mono text-slate-500 rounded-full tracking-wider uppercase">
+              <span className="px-3 py-1 bg-slate-100 border border-slate-200 text-[10px] sm:text-xs font-mono text-slate-500 rounded-full tracking-wider uppercase shrink-0">
                 {study.category}
               </span>
             </div>

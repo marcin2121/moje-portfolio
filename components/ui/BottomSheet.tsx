@@ -86,8 +86,8 @@ export default function BottomSheet({ isOpen, onClose, children }: BottomSheetPr
               </button>
             </div>
 
-            {/* Content Container (Scrollable) */}
-            <div className="flex-1 overflow-y-auto px-6 py-6 pb-20 overscroll-contain">
+            {/* Content Container */}
+            <div id="bottom-sheet-scroll" className="flex-1 overflow-y-auto overscroll-contain px-4 md:px-6 pt-4 pb-6" data-lenis-prevent="true">
               {children}
             </div>
           </motion.div>

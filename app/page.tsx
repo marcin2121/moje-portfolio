@@ -361,7 +361,7 @@ export default function PortfolioHome() {
                 transition={{ duration: 0.2 }}
                 className="flex lg:hidden fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-[320px] bg-white/95 backdrop-blur-3xl border border-slate-200 rounded-2xl z-40 overflow-hidden shadow-premium flex-col"
               >
-              <div className="max-h-[50vh] overflow-y-auto py-2 px-2 custom-scrollbar">
+              <div className="max-h-[50vh] overflow-y-auto py-2 px-2 custom-scrollbar" data-lenis-prevent="true">
                 {NAV_DOTS.map((dot, idx) => (
                   <button
                     key={dot.id}

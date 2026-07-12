@@ -23,7 +23,11 @@ export default function ContactForm() {
 
   const handleSelect = (id: string, label: string) => {
     setSelectedBlocker(label);
-    setTimeout(() => setStep(2), 400);
+    setTimeout(() => {
+      setStep(2);
+      const scroller = document.getElementById('bottom-sheet-scroll');
+      if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 400);
   };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -68,7 +72,11 @@ export default function ContactForm() {
             
             {step === 2 && (
               <button 
-                onClick={() => setStep(1)} 
+                onClick={() => {
+                  setStep(1);
+                  const scroller = document.getElementById('bottom-sheet-scroll');
+                  if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+                }} 
                 className="absolute -top-16 left-0 md:-left-12 p-3 bg-white/80 backdrop-blur rounded-2xl border border-slate-200 hover:border-slate-300 transition-all text-slate-500 hover:text-slate-900 active:scale-95 z-20 flex items-center gap-2 text-xs font-mono uppercase shadow-sm"
               >
                 <ArrowLeft size={14} /> <span className="hidden md:inline">Wstecz</span>
@@ -78,8 +86,8 @@ export default function ContactForm() {
             <AnimatePresence mode="wait">
               {step === 1 && (
                 <motion.div key="step1" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col w-full">
-                  <div className="text-center mb-10 md:mb-14">
-                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter mb-4">
+                  <div className="text-center mb-4 md:mb-14">
+                    <h2 className="text-2xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter mb-3 md:mb-4">
                       Z czym obecnie masz <span className="text-orange-500">największy problem?</span>
                     </h2>
                     <p className="text-slate-500 font-mono text-[10px] md:text-sm uppercase tracking-widest">
@@ -95,14 +103,14 @@ export default function ContactForm() {
                         <button
                           key={opt.id}
                           onClick={() => handleSelect(opt.id, opt.label)}
-                          className={`w-full text-left p-5 md:p-8 rounded-2xl md:rounded-3xl border transition-all flex items-center gap-4 md:gap-6 group relative overflow-hidden ${isSelected ? 'bg-orange-50 border-orange-200 scale-[0.98] shadow-inner' : 'bg-white border-slate-200 hover:border-orange-200 hover:bg-slate-50 hover:scale-[1.02] shadow-sm'}`}
+                          className={`w-full text-left p-4 md:p-8 rounded-2xl md:rounded-3xl border transition-all flex items-center gap-4 md:gap-6 group relative overflow-hidden ${isSelected ? 'bg-orange-50 border-orange-200 scale-[0.98] shadow-inner' : 'bg-white border-slate-200 hover:border-orange-200 hover:bg-slate-50 hover:scale-[1.02] shadow-sm'}`}
                         >
                           <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl shrink-0 ${isSelected ? 'bg-orange-500 text-white' : 'bg-slate-100 text-slate-400 group-hover:text-orange-500 group-hover:bg-orange-50'} transition-colors`}>
-                            <Icon size={24} className="md:w-7 md:h-7" strokeWidth={1.5} />
+                            <Icon size={22} className="md:w-7 md:h-7" strokeWidth={1.5} />
                           </div>
                           <div className="flex-1">
-                            <div className={`text-base md:text-xl font-bold mb-1 md:mb-2 ${isSelected ? 'text-slate-900' : 'text-slate-700'}`}>{opt.label}</div>
-                            <div className="text-[11px] md:text-sm text-slate-500 leading-relaxed">{fixOrphans(opt.desc)}</div>
+                            <div className={`text-base md:text-xl font-bold mb-0.5 md:mb-2 ${isSelected ? 'text-slate-900' : 'text-slate-700'}`}>{opt.label}</div>
+                            <div className="text-[11px] md:text-sm text-slate-500 leading-tight md:leading-relaxed line-clamp-2 md:line-clamp-none">{fixOrphans(opt.desc)}</div>
                           </div>
                         </button>
                       );

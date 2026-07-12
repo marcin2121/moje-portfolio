@@ -42,24 +42,6 @@ export default function NarzedziaHub() {
           </div>
         </Link>
         
-        {/* Demand-Gen Card */}
-        <div className="border border-dashed border-slate-300 bg-white p-8 rounded-3xl flex flex-col justify-between hover:border-orange-300 transition-colors shadow-sm">
-          <div>
-            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-orange-500 mb-6 font-mono text-xl border border-slate-200">
-              ?
-            </div>
-            <h3 className="text-slate-900 font-bold text-xl mb-3">
-              Brakuje Ci konkretnego kalkulatora?
-            </h3>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              Napisz mi w 2 zdaniach, jaką powtarzalną kalkulację lub analizę wykonujesz ręcznie w swojej firmie. Jeśli uznam to za wyzwanie inżynieryjne – zakoduję to narzędzie i udostępnię Ci je za darmo.
-            </p>
-          </div>
-          
-          <Link href="/#kontakt" className="text-sm font-semibold text-orange-500 hover:text-orange-400 inline-flex items-center gap-2 mt-8 group">
-            Zgłoś pomysł na narzędzie <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
         {/* Audyt Odporności Biznesowej Card */}
         <Link 
           href="/narzedzia/audyt"
@@ -80,6 +62,25 @@ export default function NarzedziaHub() {
             Uruchom audyt <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>
         </Link>
+        
+        {/* Demand-Gen Card */}
+        <div className="border border-dashed border-slate-300 bg-white p-8 rounded-3xl flex flex-col justify-between hover:border-orange-300 transition-colors shadow-sm">
+          <div>
+            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-orange-500 mb-6 font-mono text-xl border border-slate-200">
+              ?
+            </div>
+            <h3 className="text-slate-900 font-bold text-xl mb-3">
+              Brakuje Ci konkretnego kalkulatora?
+            </h3>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              Napisz mi w 2 zdaniach, jaką powtarzalną kalkulację lub analizę wykonujesz ręcznie w swojej firmie. Jeśli uznam to za wyzwanie inżynieryjne – zakoduję to narzędzie i udostępnię Ci je za darmo.
+            </p>
+          </div>
+          
+          <Link href="/#kontakt" className="text-sm font-semibold text-orange-500 hover:text-orange-400 inline-flex items-center gap-2 mt-8 group">
+            Zgłoś pomysł na narzędzie <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
       </div>
     </main>
   );
