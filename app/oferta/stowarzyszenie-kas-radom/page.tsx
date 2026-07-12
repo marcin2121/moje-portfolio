@@ -179,7 +179,7 @@ export default function KasOfferPage() {
         <section className="px-6 md:px-12 lg:px-24 max-w-[90rem] mx-auto mb-40">
           <div className="mb-20 max-w-4xl text-center mx-auto">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight text-slate-900">
-              Wybierz wariant dopasowany do skali Waszych działań i dotacji
+              Wybierz wariant dopasowany do skali Państwa działań i dotacji
             </h2>
             <div className="inline-flex items-start text-left gap-3 px-6 py-4 bg-emerald-50 text-emerald-800 rounded-2xl font-medium text-sm border border-emerald-100 shadow-sm mt-2 max-w-3xl mx-auto">
               <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" /> 
@@ -347,7 +347,7 @@ export default function KasOfferPage() {
             <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
             <h3 className="text-2xl md:text-3xl font-black text-slate-900 mb-6">Sfinansuj wdrożenie z grantów zewnętrznych</h3>
             <p className="mb-8 leading-relaxed text-lg text-slate-600 max-w-3xl">
-              Doskonale rozumiem, że budżety statutowe stowarzyszeń rzadko pozwalają na jednorazowe, duże wydatki na dedykowane systemy IT. Dlatego cały proces wdrożenia oraz moje faktury są ustrukturyzowane tak, aby mogły zostać w 100% sfinansowane i rozliczone w ramach Waszych zewnętrznych funduszy projektowych oraz dotacji celowych (np. z realizowanego obecnie projektu „Aktywnie w kierunku zatrudnienia”):
+              Doskonale rozumiem, że budżety statutowe stowarzyszeń rzadko pozwalają na jednorazowe, duże wydatki na dedykowane systemy IT. Dlatego cały proces wdrożenia oraz moje faktury są ustrukturyzowane tak, aby mogły zostać w 100% sfinansowane i rozliczone w ramach Państwa zewnętrznych funduszy projektowych oraz dotacji celowych (np. z realizowanego obecnie projektu „Aktywnie w kierunku zatrudnienia”):
             </p>
             <ul className="space-y-6 mb-8 text-slate-700">
               <li className="flex gap-4 items-start">
@@ -360,7 +360,7 @@ export default function KasOfferPage() {
               </li>
               <li className="flex gap-4 items-start">
                 <CheckCircle2 className="w-6 h-6 text-emerald-500 shrink-0 mt-0.5" />
-                <span><strong className="text-slate-900">Wdrożenie innowacyjnych narzędzi wsparcia:</strong> Szyfrowany czat wsparcia w czasie rzeczywistym oraz system zapisów online to bezpośrednie narzędzia realizacji Waszych zadań statutowych i projektowych (prowadzenie Punktów Wsparcia i Informacji).</span>
+                <span><strong className="text-slate-900">Wdrożenie innowacyjnych narzędzi wsparcia:</strong> Szyfrowany czat wsparcia w czasie rzeczywistym oraz system zapisów online to bezpośrednie narzędzia realizacji Państwa zadań statutowych i projektowych (prowadzenie Punktów Wsparcia i Informacji).</span>
               </li>
             </ul>
             <div className="bg-white p-6 rounded-2xl border border-emerald-100 flex gap-4 items-center">
@@ -368,7 +368,7 @@ export default function KasOfferPage() {
                 <Check className="w-6 h-6" />
               </div>
               <p className="leading-relaxed text-sm md:text-base">
-                <strong className="text-slate-900">Pełna wygoda rozliczenia:</strong> Wystawiam faktury VAT i dzielę całą inwestycję na 5 niezależnych etapów. Ułatwia to bezproblemowe przypisanie poszczególnych kwot do konkretnych okresów rozliczeniowych i linii budżetowych w Waszych raportach dla grantodawców.
+                <strong className="text-slate-900">Pełna wygoda rozliczenia:</strong> Wystawiam faktury VAT i dzielę całą inwestycję na 5 niezależnych etapów. Ułatwia to bezproblemowe przypisanie poszczególnych kwot do konkretnych okresów rozliczeniowych i linii budżetowych w Państwa raportach dla grantodawców.
               </p>
             </div>
           </div>
@@ -403,7 +403,7 @@ export default function KasOfferPage() {
           <h2 className="text-3xl md:text-5xl font-black mb-12 text-center">Sprawdzeni przez lokalny biznes</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-slate-50 p-8 rounded-3xl border border-slate-200">
-              <p className="text-slate-700 italic mb-6">"Marcin przeprowadził dla nas zaawansowaną przebudowę drukarni z ograniczonego silnika Shoper na nowoczesną architekturę Headless Next.js. Wdrożył płatności bez przeładowania strony oraz globalny przełącznik netto/brutto bez odświeżania, co drastycznie usprawniło obsługę naszych klientów B2B. Ta technologia wyprzedza nasze czasy o 5 lat do przodu!"</p>
+              <p className="text-slate-700 italic mb-6">"Marcin przeprowadził dla nas zaawansowaną przebudowę drukarni z ograniczonego silnika Shoper na nowoczesną architekturę Headless Next.js. Wdrożył płatności bez przeładowania strony oraz globalny przełącznik netto/brutto bez odświeżania, co drastycznie usprawniło obsługę naszych klientów B2B. Ta technologia wyprzedza nasze czasy o 5 lat do przodu."</p>
               <div className="font-bold">Michał</div>
               <div className="text-sm text-slate-500">DzikiStyl.com</div>
             </div>
@@ -426,7 +426,7 @@ export default function KasOfferPage() {
           <div className="space-y-6">
             <div className="pb-6 border-b border-slate-200">
               <h3 className="font-bold text-xl mb-2">Czy po oddaniu strony będziemy uwiązani jakimś abonamentem?</h3>
-              <p className="text-slate-600">Nie. Strona i cały jej kod źródłowy jest Waszą własnością na zawsze.</p>
+              <p className="text-slate-600">Nie. Strona i cały jej kod źródłowy jest Waszą własnością na zawsze. Jedyne stałe opłaty eksploatacyjne to standardowy koszt utrzymania serwera (hosting) oraz roczne odnowienie domeny internetowej.</p>
             </div>
             <div className="pb-6 border-b border-slate-200">
               <h3 className="font-bold text-xl mb-2">Dlaczego Next.js zamiast samego WordPressa?</h3>

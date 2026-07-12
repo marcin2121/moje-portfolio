@@ -47,7 +47,7 @@ export default function PerformanceBadge() {
         </div>
         <div>
           <div className="text-sm font-bold text-slate-900 mb-1 pr-2">
-            Wygenerowano w <span className="text-emerald-600">{loadTime}s</span>
+            Czas wczytywania strony:  <span className="text-emerald-600">{loadTime}s</span>
           </div>
           <div className="text-xs text-slate-600 leading-relaxed flex items-center gap-1">
             <ShieldCheck className="w-3 h-3 text-emerald-500 shrink-0" />
