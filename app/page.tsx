@@ -123,7 +123,7 @@ export default function PortfolioHome() {
         // Fallback for mobile where horizontal scroll doesn't exist
         const pts: number[] = [];
         pts[0] = getDomRatio('hero', 0);
-        pts[1] = getDomRatio('problemy', 1/15);
+        pts[1] = getDomRatio('problem', 1/15);
         pts[2] = getDomRatio('rozwiazania', 2/15);
         pts[3] = getDomRatio('o-mnie', 3/15);
         pts[4] = getDomRatio('proces', 4/15);
@@ -421,8 +421,8 @@ export default function PortfolioHome() {
 
         <main className="pl-0 lg:pl-24 w-full overflow-clip">
           <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[400%] h-auto lg:h-screen bg-transparent">
-            <div id="hero" className="w-full lg:w-1/4 h-auto lg:h-full flex-shrink-0"><Hero onNavigate={scrollToSection} /></div>
-            <div id="problemy" className="w-full lg:w-1/4 h-auto lg:h-full flex-shrink-0"><ProblemSection /></div>
+            <Hero onNavigate={scrollToSection} />
+            <ProblemSection />
             <section id="rozwiazania" className="w-full lg:w-1/4 h-auto lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent shrink-0">
               <div className="flex flex-col gap-8 lg:gap-10 max-w-5xl w-full relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 w-full">
@@ -501,7 +501,7 @@ export default function PortfolioHome() {
                 </motion.div>
               </div>
             </section>
-            <div id="o-mnie" className="w-full lg:w-1/4 h-auto lg:h-full flex-shrink-0"><AboutMeSection /></div>
+            <AboutMeSection />
           </div>
 
           <HowItWorksSection />

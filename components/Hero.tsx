@@ -12,7 +12,7 @@ interface HeroProps {
 
 export default function Hero({ onNavigate }: HeroProps) {
   return (
-    <section className="w-full lg:w-1/4 flex-shrink-0 min-h-[100dvh] bg-transparent flex flex-col relative overflow-hidden z-0 font-sans">
+    <section id="hero" className="w-full lg:w-1/4 flex-shrink-0 min-h-[100dvh] bg-transparent flex flex-col relative overflow-hidden z-0 font-sans">
       
       {/* Background Watermark */}
       <div className="absolute top-20 sm:top-32 lg:top-1/2 lg:-translate-y-1/2 left-1/2 -translate-x-1/2 pointer-events-none flex items-center justify-center opacity-[0.04] z-0 overflow-hidden w-full">
