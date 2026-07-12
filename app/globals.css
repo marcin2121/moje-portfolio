@@ -133,3 +133,62 @@ body {
 .animate-logo-pulse {
   animation: logoPulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+
+@media print {
+  header, nav, .wcag-panel-ignore, #pdf {
+    display: none !important;
+  }
+  div[class*='fixed bottom-'] {
+    display: none !important;
+  }
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  .rounded-3xl, .rounded-2xl, .rounded-\[2\.5rem\] {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+
+@media print {
+  .bg-slate-900 {
+    background-color: white !important;
+    color: #0f172a !important; /* slate-900 */
+  }
+  .bg-slate-900 p, .bg-slate-900 span {
+    color: #334155 !important; /* slate-700 */
+  }
+  .bg-slate-900 strong, .bg-slate-900 h2, .bg-slate-900 h3 {
+    color: #000 !important;
+  }
+  .bg-slate-900.rounded-\[2\.5rem\] {
+    border: 2px solid #e2e8f0 !important;
+    box-shadow: none !important;
+  }
+  /* Hide the dark section's background decor */
+  .bg-slate-900 .bg-white\5 {
+    border: none !important;
+  }
+}
+
+
+@media print {
+  section {
+    margin-bottom: 2rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+}
+
+
+@layer base {
+  * { overflow-wrap: break-word; }
+  h1, h2, h3, h4, h5, h6, p, a, span { word-break: break-word; hyphens: auto; }
+}
