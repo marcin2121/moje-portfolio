@@ -434,7 +434,7 @@ export default function KasOfferPage() {
             </div>
             <div className="pb-6 border-b border-slate-200">
               <h3 className="font-bold text-xl mb-2">Co się stanie, jeśli po kilku miesiącach coś przestanie działać?</h3>
-              <p className="text-slate-600">W zależności od wybranego wariantu, otrzymujecie Państwo od 90 dni (Pakiet Dedykowany), przez 12 miesięcy (Pakiet Optymalny), aż do 24 miesięcy (Pakiet Maksymalny) mojej osobistej, bezpłatnej opieki technicznej i monitoringu bezpieczeństwa w cenie wdrożenia. Po tym okresie możecie zdecydować się na opcjonalny, stały abonament serwisowy, z którego można zrezygnować w dowolnym momencie.</p>
+              <p className="text-slate-600">Systemy oparte na architekturze Headless i Next.js cechują się pancerną stabilnością i nie „psują się” z biegiem czasu, tak jak starsze rozwiązania. Moja rola po oddaniu projektu to proaktywny monitoring bezpieczeństwa, instalowanie najnowszych aktualizacji oraz pomoc technologiczna dla Państwa wolontariuszy. W zależności od wariantu, otrzymujecie Państwo od 90 dni (Pakiet Dedykowany), przez 12 miesięcy (Pakiet Optymalny), aż do 24 miesięcy (Pakiet Maksymalny) mojej osobistej, bezpłatnej opieki technicznej w cenie wdrożenia. Po tym okresie możecie zdecydować się na opcjonalny abonament opiekuńczy, z którego można zrezygnować w dowolnym momencie.</p>
             </div>
           </div>
         </section>
