@@ -38,7 +38,7 @@ export default function KasOfferPage() {
               <div className="space-y-4 max-w-2xl">
                 <p className="text-lg md:text-xl text-slate-600 leading-relaxed font-light">
                   <strong className="font-bold text-slate-900">Marcin Molenda - Niezależny Inżynier Oprogramowania</strong><br/>
-                  Projektuję ultraszybkie systemy dla sektora komercyjnego: e-commerce B2B (DzikiStyl), aplikacje PWA (Sklep Urwis) i integracje. Przenoszę te pancerne standardy wydajności (1.2s ładowania) i bezpieczeństwa (szyfrowanie danych Supabase) do sektora społecznego. Wasza misja wymaga niezawodnej technologii.
+                  Projektuję ultraszybkie systemy dla sektora komercyjnego: e-commerce B2B, aplikacje PWA i integracje. Przenoszę te pancerne standardy wydajności (1.2s ładowania) i bezpieczeństwa (szyfrowanie danych Supabase) do sektora społecznego. Wasza misja wymaga niezawodnej technologii.
                 </p>
               </div>
               
@@ -335,6 +335,12 @@ export default function KasOfferPage() {
               </div>
             </div>
 
+          </div>
+
+          <div className="mt-12 text-center max-w-4xl mx-auto px-4">
+            <p className="text-slate-600 text-sm md:text-base bg-white/70 backdrop-blur-2xl border border-slate-200/50 shadow-[0_20px_50px_rgba(0,0,0,0.04)] px-8 py-5 rounded-2xl">
+              <strong className="text-slate-900 font-bold">Potrzebują Państwo innej konfiguracji?</strong> Istnieje pełna możliwość personalizowania ostatecznej oferty poprzez swobodne dobieranie pojedynczych funkcji z różnych wariantów pakietowych. W takim przypadku przygotuję w 100% indywidualną wycenę.
+            </p>
           </div>
 
           <div className="mt-20 bg-slate-50 border border-slate-200 rounded-3xl p-8 lg:p-12 text-slate-700 max-w-5xl mx-auto shadow-sm relative overflow-hidden">
