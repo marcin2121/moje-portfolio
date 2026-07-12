@@ -109,7 +109,7 @@ export default function WcagPanel() {
 
       {grayscale && <div className="wcag-grayscale-overlay" />}
 
-      <div className="fixed top-1/2 left-0 -translate-y-1/2 wcag-panel-ignore flex flex-col items-start" style={{ zIndex: 99999 }}>
+      <div className="fixed top-1/2 left-0 -translate-y-1/2 wcag-panel-ignore flex flex-col items-start print:hidden" style={{ zIndex: 99999 }}>
         {!isOpen && (
           <button 
             onClick={() => setIsOpen(true)}

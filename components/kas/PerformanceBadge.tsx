@@ -31,7 +31,7 @@ export default function PerformanceBadge() {
   if (!mounted || !isVisible) return null;
 
   return createPortal(
-    <div className="fixed bottom-4 right-4 animate-in slide-in-from-bottom-5 fade-in duration-700 wcag-panel-ignore" style={{ zIndex: 99997 }}>
+    <div className="fixed bottom-4 right-4 animate-in slide-in-from-bottom-5 fade-in duration-700 wcag-panel-ignore print:hidden" style={{ zIndex: 99997 }}>
       <div className="bg-white/90 backdrop-blur-md border border-slate-200 shadow-xl rounded-2xl p-4 pr-10 flex items-start gap-4 max-w-sm relative group">
         
         <button 
