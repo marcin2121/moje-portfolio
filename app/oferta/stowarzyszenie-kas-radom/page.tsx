@@ -32,8 +32,8 @@ export default function KasOfferPage() {
                 <CheckCircle2 className="w-4 h-4" /> Natywna zgodność z WCAG 2.1 AA w czystym kodzie
               </div>
 
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1]">
-                Precyzja i bezpieczeństwo dla <span className="text-orange-500">stowarzyszeniekas.pl</span>
+              <h1 className="text-4xl sm:text-5xl lg:text-5xl xl:text-6xl font-black tracking-tight leading-[1.1]">
+                Precyzja i bezpieczeństwo dla <span className="text-orange-500 inline-block">stowarzyszenie&shy;kas.pl</span>
               </h1>
               <div className="space-y-4 max-w-2xl">
                 <p className="text-lg md:text-xl text-slate-600 leading-relaxed font-light">
