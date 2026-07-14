@@ -20,7 +20,7 @@ export function RealPerformanceMetrics() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
              <div className="flex items-center gap-2 text-sm text-slate-700 font-medium bg-slate-50 px-4 py-2 rounded-lg border border-slate-100">
-                <CheckCircle2 size={16} className="text-emerald-500" /> Wzorowa stabilność wizualna
+                <CheckCircle2 size={16} className="text-emerald-500" /> Zerowe spadki (0.00 CLS)
              </div>
              <div className="flex items-center gap-2 text-sm text-slate-700 font-medium bg-slate-50 px-4 py-2 rounded-lg border border-slate-100">
                 <Smartphone size={16} className="text-slate-500" /> Rzeczywiści użytkownicy (RUM)
@@ -44,7 +44,7 @@ export function RealPerformanceMetrics() {
             <MetricItem label="Interaction to Next Paint" value="128 ms" status="good" />
             <MetricItem label="Time to First Byte" value="0.68 s" status="good" />
             <MetricItem label="First Input Delay" value="31 ms" status="good" />
-            <MetricItem label="Cumulative Layout Shift" value="0.01" status="good" />
+            <MetricItem label="Cumulative Layout Shift" value="0.00" status="good" />
           </div>
 
           <div className="mt-8 text-[10px] text-slate-500 font-mono uppercase tracking-widest text-center border-t border-slate-800 pt-4">
