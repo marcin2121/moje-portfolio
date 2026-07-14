@@ -16,7 +16,7 @@ export function RealPerformanceMetrics() {
             Architektura klasy &quot;Top 1%&quot;
           </h3>
           <p className="text-slate-600 leading-relaxed font-light">
-            {fixOrphans(`Twój system musi być szybki nie tylko u Ciebie w biurze na światłowodzie, ale przede wszystkim w pociągu, na starym smartfonie Twojego klienta. Poniżej twarde dane z systemów telemetrii Vercel Speed Insights (bazujące na realnych urządzeniach) dla jednej z wdrożonych przeze mnie platform E-commerce.`)}
+            {fixOrphans(`Twój system musi być szybki nie tylko u Ciebie w biurze na światłowodzie, ale przede wszystkim w pociągu, na starym smartfonie Twojego klienta. Poniżej twarde dane z systemów telemetrii Vercel Speed Insights (bazujące na realnych urządzeniach) dla jednego z wdrożonych przeze mnie projektów klienckich.`)}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
              <div className="flex items-center gap-2 text-sm text-slate-700 font-medium bg-slate-50 px-4 py-2 rounded-lg border border-slate-100">
