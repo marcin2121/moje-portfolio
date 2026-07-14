@@ -159,28 +159,28 @@ export function SandboxSection() {
                     
                     {activeStep >= 0 && (
                       <motion.div key="step0" initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="text-slate-300">
-                        <span className="text-slate-500">[Stripe Webhook]</span> <span className="text-slate-900 font-bold bg-white/10 px-1 rounded">POST</span> /payment/success <br/>
+                        <span className="text-slate-500">[Stripe Webhook]</span> <span className="text-white font-bold bg-white/10 px-1 rounded">POST</span> /payment/success <br/>
                         <span className="text-emerald-400">Status: 1500 PLN (Verified)</span>
                       </motion.div>
                     )}
                     
                     {activeStep >= 1 && (
                       <motion.div key="step1" initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="text-slate-300">
-                        <span className="text-slate-500">[CRM Sync]</span> <span className="text-slate-900 font-bold bg-white/10 px-1 rounded">UPDATE</span> inventory SET stock = stock - 1 <br/>
+                        <span className="text-slate-500">[CRM Sync]</span> <span className="text-white font-bold bg-white/10 px-1 rounded">UPDATE</span> inventory SET stock = stock - 1 <br/>
                         <span className="text-emerald-400">Status: Synced (12ms)</span>
                       </motion.div>
                     )}
                     
                     {activeStep >= 2 && (
                       <motion.div key="step2" initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="text-slate-300">
-                        <span className="text-slate-500">[Fakturownia]</span> <span className="text-slate-900 font-bold bg-white/10 px-1 rounded">POST</span> /api/v1/invoices <br/>
+                        <span className="text-slate-500">[Fakturownia]</span> <span className="text-white font-bold bg-white/10 px-1 rounded">POST</span> /api/v1/invoices <br/>
                         <span className="text-emerald-400">Invoice: FV_2026_07.pdf (Sent)</span>
                       </motion.div>
                     )}
 
                     {activeStep >= 3 && (
                       <motion.div key="step3" initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="text-slate-300">
-                        <span className="text-slate-500">[InPost API]</span> <span className="text-slate-900 font-bold bg-white/10 px-1 rounded">POST</span> /shipments <br/>
+                        <span className="text-slate-500">[InPost API]</span> <span className="text-white font-bold bg-white/10 px-1 rounded">POST</span> /shipments <br/>
                         <span className="text-emerald-400">Tracking: 6123456789 (SMS dispatched)</span>
                       </motion.div>
                     )}
