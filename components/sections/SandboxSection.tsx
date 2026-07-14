@@ -82,7 +82,7 @@ export function SandboxSection() {
             {/* Visual Graph Area */}
             <div className="flex-1 p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-slate-100 relative">
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
                 {nodes.map((node, index) => {
                   const isActive = activeStep === index;
                   const isDone = activeStep > index;
@@ -95,6 +95,8 @@ export function SandboxSection() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                       className={`relative overflow-hidden rounded-2xl border transition-all duration-500 ${
+                        index === 0 || index === 3 ? 'md:col-span-2' : 'md:col-span-1'
+                      } ${
                         isActive ? 'bg-white border-slate-300 shadow-[0_10px_30px_rgba(0,0,0,0.06)]' : 
                         isDone ? 'bg-slate-50/50 border-slate-200/50' : 
                         'bg-transparent border-slate-200/30 opacity-60'
