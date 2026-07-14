@@ -47,10 +47,10 @@ export function SandboxSection() {
           </p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-premium flex flex-col relative">
+        <div className="bg-white/70 backdrop-blur-2xl border border-slate-200/50 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)] flex flex-col relative">
           
           {/* Top Bar */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-6 sm:p-8 border-b border-slate-100 gap-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-6 sm:p-8 border-b border-slate-200/50 gap-6">
             <div>
               <div className="text-sm font-bold tracking-wide text-slate-800 uppercase mb-1">
                 Środowisko Testowe
@@ -62,7 +62,7 @@ export function SandboxSection() {
             <button
               onClick={runSimulation}
               disabled={isRunning}
-              className="group relative flex items-center gap-3 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full font-bold text-sm tracking-wide transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] shadow-[0_5px_15px_rgba(234,88,12,0.3)] hover:shadow-[0_10px_25px_rgba(234,88,12,0.5)]"
+              className="group relative flex items-center gap-3 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-xl font-bold text-sm tracking-wide transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
             >
               {isRunning ? (
                 <>
@@ -95,18 +95,18 @@ export function SandboxSection() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                       className={`relative overflow-hidden rounded-2xl border transition-all duration-500 ${
-                        isActive ? 'bg-orange-50 border-orange-200' : 
-                        isDone ? 'bg-slate-50 border-slate-200' : 
-                        'bg-transparent border-slate-100 opacity-60'
-                      } p-6 flex flex-col gap-4 shadow-sm`}
+                        isActive ? 'bg-white border-slate-300 shadow-[0_10px_30px_rgba(0,0,0,0.06)]' : 
+                        isDone ? 'bg-slate-50/50 border-slate-200/50' : 
+                        'bg-transparent border-slate-200/30 opacity-60'
+                      } p-6 flex flex-col gap-4`}
                     >
                       <div className="flex justify-between items-start">
                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-500 ${
-                          isActive ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' :
-                          isDone ? 'bg-emerald-100 text-emerald-600' :
-                          'bg-slate-100 text-slate-400'
+                          isActive ? 'bg-slate-900 text-white shadow-[0_10px_20px_rgba(0,0,0,0.1)]' :
+                          isDone ? 'bg-slate-100 text-slate-900' :
+                          'bg-slate-50 text-slate-400 border border-slate-200/50'
                         }`}>
-                          {isDone ? <CheckCircle2 size={24} className="text-emerald-600" /> : node.icon}
+                          {isDone ? <CheckCircle2 size={24} className="text-slate-900" /> : node.icon}
                         </div>
                         
                         {/* Status Label Typography */}
@@ -126,9 +126,9 @@ export function SandboxSection() {
 
                       {/* Code Snippet Payload */}
                       <div className={`mt-2 font-mono text-[10px] px-3 py-2 rounded-lg transition-colors duration-500 ${
-                        isActive ? 'bg-orange-100/50 text-orange-600' :
-                        isDone ? 'bg-slate-100 text-slate-500' :
-                        'bg-slate-50 text-slate-400'
+                        isActive ? 'bg-slate-100 text-slate-900 font-bold' :
+                        isDone ? 'bg-slate-50 text-slate-500' :
+                        'bg-transparent text-slate-400'
                       }`}>
                         {node.devTitle} &rarr; {node.payload}
                       </div>
