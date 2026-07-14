@@ -764,6 +764,8 @@ export default function PortfolioHome() {
             </section>
           </div>
 
+          <RealPerformanceMetrics />
+
           <div id="cennik" className="min-h-screen flex items-center border-t border-white/5 bg-transparent">
             <div className="w-full">
               <Pricing />
