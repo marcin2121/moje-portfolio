@@ -97,18 +97,18 @@ export function SandboxSection() {
                       className={`relative overflow-hidden rounded-2xl border transition-all duration-500 ${
                         index === 0 || index === 3 ? 'md:col-span-2' : 'md:col-span-1'
                       } ${
-                        isActive ? 'bg-white border-slate-300 shadow-[0_10px_30px_rgba(0,0,0,0.06)]' : 
-                        isDone ? 'bg-slate-50/50 border-slate-200/50' : 
-                        'bg-transparent border-slate-200/30 opacity-60'
+                        isActive ? 'bg-white border-slate-900 shadow-2xl shadow-slate-900/10 scale-[1.02] z-10' : 
+                        isDone ? 'bg-slate-50 border-slate-200' : 
+                        'bg-white border-slate-200 shadow-sm'
                       } p-6 flex flex-col gap-4`}
                     >
                       <div className="flex justify-between items-start">
                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-500 ${
-                          isActive ? 'bg-slate-900 text-white shadow-[0_10px_20px_rgba(0,0,0,0.1)]' :
-                          isDone ? 'bg-slate-100 text-slate-900' :
-                          'bg-slate-50 text-slate-400 border border-slate-200/50'
+                          isActive ? 'bg-slate-900 text-white shadow-md' :
+                          isDone ? 'bg-emerald-100 text-emerald-600' :
+                          'bg-slate-100 text-slate-400'
                         }`}>
-                          {isDone ? <CheckCircle2 size={24} className="text-slate-900" /> : node.icon}
+                          {isDone ? <CheckCircle2 size={24} className="text-emerald-600" /> : node.icon}
                         </div>
                         
                         {/* Status Label Typography */}
@@ -118,19 +118,19 @@ export function SandboxSection() {
                       </div>
 
                       <div>
-                        <div className={`text-lg font-bold mb-1 transition-colors duration-500 ${isActive ? 'text-slate-900' : 'text-slate-600'}`}>
+                        <div className={`text-lg font-bold mb-1 transition-colors duration-500 ${isActive ? 'text-slate-900' : isDone ? 'text-slate-700' : 'text-slate-500'}`}>
                           {node.title}
                         </div>
-                        <div className="text-sm text-slate-500">
+                        <div className={`text-sm ${isActive ? 'text-slate-600' : 'text-slate-400'}`}>
                           {node.desc}
                         </div>
                       </div>
 
                       {/* Code Snippet Payload */}
                       <div className={`mt-2 font-mono text-[10px] px-3 py-2 rounded-lg transition-colors duration-500 ${
-                        isActive ? 'bg-slate-100 text-slate-900 font-bold' :
-                        isDone ? 'bg-slate-50 text-slate-500' :
-                        'bg-transparent text-slate-400'
+                        isActive ? 'bg-slate-900 text-white font-medium shadow-inner' :
+                        isDone ? 'bg-slate-200/50 text-slate-600' :
+                        'bg-slate-50 text-slate-400 border border-slate-100'
                       }`}>
                         {node.devTitle} &rarr; {node.payload}
                       </div>
