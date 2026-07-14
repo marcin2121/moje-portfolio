@@ -42,9 +42,9 @@ type DemoConfig = {
 
 const NAV_DOTS = [
   { id: 0, title: 'Start' },
-  { id: 1, title: 'Problemy' },
-  { id: 2, title: 'Rozwiązania' },
-  { id: 3, title: 'O Mnie' },
+  { id: 1, title: 'O Mnie' },
+  { id: 2, title: 'Problemy' },
+  { id: 3, title: 'Rozwiązania' },
   { id: 4, title: 'Proces' },
   { id: 5, title: 'Symulacja' },
   { id: 6, title: 'Benefity' },
@@ -123,9 +123,9 @@ export default function PortfolioHome() {
         // Fallback for mobile where horizontal scroll doesn't exist
         const pts: number[] = [];
         pts[0] = getDomRatio('hero', 0);
-        pts[1] = getDomRatio('problem', 1/15);
-        pts[2] = getDomRatio('rozwiazania', 2/15);
-        pts[3] = getDomRatio('o-mnie', 3/15);
+        pts[1] = getDomRatio('o-mnie', 1/15);
+        pts[2] = getDomRatio('problem', 2/15);
+        pts[3] = getDomRatio('rozwiazania', 3/15);
         pts[4] = getDomRatio('proces', 4/15);
         pts[5] = getDomRatio('sandbox', 5/15);
         pts[6] = getDomRatio('benefits', 6/15);
@@ -422,6 +422,7 @@ export default function PortfolioHome() {
         <main className="pl-0 lg:pl-24 w-full overflow-clip">
           <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[400%] h-auto lg:h-screen bg-transparent">
             <Hero onNavigate={scrollToSection} />
+            <AboutMeSection />
             <ProblemSection />
             <section id="rozwiazania" className="w-full lg:w-1/4 h-auto lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent shrink-0">
               <div className="flex flex-col gap-8 lg:gap-10 max-w-5xl w-full relative z-10">
@@ -501,7 +502,6 @@ export default function PortfolioHome() {
                 </motion.div>
               </div>
             </section>
-            <AboutMeSection />
           </div>
 
           <HowItWorksSection />

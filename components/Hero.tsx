@@ -23,7 +23,7 @@ export default function Hero({ onNavigate }: HeroProps) {
 
 
       {/* Main Hero Content */}
-      <div className="flex-1 w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20 pt-24 pb-12 lg:py-16 flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20 relative z-10">
+      <div className="flex-1 w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20 pt-24 pb-12 lg:py-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-20 relative z-10">
         
         {/* Left Column Text & CTA */}
         <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
