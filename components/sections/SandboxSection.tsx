@@ -29,10 +29,10 @@ export function SandboxSection() {
   }, [isRunning, activeStep]);
 
   const nodes = [
-    { id: 0, title: 'Zamówienie', devTitle: 'Klient klika "Kupuję"', icon: <ShoppingCart size={20} strokeWidth={1.5} />, desc: 'System startuje natychmiast', payload: '{ status: "opłacone" }' },
-    { id: 1, title: 'Centralna Baza', devTitle: 'Zapis w ułamku sekundy', icon: <Database size={20} strokeWidth={1.5} />, desc: 'Zero zgubionych danych', payload: '100% spójności' },
-    { id: 2, title: 'Księgowość', devTitle: 'Koniec z ręczną pracą', icon: <Server size={20} strokeWidth={1.5} />, desc: 'Faktura robi się sama', payload: 'Zaoszczędzone: 5 min' },
-    { id: 3, title: 'Obsługa Klienta', devTitle: 'Zbudowane zaufanie', icon: <Mail size={20} strokeWidth={1.5} />, desc: 'Klient obsłużony w sekundę', payload: 'Poziom stresu: 0' },
+    { id: 0, title: 'Zamówienie (2:00 w nocy)', devTitle: 'Klient opłaca koszyk', icon: <ShoppingCart size={20} strokeWidth={1.5} />, desc: 'Natychmiastowe księgowanie', payload: 'Kwota: 1 500 PLN wpłynęła' },
+    { id: 1, title: 'Baza CRM', devTitle: 'Zarządzanie magazynem', icon: <Database size={20} strokeWidth={1.5} />, desc: 'Automatyczna synchronizacja', payload: 'Stan produktu: Zaktualizowany (-1)' },
+    { id: 2, title: 'Księgowość', devTitle: 'Wystawienie dokumentu', icon: <Server size={20} strokeWidth={1.5} />, desc: 'Faktura VAT leci na e-mail', payload: 'Oszczędność: 7 min ręcznej pracy' },
+    { id: 3, title: 'Logistyka', devTitle: 'Kurier i powiadomienia', icon: <Mail size={20} strokeWidth={1.5} />, desc: 'Etykieta InPost wygenerowana', payload: 'Status: Klient otrzymał SMS' },
   ];
 
   return (
@@ -40,10 +40,10 @@ export function SandboxSection() {
       <div className="max-w-6xl mx-auto">
         <div className="text-left md:text-center mb-16 md:mb-24 flex flex-col items-start md:items-center">
           <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
-            {fixOrphans('Zastąp żmudną pracę bezbłędnym systemem.')}
+            {fixOrphans('Odzyskaj 20 godzin w miesiącu pełną automatyzacją.')}
           </h2>
           <p className="text-slate-600 text-lg md:text-xl max-w-2xl font-normal leading-relaxed">
-            {fixOrphans(`Podczas gdy Ty śpisz, pijesz kawę lub rozwijasz firmę, technologia bezdźwięcznie przetwarza zamówienia, pilnuje stanów i generuje dokumenty. Zero ręcznego przepisywania. Kliknij i zobacz, jak system odzyskuje Twój czas wolny.`)}
+            {fixOrphans(`Klient kupuje o 2:00 w nocy. Zanim wstaniesz rano, system zdąży zaksięgować wpłatę, zaktualizować stany magazynowe, wystawić Fakturę VAT i przygotować etykietę kurierską. Zero przepisywania ręcznego. Kliknij i prześledź sekunda po sekundzie pracę swojego nowego "pracownika", który nigdy nie śpi.`)}
           </p>
         </div>
 
