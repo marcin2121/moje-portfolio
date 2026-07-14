@@ -86,7 +86,6 @@ export function SandboxSection() {
                 {nodes.map((node, index) => {
                   const isActive = activeStep === index;
                   const isDone = activeStep > index;
-                  const isPending = activeStep < index;
 
                   return (
                     <motion.div 

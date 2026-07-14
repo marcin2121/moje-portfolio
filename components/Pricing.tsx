@@ -253,21 +253,11 @@ export default function Pricing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5, delay: idx * 0.2 }}
-            className={`relative flex flex-col bg-white rounded-3xl overflow-hidden transition-all duration-300 shadow-premium-soft ${
-              tier.highlighted 
-                ? 'border-2 border-orange-500 shadow-[0_0_40px_rgba(234,88,12,0.15)] md:scale-105 z-10' 
-                : 'border border-slate-200 hover:border-orange-200'
-            }`}
+            className={`relative flex flex-col bg-white rounded-3xl overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md border border-slate-200 hover:border-slate-300`}
           >
-            {tier.badge && (
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] font-black tracking-widest uppercase px-4 py-1.5 rounded-b-lg">
-                {tier.badge}
-              </div>
-            )}
-
             <div className="p-8 pb-0">
               <div className="flex items-center gap-2.5 mt-2 mb-2">
-                <div className={tier.highlighted ? 'text-orange-500' : 'text-slate-400'}>
+                <div className="text-slate-400">
                   {tier.icon}
                 </div>
                 <h3 className="text-xl font-bold tracking-tight text-slate-900">{tier.name}</h3>
@@ -275,25 +265,25 @@ export default function Pricing() {
               
               <div className="flex items-baseline gap-2 mb-6">
                 <span className="text-sm text-slate-500 font-medium">od</span>
-                <span className={`text-4xl font-black tracking-tighter ${tier.highlighted ? 'text-slate-900' : 'text-slate-700'}`}>
+                <span className={`text-4xl font-black tracking-tighter text-slate-900`}>
                   {tier.price}
                 </span>
                 <span className="text-sm text-slate-500 font-medium">zł netto</span>
               </div>
 
-              <div className="h-px w-full bg-slate-200 mb-6" />
+              <div className="h-px w-full bg-slate-100 mb-6" />
 
-              <p className="text-xs text-slate-600 leading-normal line-clamp-2 min-h-[2.5rem] mb-6">
+              <p className="text-sm text-slate-600 leading-relaxed min-h-[3.5rem] mb-6 font-light">
                 {fixOrphans(tier.target)}
               </p>
             </div>
 
-            <div className="px-8 pb-8 flex-1 flex flex-col">
-              <ul className="space-y-2.5 my-6 flex-1 text-sm leading-snug text-slate-600">
+            <div className="px-8 pb-8 flex-1 flex flex-col bg-slate-50/50 mt-auto pt-6 border-t border-slate-100">
+              <ul className="space-y-4 my-2 flex-1 text-sm leading-relaxed text-slate-600 font-light">
                 {tier.features.map((feat, fIdx) => (
                   <li key={fIdx} className="flex items-start gap-3">
-                    <Check className={`w-4 h-4 shrink-0 mt-0.5 ${tier.highlighted ? 'text-orange-500' : 'text-slate-300'}`} />
-                    <span className={tier.highlighted && fIdx === 0 ? 'text-slate-900 font-medium' : ''}>
+                    <Check className={`w-4 h-4 shrink-0 mt-1 text-slate-400`} />
+                    <span className="text-slate-700">
                       {typeof feat === 'string' ? fixOrphans(feat) : feat}
                     </span>
                   </li>
@@ -302,11 +292,7 @@ export default function Pricing() {
 
               <button 
                 onClick={() => handleOpenModal(tier, idx)}
-                className={`w-full py-4 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${
-                  tier.highlighted 
-                    ? 'bg-orange-500 text-white hover:bg-orange-400' 
-                    : 'bg-slate-50 border border-slate-200 text-slate-900 hover:bg-slate-100'
-                }`}
+                className={`w-full py-4 mt-6 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all bg-white border border-slate-200 text-slate-900 hover:bg-slate-50 hover:border-slate-300 shadow-sm`}
               >
                 {tier.ctaText}
               </button>
@@ -364,7 +350,7 @@ export default function Pricing() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 border-t border-slate-200/50">
           <div className="text-center sm:text-left">
             <p className="text-[10px] text-slate-500 uppercase tracking-widest font-mono mb-1">Wycena</p>
-            <p className="text-slate-900 font-medium">Indywidualna <span className="text-slate-500 font-light text-sm">(na podstawie bezpłatnej, 15-minutowej konsultacji)</span></p>
+            <p className="text-slate-900 font-medium">Indywidualna <span className="text-slate-500 font-light text-sm">(na podstawie bezpłatnej analizy Twoich wymagań)</span></p>
           </div>
           <button 
             onClick={() => {
@@ -376,7 +362,7 @@ export default function Pricing() {
             }}
             className="w-full sm:w-auto px-8 py-4 bg-orange-500 hover:bg-orange-400 text-zinc-100 font-black uppercase tracking-widest text-[11px] rounded-xl transition-all shadow-[0_0_20px_rgba(234,88,12,0.2)]"
           >
-            Porozmawiajmy o Twoim wyzwaniu
+            Prześlij wyzwanie do wyceny
           </button>
         </div>
       </motion.div>

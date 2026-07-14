@@ -19,6 +19,7 @@ import Pricing from '@/components/Pricing';
 import { SandboxSection } from '@/components/sections/SandboxSection';
 import { HowItWorksSection } from '@/components/sections/HowItWorksSection';
 import { BenefitsSection } from '@/components/sections/BenefitsSection';
+import { RealPerformanceMetrics } from '@/components/ui/RealPerformanceMetrics';
 import { fixOrphans } from '@/utils/typography';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
