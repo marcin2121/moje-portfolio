@@ -754,7 +754,7 @@ export default function PortfolioHome() {
                     </div>
                     <div className="w-full h-px bg-slate-100 mb-4" />
                     <p className="text-sm font-normal text-slate-600 leading-relaxed italic text-left">
-                      &quot;{fixOrphans(`O stary, `)}<strong className="text-slate-900 font-medium">{fixOrphans(`ta strona jest tak kozak, niespodziewałem się aż takiego efektu!`)}</strong>{fixOrphans(` Wygląda naprawdę obłędnie. `)}<br></br>{fixOrphans(`Oprócz zjawiskowej strony, Marcin od zera założył i skonfigurował moją Wizytówkę Google i Fanpage na Facebooku, zachowując ten sam świetny motyw wizualny. Dał mi też potężne, praktyczne rady jak z nich korzystać, żeby skutecznie ściągać klientów na rzekę. `)}<strong className="text-emerald-600 font-medium">{fixOrphans(`Jest klasa, jesteś szef po prostu!`)}</strong>&quot;
+                      &quot;{fixOrphans(`O stary, `)}<strong className="text-slate-900 font-medium">{fixOrphans(`ta strona jest tak kozak, nie spodziewałem się aż takiego efektu!`)}</strong>{fixOrphans(` Wygląda naprawdę obłędnie. `)}<br></br>{fixOrphans(`Oprócz zjawiskowej strony, Marcin od zera założył i skonfigurował moją Wizytówkę Google i Fanpage na Facebooku, zachowując ten sam świetny motyw wizualny. Dał mi też potężne, praktyczne rady jak z nich korzystać, żeby skutecznie ściągać klientów na rzekę. `)}<strong className="text-emerald-600 font-medium">{fixOrphans(`Jest klasa, jesteś szef po prostu!`)}</strong>&quot;
                     </p>
                   </div>
                 </div>
