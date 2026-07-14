@@ -29,10 +29,10 @@ export function SandboxSection() {
   }, [isRunning, activeStep]);
 
   const nodes = [
-    { id: 0, title: 'WooCommerce', devTitle: 'Webhook (POST)', icon: <ShoppingCart size={20} strokeWidth={1.5} />, desc: 'Nowe zamówienie', payload: '{ id: 8932, total: 1500 }' },
-    { id: 1, title: 'Baza Danych', devTitle: 'Supabase Insert', icon: <Database size={20} strokeWidth={1.5} />, desc: 'Zapis w systemie', payload: 'INSERT INTO orders...' },
-    { id: 2, title: 'Księgowość', devTitle: 'Fakturownia API', icon: <Server size={20} strokeWidth={1.5} />, desc: 'Generowanie faktury', payload: 'Status: 201 Created' },
-    { id: 3, title: 'Powiadomienie', devTitle: 'Resend SMTP', icon: <Mail size={20} strokeWidth={1.5} />, desc: 'Wysyłka e-maila', payload: 'sendEmail(client@...)' },
+    { id: 0, title: 'Zamówienie', devTitle: 'Klient klika "Kupuję"', icon: <ShoppingCart size={20} strokeWidth={1.5} />, desc: 'System startuje natychmiast', payload: '{ status: "opłacone" }' },
+    { id: 1, title: 'Centralna Baza', devTitle: 'Zapis w ułamku sekundy', icon: <Database size={20} strokeWidth={1.5} />, desc: 'Zero zgubionych danych', payload: '100% spójności' },
+    { id: 2, title: 'Księgowość', devTitle: 'Koniec z ręczną pracą', icon: <Server size={20} strokeWidth={1.5} />, desc: 'Faktura robi się sama', payload: 'Zaoszczędzone: 5 min' },
+    { id: 3, title: 'Obsługa Klienta', devTitle: 'Zbudowane zaufanie', icon: <Mail size={20} strokeWidth={1.5} />, desc: 'Klient obsłużony w sekundę', payload: 'Poziom stresu: 0' },
   ];
 
   return (
@@ -40,10 +40,10 @@ export function SandboxSection() {
       <div className="max-w-6xl mx-auto">
         <div className="text-left md:text-center mb-16 md:mb-24 flex flex-col items-start md:items-center">
           <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
-            {fixOrphans('Przetestuj swoją nową maszynę sprzedażową.')}
+            {fixOrphans('Zastąp żmudną pracę bezbłędnym systemem.')}
           </h2>
           <p className="text-slate-600 text-lg md:text-xl max-w-2xl font-normal leading-relaxed">
-            {fixOrphans(`Zamiast czytać o technologii, zobacz ją w akcji. Prześledź na żywo drogę od kliknięcia klienta, przez automatyczny zapis w bazie, aż po wystawienie faktury. Tak system odzyskuje Twoje wolne wieczory.`)}
+            {fixOrphans(`Podczas gdy Ty śpisz, pijesz kawę lub rozwijasz firmę, technologia bezdźwięcznie przetwarza zamówienia, pilnuje stanów i generuje dokumenty. Zero ręcznego przepisywania. Kliknij i zobacz, jak system odzyskuje Twój czas wolny.`)}
           </p>
         </div>
 
@@ -72,7 +72,7 @@ export function SandboxSection() {
               ) : (
                 <>
                   <Play size={16} className="fill-white" />
-                  <span>Zobacz system w akcji</span>
+                  <span>Uruchom i odzyskaj czas</span>
                 </>
               )}
             </button>
