@@ -64,12 +64,12 @@ export default function Hero({ onNavigate }: HeroProps) {
         </div>
 
         {/* Right Column Portrait */}
-        <div className="w-full lg:w-1/2 flex justify-center lg:justify-end relative mt-8 lg:mt-0">
+        <div className="hidden lg:flex w-full lg:w-1/2 justify-center lg:justify-end relative mt-8 lg:mt-0">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-orange-500/10 blur-[120px] rounded-full pointer-events-none" />
           
           {/* Light Premium Card Framing for the photo (Polaroid style) */}
-          <div className="relative w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[440px] rounded-[2.5rem] bg-white p-3 sm:p-4 shadow-[0_20px_50px_rgba(15,23,42,0.08)] border border-slate-200/60 hover:rotate-1 hover:scale-[1.02] transition-all duration-500 group flex flex-col">
-            <div className="w-full aspect-[4/5] rounded-[1.8rem] overflow-hidden relative">
+          <div className="relative w-full max-w-[200px] sm:max-w-[320px] lg:max-w-[440px] rounded-[2rem] sm:rounded-[2.5rem] bg-white p-2.5 sm:p-4 shadow-[0_20px_50px_rgba(15,23,42,0.08)] border border-slate-200/60 hover:rotate-1 hover:scale-[1.02] transition-all duration-500 group flex flex-col">
+            <div className="w-full aspect-[4/5] rounded-[1.5rem] sm:rounded-[1.8rem] overflow-hidden relative">
               <Image
                 src="/Marcin_Molenda_Development.png"
                 alt="Marcin Molenda - Ekspert od szybkiej sprzedaży B2B"
@@ -92,7 +92,7 @@ export default function Hero({ onNavigate }: HeroProps) {
       </div>
 
       {/* Trust Bar */}
-      <div className="w-full relative z-20 mt-auto mb-28 lg:mb-32 px-4 sm:px-10 lg:px-20">
+      <div className="hidden lg:block w-full relative z-20 mt-auto mb-28 lg:mb-32 px-4 sm:px-10 lg:px-20">
         <div className="max-w-[1000px] mx-auto bg-white/70 backdrop-blur-2xl border border-slate-200/50 rounded-[2rem] py-8 px-6 sm:px-10 flex flex-col items-center justify-center gap-8 shadow-premium">
           <span className="text-slate-500 text-xs sm:text-sm font-medium uppercase tracking-[0.2em] text-center">
             Zaufali mi przedsiębiorcy, którzy cenią swój czas:
