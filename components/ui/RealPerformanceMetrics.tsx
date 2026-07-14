@@ -20,7 +20,7 @@ export function RealPerformanceMetrics() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
              <div className="flex items-center gap-2 text-sm text-slate-700 font-medium bg-slate-50 px-4 py-2 rounded-lg border border-slate-100">
-                <CheckCircle2 size={16} className="text-emerald-500" /> Zerowe spadki (0 CLS)
+                <CheckCircle2 size={16} className="text-emerald-500" /> Wzorowa stabilność wizualna
              </div>
              <div className="flex items-center gap-2 text-sm text-slate-700 font-medium bg-slate-50 px-4 py-2 rounded-lg border border-slate-100">
                 <Smartphone size={16} className="text-slate-500" /> Rzeczywiści użytkownicy (RUM)
@@ -35,16 +35,16 @@ export function RealPerformanceMetrics() {
 
           <div className="flex items-center justify-between mb-8 border-b border-slate-800 pb-4">
             <div className="text-slate-400 font-mono text-xs uppercase tracking-widest">Real Experience Score</div>
-            <div className="text-emerald-400 text-3xl font-black">98<span className="text-slate-500 text-lg">/100</span></div>
+            <div className="text-emerald-400 text-3xl font-black">100<span className="text-slate-500 text-lg">/100</span></div>
           </div>
 
           <div className="grid grid-cols-2 gap-y-6 gap-x-4">
-            <MetricItem label="First Contentful Paint" value="1.3 s" status="good" />
-            <MetricItem label="Largest Contentful Paint" value="2.2 s" status="good" />
-            <MetricItem label="Interaction to Next Paint" value="200 ms" status="good" />
-            <MetricItem label="Time to First Byte" value="0.38 s" status="good" />
-            <MetricItem label="First Input Delay" value="24 ms" status="good" />
-            <MetricItem label="Cumulative Layout Shift" value="0" status="good" />
+            <MetricItem label="First Contentful Paint" value="1.35 s" status="good" />
+            <MetricItem label="Largest Contentful Paint" value="1.48 s" status="good" />
+            <MetricItem label="Interaction to Next Paint" value="128 ms" status="good" />
+            <MetricItem label="Time to First Byte" value="0.68 s" status="good" />
+            <MetricItem label="First Input Delay" value="31 ms" status="good" />
+            <MetricItem label="Cumulative Layout Shift" value="0.01" status="good" />
           </div>
 
           <div className="mt-8 text-[10px] text-slate-500 font-mono uppercase tracking-widest text-center border-t border-slate-800 pt-4">
