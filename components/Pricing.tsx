@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, TrendingDown } from 'lucide-react';
+import { Check, TrendingDown, Zap, Bot, Search, PlugZap } from 'lucide-react';
 import { pushGTMEvent } from '@/app/page';
 import { fixOrphans } from '@/utils/typography';
 import { TIERS_SERVICES, TIERS_ECOMMERCE } from './pricing/constants';
@@ -211,27 +211,35 @@ export default function Pricing() {
         </p>
         
         <ul className="space-y-4">
-          <li className="flex items-start gap-3">
-            <span className="text-xl shrink-0">🚀</span>
-            <p className="text-sm text-slate-600 leading-relaxed font-light">
+          <li className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0 border border-orange-100 mt-0.5">
+              <Zap className="w-5 h-5 text-orange-500" />
+            </div>
+            <p className="text-sm text-slate-600 leading-relaxed font-light pt-1">
               <strong className="text-slate-900 font-medium">Ekstremalne Przyspieszenie (Core Web Vitals):</strong> {fixOrphans(`Każda dodatkowa sekunda ładowania to utrata 7% klientów. Zoptymalizuję Twój kod tak, by strona otwierała się w ułamku sekundy, co zagwarantuje Ci wyższe pozycje w Google i ucieczkę przed konkurencją.`)}
             </p>
           </li>
-          <li className="flex items-start gap-3">
-            <span className="text-xl shrink-0">🤖</span>
-            <p className="text-sm text-slate-600 leading-relaxed font-light">
+          <li className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center shrink-0 border border-violet-100 mt-0.5">
+              <Bot className="w-5 h-5 text-violet-500" />
+            </div>
+            <p className="text-sm text-slate-600 leading-relaxed font-light pt-1">
               <strong className="text-slate-900 font-medium">Sama Automatyzacja i AI:</strong> {fixOrphans(`Wdrożenie chatbota AI, automatycznego umawiania spotkań lub kalkulatorów wycen do Twojej obecnej witryny.`)}
             </p>
           </li>
-          <li className="flex items-start gap-3">
-            <span className="text-xl shrink-0">🔍</span>
-            <p className="text-sm text-slate-600 leading-relaxed font-light">
+          <li className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0 border border-blue-100 mt-0.5">
+              <Search className="w-5 h-5 text-blue-500" />
+            </div>
+            <p className="text-sm text-slate-600 leading-relaxed font-light pt-1">
               <strong className="text-slate-900 font-medium">Płatny Audyt UX/SEO i Konwersji:</strong> {fixOrphans(`Twoja strona ma ruch, ale nie sprzedaje? Prześwietlę ją i wskażę dokładne błędy, przez które tracisz pieniądze (tzw. wyciekające zapytania).`)}
             </p>
           </li>
-          <li className="flex items-start gap-3">
-            <span className="text-xl shrink-0">⚙️</span>
-            <p className="text-sm text-slate-600 leading-relaxed font-light">
+          <li className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center shrink-0 border border-slate-200 mt-0.5">
+              <PlugZap className="w-5 h-5 text-slate-500" />
+            </div>
+            <p className="text-sm text-slate-600 leading-relaxed font-light pt-1">
               <strong className="text-slate-900 font-medium">Zaawansowane integracje:</strong> {fixOrphans(`Połączenie Twojej strony z CRM, systemami fakturowania lub narzędziami kurierskimi.`)}
             </p>
           </li>

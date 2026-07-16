@@ -29,31 +29,32 @@ export default function NotFound() {
           transition={{ duration: 0.5 }}
           className="font-mono text-[10px] text-slate-500 mb-6 flex items-center gap-2 tracking-[0.2em] bg-white px-4 py-2 border border-slate-200/50 rounded-full backdrop-blur-md shadow-sm"
         >
-          <span className="text-orange-500">status_code:</span>
-          <span>404_NOT_FOUND</span>
+          <span className="text-orange-500">BŁĄD</span>
+          <span>404</span>
         </motion.div>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-mono tracking-tighter mb-4 text-slate-900 leading-tight">
-          <span className="text-orange-500 mr-2">&gt;</span>Zabłądziłeś?
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-6 text-slate-900 leading-tight">
+          Ta strona zniknęła...
+          <br />ale Twoje <span className="text-orange-500">szanse na rozwój</span> nie.
         </h1>
 
-        <p className="text-sm sm:text-base text-slate-600 font-light leading-relaxed mb-12 max-w-sm">
-          Podany zasób nie istnieje dla bieżącej sesji lub został trwale przeniesiony. Cofnijmy się do bezpiecznej strefy.
+        <p className="text-sm sm:text-base text-slate-600 font-light leading-relaxed mb-12 max-w-lg">
+          Wygląda na to, że link, w który kliknąłeś, jest nieaktualny. Nic nie szkodzi! Wróć na stronę główną i zobacz, jak nowoczesna technologia może pomóc w skalowaniu Twojej sprzedaży B2B.
         </p>
 
         <MagneticWrapper>
           <Link href="/">
-            <button className="px-8 py-4 bg-orange-500 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg hover:bg-orange-400 transition-colors flex items-center gap-3">
-              <MoveLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-              <span>Powrót do bazy</span>
+            <button className="px-8 py-4 bg-orange-500 text-white font-black tracking-wide text-sm rounded-xl shadow-lg hover:bg-orange-600 hover:shadow-orange-500/20 hover:-translate-y-0.5 transition-all flex items-center gap-3">
+              <MoveLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+              <span>Wróć na Stronę Główną</span>
             </button>
           </Link>
         </MagneticWrapper>
 
         <div className="mt-16 flex items-center gap-4">
           <div className="w-8 h-px bg-slate-300" />
-          <span className="font-mono text-[9px] text-slate-500 uppercase tracking-[0.4em] flex items-center gap-2">
-            <Terminal size={12} className="text-orange-500" /> MM.Dev System
+          <span className="font-mono text-[9px] text-slate-500 uppercase tracking-[0.4em]">
+            Marcin Molenda Development
           </span>
           <div className="w-8 h-px bg-slate-300" />
         </div>
