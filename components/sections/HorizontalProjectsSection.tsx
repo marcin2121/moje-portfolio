@@ -68,7 +68,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
               pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'DzikiStyl' });
               handleOpenDemo({ url: 'https://dzikistyldemo.vercel.app/', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
             }} className="aspect-4/3 w-full bg-slate-100 rounded-2xl border border-slate-200 overflow-hidden relative group shadow-premium cursor-pointer order-1 lg:order-2">
-              <Image src="/dzikistyl.jpg" alt="DzikiStyl" fill priority quality={80} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+              <Image src="/dzikistyl.jpg" alt="DzikiStyl" fill quality={80} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
               <div className="absolute inset-0 bg-white/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-500 px-6 py-3 rounded-lg shadow-xl border border-orange-400/20">Sprawdź działanie</span>
               </div>
@@ -149,7 +149,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
               pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'zamowtu.pl' });
               handleOpenDemo({ url: 'https://zamówtu.pl/demo', title: 'zamowtu.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
             }} className="aspect-4/3 w-full bg-slate-100 rounded-2xl border border-slate-200 overflow-hidden relative group shadow-premium cursor-pointer order-1 lg:order-2">
-              <Image src="/zamowtu.webp" alt="zamowtu.pl" fill priority quality={80} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+              <Image src="/zamowtu.webp" alt="zamowtu.pl" fill quality={80} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
               <div className="absolute inset-0 bg-white/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-500 px-6 py-3 rounded-lg shadow-xl border border-orange-400/20">Sprawdź działanie</span>
               </div>
