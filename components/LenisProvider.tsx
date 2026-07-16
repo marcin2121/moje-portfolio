@@ -6,11 +6,9 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function SmoothScroll({ children }: { children: ReactNode }) {
-  const lenisRef = useRef<any>(null);
+  const lenisRef = useRef<{ lenis?: { raf: (time: number) => void, on: (e: string, cb: () => void) => void, off: (e: string, cb: () => void) => void } }>(null);
 
   useEffect(() => {
-    let checkLenis: NodeJS.Timeout;
-    
     const updateLenis = (time: number) => lenisRef.current?.lenis?.raf(time * 1000);
     gsap.ticker.add(updateLenis);
     gsap.ticker.lagSmoothing(0);
@@ -19,12 +17,12 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       const lenis = lenisRef.current?.lenis;
       if (lenis) {
         lenis.on('scroll', ScrollTrigger.update);
-        clearInterval(checkLenis);
+        if (checkLenis) clearInterval(checkLenis);
       }
     };
 
     // W React 18 / Next.js instancja lenis może pojawić się milisekundy po montażu rodzica
-    checkLenis = setInterval(initLenisSync, 50);
+    const checkLenis = setInterval(initLenisSync, 50);
     initLenisSync();
     
     const currentLenis = lenisRef.current?.lenis;

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
-import { X, ChevronDown } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface BottomSheetProps {
   isOpen: boolean;

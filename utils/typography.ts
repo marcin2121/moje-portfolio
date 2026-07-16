@@ -11,7 +11,7 @@ export function fixOrphans(text: string): string {
   result = result.replace(orphanRegex, '$1$2\u00A0'); // Drugi przebieg dla słów występujących obok siebie (np. " a i ")
   
   // Zapobieganie łamaniu linii w słowach z myślnikiem typu e-mail
-  result = result.replace(/e-mail/gi, 'e\u2011mail').replace(/e-commerce/gi, 'e\u2011commerce');
+  result = result.replace(/([eE])-mail/g, '$1\u2011mail').replace(/([eE])-commerce/g, '$1\u2011commerce');
   
   return result;
 }

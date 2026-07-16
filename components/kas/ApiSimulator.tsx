@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Play, Database, Workflow, Smartphone, Calendar as CalendarIcon, CheckCircle2, Shield } from 'lucide-react';
+import { Play, Database, Workflow, Smartphone, CheckCircle2, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function ApiSimulator() {

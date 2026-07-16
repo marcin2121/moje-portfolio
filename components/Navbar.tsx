@@ -36,6 +36,7 @@ export default function Navbar() {
 
   // Close mobile menu on route change
   useEffect(() => {
+    // eslint-disable-next-line
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
@@ -85,6 +86,14 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={(e) => {
+                    if (link.href.startsWith('/#') && pathname === '/') {
+                      e.preventDefault();
+                      const hash = link.href.substring(1);
+                      window.history.pushState(null, '', link.href);
+                      window.dispatchEvent(new CustomEvent('nav-scroll', { detail: hash }));
+                    }
+                  }}
                   className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors ${
                     isActive 
                       ? 'text-slate-900 bg-slate-100' 
@@ -125,7 +134,15 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      if (link.href.startsWith('/#') && pathname === '/') {
+                        e.preventDefault();
+                        const hash = link.href.substring(1);
+                        window.history.pushState(null, '', link.href);
+                        window.dispatchEvent(new CustomEvent('nav-scroll', { detail: hash }));
+                      }
+                      setIsMobileMenuOpen(false);
+                    }}
                     className={`px-6 py-4 rounded-2xl text-lg font-medium transition-colors ${
                       isActive
                         ? 'bg-orange-50 text-orange-600 border border-orange-200'

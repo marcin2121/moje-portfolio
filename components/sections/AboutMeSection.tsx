@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { UserCircle, Code2, Briefcase, Zap, CheckCircle2 } from 'lucide-react';
+import { Code2, Briefcase, Zap } from 'lucide-react';
 import { fixOrphans } from '@/utils/typography';
 import Image from 'next/image';
 

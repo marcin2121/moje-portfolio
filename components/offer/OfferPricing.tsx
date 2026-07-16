@@ -19,9 +19,9 @@ export default function OfferPricing({ packages, companyName }: OfferPricingProp
 
   const handleSelectPackage = async (pkgName: string, price: string) => {
     // 1. Zdarzenie Umami
-    if (typeof window !== 'undefined' && (window as any).umami) {
+    if (typeof window !== 'undefined' && 'umami' in window) {
       const slug = pkgName.toLowerCase().replace(/\s+/g, '_');
-      (window as any).umami.track(`oferta_click_tier_${slug}`);
+      (window as unknown as { umami: { track: (name: string) => void } }).umami.track(`oferta_click_tier_${slug}`);
     }
 
     // 2. Pokazanie panelu w interfejsie

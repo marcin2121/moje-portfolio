@@ -61,7 +61,7 @@ export async function proxy(request: NextRequest) {
 
   // 4. Rate Limiting dla /api/ 
   if (request.nextUrl.pathname.startsWith('/api/') && ratelimit) {
-    const ip = request.headers.get('x-real-ip') ?? request.headers.get('x-forwarded-for')?.split(',')[0] ?? 'anonymous';
+    const ip = request.headers.get('x-vercel-ip') ?? request.headers.get('x-real-ip') ?? request.headers.get('x-forwarded-for')?.split(',').pop()?.trim() ?? 'anonymous';
     
     try {
       const { success, limit, reset, remaining } = await ratelimit.limit(`ratelimit_${ip}`);

@@ -28,7 +28,7 @@ function escapeHtml(unsafe: string | undefined): string {
 
 const postHandler = async (data: z.infer<typeof OfferSchema>, req: Request) => {
   // 🛡️ SECURITY FIX: Sprawdzanie IP dla Rate Limitera
-  const ip = req.headers.get('x-real-ip') ?? req.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown-ip';
+  const ip = req.headers.get('x-vercel-ip') ?? req.headers.get('x-real-ip') ?? req.headers.get('x-forwarded-for')?.split(',').pop()?.trim() ?? 'unknown-ip';
   const now = Date.now();
   
   if (ip !== 'unknown-ip') {

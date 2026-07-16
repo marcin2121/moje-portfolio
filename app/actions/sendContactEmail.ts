@@ -28,7 +28,7 @@ export async function sendContactEmail(formData: FormData) {
       return { success: false, error: 'Podaj poprawny adres e-mail.' };
     }
 
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: 'Kontakt <onboarding@resend.dev>', // You should verify your own domain in Resend later
       to: ['kontakt@molendadevelopment.pl'], // Put your receiving email here
       subject: `Nowe zapytanie B2B: ${blocker}`,

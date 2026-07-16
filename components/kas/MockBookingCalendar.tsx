@@ -157,7 +157,7 @@ export default function MockBookingCalendar() {
         <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-6 mb-8">
           <div className="flex items-center gap-3 text-rose-400 mb-3">
             <AlertTriangle className="w-6 h-6" />
-            <h4 className="font-bold text-lg">Błąd "Kalendarz.php" rozwiązany</h4>
+            <h4 className="font-bold text-lg">Błąd &quot;Kalendarz.php&quot; rozwiązany</h4>
           </div>
           <p className="text-slate-300 leading-relaxed">
             Obecna strona potrafi się zawiesić wyświetlając błąd serwera <code>Kalendarz.php</code>. Taka awaria oznacza, że młody człowiek szukający pilnego wsparcia, odbija się od ściany.
@@ -180,7 +180,7 @@ export default function MockBookingCalendar() {
             </div>
             <div>
               <h5 className="font-bold text-white mb-1">Anonimowość (Privacy by Design)</h5>
-              <p className="text-slate-400 text-sm">Nie wymagamy dokładnych danych. Brak śledzenia IP i ciasteczek. "Imię lub pseudonim" buduje zaufanie do KAS.</p>
+              <p className="text-slate-400 text-sm">Nie wymagamy dokładnych danych. Brak śledzenia IP i ciasteczek. &quot;Imię lub pseudonim&quot; buduje zaufanie do KAS.</p>
             </div>
           </div>
           <div className="flex items-start gap-4">

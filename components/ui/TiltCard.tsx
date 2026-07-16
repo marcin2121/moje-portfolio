@@ -34,7 +34,6 @@ export default function TiltCard({ children, className = '', disableDesktop = fa
 
   useEffect(() => {
     let animationFrameId: number;
-    let observer: IntersectionObserver;
     let isVisible = false;
 
     const measure = () => {
@@ -58,7 +57,7 @@ export default function TiltCard({ children, className = '', disableDesktop = fa
       animationFrameId = requestAnimationFrame(measure);
     };
 
-    observer = new IntersectionObserver(([entry]) => {
+    const observer = new IntersectionObserver(([entry]) => {
       isVisible = entry.isIntersecting;
       if (isVisible) {
         measure();

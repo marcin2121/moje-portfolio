@@ -10,6 +10,7 @@ export default function PerformanceBadge() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line
     setMounted(true);
     // Symulacja lub pobranie prawdziwego czasu ładowania
     // Używamy performance.timing, by pokazać prawdziwą szybkość po załadowaniu

@@ -3,7 +3,13 @@
 import { useEffect, useRef } from 'react';
 
 export function useFrictionTelemetry(sessionId: string, device: string) {
-  const startTime = useRef(Date.now());
+  const startTime = useRef<number>(0);
+
+  useEffect(() => {
+    if (startTime.current === 0) {
+      startTime.current = Date.now();
+    }
+  }, []);
   const maxScrollDepth = useRef(0);
   const sliderInteractionCount = useRef(0);
   const sent = useRef(false);

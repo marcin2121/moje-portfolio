@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { fixOrphans } from '@/utils/typography';
+import { GEOSchemaInjector } from '@/components/ui/GEOSchemaInjector';
 
 const FAQ_ITEMS = [
   {
@@ -42,10 +43,7 @@ export default function FAQ() {
 
   return (
     <section id="faq" className="w-full py-24 sm:py-32 px-6 sm:px-10 lg:px-20 bg-transparent relative overflow-hidden border-t border-slate-200/50">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c') }}
-      />
+      <GEOSchemaInjector schema={schema} />
       <div className="max-w-4xl mx-auto w-full">
         <div className="flex flex-col items-center text-center mb-10 lg:mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-md mb-6 shadow-sm">
