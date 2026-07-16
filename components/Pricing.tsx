@@ -224,6 +224,39 @@ export default function Pricing() {
         </div>
       </motion.div>
 
+      {/* Trust & Payments Banner (CRO Optimization) */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="w-full max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 mt-4 mb-12 py-8 px-6 bg-slate-50/50 rounded-2xl border border-slate-200/60"
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 border border-emerald-200">
+            <Check className="w-6 h-6 text-emerald-600 stroke-[2.5]" />
+          </div>
+          <div className="text-left">
+            <h4 className="text-sm font-bold text-slate-900 mb-0.5">Żelazna Gwarancja 7 Dni</h4>
+            <p className="text-xs text-slate-500 max-w-[200px]">100% zwrotu zaliczki, jeśli wstępny projekt Ci się nie spodoba.</p>
+          </div>
+        </div>
+        
+        <div className="hidden sm:block w-px h-12 bg-slate-200" />
+        
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200">
+            <svg className="w-6 h-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+          </div>
+          <div className="text-left">
+            <h4 className="text-sm font-bold text-slate-900 mb-0.5">Faktura VAT 23%</h4>
+            <p className="text-xs text-slate-500 max-w-[200px]">Bezpieczne przelewy bankowe. Przejrzyste rozliczenia B2B.</p>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Opcjonalna Opieka Techniczna (Retainer) */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
