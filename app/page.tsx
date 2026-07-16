@@ -230,14 +230,16 @@ export default function PortfolioHome() {
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash;
-      if (hash === '#cennik') scrollToSection(13);
-      if (hash === '#faq') scrollToSection(14);
+      if (hash === '#cennik' || hash === '#faq') {
+        gsapRef.current?.to(window, { scrollTo: { y: hash }, duration: 1.2, ease: 'power3.inOut', overwrite: 'auto' });
+      }
     };
 
     const handleCustomNavScroll = (e: Event) => {
       const hash = (e as CustomEvent).detail;
-      if (hash === '#cennik') scrollToSection(13);
-      if (hash === '#faq') scrollToSection(14);
+      if (hash === '#cennik' || hash === '#faq') {
+        gsapRef.current?.to(window, { scrollTo: { y: hash }, duration: 1.2, ease: 'power3.inOut', overwrite: 'auto' });
+      }
     };
 
     // Lekkie opóźnienie na start, aby ScrollTrigger policzył wysokości
