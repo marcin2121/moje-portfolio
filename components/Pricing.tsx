@@ -220,8 +220,8 @@ export default function Pricing() {
             </p>
           </li>
           <li className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center shrink-0 border border-violet-100">
-              <Bot className="w-5 h-5 text-violet-500" />
+            <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100">
+              <Bot className="w-5 h-5 text-emerald-500" />
             </div>
             <p className="text-sm text-slate-600 leading-relaxed font-light pt-2">
               <strong className="text-slate-900 font-medium">Sama Automatyzacja i AI:</strong> {fixOrphans(`Wdrożenie chatbota AI, automatycznego umawiania spotkań lub kalkulatorów wycen do Twojej obecnej witryny.`)}
