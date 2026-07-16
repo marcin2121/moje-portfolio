@@ -1,4 +1,4 @@
-export interface CalculatorSchemaGEO {
+export type CalculatorSchemaGEO = {
   "@context": "https://schema.org";
   "@type": "SoftwareApplication";
   name: string;
@@ -13,7 +13,7 @@ export interface CalculatorSchemaGEO {
   featureList?: string[];
 }
 
-export interface EngineeringCaseStudy {
+export type EngineeringCaseStudy = {
   "@context": "https://schema.org";
   "@type": "TechArticle";
   headline: string;
