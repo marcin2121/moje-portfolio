@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Terminal, MoveLeft } from 'lucide-react';
+import { MoveLeft } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import MagneticWrapper from '@/components//ui/MagneticWrapper';
