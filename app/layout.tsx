@@ -71,6 +71,9 @@ import Navbar from "@/components/Navbar";
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pl">
+      <head>
+        <link rel="preconnect" href="https://analytics.molendadevelopment.pl" />
+      </head>
       {/* Plus Jakarta Sans applied globally */}
       <body suppressHydrationWarning className={`${plusJakarta.variable} relative font-sans bg-slate-50 text-slate-900 antialiased overflow-x-clip selection:bg-orange-500 selection:text-white`}>
          
