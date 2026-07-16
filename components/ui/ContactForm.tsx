@@ -6,6 +6,7 @@ import { sendContactEmail } from '@/app/actions/sendContactEmail';
 import { CheckCircle2, AlertCircle, Loader2, Target, Clock, FileWarning, Rocket, Mail, Check, ArrowLeft, ArrowRight } from 'lucide-react';
 import { pushGTMEvent } from '@/app/page';
 import { fixOrphans } from '@/utils/typography';
+import { useRouter } from 'next/navigation';
 
 const PROBLEMS = [
   { id: 'brak_klientow', icon: Target, label: 'Brak klientów z sieci', desc: 'Ruch nie przekłada się na zapytania i zyski.' },
@@ -15,6 +16,7 @@ const PROBLEMS = [
 ];
 
 export default function ContactForm() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [selectedBlocker, setSelectedBlocker] = useState('');
   const [showNotes, setShowNotes] = useState(false);
@@ -43,8 +45,8 @@ export default function ContactForm() {
     const result = await sendContactEmail(formData);
 
     if (result.success) {
-      setStatus('success');
       pushGTMEvent('formularz_kontaktowy_sukces');
+      router.push('/sukces');
     } else {
       setStatus('error');
       setErrorMessage(result.error || 'Wystąpił błąd podczas wysyłania.');
