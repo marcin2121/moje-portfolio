@@ -34,7 +34,7 @@ export default function SuccessPage() {
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
           <MagneticWrapper>
             <Link 
-              href="https://www.linkedin.com/in/marcin-molenda/" 
+              href="https://www.linkedin.com/in/marcin-molenda-447251289/"
               target="_blank" 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 px-8 py-4 bg-[#0A66C2] text-white rounded-xl font-medium hover:bg-[#084e96] transition-colors w-full sm:w-auto shadow-lg shadow-blue-500/20"
