@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     let automationScore = 30;
     let html = '';
     let detectedPlatform = 'Własny kod / Nierozpoznano';
-    const codeSmells = { jquery: false, badScripts: 0, h1Count: 0, inlineStyles: 0 };
+    const codeSmells = { jquery: false, badScripts: 0, domElements: 0, inlineStyles: 0 };
     let wafDetected = false;
 
     // Helper: PageSpeed
@@ -91,9 +91,21 @@ export async function POST(req: Request) {
       return { siteRes, htmlText };
     };
 
-    const [psDataResult, siteHtmlResult] = await Promise.allSettled([
+    const runYellowLabTools = async () => {
+      try {
+        const ylt = require('yellowlabtools');
+        const result = await ylt(targetUrl, { profile: 'nextjs' });
+        return result;
+      } catch (err) {
+        console.error('YLT execution failed:', err);
+        return null;
+      }
+    };
+
+    const [psDataResult, siteHtmlResult, yltResult] = await Promise.allSettled([
       fetchPageSpeed(2),
-      fetchSiteHTML()
+      fetchSiteHTML(),
+      runYellowLabTools()
     ]);
 
     if (psDataResult.status === 'fulfilled' && psDataResult.value) {
@@ -122,26 +134,49 @@ export async function POST(req: Request) {
 
         // BŁYSKAWICZNA ANALIZA CHEERIO (Zamiast niebezpiecznych Regexów)
         const $ = cheerio.load(html);
-        // Zmienne pageTitle i pageDesc zostały usunięte ze względu na linter
-
-        codeSmells.jquery = html.toLowerCase().includes('jquery');
-        codeSmells.h1Count = $('h1').length;
-        codeSmells.inlineStyles = $('[style]').length;
-
-        // Liczymy skrypty bez async/defer
-        $('script[src]').each((_, el) => {
-          const isAsync = $(el).attr('async') !== undefined;
-          const isDefer = $(el).attr('defer') !== undefined;
-          if (!isAsync && !isDefer) codeSmells.badScripts++;
-        });
+        
+        // --- YELLOWLABTOOLS INTEGRATION ---
+        if (yltResult.status === 'fulfilled' && yltResult.value && yltResult.value.scoreProfiles) {
+          const yltData = yltResult.value;
+          const generic = yltData.scoreProfiles.generic;
+          
+          if (generic && generic.categories) {
+            scalabilityScore = generic.categories.domComplexity.categoryScore;
+            automationScore = generic.categories.javascriptComplexity.categoryScore;
+            
+            codeSmells.jquery = generic.categories.jQuery.categoryScore < 100;
+            codeSmells.badScripts = yltData.rules?.synchronousXHR?.offendersObj?.count || 0;
+            codeSmells.inlineStyles = yltData.rules?.inlineCss?.offendersObj?.count || 0;
+            codeSmells.domElements = yltData.toolsResults?.phantomas?.metrics?.DOMelementsCount || $('h1').length;
+          }
+        } else {
+          // Fallback if YLT fails
+          codeSmells.jquery = html.toLowerCase().includes('jquery');
+          codeSmells.domElements = $('h1').length;
+          codeSmells.inlineStyles = $('[style]').length;
+          $('script[src]').each((_, el) => {
+            const isAsync = $(el).attr('async') !== undefined;
+            const isDefer = $(el).attr('defer') !== undefined;
+            if (!isAsync && !isDefer) codeSmells.badScripts++;
+          });
+        }
 
         // Detekcja platform
         if (html.includes('__NEXT_DATA__') || html.includes('/_next/static/')) {
-          scalabilityScore = 95; automationScore = 95; detectedPlatform = 'Next.js / React (Serverless)';
+           detectedPlatform = 'Next.js / React (Serverless)';
+           if (yltResult.status !== 'fulfilled' || !yltResult.value) {
+             scalabilityScore = 95; automationScore = 95;
+           }
         } else if (html.includes('cdn.shopify.com')) {
-          scalabilityScore = 80; automationScore = 70; detectedPlatform = 'Shopify';
+           detectedPlatform = 'Shopify';
+           if (yltResult.status !== 'fulfilled' || !yltResult.value) {
+             scalabilityScore = 80; automationScore = 70;
+           }
         } else if (html.includes('wp-content')) {
-          scalabilityScore = 40; automationScore = 30; detectedPlatform = 'WordPress / WooCommerce';
+           detectedPlatform = 'WordPress / WooCommerce';
+           if (yltResult.status !== 'fulfilled' || !yltResult.value) {
+             scalabilityScore = 40; automationScore = 30;
+           }
         }
       }
     }

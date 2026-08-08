@@ -7,13 +7,13 @@ export async function generateGeminiReport(
   seoScore: number,
   detectedPlatform: string,
   wafDetected: boolean,
-  codeSmells: { jquery: boolean; badScripts: number; h1Count: number; inlineStyles: number },
+  codeSmells: { jquery: boolean; badScripts: number; domElements: number; inlineStyles: number },
   lossPercentage: number,
   geminiKey: string
 ): Promise<string> {
   const codeSmellsText = wafDetected
     ? "UWAGA: Serwis chroniony przez WAF/Cloudflare. Skan struktury kodu zablokowany."
-    : `Dług Technologiczny (Code Smells):\n- Przestarzałe jQuery: ${codeSmells.jquery ? 'TAK (Krytyczne!)' : 'NIE'}\n- Skrypty blokujące renderowanie: ${codeSmells.badScripts} szt.\n- Nagłówki H1: ${codeSmells.h1Count}\n- Style inline: ${codeSmells.inlineStyles} szt.`;
+    : `Dług Technologiczny (Code Smells):\n- Przestarzałe biblioteki (jQuery): ${codeSmells.jquery ? 'TAK (Krytyczne!)' : 'NIE'}\n- Złe praktyki ładowania (synchronousXHR/blokujące): ${codeSmells.badScripts} szt.\n- Rozmiar DOM (złożoność drzewa): ${codeSmells.domElements} elementów\n- Brudne style inline: ${codeSmells.inlineStyles} szt.`;
 
   let prompt = '';
 

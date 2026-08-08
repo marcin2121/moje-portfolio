@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
     // Tree-shake heavy dependencies — only import used exports
     optimizePackageImports: ['lucide-react'],
   },
+  
+  // Zapobiega próbom bundlowania dynamicznych zależności w paczkach serwerowych przez Webpacka (błędy typu "Can't resolve dynamic require")
+  serverExternalPackages: ['yellowlabtools', 'phantomas'],
 
   // Definiujemy pancerne nagłówki HTTP
   async headers() {
