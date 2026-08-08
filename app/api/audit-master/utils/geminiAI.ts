@@ -58,6 +58,8 @@ Zadanie: Napisz brutalną, bezkompromisową diagnozę inżynieryjną (MAKSYMALNI
 FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak jakiegokolwiek HTML-a, brak znaczników \`\`\`markdown.`;
   }
 
+  prompt += `\n\nNa samym końcu dodaj wyraźnie oddzieloną pustą linią sekcję o nazwie "**💡 Szybka porada (bez IT):**". Napisz w niej jedno konkretne, w 100% nietechniczne zalecenie biznesowe, które właściciel może wykonać od razu sam z poziomu panelu CMS (np. optymalizacja wagi zdjęć przed wrzuceniem, wyłączenie zbędnych wtyczek reklamowych, usunięcie ciężkich wideo w tle). Porada musi być krótka (1 zdanie) i nie wymagać programisty.`;
+
   const ai = new GoogleGenAI({ apiKey: geminiKey });
   try {
     const response = await ai.models.generateContent({
