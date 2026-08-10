@@ -1,0 +1,2 @@
+[phases.setup]
+aptPkgs = ["...", "autoconf", "automake", "libtool", "nasm", "pkg-config", "build-essential"]
