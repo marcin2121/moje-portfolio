@@ -1,2 +1,6 @@
 [phases.setup]
-aptPkgs = ["...", "autoconf", "automake", "libtool", "nasm", "pkg-config", "build-essential"]
+aptPkgs = ["...", "autoconf", "automake", "libtool", "nasm", "pkg-config", "build-essential", "libjpeg-dev", "libpng-dev"]
+
+[variables]
+PUPPETEER_SKIP_DOWNLOAD = "true"
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"
