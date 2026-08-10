@@ -1,6 +1,8 @@
 [phases.setup]
-aptPkgs = ["...", "autoconf", "automake", "libtool", "nasm", "pkg-config", "build-essential", "libjpeg-dev", "libpng-dev"]
+aptPkgs = ["...", "autoconf", "automake", "libtool", "nasm", "pkg-config", "build-essential", "libjpeg-dev", "libpng-dev", "python3"]
 
 [variables]
 PUPPETEER_SKIP_DOWNLOAD = "true"
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"
+CFLAGS = "-DPNG_ARM_NEON_OPT=0"
+CXXFLAGS = "-DPNG_ARM_NEON_OPT=0"
