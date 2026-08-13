@@ -54,7 +54,7 @@ export default function Hero({ onNavigate }: HeroProps) {
           <button 
              onClick={() => {
                 pushGTMEvent('strona_glowna_wycena_klikniecie');
-                onNavigate(14); // Index 14 to Kontakt
+                onNavigate(15); // Index 15 to Kontakt
              }}
              className="w-full sm:w-auto px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-black tracking-wide text-lg rounded-xl transition-all duration-300 shadow-[0_15px_40px_rgba(234,88,12,0.4)] hover:shadow-[0_20px_60px_rgba(234,88,12,0.6)] flex items-center justify-center gap-3 hover:-translate-y-1"
           >
