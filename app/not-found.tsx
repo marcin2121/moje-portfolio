@@ -4,60 +4,47 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MoveLeft } from 'lucide-react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import MagneticWrapper from '@/components//ui/MagneticWrapper';
-
-const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen w-full bg-slate-50 text-slate-900 font-sans overflow-hidden relative flex flex-col items-center justify-center px-6">
-      {/* GLOW BACKGROUND */}
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-size-[40px_40px] opacity-80 pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] lg:w-[600px] lg:h-[600px] bg-orange-500/10 blur-[130px] rounded-full pointer-events-none" />
+    <main className="min-h-screen w-full bg-[#FAFAFA] text-slate-900 font-sans flex flex-col items-center justify-center px-6 relative overflow-hidden">
+      {/* Premium Light Diffuse Background */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.03)_1px,transparent_1px)] bg-size-[64px_64px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-white/40 blur-[120px] pointer-events-none rounded-full" />
       
-      <Particles color="#ea580c" />
-
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full opacity-[0.02] pointer-events-none text-[25vw] font-black text-center leading-none select-none tracking-tighter">
-        404
-      </div>
-
-      <div className="relative z-10 flex flex-col items-center text-center max-w-xl">
+      <div className="relative z-10 flex flex-col items-center text-center max-w-2xl mt-12">
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="font-mono text-[10px] text-slate-500 mb-6 flex items-center gap-2 tracking-[0.2em] bg-white px-4 py-2 border border-slate-200/50 rounded-full backdrop-blur-md shadow-sm"
+          className="flex flex-col items-center"
         >
-          <span className="text-orange-500">BŁĄD</span>
-          <span>404</span>
-        </motion.div>
+          {/* Elegant typographic status instead of pill badge */}
+          <div className="flex items-center gap-6 mb-12">
+            <div className="h-[1px] w-12 bg-slate-200" />
+            <span className="font-mono text-xs text-slate-400 tracking-[0.3em] uppercase">Status 404</span>
+            <div className="h-[1px] w-12 bg-slate-200" />
+          </div>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-6 text-slate-900 leading-tight">
-          Ta strona zniknęła...
-          <br />ale Twoje <span className="text-orange-500">szanse na rozwój</span> nie.
-        </h1>
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-medium tracking-tight mb-8 text-slate-900 leading-[1.05]">
+            Ślepy zaułek.
+            <br />
+            <span className="text-slate-400">Czas wrzucić wyższy bieg.</span>
+          </h1>
 
-        <p className="text-sm sm:text-base text-slate-600 font-light leading-relaxed mb-12 max-w-lg">
-          Wygląda na to, że link, w który kliknąłeś, jest nieaktualny. Nic nie szkodzi! Wróć na stronę główną i zobacz, jak nowoczesna technologia może pomóc w skalowaniu Twojej sprzedaży B2B.
-        </p>
+          <p className="text-base sm:text-lg text-slate-600 font-light leading-relaxed mb-12 max-w-lg">
+            Ta strona nie istnieje, ale Twój biznes nie musi stać w miejscu. 
+            Wróć na stronę główną i zobacz, jak nowoczesna architektura B2B napędza konwersję u liderów rynku.
+          </p>
 
-        <MagneticWrapper>
           <Link href="/">
-            <button className="px-8 py-4 bg-orange-500 text-white font-black tracking-wide text-sm rounded-xl shadow-lg hover:bg-orange-600 hover:shadow-orange-500/20 hover:-translate-y-0.5 transition-all flex items-center gap-3">
-              <MoveLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-              <span>Wróć na Stronę Główną</span>
+            <button className="group relative px-8 py-4 bg-slate-900 text-white font-medium tracking-wide text-sm rounded-none shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-4 overflow-hidden">
+              <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+              <MoveLeft size={16} className="group-hover:-translate-x-1 transition-transform duration-300 relative z-10" />
+              <span className="relative z-10">Wróć na Stronę Główną</span>
             </button>
           </Link>
-        </MagneticWrapper>
-
-        <div className="mt-16 flex items-center gap-4">
-          <div className="w-8 h-px bg-slate-300" />
-          <span className="font-mono text-[9px] text-slate-500 uppercase tracking-[0.4em]">
-            Marcin Molenda Development
-          </span>
-          <div className="w-8 h-px bg-slate-300" />
-        </div>
+        </motion.div>
       </div>
     </main>
   );
