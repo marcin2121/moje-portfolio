@@ -91,21 +91,9 @@ export async function POST(req: Request) {
       return { siteRes, htmlText };
     };
 
-    const runYellowLabTools = async () => {
-      try {
-        const ylt = require('yellowlabtools');
-        const result = await ylt(targetUrl, { profile: 'nextjs' });
-        return result;
-      } catch (err) {
-        console.error('YLT execution failed:', err);
-        return null;
-      }
-    };
-
-    const [psDataResult, siteHtmlResult, yltResult] = await Promise.allSettled([
+    const [psDataResult, siteHtmlResult] = await Promise.allSettled([
       fetchPageSpeed(2),
-      fetchSiteHTML(),
-      runYellowLabTools()
+      fetchSiteHTML()
     ]);
 
     if (psDataResult.status === 'fulfilled' && psDataResult.value) {
@@ -132,51 +120,36 @@ export async function POST(req: Request) {
         if (siteRes.headers.get('x-frame-options')) secScore += 20;
         securityScore = secScore;
 
-        // BŁYSKAWICZNA ANALIZA CHEERIO (Zamiast niebezpiecznych Regexów)
+        // BŁYSKAWICZNA ANALIZA CHEERIO (Zero narzutu natywnych bibliotek)
         const $ = cheerio.load(html);
         
-        // --- YELLOWLABTOOLS INTEGRATION ---
-        if (yltResult.status === 'fulfilled' && yltResult.value && yltResult.value.scoreProfiles) {
-          const yltData = yltResult.value;
-          const generic = yltData.scoreProfiles.generic;
-          
-          if (generic && generic.categories) {
-            scalabilityScore = generic.categories.domComplexity.categoryScore;
-            automationScore = generic.categories.javascriptComplexity.categoryScore;
-            
-            codeSmells.jquery = generic.categories.jQuery.categoryScore < 100;
-            codeSmells.badScripts = yltData.rules?.synchronousXHR?.offendersObj?.count || 0;
-            codeSmells.inlineStyles = yltData.rules?.inlineCss?.offendersObj?.count || 0;
-            codeSmells.domElements = yltData.toolsResults?.phantomas?.metrics?.DOMelementsCount || $('h1').length;
-          }
-        } else {
-          // Fallback if YLT fails
-          codeSmells.jquery = html.toLowerCase().includes('jquery');
-          codeSmells.domElements = $('h1').length;
-          codeSmells.inlineStyles = $('[style]').length;
-          $('script[src]').each((_, el) => {
-            const isAsync = $(el).attr('async') !== undefined;
-            const isDefer = $(el).attr('defer') !== undefined;
-            if (!isAsync && !isDefer) codeSmells.badScripts++;
-          });
-        }
+        codeSmells.jquery = html.toLowerCase().includes('jquery');
+        codeSmells.domElements = $('*').length;
+        codeSmells.inlineStyles = $('[style]').length;
+        $('script[src]').each((_, el) => {
+          const isAsync = $(el).attr('async') !== undefined;
+          const isDefer = $(el).attr('defer') !== undefined;
+          if (!isAsync && !isDefer) codeSmells.badScripts++;
+        });
+
+        // Obliczenie wskaźników skalowalności i automatyzacji na bazie DOM i skryptów
+        const domCount = codeSmells.domElements;
+        scalabilityScore = domCount < 800 ? 95 : domCount < 1500 ? 75 : domCount < 2500 ? 50 : 30;
+        automationScore = codeSmells.badScripts === 0 ? 90 : Math.max(30, 90 - codeSmells.badScripts * 10);
 
         // Detekcja platform
         if (html.includes('__NEXT_DATA__') || html.includes('/_next/static/')) {
            detectedPlatform = 'Next.js / React (Serverless)';
-           if (yltResult.status !== 'fulfilled' || !yltResult.value) {
-             scalabilityScore = 95; automationScore = 95;
-           }
+           scalabilityScore = Math.max(scalabilityScore, 95);
+           automationScore = Math.max(automationScore, 90);
         } else if (html.includes('cdn.shopify.com')) {
            detectedPlatform = 'Shopify';
-           if (yltResult.status !== 'fulfilled' || !yltResult.value) {
-             scalabilityScore = 80; automationScore = 70;
-           }
+           scalabilityScore = Math.max(scalabilityScore, 80);
+           automationScore = Math.max(automationScore, 70);
         } else if (html.includes('wp-content')) {
            detectedPlatform = 'WordPress / WooCommerce';
-           if (yltResult.status !== 'fulfilled' || !yltResult.value) {
-             scalabilityScore = 40; automationScore = 30;
-           }
+           scalabilityScore = Math.min(scalabilityScore, 50);
+           automationScore = Math.min(automationScore, 40);
         }
       }
     }
