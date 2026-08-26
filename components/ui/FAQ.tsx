@@ -16,8 +16,8 @@ const FAQ_ITEMS = [
     answer: "Nie. Kod strony jest w 100% Twoją własnością. Nie ma żadnych \"ukrytych licencji\" ani opłat za utrzymanie u mnie. Jeśli za rok zechcesz oddać tę stronę pod opiekę innemu programistowi – jednym kliknięciem przekazuję mu komplet uprawnień."
   },
   {
-    question: "Dlaczego nie robisz stron na WordPressie? Mój znajomy mi to polecał.",
-    answer: "Ponieważ 80% wszystkich ataków hakerskich w internecie dotyczy WordPressa, a jego darmowe wtyczki po aktualizacji potrafią \"wyłożyć\" sklep w najgorętszym okresie sprzedaży. Buduję strony w technologii Next.js (używa jej m.in. Netflix czy Nike). Dzięki temu Twoja strona jest praktycznie niemożliwa do zhakowania i działa z prędkością światła."
+    question: "Czy mogę edytować treści w WordPressie? Bardzo lubię jego panel.",
+    answer: "Jak najbardziej! Wykorzystuję nowoczesną architekturę Headless – co oznacza, że łączę najlepsze cechy obu światów. Ty lub Twoi pracownicy edytujecie artykuły, produkty i zdjęcia w znanym, intuicyjnym panelu WordPressa (lub innym dedykowanym CMS), a strona widoczna dla klientów jest generowana w technologii Next.js. Dzięki temu zyskujesz pełną wygodę edycji połączoną z prędkością światła (PageSpeed 100/100) i bezpieczeństwem klasy militarnej – bez powolnych motywów i dziurawych wtyczek."
   },
   {
     question: "Co się stanie, jeśli po 3 miesiącach coś na stronie przestałoby działać?",

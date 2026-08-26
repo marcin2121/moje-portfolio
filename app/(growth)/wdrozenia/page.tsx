@@ -7,6 +7,18 @@ import { ArrowRight, Zap, AlertTriangle, ShieldCheck, TrendingUp } from 'lucide-
 
 const caseStudies = [
   {
+    title: 'Stowarzyszenie KAS',
+    category: 'NGO & Dostępność Cyfrowa',
+    duel: {
+      before: { value: 'WordPress Monolit', label: 'Brak WCAG & wolny hosting', icon: <AlertTriangle className="w-4 h-4 text-rose-500" /> },
+      after: { value: '4 × 100 / 98 YLT', label: 'Headless Next.js + WCAG 2.2 AA', icon: <Zap className="w-4 h-4 text-emerald-500" /> },
+      result: '16 127 linii kodu • 4x100 PageSpeed • 98/100 YellowLabTools',
+    },
+    insight: 'Przebudowaliśmy serwis organizacji pożytku publicznego na architekturę Headless Next.js 16 + React 19 zintegrowaną z WordPress REST API. Pełna certyfikacja dostępności cyfrowej WCAG 2.2 AA.',
+    link: '/wdrozenia/stowarzyszeniekas',
+    featured: true,
+  },
+  {
     title: 'DzikiStyl.com',
     category: 'E-commerce B2B',
     duel: {
@@ -15,7 +27,8 @@ const caseStudies = [
       result: 'Skok konwersji mobilnej o 140%',
     },
     insight: 'Zburzyliśmy powolny monolit na rzecz architektury Headless (Next.js). Odcięliśmy ciężki backend od warstwy prezentacji, uwalniając urządzenia mobilne klientów od zatorów sieciowych.',
-    link: '/wdrozenia/dziki-styl', // Link zaktualizowany
+    link: '/wdrozenia/dziki-styl',
+    featured: false,
   },
   {
     title: 'RLT Polska',
@@ -27,6 +40,7 @@ const caseStudies = [
     },
     insight: 'Zaimplementowaliśmy rendering brzegowy (Edge). Serwujemy kluczowe zasoby medyczne bez uderzania w główny serwer bazy danych, całkowicie eliminując błędy typu Resource Limit Is Reached.',
     link: '/wdrozenia/rltpolska',
+    featured: false,
   }
 ];
 
@@ -52,10 +66,14 @@ export default function WdrozeniaPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="group flex flex-col bg-white/70 backdrop-blur-xl border border-slate-200/50 hover:bg-white/90 hover:shadow-premium-soft rounded-3xl p-8 transition-all duration-300 relative overflow-hidden shadow-sm"
+            className={`group flex flex-col bg-white/70 backdrop-blur-xl border border-slate-200/50 hover:bg-white/90 hover:shadow-premium-soft rounded-3xl p-8 transition-all duration-300 relative overflow-hidden shadow-sm ${
+              study.featured ? 'lg:col-span-2 bg-gradient-to-br from-white/90 via-white/80 to-orange-50/20 border-orange-200/40' : ''
+            }`}
           >
             {/* Ambient Background Glow */}
-            <div className="absolute -top-32 -right-32 w-64 h-64 bg-orange-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-orange-500/20 transition-colors" />
+            <div className={`absolute -top-32 -right-32 w-64 h-64 rounded-full blur-[80px] pointer-events-none group-hover:opacity-100 transition-opacity ${
+              study.featured ? 'bg-orange-500/15' : 'bg-orange-500/10'
+            }`} />
 
             {/* Nagłówek */}
             <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4 mb-8 relative z-10">

@@ -21,7 +21,7 @@ export function SolutionsSection() {
             </h3>
             <p 
               className="text-slate-600 font-normal text-sm md:text-base leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: fixOrphans("Zamiast ciężkiego WordPressa otrzymujesz ultraszybki sklep, w którym klienci kupują bez błędów czy zawieszeń, nawet w nocy.") }}
+              dangerouslySetInnerHTML={{ __html: fixOrphans("Łączę wygodny, znany panel WordPressa (lub dedykowany CMS) z najnowszą technologią Next.js – otrzymujesz ultraszybki sklep, w którym klienci kupują bez błędów czy zawieszeń, nawet w nocy.") }}
             />
           </MagicBento>
 

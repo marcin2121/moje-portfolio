@@ -35,7 +35,7 @@ export function AboutMeSection() {
               <Code2 className="w-6 h-6 text-orange-500 mb-1 relative z-10" />
               <h3 className="text-lg font-bold text-slate-900 relative z-10">Next.js & Performance</h3>
               <p className="text-xs text-slate-600 font-light leading-relaxed relative z-10">
-                Odrzuciłem WordPressa na rzecz technologii, której używa Apple i Netflix. Cel? Maksymalna szybkość.
+                Łączę wygodę panelu CMS z technologią Next.js, której używa Apple i Netflix. Cel? Maksymalna szybkość.
               </p>
             </motion.div>
 
@@ -92,11 +92,11 @@ export function AboutMeSection() {
 
             <div className="space-y-4 text-sm sm:text-base text-slate-600 font-light leading-relaxed relative z-10">
               <p>
-                {fixOrphans(`Moja droga do tworzenia stron zaczęła się już 10 lat temu. Podobnie jak większość rynku, swoje pierwsze projekty opierałem na popularnym WordPressie. Jednak moja obsesja na punkcie progresu i bezkompromisowej wydajności szybko zweryfikowała to narzędzie.`)}
+                {fixOrphans(`Moja droga do tworzenia stron zaczęła się już 10 lat temu. Podobnie jak większość rynku, swoje pierwsze projekty opierałem na popularnym WordPressie. Jednak moja obsesja na punkcie progresu i bezkompromisowej wydajności szybko zweryfikowała tradycyjne szablony.`)}
               </p>
               
               <p>
-                {fixOrphans(`Aby deklasować powolne strony konkurencji i dostarczać moim klientom absolutnie najlepszą wartość biznesową, całkowicie zmieniłem podejście. Zacząłem projektować w Next.js – najnowocześniejszej technologii webowej na świecie (używanej m.in. przez TikToka i Apple), która sprawia, że strony ładują się w ułamku sekundy.`)}
+                {fixOrphans(`Aby deklasować powolne strony konkurencji i dostarczać klientom absolutnie najlepszą wartość, wdrożyłem architekturę Headless. Używam WordPressa wyłącznie jako wygodnego CMS-a do edycji treści przez klienta, natomiast całą warstwę prezentacji buduję w Next.js – najnowocześniejszej technologii webowej na świecie (używanej m.in. przez TikToka i Apple). Efekt? Twój zespół edytuje stronę tak prosto jak dotychczas, a serwis ładuje się w ułamku sekundy.`)}
               </p>
               
               <div className="h-px w-full bg-slate-200 my-6" />
