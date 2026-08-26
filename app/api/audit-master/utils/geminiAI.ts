@@ -22,8 +22,14 @@ export async function generateGeminiReport(
   wafDetected: boolean,
   codeSmells: DetailedCodeSmells,
   lossPercentage: number,
-  geminiKey: string
+  geminiKey: string,
+  siteType: 'ecommerce' | 'services' = 'services'
 ): Promise<string> {
+  const isEcommerce = siteType === 'ecommerce';
+  const entityName = isEcommerce ? 'Sklep internetowy' : 'Serwis firmowy / strona usługowa';
+  const targetTerm = isEcommerce ? 'sklepu' : 'serwisu';
+  const conversionTerm = isEcommerce ? 'transakcji i sprzedaży' : 'zapytań ofertowych i leadów';
+
   const buildersText = codeSmells.pageBuilders && codeSmells.pageBuilders.length > 0
     ? `\n- Wykryte ciężkie Page Buildery: ${codeSmells.pageBuilders.join(', ')}`
     : '';
@@ -41,11 +47,11 @@ export async function generateGeminiReport(
   let prompt = '';
 
   if (avgScore >= 85) {
-    prompt = `Jesteś Marcinem Molendą, Senior Frontend Architectem. Sklep ${targetUrl} uzyskał elitarny wynik ${avgScore}/100 (Szybkość: ${Math.round(performanceScore)}, SEO: ${Math.round(seoScore)}). Stack: ${detectedPlatform}.
+    prompt = `Jesteś Marcinem Molendą, Senior Frontend Architectem. ${entityName} ${targetUrl} uzyskał elitarny wynik ${avgScore}/100 (Szybkość: ${Math.round(performanceScore)}, SEO: ${Math.round(seoScore)}). Stack: ${detectedPlatform}.
 Zadanie: Napisz zwięzły werdykt (MAKSYMALNIE 3-4 ZDANIA!). 
-1. Pogratuluj właścicielowi rewelacyjnej, bezkompromisowej infrastruktury i zaznacz, że należą do ścisłego promila najlepszych stron w sieci. 
-2. Uświadom mu biznesowo, że dalsze szlifowanie tak doskonałego kodu to marnowanie budżetu – czas na ekspansję rynkową. 
-3. Jako jedyny logiczny obszar współpracy zaproponuj projektowanie dedykowanych systemów AI lub zaawansowanych modułów automatyzacji B2B, które wykorzystają tę surową moc obliczeniową, bez naruszania ich perfekcyjnej architektury bazowej. ABSOLUTNIE NIE sugeruj żadnych poprawek kodu ani migracji!
+1. Pogratuluj właścicielowi rewelacyjnej, bezkompromisowej infrastruktury i zaznacz, że należy do ścisłego promila najlepszych stron w sieci. 
+2. Uświadom mu biznesowo, że dalsze szlifowanie tak doskonałego kodu to marnowanie budżetu – czas na ekspansję rynkową i pozyskiwanie klientów. 
+3. Jako jedyny logiczny obszar współpracy zaproponuj projektowanie dedykowanych systemów AI, automatyzacji procesów lub integracji, które wykorzystają tę moc obliczeniową, bez naruszania ich perfekcyjnej architektury bazowej. ABSOLUTNIE NIE sugeruj żadnych poprawek kodu ani migracji!
 FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak HTML-a, brak znaczników \`\`\`markdown.`;
 
   } else if (avgScore >= 60 && avgScore < 85) {
@@ -55,33 +61,37 @@ FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak HTML-a, brak znacznik�
       ? `Doceniaj, że wybrali nowoczesny architektonicznie stos (${detectedPlatform}), ale wykaż, że przez brak końcowego, profesjonalnego szlifu marnują jego surowy potencjał.`
       : `Zauważ, że wycisnęli z platformy ${detectedPlatform} bardzo dużo, ale ta klasyczna architektura osiąga już swój technologiczny sufit wydajnościowy.`;
 
-    prompt = `Jesteś Marcinem Molendą, Senior Frontend Architectem. Sklep ${targetUrl} uzyskał przyzwoity wynik ${avgScore}/100.
+    prompt = `Jesteś Marcinem Molendą, Senior Frontend Architectem. ${entityName} ${targetUrl} uzyskał przyzwoity wynik ${avgScore}/100.
 Wykryta platforma: ${detectedPlatform}
 Zdiagnozowane problemy / dług techniczny: ${codeSmellsText}
 
 Zadanie: Napisz zwięzły, niezwykle precyzyjny werdykt (MAKSYMALNIE 3 ZDANIA!), kierowany do właściciela biznesu.
 1. ${stackContext}
-2. Przeanalizuj przekazane wyżej zdiagnozowane problemy. Zamiast ogólnych frazesów, uderz punktowo w ten JEDEN najważniejszy problem, który faktycznie występuje w przekazanych danych. Bądź chirurgicznie dokładny – mów tylko o wadach z wykazu. NIE zmyślaj problemów z LCP czy CLS, jeśli nie ma ich na liście!
-3. Wyjaśnij, że przez te konkretne niedociągnięcia tracą szacunkowo ${lossPercentage}% konwersji. Zaproponuj wyłącznie usługę "Performance & Security Tuning" (inżynieryjny szlif optymalizacyjny witryny), a NIE budowanie systemu od nowa.
+2. Przeanalizuj przekazane wyżej zdiagnozowane problemy. Zamiast ogólnych frazesów, uderz punktowo w ten JEDEN najważniejszy problem, który faktycznie występuje w przekazanych danych. Bądź chirurgicznie dokładny – mów tylko o wadach z wykazu.
+3. Wyjaśnij, że przez te konkretne niedociągnięcia tracą szacunkowo ${lossPercentage}% ${conversionTerm}. Zaproponuj wyłącznie usługę "Performance & Security Tuning" (inżynieryjny szlif optymalizacyjny witryny), a NIE budowanie systemu od nowa.
 FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak HTML-a, brak znaczników \`\`\`markdown.`;
 
   } else {
     const migrationSuggestion = detectedPlatform.includes('Next.js')
       ? `Zaproponuj gruntowny audyt kodu i ratunkową refaktoryzację ich obecnej aplikacji Next.js, aby wyeliminować dramatyczny dług technologiczny (Serverless Tuning).`
-      : `Zaproponuj pełną migrację na autorski Serverless Edge (Next.js) jako jedyną drogę ucieczki przed spadkiem sprzedaży.`;
+      : `Zaproponuj pełną migrację na nowoczesny, bezpieczny Headless Edge (Next.js) jako jedyną drogę ucieczki przed utratą klientów.`;
 
-    prompt = `Jesteś Marcinem Molendą. Sklep ${targetUrl} uzyskał słaby wynik ${avgScore}/100.
+    prompt = `Jesteś Marcinem Molendą. ${entityName} ${targetUrl} uzyskał słaby wynik ${avgScore}/100.
 Stack: ${detectedPlatform}. 
 Zdiagnozowany dług techniczny: ${codeSmellsText}
 
 Zadanie: Napisz brutalną, bezkompromisową diagnozę inżynieryjną (MAKSYMALNIE 3-4 ZDANIA!). 
 1. Wytknij powolne działanie i przestarzałe wzorce w kodzie na bazie przekazanego długu technicznego. 
-2. Uświadom właścicielowi czarno na białym, że przez te wąskie gardła traci szacunkowo ${lossPercentage}% potencjalnych klientów przy każdym kliknięciu. 
+2. Uświadom właścicielowi czarno na białym, że przez te wąskie gardła traci szacunkowo ${lossPercentage}% potencjalnych ${conversionTerm} przy każdym wejściu użytkownika. 
 3. ${migrationSuggestion}
 FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak jakiegokolwiek HTML-a, brak znaczników \`\`\`markdown.`;
   }
 
-  prompt += `\n\nNa samym końcu dodaj wyraźnie oddzieloną pustą linią sekcję o nazwie "**💡 Szybka porada (bez IT):**". Napisz w niej jedno konkretne, w 100% nietechniczne zalecenie biznesowe, które właściciel może wykonać od razu sam z poziomu panelu CMS (np. optymalizacja wagi zdjęć przed wrzuceniem, wyłączenie zbędnych wtyczek reklamowych, usunięcie ciężkich wideo w tle). Porada musi być krótka (1 zdanie) i nie wymagać programisty.`;
+  const adviceExample = isEcommerce 
+    ? "np. kompresja zdjęć przed publikacją, usunięcie nieużywanych wtyczek marketingowych"
+    : "np. kompresja grafik i logotypów w galerii, wyłączenie ciężkich wideo w tle, usunięcie zbędnych widgetów czatu";
+
+  prompt += `\n\nNa samym końcu dodaj wyraźnie oddzieloną pustą linią sekcję o nazwie "**💡 Szybka porada (bez IT):**". Napisz w niej jedno konkretne, w 100% nietechniczne zalecenie biznesowe, które właściciel może wykonać od razu sam z poziomu panelu CMS (${adviceExample}). Porada musi być krótka (1 zdanie) i nie wymagać programisty.`;
 
   const ai = new GoogleGenAI({ apiKey: geminiKey });
   try {

@@ -15,7 +15,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: rateLimitCheck.error }, { status: 429 });
     }
 
-    const { url } = await req.json();
+    const { url, siteType = 'services' } = await req.json();
+    const currentSiteType: 'ecommerce' | 'services' = siteType === 'ecommerce' ? 'ecommerce' : 'services';
     
     // 🛡️ SECURITY FIX: Walidacja długości i typu (Zapobieganie DoS / parser choke)
     if (!url || typeof url !== 'string' || url.length > 500) {
@@ -217,7 +218,8 @@ export async function POST(req: Request) {
         wafDetected,
         codeSmells,
         lossPercentage,
-        geminiKey
+        geminiKey,
+        currentSiteType
       );
     } else {
       aiReport = `*Moduł sztucznej inteligencji nie został skonfigurowany w środowisku.*`;
@@ -225,15 +227,16 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       url: targetUrl,
+      siteType: currentSiteType,
       overallScore: avgScore,
       lossPercentage,
       aiReport,
       pillars: [
-        { name: 'Szybkość', score: Math.round(performanceScore), interpretation: getInterpretation(performanceScore, 'Szybkość') },
-        { name: 'SEO', score: Math.round(seoScore), interpretation: getInterpretation(seoScore, 'SEO') },
-        { name: 'Skalowalność', score: Math.round(scalabilityScore), interpretation: getInterpretation(scalabilityScore, 'Skalowalność') },
-        { name: 'Automatyzacja', score: Math.round(automationScore), interpretation: getInterpretation(automationScore, 'Automatyzacja') },
-        { name: 'Bezpieczeństwo', score: Math.round(securityScore), interpretation: getInterpretation(securityScore, 'Bezpieczeństwo') }
+        { name: 'Szybkość', score: Math.round(performanceScore), interpretation: getInterpretation(performanceScore, 'Szybkość', currentSiteType) },
+        { name: 'SEO', score: Math.round(seoScore), interpretation: getInterpretation(seoScore, 'SEO', currentSiteType) },
+        { name: 'Skalowalność', score: Math.round(scalabilityScore), interpretation: getInterpretation(scalabilityScore, 'Skalowalność', currentSiteType) },
+        { name: 'Automatyzacja', score: Math.round(automationScore), interpretation: getInterpretation(automationScore, 'Automatyzacja', currentSiteType) },
+        { name: 'Bezpieczeństwo', score: Math.round(securityScore), interpretation: getInterpretation(securityScore, 'Bezpieczeństwo', currentSiteType) }
       ]
     });
 
