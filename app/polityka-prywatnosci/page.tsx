@@ -13,7 +13,7 @@ export default function PrivacyPolicy() {
   const sections = [
     {
       title: "1. Administrator Danych",
-      content: "Administratorem Twoich danych osobowych jest Marcin Molenda, Polska. Kontakt w sprawach ochrony danych możliwy jest pod adresem e-mail: kontakt@molendadevelopment.pl."
+      content: "Administratorem Twoich danych osobowych jest Marcin Molenda, prowadzący działalność gospodarczą pod firmą Molenda Development, NIP: 7981489581, REGON: 545325616, z siedzibą przy ul. Jodłowej 28, 98-220 Zduńska Wola. Kontakt w sprawach ochrony danych osobowych możliwy jest pod adresem e-mail: kontakt@molendadevelopment.pl."
     },
     {
       title: "2. Cel i podstawa prawna",
