@@ -1,5 +1,18 @@
 import { GoogleGenAI } from '@google/genai';
 
+export interface DetailedCodeSmells {
+  jquery: boolean;
+  badScripts: number;
+  domElements: number;
+  inlineStyles: number;
+  pageBuilders?: string[];
+  trackers?: string[];
+  missingAltCount?: number;
+  unoptimizedImagesCount?: number;
+  fcp?: string;
+  lcp?: string;
+}
+
 export async function generateGeminiReport(
   targetUrl: string,
   avgScore: number,
@@ -7,13 +20,23 @@ export async function generateGeminiReport(
   seoScore: number,
   detectedPlatform: string,
   wafDetected: boolean,
-  codeSmells: { jquery: boolean; badScripts: number; domElements: number; inlineStyles: number },
+  codeSmells: DetailedCodeSmells,
   lossPercentage: number,
   geminiKey: string
 ): Promise<string> {
+  const buildersText = codeSmells.pageBuilders && codeSmells.pageBuilders.length > 0
+    ? `\n- Wykryte ciężkie Page Buildery: ${codeSmells.pageBuilders.join(', ')}`
+    : '';
+  const trackersText = codeSmells.trackers && codeSmells.trackers.length > 0
+    ? `\n- Skrypty śledzące 3rd-party: ${codeSmells.trackers.join(', ')}`
+    : '';
+  const vitalsText = codeSmells.fcp || codeSmells.lcp
+    ? `\n- Core Web Vitals: FCP = ${codeSmells.fcp || 'n/a'}, LCP = ${codeSmells.lcp || 'n/a'}`
+    : '';
+
   const codeSmellsText = wafDetected
     ? "UWAGA: Serwis chroniony przez WAF/Cloudflare. Skan struktury kodu zablokowany."
-    : `Dług Technologiczny (Code Smells):\n- Przestarzałe biblioteki (jQuery): ${codeSmells.jquery ? 'TAK (Krytyczne!)' : 'NIE'}\n- Złe praktyki ładowania (synchronousXHR/blokujące): ${codeSmells.badScripts} szt.\n- Rozmiar DOM (złożoność drzewa): ${codeSmells.domElements} elementów\n- Brudne style inline: ${codeSmells.inlineStyles} szt.`;
+    : `Dług Technologiczny (Szczegółowa Diagnostyka Inżynierska):\n- Przestarzałe biblioteki (jQuery): ${codeSmells.jquery ? 'TAK (Krytyczne!)' : 'NIE'}\n- Skrypty blokujące renderowanie (bez async/defer): ${codeSmells.badScripts} szt.\n- Rozmiar drzewa DOM: ${codeSmells.domElements} elementów\n- Brudne style inline (CSS bloat): ${codeSmells.inlineStyles} szt.${buildersText}${trackersText}${vitalsText}`;
 
   let prompt = '';
 

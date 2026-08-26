@@ -49,7 +49,27 @@ export async function POST(req: Request) {
     let automationScore = 30;
     let html = '';
     let detectedPlatform = 'Własny kod / Nierozpoznano';
-    const codeSmells = { jquery: false, badScripts: 0, domElements: 0, inlineStyles: 0 };
+    const codeSmells: {
+      jquery: boolean;
+      badScripts: number;
+      domElements: number;
+      inlineStyles: number;
+      pageBuilders: string[];
+      trackers: string[];
+      missingAltCount: number;
+      unoptimizedImagesCount: number;
+      fcp?: string;
+      lcp?: string;
+    } = { 
+      jquery: false, 
+      badScripts: 0, 
+      domElements: 0, 
+      inlineStyles: 0,
+      pageBuilders: [],
+      trackers: [],
+      missingAltCount: 0,
+      unoptimizedImagesCount: 0
+    };
     let wafDetected = false;
 
     // Helper: PageSpeed
@@ -58,6 +78,10 @@ export async function POST(req: Request) {
         categories?: {
           performance?: { score?: number };
           seo?: { score?: number };
+        };
+        audits?: {
+          'first-contentful-paint'?: { displayValue?: string };
+          'largest-contentful-paint'?: { displayValue?: string };
         };
       };
     }
@@ -97,8 +121,11 @@ export async function POST(req: Request) {
     ]);
 
     if (psDataResult.status === 'fulfilled' && psDataResult.value) {
-      performanceScore = (psDataResult.value?.lighthouseResult?.categories?.performance?.score || 0.4) * 100;
-      seoScore = (psDataResult.value?.lighthouseResult?.categories?.seo?.score || 0.5) * 100;
+      const lh = psDataResult.value?.lighthouseResult;
+      performanceScore = (lh?.categories?.performance?.score || 0.4) * 100;
+      seoScore = (lh?.categories?.seo?.score || 0.5) * 100;
+      codeSmells.fcp = lh?.audits?.['first-contentful-paint']?.displayValue;
+      codeSmells.lcp = lh?.audits?.['largest-contentful-paint']?.displayValue;
     }
 
     if (siteHtmlResult.status === 'fulfilled' && siteHtmlResult.value) {
@@ -115,22 +142,41 @@ export async function POST(req: Request) {
         automationScore = 50;
       } else {
         let secScore = 20;
-        if (siteRes.headers.get('strict-transport-security')) secScore += 30;
-        if (siteRes.headers.get('content-security-policy')) secScore += 30;
-        if (siteRes.headers.get('x-frame-options')) secScore += 20;
-        securityScore = secScore;
+        if (siteRes.headers.get('strict-transport-security')) secScore += 25;
+        if (siteRes.headers.get('content-security-policy')) secScore += 25;
+        if (siteRes.headers.get('x-frame-options')) secScore += 15;
+        if (siteRes.headers.get('x-content-type-options')) secScore += 15;
+        securityScore = Math.min(100, secScore);
 
-        // BŁYSKAWICZNA ANALIZA CHEERIO (Zero narzutu natywnych bibliotek)
+        // BŁYSKAWICZNA I GŁĘBOKA ANALIZA STRUKTURY KODU
         const $ = cheerio.load(html);
+        const lowerHtml = html.toLowerCase();
         
-        codeSmells.jquery = html.toLowerCase().includes('jquery');
+        codeSmells.jquery = lowerHtml.includes('jquery');
         codeSmells.domElements = $('*').length;
         codeSmells.inlineStyles = $('[style]').length;
+        codeSmells.missingAltCount = $('img:not([alt]), img[alt=""]').length;
+        codeSmells.unoptimizedImagesCount = $('img:not([loading="lazy"])').length;
+
+        // Detekcja skryptów blokujących
         $('script[src]').each((_, el) => {
           const isAsync = $(el).attr('async') !== undefined;
           const isDefer = $(el).attr('defer') !== undefined;
           if (!isAsync && !isDefer) codeSmells.badScripts++;
         });
+
+        // Detekcja Page Builderów (Główna przyczyna długu technologicznego w WP)
+        if (lowerHtml.includes('elementor')) codeSmells.pageBuilders.push('Elementor');
+        if (lowerHtml.includes('et_pb_section') || lowerHtml.includes('divi')) codeSmells.pageBuilders.push('Divi Builder');
+        if (lowerHtml.includes('wpb_wrapper') || lowerHtml.includes('vc_row')) codeSmells.pageBuilders.push('WPBakery');
+        if (lowerHtml.includes('oxygen')) codeSmells.pageBuilders.push('Oxygen Builder');
+
+        // Detekcja zewnętrznych skryptów śledzących (Third-Party Bloat)
+        if (lowerHtml.includes('googletagmanager.com')) codeSmells.trackers.push('Google Tag Manager');
+        if (lowerHtml.includes('connect.facebook.net') || lowerHtml.includes('fbq(')) codeSmells.trackers.push('Meta Pixel');
+        if (lowerHtml.includes('analytics.tiktok.com')) codeSmells.trackers.push('TikTok Pixel');
+        if (lowerHtml.includes('hotjar.com')) codeSmells.trackers.push('Hotjar');
+        if (lowerHtml.includes('clarity.ms')) codeSmells.trackers.push('Microsoft Clarity');
 
         // Obliczenie wskaźników skalowalności i automatyzacji na bazie DOM i skryptów
         const domCount = codeSmells.domElements;
@@ -139,11 +185,11 @@ export async function POST(req: Request) {
 
         // Detekcja platform
         if (html.includes('__NEXT_DATA__') || html.includes('/_next/static/')) {
-           detectedPlatform = 'Next.js / React (Serverless)';
+           detectedPlatform = 'Next.js / React (Serverless Edge)';
            scalabilityScore = Math.max(scalabilityScore, 95);
            automationScore = Math.max(automationScore, 90);
         } else if (html.includes('cdn.shopify.com')) {
-           detectedPlatform = 'Shopify';
+           detectedPlatform = 'Shopify SaaS';
            scalabilityScore = Math.max(scalabilityScore, 80);
            automationScore = Math.max(automationScore, 70);
         } else if (html.includes('wp-content')) {
