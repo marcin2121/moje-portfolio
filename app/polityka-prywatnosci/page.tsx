@@ -21,7 +21,7 @@ export default function PrivacyPolicy() {
     },
     {
       title: "3. Zakres zbierania i odbiorcy",
-      content: "Zbieramy wyłącznie dane niezbędne do kontaktu: Imię/Nazwa Firmy oraz Adres e-mail. Twoje dane nie są sprzedawane ani przekazywane podmiotom trzecim w celach marketingowych. Mogą być powierzone wyłącznie zaufanym dostawcom technologii (np. Formspree do obsługi formularza)."
+      content: "Zbieramy wyłącznie dane niezbędne do kontaktu: Imię/Nazwa Firmy oraz Adres e-mail. Twoje dane nie są sprzedawane ani przekazywane podmiotom trzecim w celach marketingowych. Mogą być powierzone wyłącznie zaufanym dostawcom technologii (np. Resend do bezpiecznej obsługi korespondencji e-mail)."
     },
     {
       title: "4. Pliki Cookies i Analityka",
