@@ -17,7 +17,7 @@ const PROJECTS = [
     challenge: 'Organizacja pożytku publicznego potrzebowała portalu spełniającego rygorystyczne wymogi Ustawy o Dostępności Cyfrowej (ryzyko kar do 10 000 zł i utraty dotacji), bez zmuszania zespołu do nauki nowego panelu CMS.',
     solution: 'Wdrożyłem architekturę Headless (Next.js 16 + React 19) spiętą z WordPressem. Zbudowałem natywny panel WCAG, anonimowy czat wsparcia w Supabase Realtime, automatyczny kalendarz wizyt oraz płatności PayU.',
     result: 'Rekordowe 4 × 100 / 100 w Google PageSpeed i 98/100 YellowLabTools (Top 0.5% internetu). 100% spokoju audytowego przy dotacjach i zerowy czas wdrożenia pracowników.',
-    img: '/kas-mockup.webp',
+    img: '/kas-hero.png',
     link: 'https://stowarzyszeniekas.pl'
   },
   {
