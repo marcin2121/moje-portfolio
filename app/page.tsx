@@ -47,9 +47,9 @@ const NAV_DOTS = [
   { id: 5, title: 'Symulacja' },
   { id: 6, title: 'Benefity' },
   { id: 7, title: 'Portfolio' },
-  { id: 8, title: 'DzikiStyl.com' },
-  { id: 9, title: 'Sklep Urwis' },
-  { id: 10, title: 'zamowtu.pl' },
+  { id: 8, title: 'Stowarzyszenie KAS' },
+  { id: 9, title: 'DzikiStyl.com' },
+  { id: 10, title: 'Sklep Urwis' },
   { id: 11, title: 'Kajaki u Maćka' },
   { id: 12, title: 'Referencje' },
   { id: 13, title: 'Cennik' },
@@ -128,9 +128,9 @@ export default function PortfolioHome() {
         pts[5] = getDomRatio('sandbox', 5/15);
         pts[6] = getDomRatio('benefits', 6/15);
         pts[7] = getDomRatio('portfolio', 7/15);
-        pts[8] = getDomRatio('dzikistyl', 8/15);
-        pts[9] = getDomRatio('sklepurwis', 9/15);
-        pts[10] = getDomRatio('zamowtu', 10/15);
+        pts[8] = getDomRatio('stowarzyszeniekas', 8/15);
+        pts[9] = getDomRatio('dzikistyl', 9/15);
+        pts[10] = getDomRatio('sklepurwis', 10/15);
         pts[11] = getDomRatio('kajaki', 11/15);
         pts[12] = getDomRatio('referencje', 12/15);
         pts[13] = getDomRatio('cennik', 13/15);

@@ -9,6 +9,18 @@ import { useQueryState } from 'nuqs';
 
 const PROJECTS = [
   {
+    category: 'wizerunek',
+    title: 'Stowarzyszenie KAS',
+    tags: ['Dostępność Cyfrowa', 'WCAG 2.2 AA', 'Headless WordPress'],
+    devTags: ['Next.js 16', 'React 19', 'Supabase Realtime', 'PayU'],
+    desc: 'Portal Dostępności Cyfrowej & NGO',
+    challenge: 'Organizacja pożytku publicznego potrzebowała portalu spełniającego rygorystyczne wymogi Ustawy o Dostępności Cyfrowej (ryzyko kar do 10 000 zł i utraty dotacji), bez zmuszania zespołu do nauki nowego panelu CMS.',
+    solution: 'Wdrożyłem architekturę Headless (Next.js 16 + React 19) spiętą z WordPressem. Zbudowałem natywny panel WCAG, anonimowy czat wsparcia w Supabase Realtime, automatyczny kalendarz wizyt oraz płatności PayU.',
+    result: 'Rekordowe 4 × 100 / 100 w Google PageSpeed i 98/100 YellowLabTools (Top 0.5% internetu). 100% spokoju audytowego przy dotacjach i zerowy czas wdrożenia pracowników.',
+    img: '/kas-mockup.webp',
+    link: 'https://stowarzyszeniekas.pl'
+  },
+  {
     category: 'e-commerce',
     title: 'DzikiStyl.com',
     tags: ['Zaawansowana personalizacja', 'Migracja Next.js'],
@@ -31,18 +43,6 @@ const PROJECTS = [
     result: 'Wyeliminowanie narzutu manualnego na obsługę klienta (zero manual overhead w wydawaniu nagród). Natychmiastowy wzrost wizyt stacjonarnych dzięki grywalizacji i skrócenie dystansu do klienta poprzez zapisanie aplikacji bezpośrednio na ekranie smartfona.',
     img: '/sklep-urwis.webp',
     link: 'https://sklepurwis.pl'
-  },
-  {
-    category: 'saas',
-    title: 'zamowtu.pl',
-    tags: ['SaaS', 'Platforma Transakcyjna', 'Fintech'],
-    devTags: ['Next.js', 'Stripe Connect', 'Supabase'],
-    desc: 'Gastronomiczny SaaS',
-    challenge: 'Restauratorzy tracili gigantyczne prowizje na rzecz zewnętrznych portali dostaw, potrzebując niezależnego systemu transakcyjnego z możliwością edycji menu w locie.',
-    solution: 'Zbudowanie kompleksowej platformy SaaS z obsługą płatności online i zaawansowanym panelem administracyjnym pozwalającym na pełną edycję asortymentu w czasie rzeczywistym.',
-    result: 'Uwolnienie restauratorów od zewnętrznych opłat abonamentowych i drastyczny wzrost rentowności lokalnych biznesów gastronomicznych.',
-    img: '/zamowtu.webp',
-    link: 'https://zamowtu.pl'
   },
   {
     category: 'wizerunek',

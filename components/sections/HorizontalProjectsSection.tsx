@@ -24,6 +24,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
     return (
       <div ref={ref} className="flex flex-col lg:flex-row w-full lg:w-[600%] h-auto lg:h-screen bg-transparent">
         
+        {/* Sekcja 1: Tytułowa */}
         <section id="portfolio" className="w-full lg:w-1/6 h-auto lg:h-full flex flex-col items-center justify-center bg-transparent relative py-20 lg:py-0 border-y lg:border-none border-slate-100">
           <div className="absolute -top-40 -left-40 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-orange-500/10 blur-[120px] rounded-full pointer-events-none" />
           <div className="font-mono text-[10px] text-orange-500 mb-4 flex items-center gap-2">
@@ -35,7 +36,88 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
           </h2>
         </section>
 
-        <section id="dzikistyl" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0">
+        {/* Sekcja 2: Stowarzyszenie KAS (PIERWSZY PROJEKT) */}
+        <section id="stowarzyszeniekas" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
+            
+            {/* Kolumna Lewa: Opis Inżyniersko-Biznesowy */}
+            <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">NGO • Dostępność Cyfrowa (WCAG 2.2 AA)</span>
+              </div>
+              <h2 className="text-4xl sm:text-6xl text-slate-900 tracking-tighter">Stowarzyszenie KAS</h2>
+              
+              <div className="space-y-4 text-sm sm:text-base font-normal leading-relaxed">
+                <p className="text-slate-600">
+                  <strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Organizacja pożytku publicznego potrzebowała portalu spełniającego rygorystyczne wymogi Ustawy o Dostępności Cyfrowej (ryzyko kar do 10 000 zł i utraty dotacji), bez zmuszania zespołu do nauki nowego panelu CMS.`)}
+                </p>
+                
+                <p className="text-slate-600">
+                  <strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Wdrożyłem architekturę Headless (Next.js 16 + React 19) spiętą z WordPressem. Zbudowałem natywny panel WCAG, anonimowy czat wsparcia w Supabase Realtime, automatyczny kalendarz wizyt oraz płatności PayU.`)}
+                </p>
+                
+                <div className="p-4 rounded-xl bg-emerald-50 border-l-4 border-l-emerald-500 mt-4">
+                  <p className="text-slate-900 font-medium">
+                    <strong className="text-emerald-600">Wynik Biznesowy:</strong> {fixOrphans(`Rekordowe 4 × 100 / 100 w Google PageSpeed i 98/100 YellowLabTools (Top 0.5% internetu). 100% spokoju audytowego przy dotacjach i zerowy czas wdrożenia pracowników.`)}
+                  </p>
+                </div>
+              </div>
+              
+              {/* Przycisk CTA */}
+              <div className="flex justify-center lg:justify-start pt-4">
+                <MagneticWrapper>
+                  <button 
+                    onClick={() => {
+                      pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'Stowarzyszenie KAS' });
+                      handleOpenDemo({ 
+                        url: 'https://stowarzyszeniekas.pl', 
+                        title: 'stowarzyszeniekas.pl', 
+                        colorClass: 'text-emerald-500', 
+                        bgClass: 'bg-emerald-500' 
+                      });
+                    }} 
+                    className="px-8 py-4 bg-emerald-600 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg shadow-emerald-500/20 hover:bg-emerald-700 transition-colors flex items-center gap-3"
+                  >
+                    <Terminal size={14} />
+                    <span>Zobacz system na żywo</span>
+                  </button>
+                </MagneticWrapper>
+              </div>
+            </div>
+            
+            {/* Kolumna Prawa: Interaktywny Mockup */}
+            <div 
+              className="aspect-4/3 w-full bg-slate-100 rounded-2xl border border-slate-200 overflow-hidden relative group shadow-premium order-1 lg:order-2 cursor-pointer"
+              onClick={() => {
+                pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'Stowarzyszenie KAS' });
+                handleOpenDemo({ 
+                  url: 'https://stowarzyszeniekas.pl', 
+                  title: 'stowarzyszeniekas.pl', 
+                  colorClass: 'text-emerald-500', 
+                  bgClass: 'bg-emerald-500' 
+                });
+              }}
+            >
+              <Image 
+                src="/kas-mockup.webp" 
+                alt="Stowarzyszenie KAS - Platforma Dostępna Cyfrowo" 
+                fill 
+                quality={85} 
+                sizes="(max-width: 1024px) 100vw, 50vw" 
+                className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
+              />
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-emerald-600 px-6 py-3 rounded-lg shadow-xl border border-emerald-400/20">
+                  Sprawdź działanie (4×100)
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Sekcja 3: DzikiStyl.com */}
+        <section id="dzikistyl" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
             <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
@@ -76,7 +158,8 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
           </div>
         </section>
 
-        <section id="sklepurwis" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0">
+        {/* Sekcja 4: Sklep Urwis */}
+        <section id="sklepurwis" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
             <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
@@ -118,45 +201,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
           </div>
         </section>
 
-        <section id="zamowtu" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
-          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
-            <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">SaaS / Fintech</span>
-              </div>
-              <h2 className="text-4xl sm:text-6xl text-slate-900 tracking-tighter">zamowtu.pl</h2>
-              <div className="space-y-4 text-sm sm:text-base font-normal leading-relaxed">
-                <p className="text-slate-600"><strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Restauratorzy tracili gigantyczne prowizje na rzecz zewnętrznych portali dostaw, potrzebując niezależnego systemu transakcyjnego z możliwością edycji menu w locie.`)}</p>
-                <p className="text-slate-600"><strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Zbudowanie od zera kompleksowej platformy sprzedażowej z obsługą natychmiastowych, automatycznych płatności i w pełni bezpiecznym, niezależnym systemem kont dla menedżerów.`)}</p>
-                <div className="p-4 rounded-xl bg-orange-50 border-l-4 border-l-orange-500 mt-4">
-                  <p className="text-slate-900 font-medium"><strong className="text-orange-500">Wynik Biznesowy:</strong> {fixOrphans(`Restauracje odzyskały do 30% marży z każdego zamówienia, uniezależniając się od monopolu rynkowych gigantów i zyskując bezpośredni kontakt ze swoimi klientami.`)}</p>
-                </div>
-              </div>
-              <div className="flex justify-center lg:justify-start pt-4">
-                <MagneticWrapper>
-                  <button onClick={() => {
-                    pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'zamowtu.pl' });
-                    handleOpenDemo({ url: 'https://zamówtu.pl/demo', title: 'zamowtu.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
-                  }} className="px-8 py-4 bg-orange-500 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-colors flex items-center gap-3">
-                    <Terminal size={14} />
-                    <span>Zobacz system na żywo</span>
-                  </button>
-                </MagneticWrapper>
-              </div>
-            </div>
-            <div onClick={() => {
-              pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'zamowtu.pl' });
-              handleOpenDemo({ url: 'https://zamówtu.pl/demo', title: 'zamowtu.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
-            }} className="aspect-4/3 w-full bg-slate-100 rounded-2xl border border-slate-200 overflow-hidden relative group shadow-premium cursor-pointer order-1 lg:order-2">
-              <Image src="/zamowtu.webp" alt="zamowtu.pl" fill quality={80} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
-              <div className="absolute inset-0 bg-white/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-orange-500 px-6 py-3 rounded-lg shadow-xl border border-orange-400/20">Sprawdź działanie</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
+        {/* Sekcja 5: Kajaki u Maćka */}
         <section id="kajaki" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-20 py-20 lg:py-0 border-t lg:border-none">
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
             <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
@@ -199,6 +244,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
           </div>
         </section>
 
+        {/* Sekcja 6: Referencje */}
         <section id="referencje" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-4 lg:px-12 py-20 lg:py-0 border-t lg:border-none">
           <div className="flex flex-col w-full max-w-7xl mx-auto relative z-10 gap-8 px-2 py-10 lg:py-12">
             
