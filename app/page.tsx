@@ -47,7 +47,7 @@ const NAV_DOTS = [
   { id: 5, title: 'Symulacja' },
   { id: 6, title: 'Benefity' },
   { id: 7, title: 'Portfolio' },
-  { id: 8, title: 'Stowarzyszenie KAS' },
+  { id: 8, title: 'KAS (WCAG)' },
   { id: 9, title: 'DzikiStyl.com' },
   { id: 10, title: 'Sklep Urwis' },
   { id: 11, title: 'Kajaki u Maćka' },

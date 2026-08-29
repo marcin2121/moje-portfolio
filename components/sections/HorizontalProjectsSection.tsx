@@ -46,7 +46,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">NGO • Dostępność Cyfrowa (WCAG 2.2 AA)</span>
               </div>
-              <h2 className="text-4xl sm:text-6xl text-slate-900 tracking-tighter">Stowarzyszenie KAS</h2>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter">Stowarzyszenie KAS</h2>
               
               <div className="space-y-4 text-sm sm:text-base font-normal leading-relaxed">
                 <p className="text-slate-600">
@@ -86,9 +86,9 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
               </div>
             </div>
             
-            {/* Kolumna Prawa: Interaktywny Mockup */}
+            {/* Kolumna Prawa: Interaktywny Mockup w ramce przeglądarki */}
             <div 
-              className="aspect-4/3 w-full bg-slate-100 rounded-2xl border border-slate-200 overflow-hidden relative group shadow-premium order-1 lg:order-2 cursor-pointer"
+              className="aspect-4/3 w-full bg-slate-50 rounded-2xl border border-slate-200/80 overflow-hidden relative group shadow-premium order-1 lg:order-2 cursor-pointer flex flex-col"
               onClick={() => {
                 pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'Stowarzyszenie KAS' });
                 handleOpenDemo({ 
@@ -99,18 +99,29 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
                 });
               }}
             >
-              <Image 
-                src="/kas-hero.png" 
-                alt="Stowarzyszenie KAS - Platforma Dostępna Cyfrowo" 
-                fill 
-                quality={85} 
-                sizes="(max-width: 1024px) 100vw, 50vw" 
-                className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
-              />
-              <div className="absolute inset-0 bg-white/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-emerald-600 px-6 py-3 rounded-lg shadow-xl border border-emerald-400/20">
-                  Sprawdź działanie (4×100)
-                </span>
+              {/* Pasek Przeglądarki */}
+              <div className="h-7 bg-slate-100/90 border-b border-slate-200/80 px-3 flex items-center gap-1.5 shrink-0 z-10">
+                <div className="w-2 h-2 rounded-full bg-red-400/80" />
+                <div className="w-2 h-2 rounded-full bg-amber-400/80" />
+                <div className="w-2 h-2 rounded-full bg-emerald-400/80" />
+                <div className="mx-auto bg-white/80 border border-slate-200 px-3 py-0.5 rounded-full text-[8px] font-mono text-slate-400 font-medium tracking-wider">
+                  stowarzyszeniekas.pl
+                </div>
+              </div>
+              <div className="relative flex-1 w-full overflow-hidden bg-slate-100">
+                <Image 
+                  src="/kas-hero.png" 
+                  alt="Stowarzyszenie KAS - Platforma Dostępna Cyfrowo" 
+                  fill 
+                  quality={90} 
+                  sizes="(max-width: 1024px) 100vw, 50vw" 
+                  className="object-cover object-top opacity-95 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
+                />
+                <div className="absolute inset-0 bg-slate-900/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="text-white font-mono font-bold text-[10px] uppercase tracking-widest bg-emerald-600 px-6 py-3 rounded-xl shadow-xl border border-emerald-400/30">
+                    Sprawdź działanie (4×100)
+                  </span>
+                </div>
               </div>
             </div>
           </div>
