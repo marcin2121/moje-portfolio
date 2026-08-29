@@ -100,7 +100,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
               }}
             >
               <Image 
-                src="/kas-hero.png" 
+                src="/kas-mockup.png" 
                 alt="Stowarzyszenie KAS - Platforma Dostępna Cyfrowo" 
                 fill 
                 quality={90} 

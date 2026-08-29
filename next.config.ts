@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
     qualities: [25, 50, 75, 80, 90, 100],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'stowarzyszeniekas.pl' },
+      { protocol: 'https', hostname: 'cms.stowarzyszeniekas.pl' },
+      { protocol: 'https', hostname: 'molendadevelopment.pl' },
+      { protocol: 'https', hostname: 'www.molendadevelopment.pl' },
+    ],
   },
 
   experimental: {
