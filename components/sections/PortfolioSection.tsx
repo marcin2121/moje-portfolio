@@ -11,12 +11,12 @@ const PROJECTS = [
   {
     category: 'wizerunek',
     title: 'Stowarzyszenie KAS',
-    tags: ['Dostępność Cyfrowa', 'WCAG 2.2 AA', 'Headless WordPress'],
+    tags: ['NGO', 'Dostępność Cyfrowa & E-usługi', 'WCAG 2.2 AA'],
     devTags: ['Next.js 16', 'React 19', 'Supabase Realtime', 'PayU'],
-    desc: 'Portal Dostępności Cyfrowej & NGO',
-    challenge: 'Organizacja pożytku publicznego potrzebowała portalu spełniającego rygorystyczne wymogi Ustawy o Dostępności Cyfrowej (ryzyko kar do 10 000 zł i utraty dotacji), bez zmuszania zespołu do nauki nowego panelu CMS.',
-    solution: 'Wdrożyłem architekturę Headless (Next.js 16 + React 19) spiętą z WordPressem. Zbudowałem natywny panel WCAG, anonimowy czat wsparcia w Supabase Realtime, automatyczny kalendarz wizyt oraz płatności PayU.',
-    result: 'Rekordowe 4 × 100 / 100 w Google PageSpeed i 98/100 YellowLabTools (Top 0.5% internetu). 100% spokoju audytowego przy dotacjach i zerowy czas wdrożenia pracowników.',
+    desc: 'Portal Dostępności Cyfrowej & E-usługi',
+    challenge: 'Organizacja pilnie potrzebowała bezpiecznego czatu wsparcia i kalendarza wizyt. Próba wdrożenia tak zaawansowanych modułów na tradycyjnym WordPressie kosztowałaby fortunę, a osiągnięcie na nim prawdziwej dostępności cyfrowej graniczyło z cudem.',
+    solution: 'Zbudowałem dedykowaną, błyskawiczną platformę z anonimowym czatem na żywo, automatycznym systemem rezerwacji i certyfikowaną dostępnością dla osób z niepełnosprawnościami – zachowując przy tym bajecznie prosty panel do edycji treści.',
+    result: 'Ogromna oszczędność budżetu i zero comiesięcznych opłat za wtyczki. Organizacja zyskała pancerne narzędzie do niesienia pomocy bez ryzyka kar prawnych, a strona działa bezawaryjnie na każdym telefonie.',
     img: '/kas-hero.png',
     link: 'https://stowarzyszeniekas.pl'
   },

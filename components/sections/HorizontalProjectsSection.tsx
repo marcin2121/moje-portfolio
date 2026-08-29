@@ -44,22 +44,22 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
             <div className="space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">NGO • Dostępność Cyfrowa (WCAG 2.2 AA)</span>
+                <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">NGO • Dostępność Cyfrowa & E-usługi</span>
               </div>
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter">Stowarzyszenie KAS</h2>
               
               <div className="space-y-4 text-sm sm:text-base font-normal leading-relaxed">
                 <p className="text-slate-600">
-                  <strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Organizacja pożytku publicznego potrzebowała portalu spełniającego rygorystyczne wymogi Ustawy o Dostępności Cyfrowej (ryzyko kar do 10 000 zł i utraty dotacji), bez zmuszania zespołu do nauki nowego panelu CMS.`)}
+                  <strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Organizacja pilnie potrzebowała bezpiecznego czatu wsparcia i kalendarza wizyt. Próba wdrożenia tak zaawansowanych modułów na tradycyjnym WordPressie kosztowałaby fortunę, a osiągnięcie na nim prawdziwej dostępności cyfrowej graniczyło z cudem.`)}
                 </p>
                 
                 <p className="text-slate-600">
-                  <strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Wdrożyłem architekturę Headless (Next.js 16 + React 19) spiętą z WordPressem. Zbudowałem natywny panel WCAG, anonimowy czat wsparcia w Supabase Realtime, automatyczny kalendarz wizyt oraz płatności PayU.`)}
+                  <strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Zbudowałem dedykowaną, błyskawiczną platformę z anonimowym czatem na żywo, automatycznym systemem rezerwacji i certyfikowaną dostępnością dla osób z niepełnosprawnościami – zachowując przy tym bajecznie prosty panel do edycji treści.`)}
                 </p>
                 
                 <div className="p-4 rounded-xl bg-emerald-50 border-l-4 border-l-emerald-500 mt-4">
                   <p className="text-slate-900 font-medium">
-                    <strong className="text-emerald-600">Wynik Biznesowy:</strong> {fixOrphans(`Rekordowe 4 × 100 / 100 w Google PageSpeed i 98/100 YellowLabTools (Top 0.5% internetu). 100% spokoju audytowego przy dotacjach i zerowy czas wdrożenia pracowników.`)}
+                    <strong className="text-emerald-600">Wynik Biznesowy:</strong> {fixOrphans(`Ogromna oszczędność budżetu i zero comiesięcznych opłat za wtyczki. Organizacja zyskała pancerne narzędzie do niesienia pomocy bez ryzyka kar prawnych, a strona działa bezawaryjnie na każdym telefonie.`)}
                   </p>
                 </div>
               </div>
