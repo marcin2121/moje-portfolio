@@ -1,89 +1,108 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import Image from 'next/image';
 import { ArrowRight, Check } from 'lucide-react';
-import { pushGTMEvent } from '@/app/page';
 import { fixOrphans } from '@/utils/typography';
 
 interface HeroProps {
-  onNavigate: (index: number) => void;
+  onNavigate?: (id: string) => void;
 }
 
 export default function Hero({ onNavigate }: HeroProps) {
+  const handleCtaClick = () => {
+    if (onNavigate) {
+      onNavigate('kontakt');
+    } else {
+      const el = document.getElementById('kontakt');
+      el?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section id="hero" className="w-full lg:w-1/4 flex-shrink-0 min-h-[100dvh] bg-transparent flex flex-col relative overflow-hidden z-0 font-sans">
+    <section id="hero" className="w-full min-h-[90vh] bg-transparent flex flex-col justify-center relative overflow-hidden z-0 font-sans pt-28 sm:pt-36 pb-16 lg:pb-24">
       
       {/* Background Watermark */}
-      <div className="absolute top-20 sm:top-32 lg:top-1/2 lg:-translate-y-1/2 left-1/2 -translate-x-1/2 pointer-events-none flex items-center justify-center opacity-[0.04] z-0 overflow-hidden w-full">
-        <div className="text-[24vw] sm:text-[20vw] lg:text-[14vw] font-black text-slate-900 leading-none whitespace-nowrap tracking-tighter select-none">
+      <div className="absolute top-24 sm:top-32 lg:top-1/2 lg:-translate-y-1/2 left-1/2 -translate-x-1/2 pointer-events-none flex items-center justify-center opacity-[0.03] z-0 overflow-hidden w-full select-none">
+        <div className="text-[26vw] sm:text-[22vw] lg:text-[16vw] font-black text-slate-900 leading-none whitespace-nowrap tracking-tighter">
           WZROST
         </div>
       </div>
 
-
       {/* Main Hero Content */}
-      <div className="flex-1 w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20 pt-24 pb-12 lg:py-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-20 relative z-10">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-16 relative z-10 my-auto">
         
         {/* Left Column Text & CTA */}
-        <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
+        <div className="w-full lg:w-3/5 flex flex-col items-center lg:items-start text-center lg:text-left">
           
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.15] mb-6 tracking-tight">
-            Zbuduję stronę, która przyspieszy Twoją sprzedaż.
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-orange-50/80 border border-orange-200/80 rounded-full shadow-xs mb-6">
+            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+            <span className="font-mono text-[10px] sm:text-xs font-bold text-orange-600 uppercase tracking-widest">
+              Dedykowany Software House B2B
+            </span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.12] mb-6 tracking-tighter">
+            Zbuduję system, który przyspieszy Twoją sprzedaż.
           </h1>
           
-          <p className="text-lg sm:text-xl text-slate-900 font-medium leading-relaxed mb-10 max-w-2xl opacity-90">
-            {fixOrphans(`Uwalniam małe firmy od powolnych szablonów. Projektuję nowoczesne systemy, które odciążają Cię z ręcznej pracy i zdobywają klientów szybciej niż konkurencja. Płacisz raz, a maszyna działa bezawaryjnie.`)}
+          <p className="text-base sm:text-lg text-slate-600 font-light leading-relaxed mb-8 max-w-xl">
+            {fixOrphans(`Uwalniam małe i średnie firmy od powolnych szablonów. Projektuję nowoczesne aplikacje i sklepy w Next.js, które odciążają Cię z ręcznej pracy i zdobywają klientów szybciej niż konkurencja.`)}
           </p>
 
-          <ul className="flex flex-col gap-4 mb-10 text-left w-full sm:w-auto">
-            <li className="flex items-start gap-3 text-slate-800 text-sm sm:text-base font-semibold">
-              <div className="w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-200">
-                <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
+          <ul className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-10 text-left w-full sm:w-auto">
+            <li className="flex items-center gap-2.5 text-slate-700 text-xs sm:text-sm font-medium">
+              <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-200">
+                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
               </div>
-              <span dangerouslySetInnerHTML={{ __html: fixOrphans("Gwarancja zwrotu 100% zaliczki przez 7 dni.") }} />
+              <span>Gwarancja 100% zaliczki przez 7 dni</span>
             </li>
-            <li className="flex items-start gap-3 text-slate-800 text-sm sm:text-base font-semibold">
-              <div className="w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-200">
-                <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
+            <li className="flex items-center gap-2.5 text-slate-700 text-xs sm:text-sm font-medium">
+              <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-200">
+                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
               </div>
-              <span dangerouslySetInnerHTML={{ __html: fixOrphans("Konkretna wycena na e-mail w 24 godziny.") }} />
+              <span>Konkretna wycena w 24 godziny</span>
             </li>
           </ul>
 
-          <button 
-             onClick={() => {
-                pushGTMEvent('strona_glowna_wycena_klikniecie');
-                onNavigate(15); // Index 15 to Kontakt
-             }}
-             className="w-full sm:w-auto px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-black tracking-wide text-lg rounded-xl transition-all duration-300 shadow-[0_15px_40px_rgba(234,88,12,0.4)] hover:shadow-[0_20px_60px_rgba(234,88,12,0.6)] flex items-center justify-center gap-3 hover:-translate-y-1"
-          >
-            Odbierz bezpłatną wycenę na e-mail
-            <ArrowRight size={20} className="shrink-0" />
-          </button>
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <button 
+              onClick={handleCtaClick}
+              className="w-full sm:w-auto px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-black tracking-wide text-sm sm:text-base rounded-xl transition-all duration-300 shadow-[0_12px_30px_rgba(234,88,12,0.35)] hover:shadow-[0_16px_40px_rgba(234,88,12,0.5)] flex items-center justify-center gap-3 hover:-translate-y-0.5 active:scale-95"
+            >
+              <span>Odbierz bezpłatną wycenę</span>
+              <ArrowRight size={18} className="shrink-0" />
+            </button>
+
+            <a
+              href="#realizacje"
+              className="w-full sm:w-auto px-6 py-4 bg-white hover:bg-slate-50 text-slate-700 font-mono text-xs uppercase tracking-wider rounded-xl border border-slate-200 transition-all flex items-center justify-center"
+            >
+              Zobacz realizacje ↓
+            </a>
+          </div>
         </div>
 
         {/* Right Column Portrait */}
-        <div className="hidden lg:flex w-full lg:w-1/2 justify-center lg:justify-end relative mt-8 lg:mt-0">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-orange-500/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="w-full lg:w-2/5 flex justify-center lg:justify-end relative">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-orange-500/10 blur-[100px] rounded-full pointer-events-none" />
           
-          {/* Light Premium Card Framing for the photo (Polaroid style) */}
-          <div className="relative w-full max-w-[200px] sm:max-w-[320px] lg:max-w-[440px] rounded-[2rem] sm:rounded-[2.5rem] bg-white p-2.5 sm:p-4 shadow-[0_20px_50px_rgba(15,23,42,0.08)] border border-slate-200/60 hover:rotate-1 hover:scale-[1.02] transition-all duration-500 group flex flex-col">
-            <div className="w-full aspect-[4/5] rounded-[1.5rem] sm:rounded-[1.8rem] overflow-hidden relative">
+          <div className="relative w-full max-w-[300px] sm:max-w-[360px] rounded-[2.5rem] bg-white p-3 sm:p-4 shadow-premium-soft border border-slate-200/80 hover:rotate-1 hover:scale-[1.02] transition-all duration-500 group flex flex-col">
+            <div className="w-full aspect-[4/5] rounded-[2rem] overflow-hidden relative">
               <Image
                 src="/Marcin_Molenda_Development.png"
                 alt="Marcin Molenda - Ekspert od szybkiej sprzedaży B2B"
                 fill
                 quality={90}
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 1024px) 1px, 50vw"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                priority
               />
             </div>
             
-            {/* Elegant Typographic Status (Strictly No Pills / No Dots) */}
-            <div className="w-full pt-5 pb-2 px-2 sm:px-4 flex items-center justify-between">
-              <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Marcin Molenda</span>
-              <span className="text-[9px] sm:text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">Partner Biznesowy</span>
+            <div className="w-full pt-4 pb-1 px-2 sm:px-3 flex items-center justify-between">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Marcin Molenda</span>
+              <span className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">Lead Engineer</span>
             </div>
           </div>
         </div>
@@ -91,12 +110,12 @@ export default function Hero({ onNavigate }: HeroProps) {
       </div>
 
       {/* Trust Bar */}
-      <div className="hidden lg:block w-full relative z-20 mt-auto mb-28 lg:mb-32 px-4 sm:px-10 lg:px-20">
-        <div className="max-w-[1000px] mx-auto bg-white/70 backdrop-blur-2xl border border-slate-200/50 rounded-[2rem] py-8 px-6 sm:px-10 flex flex-col items-center justify-center gap-8 shadow-premium">
-          <span className="text-slate-500 text-xs sm:text-sm font-medium uppercase tracking-[0.2em] text-center">
-            Zaufały mi firmy, które cenią swój czas:
+      <div className="w-full relative z-20 mt-16 sm:mt-20 px-4 sm:px-6 lg:px-12">
+        <div className="max-w-6xl mx-auto bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-[2rem] py-6 sm:py-8 px-6 sm:px-10 flex flex-col items-center justify-center gap-6 shadow-premium-soft">
+          <span className="text-slate-400 text-[10px] sm:text-xs font-mono uppercase tracking-[0.25em] text-center font-bold">
+            Zaufały mi marki, które cenią bezkompromisową jakość:
           </span>
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-3 sm:gap-4 md:gap-8 lg:gap-10 w-full">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 lg:gap-12 w-full">
             {[
               { name: 'Stowarzyszenie KAS', desc: 'portal pożytku publicznego (WCAG 2.2 AA)', link: 'https://stowarzyszeniekas.pl', img: '/kas.svg', hoverBorder: 'hover:border-emerald-500/30', imgClass: 'object-contain' },
               { name: 'DzikiStyl', desc: 'studio graficzne i drukarnia online', link: 'https://dzikistyldemo.vercel.app/', img: '/dzikistyl-logo.png', hoverBorder: 'hover:border-orange-500/30', imgClass: 'object-cover' },
@@ -104,19 +123,18 @@ export default function Hero({ onNavigate }: HeroProps) {
               { name: 'RLT Polska', desc: 'sklep internetowy z urządzeniami do terapii światłem', link: 'https://rltpolska.pl', img: '/rltpolska-logo.png', hoverBorder: 'hover:border-orange-500/30', imgClass: 'object-contain' },
               { name: 'Kajaki u Maćka', desc: 'spływy kajakowe Pilicą', link: 'https://kajaki-u-macka.pl', img: '/kajaki-u-macka-logo.png', hoverBorder: 'hover:border-emerald-500/30', imgClass: 'object-cover scale-100' },
             ].map((client, i) => (
-              <a key={i} href={client.link} target="_blank" rel="noopener noreferrer" className={`group relative flex items-center gap-4 w-full lg:w-auto p-3 lg:p-0 rounded-2xl lg:rounded-full bg-white/80 lg:bg-white border border-slate-200 shadow-sm hover:scale-[1.02] lg:hover:scale-105 ${client.hoverBorder} transition-all duration-300`}>
-                <div className="relative shrink-0 w-12 h-12 lg:w-20 lg:h-20 rounded-full overflow-hidden bg-slate-50 lg:bg-transparent">
-                  <Image src={client.img} alt={client.name} fill sizes="80px" quality={80} className={client.imgClass} />
+              <a 
+                key={i} 
+                href={client.link} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className={`group relative flex items-center gap-3 p-2 rounded-full bg-white border border-slate-200/80 shadow-xs hover:scale-105 ${client.hoverBorder} transition-all duration-300`}
+                title={`${client.name} - ${client.desc}`}
+              >
+                <div className="relative shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-slate-50">
+                  <Image src={client.img} alt={client.name} fill sizes="48px" quality={80} className={client.imgClass} />
                 </div>
-                <div className="lg:hidden flex flex-col items-start text-left flex-1 min-w-0">
-                  <span className="text-sm font-semibold text-slate-800 truncate w-full">{client.name}</span>
-                  <span className="text-xs text-slate-500 line-clamp-2">{client.desc}</span>
-                </div>
-                <div className="hidden lg:block absolute -top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50">
-                  <div className="bg-white/95 backdrop-blur-xl text-slate-800 text-xs font-mono px-3 py-2 rounded-lg whitespace-nowrap shadow-premium-soft border border-slate-200/80 flex items-center gap-2">
-                    {client.name} - {client.desc}
-                  </div>
-                </div>
+                <span className="text-xs font-semibold text-slate-800 pr-3 hidden sm:inline">{client.name}</span>
               </a>
             ))}
           </div>
