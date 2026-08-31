@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Bot, ShieldCheck, Clock, Terminal, Cpu } from 'lucide-react';
+import { Zap, Bot, ShieldCheck, Clock, Terminal } from 'lucide-react';
 import { fixOrphans } from '@/utils/typography';
 
 export function BentoArchitectureSection() {
@@ -16,11 +16,10 @@ export function BentoArchitectureSection() {
         
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-full shadow-xs mb-4">
-            <Cpu className="w-3.5 h-3.5 text-orange-500" />
-            <span className="font-mono text-[10px] text-slate-600 uppercase tracking-widest font-semibold">
-              Architektura & Bezpieczeństwo
-            </span>
+          <div className="flex items-center gap-3 mb-4 font-mono text-[11px] uppercase tracking-[0.25em]">
+            <span className="text-orange-600 font-bold">// ARCHITEKTURA & BEZPIECZEŃSTWO</span>
+            <span className="h-px w-6 bg-orange-500/30" />
+            <span className="text-slate-400 font-medium hidden sm:inline">ZERO SZABLONÓW</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-slate-900 mb-6">
@@ -50,8 +49,8 @@ export function BentoArchitectureSection() {
               <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-500">
                 <Zap size={24} />
               </div>
-              <span className="font-mono text-xs text-emerald-600 font-bold bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
-                4 × 100 PageSpeed
+              <span className="font-mono text-xs text-emerald-700 font-bold uppercase tracking-wider">
+                [ 4 × 100 PageSpeed ]
               </span>
             </div>
 
@@ -100,9 +99,9 @@ export function BentoArchitectureSection() {
               </p>
             </div>
 
-            <div className="mt-8 p-4 rounded-xl bg-blue-50/50 border border-blue-100 flex items-center gap-3">
-              <Terminal size={18} className="text-blue-600 shrink-0" />
-              <span className="text-xs font-mono text-blue-900 font-medium">Zero ręcznej papierkologii</span>
+            <div className="mt-8 p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+              <Terminal size={16} className="text-blue-600 shrink-0" />
+              <span className="text-xs font-mono text-slate-700 font-medium">Zero ręcznej papierkologii</span>
             </div>
           </motion.div>
 
@@ -126,9 +125,9 @@ export function BentoArchitectureSection() {
               </p>
             </div>
 
-            <div className="mt-8 p-4 rounded-xl bg-emerald-50/50 border border-emerald-100 flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span className="text-xs font-mono text-emerald-900 font-medium">Gwarancja zwrotu zaliczki</span>
+            <div className="mt-8 p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-3 font-mono text-xs text-slate-700">
+              <span className="text-emerald-600 font-bold">&check;</span>
+              <span>Gwarancja zwrotu zaliczki</span>
             </div>
           </motion.div>
 
@@ -144,8 +143,8 @@ export function BentoArchitectureSection() {
               <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500">
                 <Clock size={24} />
               </div>
-              <span className="font-mono text-xs text-amber-600 font-bold bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
-                Bezpośredni kontakt z inżynierem
+              <span className="font-mono text-xs text-amber-700 font-bold uppercase tracking-wider">
+                [ Bezpośredni kontakt z inżynierem ]
               </span>
             </div>
 
@@ -160,15 +159,15 @@ export function BentoArchitectureSection() {
 
             <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-slate-100 text-xs font-mono text-slate-500">
               <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span className="text-emerald-600 font-bold">&bull;</span>
                 <span>Wycena w 24 godziny</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span className="text-emerald-600 font-bold">&bull;</span>
                 <span>Zero ukrytych kosztów</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span className="text-emerald-600 font-bold">&bull;</span>
                 <span>Wsparcie powdrożeniowe</span>
               </div>
             </div>
