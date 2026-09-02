@@ -1,23 +1,11 @@
-﻿'use client';
-
+'use client';
 import React, { Suspense } from 'react';
-import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Terminal, ArrowRight } from 'lucide-react';
+import { ExternalLink, Terminal } from 'lucide-react';
 import AnimatedWebP from '@/components/ui/AnimatedWebP';
+import Image from 'next/image';
 import { fixOrphans } from '@/utils/typography';
 import { useQueryState } from 'nuqs';
-
-export interface DemoConfig {
-  url: string;
-  title: string;
-  colorClass: string;
-  bgClass: string;
-}
-
-interface PortfolioSectionProps {
-  handleOpenDemo?: (config: DemoConfig) => void;
-}
 
 const PROJECTS = [
   {
@@ -78,7 +66,7 @@ const CATEGORIES = [
   { id: 'wizerunek', label: 'Wizerunek' }
 ];
 
-function PortfolioFilters({ handleOpenDemo }: { handleOpenDemo?: (config: DemoConfig) => void }) {
+function PortfolioFilters() {
   const [category, setCategory] = useQueryState('kategoria', { defaultValue: 'wszystkie', shallow: true });
 
   const filteredProjects = category === 'wszystkie' 
@@ -87,12 +75,12 @@ function PortfolioFilters({ handleOpenDemo }: { handleOpenDemo?: (config: DemoCo
 
   return (
     <>
-      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-16">
+      <div className="flex flex-wrap items-center justify-center gap-3 mb-16">
         {CATEGORIES.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setCategory(cat.id === 'wszystkie' ? null : cat.id)}
-            className={`px-5 py-2.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+            className={`px-6 py-3 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
               category === cat.id 
                 ? 'bg-slate-900 text-white shadow-md scale-105' 
                 : 'bg-white text-slate-500 border border-slate-200 hover:border-slate-400 hover:text-slate-900'
@@ -103,58 +91,30 @@ function PortfolioFilters({ handleOpenDemo }: { handleOpenDemo?: (config: DemoCo
         ))}
       </div>
 
-      <div className="space-y-24 sm:space-y-32">
+      <div className="space-y-24">
         <AnimatePresence mode="popLayout">
           {filteredProjects.map((project, idx) => (
             <motion.div 
               key={project.title}
               layout
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className={`flex flex-col ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-10 lg:gap-16 items-center`}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className={`flex flex-col ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 lg:gap-16 items-center`}
             >
               
               {/* Image side */}
               <div className="w-full lg:w-1/2">
                 <div
-                  className="aspect-4/3 rounded-[2.5rem] bg-slate-100 border border-slate-200 overflow-hidden relative group shadow-premium cursor-pointer"
-                  onClick={() => {
-                    if (handleOpenDemo && project.link && project.link !== '#') {
-                      handleOpenDemo({
-                        url: project.link,
-                        title: project.title,
-                        colorClass: 'text-orange-500',
-                        bgClass: 'bg-orange-500'
-                      });
-                    }
-                  }}
+                  className="aspect-[4/3] rounded-[2rem] bg-slate-100 border border-slate-200 overflow-hidden relative group shadow-premium-soft"
                 >
-                  <AnimatedWebP 
-                    src={project.img} 
-                    alt={project.title} 
-                    className="opacity-95 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 w-full h-full object-cover" 
-                  />
+                  <AnimatedWebP src={project.img} alt={project.title} className="opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
-                  
                   <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-                    <div>
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-white/80 block mb-1">
-                        {project.desc}
-                      </span>
-                      <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">{project.title}</h3>
-                    </div>
+                    <h3 className="text-3xl font-black text-white tracking-tight">{project.title}</h3>
                     {project.link !== '#' && (
-                      <a 
-                        href={project.link} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-orange-500/30"
-                        title="Otwórz stronę na żywo"
-                      >
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#FF6900] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-sm">
                         <ExternalLink size={20} />
                       </a>
                     )}
@@ -166,32 +126,32 @@ function PortfolioFilters({ handleOpenDemo }: { handleOpenDemo?: (config: DemoCo
               <div className="w-full lg:w-1/2">
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-orange-600 text-[10px] uppercase font-bold tracking-widest">
+                    <span key={tag} className="px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-orange-600 text-[10px] uppercase font-bold tracking-widest">
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-8">
                   <div>
-                    <h4 className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1.5 flex items-center gap-2 font-semibold">
+                    <h4 className="text-sm font-mono text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> Wyzwanie
                     </h4>
-                    <p className="text-slate-600 font-light leading-relaxed text-sm sm:text-base">{fixOrphans(project.challenge)}</p>
+                    <p className="text-slate-700 font-light leading-relaxed">{fixOrphans(project.challenge)}</p>
                   </div>
                   
                   <div>
-                    <h4 className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1.5 flex items-center gap-2 font-semibold">
+                    <h4 className="text-sm font-mono text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Rozwiązanie techniczne
                     </h4>
-                    <p className="text-slate-600 font-light leading-relaxed text-sm sm:text-base">{fixOrphans(project.solution)}</p>
+                    <p className="text-slate-700 font-light leading-relaxed">{fixOrphans(project.solution)}</p>
                   </div>
 
-                  <div className="p-6 rounded-2xl bg-white border border-slate-200/80 border-l-4 border-l-orange-500 shadow-premium-soft">
-                    <h4 className="text-xs font-mono text-orange-600 uppercase tracking-widest mb-2 flex items-center gap-2 font-bold">
-                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500" /> Wynik Biznesowy & ROI
+                  <div className="p-6 rounded-xl bg-white border border-slate-200 border-l-4 border-l-[#FF6900] shadow-sm">
+                    <h4 className="text-sm font-mono text-[#FF6900] uppercase tracking-widest mb-2 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF6900]" /> Wynik Biznesowy i ROI
                     </h4>
-                    <p className="text-slate-900 font-medium text-sm sm:text-base leading-relaxed">{fixOrphans(project.result)}</p>
+                    <p className="text-slate-900 font-bold leading-relaxed">{fixOrphans(project.result)}</p>
                   </div>
                 </div>
               </div>
@@ -204,49 +164,53 @@ function PortfolioFilters({ handleOpenDemo }: { handleOpenDemo?: (config: DemoCo
   );
 }
 
-export function PortfolioSection({ handleOpenDemo }: PortfolioSectionProps) {
+export function PortfolioSection() {
   return (
-    <section id="realizacje" className="py-24 sm:py-32 px-4 sm:px-6 lg:px-12 bg-white border-t border-slate-200/60">
-      <div className="max-w-6xl mx-auto relative z-10">
-        
-        <div className="flex flex-col items-center text-center mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-full shadow-xs mb-4">
-            <Terminal size={14} className="text-orange-500" />
-            <span className="font-mono text-[10px] text-slate-600 uppercase tracking-widest font-semibold">
-              Moje Wdrożenia B2B
-            </span>
-          </div>
-
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-slate-900 mb-6">
-            Projekty, które generują<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-950">
-              mierzalny zysk i przewagę
-            </span>
-          </h2>
-
-          <p className="text-slate-600 text-base sm:text-lg max-w-2xl font-light leading-relaxed">
-            {fixOrphans('Nie obiecuję niemożliwego – dowożę bezbłędny kod i realne rezultaty. Zobacz, jak moje autorskie systemy przyspieszyły operacje w firmach klientów.')}
-          </p>
+    <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-slate-50 border-t border-slate-200/50">
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <div className="flex items-center gap-2 text-orange-500 font-mono tracking-widest uppercase text-sm mb-4">
+          <Terminal size={16} />
+          <span>Moje realizacje</span>
         </div>
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900 mb-16">
+          Wybrane<br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-500 to-slate-700">
+            projekty B2B
+          </span>
+        </h2>
+        <p className="text-slate-600 text-lg max-w-2xl mx-auto font-light leading-relaxed mb-20">
+          {fixOrphans('Nie obiecuję niemożliwego – dowożę mierzalne rezultaty. Przeczytaj, jak moje realizacje zmieniły operacje w firmach klientów.')}
+        </p>
 
-        <Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400 font-mono text-sm">Ładowanie projektów...</div>}>
-          <PortfolioFilters handleOpenDemo={handleOpenDemo} />
+        <Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400">Ładowanie projektów...</div>}>
+          <PortfolioFilters />
         </Suspense>
 
-        {/* Link to all case studies */}
-        <div className="mt-20 flex justify-center">
-          <Link
-            href="/wdrozenia"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs uppercase tracking-widest rounded-xl transition-all shadow-md hover:scale-105 group"
-          >
-            <span>Zobacz szczegółowe Case Studies</span>
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform text-orange-400" />
-          </Link>
-        </div>
+        {/* Michał's Testimonial */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mt-32 p-8 md:p-16 rounded-[3rem] bg-white/80 backdrop-blur-xl border border-slate-200 shadow-premium-soft relative overflow-hidden text-center"
+        >
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-[#FF6900]/10 blur-[100px] pointer-events-none" />
+          <div className="text-6xl text-[#FF6900] font-serif absolute top-8 left-8 opacity-20">&quot;</div>
+          
+          <p className="text-xl md:text-3xl font-light text-slate-700 leading-relaxed relative z-10 max-w-4xl mx-auto italic mb-10">
+            {fixOrphans(`Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług. To, co Marcin robi w pojedynkę, po prostu przekracza ludzkie pojęcie i `)}<span className="text-[#FF6900] font-bold">{fixOrphans(`technologicznie wyprzedza nasze czasy o 5 lat do przodu!`)}</span>{fixOrphans(` Z całego serca polecam usługi każdemu, kto marzy o bezkompromisowej aplikacji. Wielkie dzięki – zrobiłeś absolutny kosmos!`)}
+          </p>
+          
+          <div className="flex flex-col items-center justify-center gap-2 relative z-10">
+            <div className="w-16 h-16 rounded-full bg-white border-2 border-[#FF6900] mb-2 overflow-hidden shadow-sm">
+              <Image src="/dzikistyl.jpg" alt="DzikiStyl" width={64} height={64} className="w-full h-full object-cover opacity-90" />
+            </div>
+            <div className="text-slate-900 font-bold tracking-wide">Michał</div>
+            <div className="text-slate-500 text-sm uppercase tracking-widest font-mono">Właściciel DzikiStyl.com</div>
+          </div>
+        </motion.div>
 
       </div>
     </section>
   );
 }
-
-export default PortfolioSection;
