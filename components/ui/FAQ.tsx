@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -42,19 +42,15 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" className="w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-12 bg-transparent relative overflow-hidden border-t border-slate-200/50">
+    <section id="faq" className="w-full py-24 sm:py-32 px-6 sm:px-10 lg:px-20 bg-transparent relative overflow-hidden border-t border-slate-200/50">
       <GEOSchemaInjector schema={schema} />
       <div className="max-w-4xl mx-auto w-full">
         <div className="flex flex-col items-center text-center mb-10 lg:mb-16">
-          <div className="flex items-center gap-3 mb-4 font-mono text-[11px] uppercase tracking-[0.25em]">
-            <span className="text-orange-600 font-bold">// FAQ</span>
-            <span className="h-px w-6 bg-orange-500/30" />
-            <span className="text-slate-400 font-medium">ODPOWIEDZI NA OBAWY</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-md mb-6 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+            <span className="font-mono text-[9px] text-slate-600 uppercase tracking-widest">FAQ</span>
           </div>
-
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tighter mb-6 font-black">
-            Odpowiedzi na obawy
-          </h2>
+          <h2 className="text-4xl sm:text-6xl text-slate-900 tracking-tighter mb-6 font-black">Odpowiedzi na obawy</h2>
           <p className="text-slate-600 text-sm sm:text-base font-light max-w-2xl">
             {fixOrphans(`Inwestycja w nowoczesną stronę to odpowiedzialna decyzja. Oto wyjaśnienie najczęstszych kwestii, bez owijania w bawełnę.`)}
           </p>
@@ -70,16 +66,16 @@ export default function FAQ() {
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full flex items-center justify-between p-6 sm:p-8 text-left cursor-pointer"
+                  className="w-full flex items-center justify-between p-6 sm:p-8 text-left"
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${index}`}
                   id={`faq-question-${index}`}
                 >
-                  <span className={`text-base sm:text-xl font-medium transition-colors duration-300 ${isOpen ? 'text-slate-900 font-bold' : 'text-slate-700 group-hover:text-slate-900'}`}>
+                  <span className={`text-lg sm:text-xl font-medium transition-colors duration-300 ${isOpen ? 'text-slate-900' : 'text-slate-600 group-hover:text-slate-900'}`}>
                     {fixOrphans(item.question)}
                   </span>
-                  <div className={`p-2 rounded-xl transition-transform duration-500 shrink-0 ml-4 ${isOpen ? 'bg-orange-50 border border-orange-200 rotate-180 text-orange-600' : 'bg-white border border-slate-200 text-slate-400'}`}>
-                    <ChevronDown size={18} />
+                  <div className={`p-2 rounded-full transition-transform duration-500 shrink-0 ml-4 ${isOpen ? 'bg-orange-50 border border-orange-200 rotate-180 text-orange-600' : 'bg-white border border-slate-200 text-slate-400'}`}>
+                    <ChevronDown size={20} />
                   </div>
                 </button>
                 

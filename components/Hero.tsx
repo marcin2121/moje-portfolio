@@ -35,11 +35,11 @@ export default function Hero({ onNavigate }: HeroProps) {
         {/* Left Column Text & CTA */}
         <div className="w-full lg:w-3/5 flex flex-col items-center lg:items-start text-center lg:text-left">
           
-          {/* Pure Typographic Status (No Pill / No Dots) */}
-          <div className="flex items-center gap-3 mb-6 font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em]">
-            <span className="text-orange-600 font-bold">// DEDYKOWANY SOFTWARE HOUSE B2B</span>
-            <span className="h-px w-6 bg-orange-500/30" />
-            <span className="text-slate-400 font-medium hidden sm:inline">NEXT.JS 16 &bull; HEADLESS</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-orange-50/80 border border-orange-200/80 rounded-full shadow-xs mb-6">
+            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+            <span className="font-mono text-[10px] sm:text-xs font-bold text-orange-600 uppercase tracking-widest">
+              Dedykowany Software House B2B
+            </span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.12] mb-6 tracking-tighter">
@@ -51,12 +51,16 @@ export default function Hero({ onNavigate }: HeroProps) {
           </p>
 
           <ul className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-10 text-left w-full sm:w-auto">
-            <li className="flex items-center gap-2 text-slate-700 text-xs sm:text-sm font-medium">
-              <Check className="w-4 h-4 text-emerald-600 stroke-[3] shrink-0" />
+            <li className="flex items-center gap-2.5 text-slate-700 text-xs sm:text-sm font-medium">
+              <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-200">
+                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+              </div>
               <span>Gwarancja 100% zaliczki przez 7 dni</span>
             </li>
-            <li className="flex items-center gap-2 text-slate-700 text-xs sm:text-sm font-medium">
-              <Check className="w-4 h-4 text-emerald-600 stroke-[3] shrink-0" />
+            <li className="flex items-center gap-2.5 text-slate-700 text-xs sm:text-sm font-medium">
+              <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-200">
+                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+              </div>
               <span>Konkretna wycena w 24 godziny</span>
             </li>
           </ul>
@@ -96,9 +100,9 @@ export default function Hero({ onNavigate }: HeroProps) {
               />
             </div>
             
-            <div className="w-full pt-4 pb-1 px-2 sm:px-3 flex items-center justify-between font-mono">
+            <div className="w-full pt-4 pb-1 px-2 sm:px-3 flex items-center justify-between">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Marcin Molenda</span>
-              <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em]">Lead Engineer</span>
+              <span className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">Lead Engineer</span>
             </div>
           </div>
         </div>
@@ -124,10 +128,10 @@ export default function Hero({ onNavigate }: HeroProps) {
                 href={client.link} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className={`group relative flex items-center gap-3 p-2 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:scale-105 ${client.hoverBorder} transition-all duration-300`}
+                className={`group relative flex items-center gap-3 p-2 rounded-full bg-white border border-slate-200/80 shadow-xs hover:scale-105 ${client.hoverBorder} transition-all duration-300`}
                 title={`${client.name} - ${client.desc}`}
               >
-                <div className="relative shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden bg-slate-50">
+                <div className="relative shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-slate-50">
                   <Image src={client.img} alt={client.name} fill sizes="48px" quality={80} className={client.imgClass} />
                 </div>
                 <span className="text-xs font-semibold text-slate-800 pr-3 hidden sm:inline">{client.name}</span>

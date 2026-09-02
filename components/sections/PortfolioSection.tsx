@@ -3,7 +3,7 @@
 import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, ArrowRight } from 'lucide-react';
+import { ExternalLink, Terminal, ArrowRight } from 'lucide-react';
 import AnimatedWebP from '@/components/ui/AnimatedWebP';
 import { fixOrphans } from '@/utils/typography';
 import { useQueryState } from 'nuqs';
@@ -87,16 +87,15 @@ function PortfolioFilters({ handleOpenDemo }: { handleOpenDemo?: (config: DemoCo
 
   return (
     <>
-      {/* Category Tabs - Clean Segmented Switch */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-16 p-1.5 bg-slate-100/80 rounded-2xl max-w-fit mx-auto border border-slate-200/60">
+      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-16">
         {CATEGORIES.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setCategory(cat.id === 'wszystkie' ? null : cat.id)}
-            className={`px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all duration-200 ${
+            className={`px-5 py-2.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
               category === cat.id 
-                ? 'bg-white text-slate-900 shadow-xs' 
-                : 'text-slate-500 hover:text-slate-900'
+                ? 'bg-slate-900 text-white shadow-md scale-105' 
+                : 'bg-white text-slate-500 border border-slate-200 hover:border-slate-400 hover:text-slate-900'
             }`}
           >
             {cat.label}
@@ -153,10 +152,10 @@ function PortfolioFilters({ handleOpenDemo }: { handleOpenDemo?: (config: DemoCo
                         target="_blank" 
                         rel="noopener noreferrer" 
                         onClick={(e) => e.stopPropagation()}
-                        className="w-11 h-11 rounded-xl bg-orange-500 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-orange-500/30"
+                        className="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-orange-500/30"
                         title="Otwórz stronę na żywo"
                       >
-                        <ExternalLink size={18} />
+                        <ExternalLink size={20} />
                       </a>
                     )}
                   </div>
@@ -165,35 +164,32 @@ function PortfolioFilters({ handleOpenDemo }: { handleOpenDemo?: (config: DemoCo
 
               {/* Content side */}
               <div className="w-full lg:w-1/2">
-                
-                {/* Typographic Tag List (No Pill Badges) */}
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-6 font-mono text-[11px] uppercase tracking-wider text-slate-500">
-                  {project.tags.map((tag, tIdx) => (
-                    <span key={tag} className="flex items-center gap-3">
-                      {tIdx > 0 && <span className="text-slate-300 select-none">&bull;</span>}
-                      <span className="text-orange-600 font-semibold">{tag}</span>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.tags.map(tag => (
+                    <span key={tag} className="px-3 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-orange-600 text-[10px] uppercase font-bold tracking-widest">
+                      {tag}
                     </span>
                   ))}
                 </div>
 
                 <div className="space-y-6">
                   <div>
-                    <h4 className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1.5 font-bold">
-                      // Wyzwanie biznesowe
+                    <h4 className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1.5 flex items-center gap-2 font-semibold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> Wyzwanie
                     </h4>
                     <p className="text-slate-600 font-light leading-relaxed text-sm sm:text-base">{fixOrphans(project.challenge)}</p>
                   </div>
                   
                   <div>
-                    <h4 className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1.5 font-bold">
-                      // Rozwiązanie techniczne
+                    <h4 className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1.5 flex items-center gap-2 font-semibold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Rozwiązanie techniczne
                     </h4>
                     <p className="text-slate-600 font-light leading-relaxed text-sm sm:text-base">{fixOrphans(project.solution)}</p>
                   </div>
 
                   <div className="p-6 rounded-2xl bg-white border border-slate-200/80 border-l-4 border-l-orange-500 shadow-premium-soft">
-                    <h4 className="text-xs font-mono text-orange-600 uppercase tracking-widest mb-2 font-bold">
-                      Wynik Biznesowy & ROI
+                    <h4 className="text-xs font-mono text-orange-600 uppercase tracking-widest mb-2 flex items-center gap-2 font-bold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500" /> Wynik Biznesowy & ROI
                     </h4>
                     <p className="text-slate-900 font-medium text-sm sm:text-base leading-relaxed">{fixOrphans(project.result)}</p>
                   </div>
@@ -214,10 +210,11 @@ export function PortfolioSection({ handleOpenDemo }: PortfolioSectionProps) {
       <div className="max-w-6xl mx-auto relative z-10">
         
         <div className="flex flex-col items-center text-center mb-16 sm:mb-20">
-          <div className="flex items-center gap-3 mb-4 font-mono text-[11px] uppercase tracking-[0.25em]">
-            <span className="text-orange-600 font-bold">// WDROŻENIA B2B</span>
-            <span className="h-px w-6 bg-orange-500/30" />
-            <span className="text-slate-400 font-medium hidden sm:inline">DOWODY I WYNIKI</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-full shadow-xs mb-4">
+            <Terminal size={14} className="text-orange-500" />
+            <span className="font-mono text-[10px] text-slate-600 uppercase tracking-widest font-semibold">
+              Moje Wdrożenia B2B
+            </span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-slate-900 mb-6">

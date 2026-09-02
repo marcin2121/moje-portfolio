@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Star, ExternalLink } from 'lucide-react';
+import { Star, MessageSquareQuote, ExternalLink } from 'lucide-react';
 import { fixOrphans } from '@/utils/typography';
 
 const TESTIMONIALS = [
@@ -16,7 +16,7 @@ const TESTIMONIALS = [
     link: 'https://dzikistyldemo.vercel.app/',
     quote: 'Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich wymagań. To, co Marcin robi w pojedynkę, po prostu przekracza ludzkie pojęcie i technologicznie wyprzedza nasze czasy o 5 lat do przodu! Wielkie dzięki – zrobiłeś absolutny kosmos!',
     highlight: 'technologicznie wyprzedza nasze czasy o 5 lat do przodu!',
-    accentColor: 'text-orange-600',
+    badgeColor: 'text-orange-600 bg-orange-50 border-orange-200',
   },
   {
     name: 'Krzysztof',
@@ -27,7 +27,7 @@ const TESTIMONIALS = [
     link: 'https://sklep-urwis.pl',
     quote: 'Polecam z całego serca. Marcin stworzył dla mojego sklepu aplikację, która ma w sobie wszystko – koło fortuny z rabatami, strefę gier i kolorowanki. Zarówno strona sklepu, jak i aplikacja PWA przeszły moje najśmielsze oczekiwania – czysty profesjonalizm i masa bajerów.',
     highlight: 'przeszły moje najśmielsze oczekiwania – czysty profesjonalizm',
-    accentColor: 'text-blue-600',
+    badgeColor: 'text-blue-600 bg-blue-50 border-blue-200',
   },
   {
     name: 'Maciek',
@@ -38,7 +38,7 @@ const TESTIMONIALS = [
     link: 'https://kajaki-u-macka.pl',
     quote: 'O stary, ta strona jest tak kozak, nie spodziewałem się aż takiego efektu! Oprócz zjawiskowej strony, Marcin od zera skonfigurował moją Wizytówkę Google i Fanpage, zachowując ten sam świetny motyw. Dostałem potężne rady jak ściągać klientów – jesteś szef po prostu!',
     highlight: 'nie spodziewałem się aż takiego efektu! Jesteś szef po prostu!',
-    accentColor: 'text-emerald-600',
+    badgeColor: 'text-emerald-600 bg-emerald-50 border-emerald-200',
   },
 ];
 
@@ -49,10 +49,11 @@ export function TestimonialsSection() {
         
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-16 sm:mb-20">
-          <div className="flex items-center gap-3 mb-4 font-mono text-[11px] uppercase tracking-[0.25em]">
-            <span className="text-orange-600 font-bold">// OPINIE KLIENTÓW</span>
-            <span className="h-px w-6 bg-orange-500/30" />
-            <span className="text-slate-400 font-medium hidden sm:inline">SOCIAL PROOF</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-full shadow-xs mb-4">
+            <MessageSquareQuote className="w-3.5 h-3.5 text-orange-500" />
+            <span className="font-mono text-[10px] text-slate-600 uppercase tracking-widest font-semibold">
+              Głos Klientów
+            </span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-slate-900 mb-6">
@@ -64,7 +65,7 @@ export function TestimonialsSection() {
 
           <div className="flex items-center gap-1.5 text-amber-400 mb-4">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
+              <Star key={i} size={18} className="fill-amber-400 text-amber-400" />
             ))}
             <span className="text-slate-800 font-mono text-xs font-bold ml-2">5.0 / 5.0 zadowolenia</span>
           </div>
@@ -83,7 +84,7 @@ export function TestimonialsSection() {
             >
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <span className={`font-mono text-[10px] uppercase tracking-widest font-bold ${t.accentColor}`}>
+                  <span className={`font-mono text-[9px] uppercase tracking-widest font-bold px-3 py-1 rounded-full border ${t.badgeColor}`}>
                     {t.service}
                   </span>
                   <a
@@ -103,7 +104,7 @@ export function TestimonialsSection() {
               </div>
 
               <div className="flex items-center gap-4 pt-6 mt-8 border-t border-slate-200/60">
-                <div className="w-12 h-12 rounded-2xl overflow-hidden border border-slate-200 relative shrink-0 bg-white shadow-xs">
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500/30 relative shrink-0 bg-white">
                   <Image
                     src={t.photo}
                     alt={t.name}
