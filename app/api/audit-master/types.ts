@@ -186,6 +186,57 @@ export interface QuickCriticalIssue {
   details?: { url?: string; label?: string; sublabel?: string }[];
 }
 
+export interface CompetitorMetrics {
+  ttfb: {
+    yourValue: number;
+    competitorValue: number;
+    winner: 'you' | 'competitor' | 'tie';
+  };
+  platform: {
+    yourPlatform: string;
+    competitorPlatform: string;
+  };
+  addToCartTracking: {
+    yourStatus: boolean;
+    competitorStatus: boolean;
+    winner: 'you' | 'competitor' | 'tie';
+  };
+  consentModeV2: {
+    yourStatus: boolean;
+    competitorStatus: boolean;
+    winner: 'you' | 'competitor' | 'tie';
+  };
+  expressPayments: {
+    yourStatus: boolean;
+    competitorStatus: boolean;
+    winner: 'you' | 'competitor' | 'tie';
+  };
+  productSchema: {
+    yourStatus: boolean;
+    competitorStatus: boolean;
+    winner: 'you' | 'competitor' | 'tie';
+  };
+  securityWaf: {
+    yourStatus: boolean;
+    competitorStatus: boolean;
+    winner: 'you' | 'competitor' | 'tie';
+  };
+}
+
+export interface CompetitorBenchmark {
+  competitorDomain: string;
+  competitorUrl: string;
+  isUnavailable?: boolean;
+  unavailableReason?: string;
+  yourScore: number;
+  competitorScore: number;
+  scoreDiff: number;
+  winner: 'you' | 'competitor' | 'tie';
+  metrics?: CompetitorMetrics;
+  verdict: string;
+  strategicAdvice: string;
+}
+
 export interface AuditMasterResponse {
   token: string;
   url: string;
@@ -202,6 +253,7 @@ export interface AuditMasterResponse {
   quickIssues: QuickCriticalIssue[];
   checkpointEvals?: CheckpointEvaluation[];
   checkpointStats?: CheckpointStats;
+  competitorBenchmark?: CompetitorBenchmark;
   pages: PageAuditResult[];
   createdAt: string;
   cached?: boolean;

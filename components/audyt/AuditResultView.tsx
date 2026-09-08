@@ -11,6 +11,7 @@ import AuditConsultationForm from './AuditConsultationForm';
 import QuickCriticalIssues from './QuickCriticalIssues';
 import AdsAndTrackingCard from './AdsAndTrackingCard';
 import AuditChecklistSection from './AuditChecklistSection';
+import CompetitorBenchmarkCard from './CompetitorBenchmarkCard';
 import { pluralizePolish } from '@/app/api/audit-master/utils/crawler';
 
 export type { AuditMasterResponse as AuditResult };
@@ -130,6 +131,14 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           </div>
         </div>
       </div>
+
+      {/* SEKCJA: Pojedynek Technologiczny & Benchmark z Konkurentem (Head-to-Head) */}
+      {result.competitorBenchmark && (
+        <CompetitorBenchmarkCard
+          benchmark={result.competitorBenchmark}
+          yourDomain={result.domain}
+        />
+      )}
 
       {/* SEKCJA 1: Szybka Diagnoza Krytyczna (Top 3-4 wycieki zysku i budżetu z możliwością rozwinięcia) */}
       {result.quickIssues && result.quickIssues.length > 0 && (

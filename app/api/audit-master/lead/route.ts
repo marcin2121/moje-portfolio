@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { saveLead } from '../utils/storage';
+import { notifyLeadReceived } from '../utils/discordNotifier';
 import { Resend } from 'resend';
 
 export async function POST(req: Request) {
@@ -54,6 +55,15 @@ export async function POST(req: Request) {
         // Ignoruj błąd wysyłki powiadomienia, lead jest już w bazie
       }
     }
+
+    // 3. Powiadomienie Discord Webhook (Fire-and-forget)
+    notifyLeadReceived({
+      domain: cleanDomain,
+      email: email.trim(),
+      phone: phone.trim(),
+      token: token ? String(token).trim() : undefined,
+      notes: notes ? String(notes).trim() : undefined
+    }).catch(err => console.error('Discord webhook lead failed', err));
 
     return NextResponse.json({ success: true, message: 'Zgłoszenie zostało przyjęte. Odezwiemy się wkrótce!' });
   } catch {

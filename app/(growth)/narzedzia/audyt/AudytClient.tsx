@@ -3,15 +3,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Loader2, Building2, ShoppingCart } from 'lucide-react';
+import { Search, Loader2, Building2, ShoppingCart, Swords } from 'lucide-react';
 import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
 
 export function AudytClient() {
   const searchParams = useSearchParams();
   const tokenParam = searchParams.get('token');
   const urlParam = searchParams.get('url');
+  const competitorParam = searchParams.get('competitor') || searchParams.get('competitorUrl');
 
   const [url, setUrl] = useState(urlParam || '');
+  const [competitorUrl, setCompetitorUrl] = useState(competitorParam || '');
+  const [showCompetitor, setShowCompetitor] = useState(!!competitorParam);
   const [siteType, setSiteType] = useState<'services' | 'ecommerce'>('services');
   const [isScanning, setIsScanning] = useState(false);
   const [scanStep, setScanStep] = useState(0);
@@ -22,11 +25,12 @@ export function AudytClient() {
     "Inicjalizacja i wykrywanie mapy witryny (sitemap.xml)...",
     "Pobieranie i analiza do 35 kluczowych podstron...",
     "Audyt architektury DOM, skryptów i nagłówków bezpieczeństwa...",
+    "Równoległa analiza telemetrii i benchmark konkurenta...",
     "Badanie Core Web Vitals w Google Lighthouse...",
     "Kompilacja twardych dowodów i diagnoza Architekta AI..."
   ];
 
-  const handleScan = React.useCallback(async (targetUrl: string, currentSiteType: 'services' | 'ecommerce') => {
+  const handleScan = React.useCallback(async (targetUrl: string, currentSiteType: 'services' | 'ecommerce', targetCompetitorUrl?: string) => {
     if (!targetUrl) return;
 
     setIsScanning(true);
@@ -49,7 +53,11 @@ export function AudytClient() {
       const res = await fetch('/api/audit-master', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: targetUrl, siteType: currentSiteType }),
+        body: JSON.stringify({
+          url: targetUrl,
+          siteType: currentSiteType,
+          competitorUrl: targetCompetitorUrl && targetCompetitorUrl.trim().length > 0 ? targetCompetitorUrl.trim() : undefined
+        }),
         signal: controller.signal
       });
 
@@ -94,13 +102,13 @@ export function AudytClient() {
           setIsScanning(false);
         });
     } else if (urlParam) {
-      handleScan(urlParam, siteType);
+      handleScan(urlParam, siteType, competitorParam || undefined);
     }
-  }, [tokenParam, urlParam, siteType, handleScan]);
+  }, [tokenParam, urlParam, competitorParam, siteType, handleScan]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleScan(url, siteType);
+    handleScan(url, siteType, showCompetitor ? competitorUrl : undefined);
   };
 
   return (
@@ -169,6 +177,44 @@ export function AudytClient() {
               )}
             </button>
           </div>
+
+          {/* Opcja Benchmarku z Konkurentem */}
+          <div className="mt-4 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => setShowCompetitor(!showCompetitor)}
+              className="text-xs font-mono font-semibold text-slate-600 hover:text-orange-600 flex items-center gap-1.5 transition-colors"
+            >
+              <Swords className="w-3.5 h-3.5 text-orange-500" />
+              <span>{showCompetitor ? 'Ukryj porównanie z konkurentem' : '⚔️ Porównaj z konkurentem (Benchmark Head-to-Head)'}</span>
+            </button>
+          </div>
+
+          <AnimatePresence>
+            {showCompetitor && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-3 pt-3 border-t border-slate-100 overflow-hidden"
+              >
+                <label className="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider font-mono">
+                  Adres witryny konkurenta (opcjonalnie)
+                </label>
+                <input
+                  type="text"
+                  value={competitorUrl}
+                  onChange={(e) => setCompetitorUrl(e.target.value)}
+                  placeholder="np. rywal-sklep.pl, inna-firma.com"
+                  className="w-full bg-white/90 border border-slate-200 focus:border-orange-500 rounded-xl py-2.5 px-4 text-slate-900 text-xs sm:text-sm outline-none transition-colors shadow-inner font-mono"
+                  disabled={isScanning}
+                />
+                <span className="text-[10px] text-slate-400 font-mono mt-1 block">
+                  Przetestujemy równolegle czas reakcji (TTFB), silnik, zdarzenie add_to_cart oraz Consent Mode v2 rywala.
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </form>
 
         {errorMessage && (

@@ -7,6 +7,8 @@ import { getInterpretation } from './utils/interpretation';
 import { crawlDomain, generateQuickCriticalIssues } from './utils/crawler';
 import { getAuditByToken, getAuditByDomain, saveAudit } from './utils/storage';
 import { evaluateAllCheckpoints } from './utils/checkpointsCatalog';
+import { fetchCompetitorData, buildCompetitorBenchmark } from './utils/competitorAnalyzer';
+import { notifyAuditGenerated } from './utils/discordNotifier';
 import { AuditMasterResponse, DetailedCodeSmells } from './types';
 
 export async function GET(req: Request) {
@@ -41,7 +43,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { url, siteType = 'services', token } = body;
+    const { url, siteType = 'services', token, competitorUrl } = body;
 
     // Jeśli przekazano token w body POST, zwróć od razu z cache
     if (token && typeof token === 'string') {
@@ -74,23 +76,45 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Nieprawidłowy format adresu URL.' }, { status: 400 });
     }
 
+    // Walidacja SSRF dla opcjonalnej witryny konkurenta
+    let validCompetitorUrl: string | undefined = undefined;
+    if (competitorUrl && typeof competitorUrl === 'string' && competitorUrl.trim().length > 0 && competitorUrl.trim().length <= 500) {
+      const compTarget = competitorUrl.trim().startsWith('http') ? competitorUrl.trim() : `https://${competitorUrl.trim()}`;
+      try {
+        const compParsed = new URL(compTarget);
+        const compHost = compParsed.hostname.toLowerCase();
+        const compIsLocal = compHost === 'localhost' || compHost === '127.0.0.1' || compHost === '::1' || compHost === '0.0.0.0' || compHost.includes('::ffff:127.0.0.1');
+        const compIsMeta = compHost === '169.254.169.254' || compHost === '100.100.100.200';
+        const compIsInternal = /^10\.|^172\.(1[6-9]|2[0-9]|3[0-1])\.|^192\.168\./.test(compHost) || /^fc00:/i.test(compHost) || /^fe80:/i.test(compHost);
+        const compIsLocalDomain = compHost.endsWith('.local') || compHost.endsWith('.internal');
+        if (!compIsLocal && !compIsMeta && !compIsInternal && !compIsLocalDomain) {
+          validCompetitorUrl = compTarget;
+        }
+      } catch {
+        // Ignoruj niepoprawny url konkurenta
+      }
+    }
+
     const cleanDomain = new URL(targetUrl).hostname.toLowerCase().replace(/^www\./, '');
 
     // ⚡ SPRAWDZENIE TRWAŁEGO CACHE (Supabase / local disk)
-    // Jeśli domena była audytowana w ciągu ostatnich 7 dni dla danego profilu, zwróć gotowy wynik natychmiast!
-    const existingAudit = await getAuditByDomain(cleanDomain, 7, currentSiteType);
-    if (existingAudit) {
-      return NextResponse.json({
-        ...existingAudit,
-        cached: true
-      });
+    // Jeśli użytkownik NIE podał konkurenta do benchmarku i domena była audytowana w ciągu 7 dni, zwróć cache natychmiast!
+    if (!validCompetitorUrl) {
+      const existingAudit = await getAuditByDomain(cleanDomain, 7, currentSiteType);
+      if (existingAudit) {
+        return NextResponse.json({
+          ...existingAudit,
+          cached: true
+        });
+      }
     }
 
-    // 🚀 ODPALENIE WIELOPODSTRONICOWEGO CRAWLERA I ANALIZATORA STRUKTURY
+    // 🚀 ODPALENIE WIELOPODSTRONICOWEGO CRAWLERA, ANALIZATORA ORAZ BENCHMARKU KONKURENTA W JEDNYM PROMISE.ALLSETTLED
     // Ograniczenie czasu i concurrency dostosowane do Hetzner VPS (4GB RAM)
-    const [crawlResult, rootAnalysisResult] = await Promise.allSettled([
+    const [crawlResult, rootAnalysisResult, competitorResult] = await Promise.allSettled([
       crawlDomain(targetUrl, { maxPages: 35, maxTimeMs: 12000, concurrency: 4, siteType: currentSiteType }),
-      analyzeRootUrl(targetUrl)
+      analyzeRootUrl(targetUrl),
+      validCompetitorUrl ? fetchCompetitorData(validCompetitorUrl) : Promise.resolve(null)
     ]);
 
     const crawlData = crawlResult.status === 'fulfilled' ? crawlResult.value : { pages: [], evidence: {
@@ -206,6 +230,18 @@ export async function POST(req: Request) {
       rootData
     );
 
+    // Budowa obiektu porównania z konkurentem (jeśli przekazano konkurenta)
+    const competitorRaw = competitorResult.status === 'fulfilled' ? competitorResult.value : null;
+    const competitorBenchmark = competitorRaw
+      ? buildCompetitorBenchmark(
+          competitorRaw,
+          avgScore,
+          crawlData.evidence,
+          rootData.detectedPlatform,
+          currentSiteType
+        )
+      : undefined;
+
     const responsePayload: AuditMasterResponse = {
       token: tokenStr,
       url: targetUrl,
@@ -221,6 +257,7 @@ export async function POST(req: Request) {
       quickIssues,
       checkpointEvals: checkpointResult.evals,
       checkpointStats: checkpointResult.stats,
+      competitorBenchmark: competitorBenchmark || undefined,
       pages: crawlData.pages,
       createdAt: new Date().toISOString(),
       pillars: [
@@ -234,6 +271,21 @@ export async function POST(req: Request) {
 
     // Zapis do trwałego cache (Supabase + lokalny plik)
     await saveAudit(responsePayload);
+
+    // 🔔 Powiadomienie Discord (Fire-and-forget, nie blokuje odpowiedzi użytkownika)
+    notifyAuditGenerated({
+      domain: cleanDomain,
+      token: tokenStr,
+      overallScore: avgScore,
+      lossPercentage,
+      detectedPlatform: rootData.detectedPlatform,
+      siteType: currentSiteType,
+      criticalLeaksCount: quickIssues.length,
+      competitorDomain: competitorBenchmark?.competitorDomain,
+      competitorScore: competitorBenchmark?.competitorScore
+    }).catch(err => {
+      console.error('[Discord Webhook Error]', err);
+    });
 
     return NextResponse.json(responsePayload);
 
