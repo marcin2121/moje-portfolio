@@ -215,85 +215,155 @@ export default function CompetitorBenchmarkCard({ benchmark, yourDomain }: Compe
                   </div>
                 </div>
 
-                {/* 3. Zdarzenie add_to_cart (Smart Bidding) */}
-                <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
-                  <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
-                    <Activity className="w-4 h-4 text-slate-400 shrink-0" />
-                    <div>
-                      <span className="font-bold text-slate-900 block font-sans">Śledzenie add_to_cart</span>
-                      <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Kluczowe dla algorytmów Google/Meta Ads</span>
+                {/* Sekcja E-Commerce: tylko dla profilu sklepu */}
+                {benchmark.metrics.siteType === 'ecommerce' ? (
+                  <>
+                    {/* 3. Zdarzenie add_to_cart (Smart Bidding) */}
+                    <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
+                      <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
+                        <Activity className="w-4 h-4 text-slate-400 shrink-0" />
+                        <div>
+                          <span className="font-bold text-slate-900 block font-sans">Śledzenie add_to_cart</span>
+                          <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Kluczowe dla algorytmów Google/Meta Ads</span>
+                        </div>
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.addToCartTracking.yourStatus} />
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.addToCartTracking.competitorStatus} />
+                      </div>
+                      <div className="col-span-2 md:col-span-1 text-right">
+                        <WinnerBadge winner={benchmark.metrics.addToCartTracking.winner} />
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-span-3 md:col-span-3 text-center">
-                    <StatusIndicator active={benchmark.metrics.addToCartTracking.yourStatus} />
-                  </div>
-                  <div className="col-span-3 md:col-span-3 text-center">
-                    <StatusIndicator active={benchmark.metrics.addToCartTracking.competitorStatus} />
-                  </div>
-                  <div className="col-span-2 md:col-span-1 text-right">
-                    <WinnerBadge winner={benchmark.metrics.addToCartTracking.winner} />
-                  </div>
-                </div>
 
-                {/* 4. Google Consent Mode v2 */}
-                <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
-                  <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
-                    <Shield className="w-4 h-4 text-slate-400 shrink-0" />
-                    <div>
-                      <span className="font-bold text-slate-900 block font-sans">Consent Mode v2</span>
-                      <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Legalne zbieranie danych i modelowanie AI</span>
+                    {/* 4. Google Consent Mode v2 */}
+                    <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
+                      <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
+                        <Shield className="w-4 h-4 text-slate-400 shrink-0" />
+                        <div>
+                          <span className="font-bold text-slate-900 block font-sans">Consent Mode v2</span>
+                          <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Legalne zbieranie danych i modelowanie AI</span>
+                        </div>
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.consentModeV2.yourStatus} />
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.consentModeV2.competitorStatus} />
+                      </div>
+                      <div className="col-span-2 md:col-span-1 text-right">
+                        <WinnerBadge winner={benchmark.metrics.consentModeV2.winner} />
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-span-3 md:col-span-3 text-center">
-                    <StatusIndicator active={benchmark.metrics.consentModeV2.yourStatus} />
-                  </div>
-                  <div className="col-span-3 md:col-span-3 text-center">
-                    <StatusIndicator active={benchmark.metrics.consentModeV2.competitorStatus} />
-                  </div>
-                  <div className="col-span-2 md:col-span-1 text-right">
-                    <WinnerBadge winner={benchmark.metrics.consentModeV2.winner} />
-                  </div>
-                </div>
 
-                {/* 5. Szybkie Płatności (BLIK / Apple Pay) */}
-                <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
-                  <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
-                    <CreditCard className="w-4 h-4 text-slate-400 shrink-0" />
-                    <div>
-                      <span className="font-bold text-slate-900 block font-sans">Szybki Checkout (BLIK / Pay)</span>
-                      <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Wygoda zakupowa na urządzeniach mobilnych</span>
+                    {/* 5. Szybkie Płatności (BLIK / Apple Pay) */}
+                    <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
+                      <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
+                        <CreditCard className="w-4 h-4 text-slate-400 shrink-0" />
+                        <div>
+                          <span className="font-bold text-slate-900 block font-sans">Szybki Checkout (BLIK / Pay)</span>
+                          <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Wygoda zakupowa na urządzeniach mobilnych</span>
+                        </div>
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.expressPayments.yourStatus} />
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.expressPayments.competitorStatus} />
+                      </div>
+                      <div className="col-span-2 md:col-span-1 text-right">
+                        <WinnerBadge winner={benchmark.metrics.expressPayments.winner} />
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-span-3 md:col-span-3 text-center">
-                    <StatusIndicator active={benchmark.metrics.expressPayments.yourStatus} />
-                  </div>
-                  <div className="col-span-3 md:col-span-3 text-center">
-                    <StatusIndicator active={benchmark.metrics.expressPayments.competitorStatus} />
-                  </div>
-                  <div className="col-span-2 md:col-span-1 text-right">
-                    <WinnerBadge winner={benchmark.metrics.expressPayments.winner} />
-                  </div>
-                </div>
 
-                {/* 6. Dane Strukturalne (Schema.org) */}
-                <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
-                  <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
-                    <FileCode2 className="w-4 h-4 text-slate-400 shrink-0" />
-                    <div>
-                      <span className="font-bold text-slate-900 block font-sans">Schema.org (Rich Snippets)</span>
-                      <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Ceny, dostępność i gwiazdki w Google</span>
+                    {/* 6. Dane Strukturalne (Schema.org) */}
+                    <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
+                      <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
+                        <FileCode2 className="w-4 h-4 text-slate-400 shrink-0" />
+                        <div>
+                          <span className="font-bold text-slate-900 block font-sans">Schema.org (Rich Snippets)</span>
+                          <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Ceny, dostępność i gwiazdki w Google</span>
+                        </div>
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.productSchema.yourStatus} />
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.productSchema.competitorStatus} />
+                      </div>
+                      <div className="col-span-2 md:col-span-1 text-right">
+                        <WinnerBadge winner={benchmark.metrics.productSchema.winner} />
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-span-3 md:col-span-3 text-center">
-                    <StatusIndicator active={benchmark.metrics.productSchema.yourStatus} />
-                  </div>
-                  <div className="col-span-3 md:col-span-3 text-center">
-                    <StatusIndicator active={benchmark.metrics.productSchema.competitorStatus} />
-                  </div>
-                  <div className="col-span-2 md:col-span-1 text-right">
-                    <WinnerBadge winner={benchmark.metrics.productSchema.winner} />
-                  </div>
-                </div>
+                  </>
+                ) : (
+                  <>
+                    {/* Wskaźniki dla Usług & B2B */}
+                    {/* 3. Ochrona Prywatności / RODO */}
+                    <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
+                      <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
+                        <Shield className="w-4 h-4 text-slate-400 shrink-0" />
+                        <div>
+                          <span className="font-bold text-slate-900 block font-sans">Prywatność & RODO (Consent)</span>
+                          <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Zgodność z unijnymi dyrektywami o cookies</span>
+                        </div>
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.consentModeV2.yourStatus} />
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.consentModeV2.competitorStatus} />
+                      </div>
+                      <div className="col-span-2 md:col-span-1 text-right">
+                        <WinnerBadge winner={benchmark.metrics.consentModeV2.winner} />
+                      </div>
+                    </div>
+
+                    {/* 4. Bezpieczeństwo Serwera (WAF & Nagłówki) */}
+                    <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
+                      <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
+                        <Shield className="w-4 h-4 text-slate-400 shrink-0" />
+                        <div>
+                          <span className="font-bold text-slate-900 block font-sans">Bezpieczeństwo & WAF</span>
+                          <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Nagłówki HSTS, CSP i ochrona przed botami</span>
+                        </div>
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.securityWaf.yourStatus} />
+                      </div>
+                      <div className="col-span-3 md:col-span-3 text-center">
+                        <StatusIndicator active={benchmark.metrics.securityWaf.competitorStatus} />
+                      </div>
+                      <div className="col-span-2 md:col-span-1 text-right">
+                        <WinnerBadge winner={benchmark.metrics.securityWaf.winner} />
+                      </div>
+                    </div>
+
+                    {/* 5. Optymalizacja SEO & Czystość Kodu */}
+                    {benchmark.metrics.seoOptimized && (
+                      <div className="px-6 py-4 grid grid-cols-12 items-center hover:bg-slate-50/50 transition-colors">
+                        <div className="col-span-4 md:col-span-5 flex items-center gap-2.5">
+                          <FileCode2 className="w-4 h-4 text-slate-400 shrink-0" />
+                          <div>
+                            <span className="font-bold text-slate-900 block font-sans">Architektura SEO & H1</span>
+                            <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Poprawność tagów kanonicznych i nagłówków</span>
+                          </div>
+                        </div>
+                        <div className="col-span-3 md:col-span-3 text-center">
+                          <StatusIndicator active={benchmark.metrics.seoOptimized.yourStatus} />
+                        </div>
+                        <div className="col-span-3 md:col-span-3 text-center">
+                          <StatusIndicator active={benchmark.metrics.seoOptimized.competitorStatus} />
+                        </div>
+                        <div className="col-span-2 md:col-span-1 text-right">
+                          <WinnerBadge winner={benchmark.metrics.seoOptimized.winner} />
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           )}

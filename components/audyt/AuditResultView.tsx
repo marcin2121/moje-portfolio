@@ -155,6 +155,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
         evaluations={result.checkpointEvals}
         stats={result.checkpointStats}
         domain={result.domain}
+        siteType={result.siteType}
       />
 
       {/* SEKCJA 4: Asymetryczny Bento Grid filarów technicznych */}

@@ -32,6 +32,7 @@ interface AuditChecklistSectionProps {
   evaluations?: CheckpointEvaluation[];
   stats?: CheckpointStats;
   domain: string;
+  siteType?: 'ecommerce' | 'services';
 }
 
 const CATEGORY_LABELS: Record<CheckpointCategory, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
@@ -46,7 +47,8 @@ const CATEGORY_LABELS: Record<CheckpointCategory, { label: string; icon: React.C
 export default function AuditChecklistSection({
   evaluations = [],
   stats,
-  domain
+  domain,
+  siteType = 'services'
 }: AuditChecklistSectionProps) {
   // Synchronizacja filtrów w URL za pomocą nuqs (łatwe udostępnianie klientom precyzyjnych widoków)
   const [selectedStatus, setSelectedStatus] = useQueryState('status', {
@@ -268,6 +270,7 @@ export default function AuditChecklistSection({
             const Icon = cat.icon;
             const count = mergedCheckpoints.filter(c => c.category === catKey).length;
             const isCatSelected = selectedCategory === catKey;
+            const tabLabel = (siteType === 'services' && catKey === 'ecommerce_cro') ? 'E-Commerce (Pominięto)' : cat.label;
             return (
               <button
                 key={catKey}
@@ -280,8 +283,8 @@ export default function AuditChecklistSection({
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
-                <span>{cat.label}</span>
-                <span className={`text-[10px] font-mono px-1 py-0.2 rounded ${isCatSelected ? 'bg-slate-800 text-slate-200' : 'bg-slate-200 text-slate-500'}`}>
+                <span>{tabLabel}</span>
+                <span className={`text-[10px] font-mono px-1 rounded ${isCatSelected ? 'bg-slate-800 text-slate-300' : 'text-slate-400'}`}>
                   {count}
                 </span>
               </button>
@@ -310,6 +313,13 @@ export default function AuditChecklistSection({
           )}
         </div>
       </div>
+
+      {/* Informacja o pominięciu E-Commerce dla profilu usługowego */}
+      {siteType === 'services' && selectedCategory === 'ecommerce_cro' && (
+        <div className="mb-4 p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs font-mono text-slate-600 flex items-center gap-2">
+          <span>ℹ️ Wybrano profil <strong>Strona Firmowa / Usługi</strong>. Punkty specyficzne dla koszyka, wariantów i checkoutu sklepu internetowego zostały automatycznie oznaczone jako nie dotyczy.</span>
+        </div>
+      )}
 
       {/* Licznik aktywnych wyników */}
       <div className="flex items-center justify-between text-xs text-slate-500 font-mono mb-4">

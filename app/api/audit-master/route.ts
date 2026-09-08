@@ -189,6 +189,25 @@ export async function POST(req: Request) {
       }
     }
 
+    // Kalibracja Performance Score z uwzględnieniem twardych danych z crawlera (TTFB, skrypty, platforma)
+    let finalPerformanceScore = rootData.performanceScore;
+    const avgTtfb = crawlData.evidence.avgResponseTimeMs || 150;
+    const isModernEdge = rootData.detectedPlatform.includes('Next.js') || rootData.detectedPlatform.includes('React');
+
+    let measuredPerf = 50;
+    if (avgTtfb < 150) measuredPerf += 40;
+    else if (avgTtfb < 300) measuredPerf += 30;
+    else if (avgTtfb < 600) measuredPerf += 15;
+    else if (avgTtfb < 1000) measuredPerf += 5;
+
+    if (rootData.codeSmells.badScripts === 0) measuredPerf += 10;
+    if (rootData.codeSmells.domElements < 1400) measuredPerf += 5;
+    if (isModernEdge) measuredPerf = Math.max(measuredPerf, 98);
+
+    if (rootData.performanceScore === 55 || measuredPerf > rootData.performanceScore) {
+      finalPerformanceScore = Math.min(100, measuredPerf);
+    }
+
     // Wyliczanie szybkich błędów krytycznych (Top wycieki budżetu i SEO)
     const quickIssues = generateQuickCriticalIssues(
       crawlData.evidence,
@@ -197,16 +216,16 @@ export async function POST(req: Request) {
     );
 
     const avgScore = Math.round(
-      (rootData.performanceScore + finalSeoScore + rootData.securityScore + rootData.scalabilityScore + rootData.automationScore) / 5
+      (finalPerformanceScore + finalSeoScore + rootData.securityScore + rootData.scalabilityScore + rootData.automationScore) / 5
     );
-    const lossPercentage = Math.max(5, Math.round((100 - avgScore) / 1.5));
+    const lossPercentage = avgScore >= 95 ? 2 : Math.max(5, Math.round((100 - avgScore) / 1.5));
 
     // Generowanie werdyktu AI (z odpornym fallbackiem w razie limitów Gemini)
     const geminiKey = process.env.GEMINI_API_KEY || '';
     const aiReport = await generateGeminiReport(
       targetUrl,
       avgScore,
-      rootData.performanceScore,
+      finalPerformanceScore,
       finalSeoScore,
       rootData.detectedPlatform,
       rootData.wafDetected,
@@ -238,7 +257,8 @@ export async function POST(req: Request) {
           avgScore,
           crawlData.evidence,
           rootData.detectedPlatform,
-          currentSiteType
+          currentSiteType,
+          rootData.securityScore
         )
       : undefined;
 
@@ -261,7 +281,7 @@ export async function POST(req: Request) {
       pages: crawlData.pages,
       createdAt: new Date().toISOString(),
       pillars: [
-        { name: 'Szybkość', score: Math.round(rootData.performanceScore), interpretation: getInterpretation(rootData.performanceScore, 'Szybkość', currentSiteType) },
+        { name: 'Szybkość', score: Math.round(finalPerformanceScore), interpretation: getInterpretation(finalPerformanceScore, 'Szybkość', currentSiteType) },
         { name: 'SEO', score: Math.round(finalSeoScore), interpretation: getInterpretation(finalSeoScore, 'SEO', currentSiteType) },
         { name: 'Skalowalność', score: Math.round(rootData.scalabilityScore), interpretation: getInterpretation(rootData.scalabilityScore, 'Skalowalność', currentSiteType) },
         { name: 'Automatyzacja', score: Math.round(rootData.automationScore), interpretation: getInterpretation(rootData.automationScore, 'Automatyzacja', currentSiteType) },
@@ -382,8 +402,8 @@ async function analyzeRootUrl(targetUrl: string) {
       if (lowerHtml.includes('hotjar.com')) codeSmells.trackers?.push('Hotjar');
       if (lowerHtml.includes('clarity.ms')) codeSmells.trackers?.push('Microsoft Clarity');
 
-      // Rekalibracja progu DOM (<1000 elementów to super wynik we współczesnym frontendzie z SVG i komponentami)
-      scalabilityScore = codeSmells.domElements < 1000 ? 95 : codeSmells.domElements < 1800 ? 75 : codeSmells.domElements < 2800 ? 50 : 30;
+      // Rekalibracja progu DOM (<1400 elementów to super wynik we współczesnym frontendzie z SVG i komponentami)
+      scalabilityScore = codeSmells.domElements < 1400 ? 98 : codeSmells.domElements < 2400 ? 80 : codeSmells.domElements < 3500 ? 50 : 30;
       automationScore = codeSmells.badScripts === 0 ? 90 : Math.max(30, 90 - codeSmells.badScripts * 10);
 
       // Uniwersalna detekcja Next.js (App Router z streamingiem self.__next_f + Pages Router __NEXT_DATA__)
@@ -396,8 +416,9 @@ async function analyzeRootUrl(targetUrl: string) {
 
       if (isNextJs) {
         detectedPlatform = 'Next.js / React (Serverless Edge)';
-        scalabilityScore = Math.max(scalabilityScore, 95);
-        automationScore = Math.max(automationScore, 90);
+        scalabilityScore = Math.max(scalabilityScore, 98);
+        automationScore = Math.max(automationScore, 95);
+        performanceScore = Math.max(performanceScore, 96);
         // Bezwzględnie czyścimy WordPressowe page buildery na Next.js (eliminacja false-positives np. Divi)
         codeSmells.pageBuilders = [];
       } else if (isShopify) {

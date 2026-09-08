@@ -273,9 +273,20 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
 
   // 13. Kontakt telefoniczny (klikalne linki tel: vs goły tekst)
   const hasClickablePhone = cheerioInstance('a[href^="tel:"]').length > 0;
-  const bodyText = cheerioInstance('body').text();
-  const phoneRegex = /(?:\+48\s*)?(?:[1-9]\d{1,2}[\s-]?\d{3}[\s-]?\d{3}|[1-9]\d{1}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2})/;
-  const hasPhoneInText = phoneRegex.test(bodyText);
+  
+  // Oczyszczamy tekst z NIP, REGON, KRS, kont bankowych, linii kodu i cen
+  const clonedBody = cheerioInstance('body').clone();
+  clonedBody.find('script, style, noscript, svg').remove();
+  const rawBodyText = clonedBody.text();
+  const sanitizedText = rawBodyText.replace(/(?:nip|regon|krs|konto|iban|linii|element[oó]w|rok|cena|zł|pln)\s*[:.]?\s*[\d\s-]+/gi, ' ');
+
+  // Wykrywamy numer telefonu:
+  // 1. Wyraźnie sformatowany 9-cyfrowy numer z separatorami (spacja/myślnik): np. 501 234 567 lub 501-234-567
+  // 2. LUB numer poprzedzony słowem kluczowym (tel, telefon, kom, infolinia, zadzwoń, kontakt, call, phone)
+  const phoneFormattedRegex = /\b(?:\+48[\s-]?)?(?:[1-9]\d{2}[\s-]\d{3}[\s-]\d{3}|[1-9]\d{1}[\s-]\d{3}[\s-]\d{2}[\s-]\d{2})\b/;
+  const phoneKeywordRegex = /(?:tel(?:efon)?\.?|infolinia|kom(?:[oó]rka)?\.?|zadzwo[nń]|kontakt(?:uj)?|call|phone|mobile)\s*[:.]?\s*(?:\+48\s*)?(?:[1-9]\d{2}[\s.-]?\d{3}[\s.-]?\d{3}|[1-9]\d{1}[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2})\b/i;
+
+  const hasPhoneInText = phoneFormattedRegex.test(sanitizedText) || phoneKeywordRegex.test(sanitizedText);
   const hasUnclickablePhone = hasPhoneInText && !hasClickablePhone;
 
   // 14. Śledzenie kliknięć w połączenie telefoniczne (click_to_call)

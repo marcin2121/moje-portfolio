@@ -221,6 +221,12 @@ export interface CompetitorMetrics {
     competitorStatus: boolean;
     winner: 'you' | 'competitor' | 'tie';
   };
+  seoOptimized?: {
+    yourStatus: boolean;
+    competitorStatus: boolean;
+    winner: 'you' | 'competitor' | 'tie';
+  };
+  siteType?: 'ecommerce' | 'services';
 }
 
 export interface CompetitorBenchmark {

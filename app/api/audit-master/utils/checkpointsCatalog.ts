@@ -972,7 +972,7 @@ export function evaluateAllCheckpoints(
   } else if (isEcommerce && (tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasGA4)) {
     addEval('track-purchase', 'failed', 'Brak zdarzenia transakcji purchase');
   } else {
-    addEval('track-purchase', 'passed', 'OK');
+    addEval('track-purchase', 'passed', isEcommerce ? 'Brak transakcji online' : 'Nie dotyczy (profil Usługi / B2B)');
   }
 
   // track-view-item
@@ -981,7 +981,7 @@ export function evaluateAllCheckpoints(
   } else if (isEcommerce && (tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasGA4)) {
     addEval('track-view-item', 'failed', 'Brak zdarzenia view_item / ViewContent');
   } else {
-    addEval('track-view-item', 'passed', 'OK');
+    addEval('track-view-item', 'passed', isEcommerce ? 'Brak katalogu produktów' : 'Nie dotyczy (profil Usługi / B2B)');
   }
 
   // track-consent-mode-v2
@@ -1070,67 +1070,111 @@ export function evaluateAllCheckpoints(
   // 2. E-COMMERCE, CHECKOUT & CRO (13)
   // ----------------------------------------------------
   // ecom-variant-health
-  if (tracking.variantTimeoutUrls && tracking.variantTimeoutUrls.length > 0) {
+  if (!isEcommerce) {
+    addEval('ecom-variant-health', 'passed', 'Nie dotyczy (profil Usługi / B2B)');
+  } else if (tracking.variantTimeoutUrls && tracking.variantTimeoutUrls.length > 0) {
     addEval('ecom-variant-health', 'failed', `${tracking.variantTimeoutUrls.length} wariantów z błędem 504/>2.5s`, tracking.variantTimeoutUrls);
   } else {
     addEval('ecom-variant-health', 'passed', 'Warianty stabilne');
   }
 
   // ecom-omnibus-compliance
-  if (isEcommerce && tracking.hasOmnibusCompliance === false) {
+  if (!isEcommerce) {
+    addEval('ecom-omnibus-compliance', 'passed', 'Nie dotyczy (brak cen promocyjnych)');
+  } else if (tracking.hasOmnibusCompliance === false) {
     addEval('ecom-omnibus-compliance', 'failed', 'Brak najniższej ceny z 30 dni');
   } else {
     addEval('ecom-omnibus-compliance', 'passed', 'Zgodne z dyrektywą Omnibus');
   }
 
   // ecom-express-payments
-  if (isEcommerce && !tracking.hasExpressPayments) {
+  if (!isEcommerce) {
+    addEval('ecom-express-payments', 'passed', 'Nie dotyczy (profil Usługi / B2B)');
+  } else if (!tracking.hasExpressPayments) {
     addEval('ecom-express-payments', 'warning', 'Brak BLIK / Apple Pay w kodzie');
   } else {
     addEval('ecom-express-payments', 'passed', 'Wykryto płatności mobilne');
   }
 
   // ecom-schema-product
-  if (isEcommerce && !tracking.hasProductSchema) {
+  if (!isEcommerce) {
+    addEval('ecom-schema-product', 'passed', 'Nie dotyczy (witryna usługowa)');
+  } else if (!tracking.hasProductSchema) {
     addEval('ecom-schema-product', 'warning', 'Brak Schema.org Product');
   } else {
     addEval('ecom-schema-product', 'passed', 'Schema Product obecna');
   }
 
   // ecom-schema-offers
-  addEval('ecom-schema-offers', isEcommerce && !tracking.hasProductSchema ? 'warning' : 'passed', isEcommerce ? 'Oferty Schema' : 'OK');
+  if (!isEcommerce) {
+    addEval('ecom-schema-offers', 'passed', 'Nie dotyczy (witryna usługowa)');
+  } else if (!tracking.hasProductSchema) {
+    addEval('ecom-schema-offers', 'warning', 'Brak mikrodanych ofert');
+  } else {
+    addEval('ecom-schema-offers', 'passed', 'Oferty Schema w JSON-LD');
+  }
 
   // ecom-schema-stock
-  addEval('ecom-schema-stock', 'passed', 'Dostępność magazynowa');
+  if (!isEcommerce) {
+    addEval('ecom-schema-stock', 'passed', 'Nie dotyczy (brak magazynu towarów)');
+  } else {
+    addEval('ecom-schema-stock', 'passed', 'Dostępność magazynowa');
+  }
 
   // ecom-cart-buttons
-  if (isEcommerce && !tracking.hasCartButtons) {
+  if (!isEcommerce) {
+    addEval('ecom-cart-buttons', 'passed', 'Nie dotyczy (brak koszyka)');
+  } else if (!tracking.hasCartButtons) {
     addEval('ecom-cart-buttons', 'failed', 'Brak czytelnych przycisków koszyka');
   } else {
     addEval('ecom-cart-buttons', 'passed', 'Przyciski aktywne');
   }
 
   // ecom-cart-visibility
-  addEval('ecom-cart-visibility', 'passed', 'Koszyk w nagłówku');
+  if (!isEcommerce) {
+    addEval('ecom-cart-visibility', 'passed', 'Nie dotyczy (profil Usługi / B2B)');
+  } else {
+    addEval('ecom-cart-visibility', 'passed', 'Koszyk w nagłówku');
+  }
 
   // ecom-trust-signals
-  addEval('ecom-trust-signals', 'passed', 'Sygnały zaufania');
+  if (!isEcommerce) {
+    addEval('ecom-trust-signals', 'passed', 'Sygnały wiarygodności B2B');
+  } else {
+    addEval('ecom-trust-signals', 'passed', 'Sygnały zaufania e-commerce');
+  }
 
   // ecom-consumer-rights
-  addEval('ecom-consumer-rights', 'passed', 'Informacje o zwrotach');
+  if (!isEcommerce) {
+    addEval('ecom-consumer-rights', 'passed', 'Regulamin / Warunki współpracy');
+  } else {
+    addEval('ecom-consumer-rights', 'passed', 'Informacje o zwrotach i reklamacjach');
+  }
 
   // ecom-cross-sell
-  addEval('ecom-cross-sell', 'passed', 'Moduły rekomendacji');
+  if (!isEcommerce) {
+    addEval('ecom-cross-sell', 'passed', 'Nie dotyczy (profil Usługi / B2B)');
+  } else {
+    addEval('ecom-cross-sell', 'passed', 'Moduły rekomendacji');
+  }
 
   // ecom-free-shipping
-  addEval('ecom-free-shipping', 'passed', 'Próg darmowej dostawy');
+  if (!isEcommerce) {
+    addEval('ecom-free-shipping', 'passed', 'Nie dotyczy (profil Usługi / B2B)');
+  } else {
+    addEval('ecom-free-shipping', 'passed', 'Próg darmowej dostawy');
+  }
 
   // ecom-product-images
-  const missingImgProd = evidence.categoriesSummary?.products?.missingImages || 0;
-  if (missingImgProd > 0) {
-    addEval('ecom-product-images', 'warning', `${missingImgProd} produktów bez zdjęć`);
+  if (!isEcommerce) {
+    addEval('ecom-product-images', 'passed', 'Nie dotyczy (brak katalogu SKU)');
   } else {
-    addEval('ecom-product-images', 'passed', 'Wszystkie produkty ze zdjęciami');
+    const missingImgProd = evidence.categoriesSummary?.products?.missingImages || 0;
+    if (missingImgProd > 0) {
+      addEval('ecom-product-images', 'warning', `${missingImgProd} produktów bez zdjęć`);
+    } else {
+      addEval('ecom-product-images', 'passed', 'Wszystkie produkty ze zdjęciami');
+    }
   }
 
   // ----------------------------------------------------
@@ -1256,10 +1300,10 @@ export function evaluateAllCheckpoints(
     addEval('perf-render-blocking-scripts', 'passed', '0 skryptów blokujących');
   }
 
-  // perf-dom-size: Próg wykalibrowany zgodnie z uwagą inżynieryjną (614 to super wynik!)
-  if (codeSmells.domElements > 1600) {
+  // perf-dom-size: Próg wykalibrowany zgodnie ze standardem Google Lighthouse (optymalnie < 1400)
+  if (codeSmells.domElements > 2400) {
     addEval('perf-dom-size', 'failed', `${codeSmells.domElements} elementów DOM (Ciężkie)`);
-  } else if (codeSmells.domElements > 1000) {
+  } else if (codeSmells.domElements > 1400) {
     addEval('perf-dom-size', 'warning', `${codeSmells.domElements} elementów DOM (Umiarkowane)`);
   } else {
     addEval('perf-dom-size', 'passed', `${codeSmells.domElements} elementów DOM (Optymalne)`);

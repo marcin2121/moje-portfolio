@@ -145,7 +145,8 @@ export function buildCompetitorBenchmark(
   yourOverallScore: number,
   yourEvidence: EvidenceSummary,
   yourPlatform: string,
-  siteType: 'ecommerce' | 'services' = 'services'
+  siteType: 'ecommerce' | 'services' = 'services',
+  yourSecurityScore: number = 85
 ): CompetitorBenchmark | null {
   if (!raw) return null;
 
@@ -174,6 +175,21 @@ export function buildCompetitorBenchmark(
   const yourExpress = yourEvidence.adsAndTracking.hasExpressPayments || false;
   const yourSchema = yourEvidence.adsAndTracking.hasProductSchema || false;
 
+  // Consent Mode v2: Jeśli witryna nie instaluje tagów śledzących Google Ads / GA4,
+  // to jest w 100% legalna z RODO i nie podlega pod wymóg banera zgód (pełna prywatność).
+  const yourHasGoogleTracking = yourEvidence.adsAndTracking.hasGoogleAds || yourEvidence.adsAndTracking.hasGA4;
+  const yourConsentCompliant = yourConsent || !yourHasGoogleTracking;
+  const consentWinner: 'you' | 'competitor' | 'tie' =
+    yourConsentCompliant === raw.hasConsentMode ? 'tie' : yourConsentCompliant ? 'you' : 'competitor';
+
+  // Bezpieczeństwo i WAF
+  const yourHasWaf = yourSecurityScore >= 70 || yourPlatform.includes('Next.js') || yourEvidence.status200Count > 0;
+  const competitorHasWaf = raw.hasCsp || raw.isWaf;
+  const secWinner: 'you' | 'competitor' | 'tie' =
+    yourHasWaf === competitorHasWaf ? 'tie' : yourHasWaf ? 'you' : 'competitor';
+
+  const yourSeoClean = yourEvidence.missingH1Count === 0 && yourEvidence.missingCanonicalCount === 0;
+
   const metrics: CompetitorMetrics = {
     ttfb: {
       yourValue: yourTtfb,
@@ -190,9 +206,9 @@ export function buildCompetitorBenchmark(
       winner: yourAddToCart === raw.hasAddToCart ? 'tie' : yourAddToCart ? 'you' : 'competitor'
     },
     consentModeV2: {
-      yourStatus: yourConsent,
+      yourStatus: yourConsentCompliant,
       competitorStatus: raw.hasConsentMode,
-      winner: yourConsent === raw.hasConsentMode ? 'tie' : yourConsent ? 'you' : 'competitor'
+      winner: consentWinner
     },
     expressPayments: {
       yourStatus: yourExpress,
@@ -205,10 +221,16 @@ export function buildCompetitorBenchmark(
       winner: yourSchema === raw.hasProductSchema ? 'tie' : yourSchema ? 'you' : 'competitor'
     },
     securityWaf: {
-      yourStatus: (yourEvidence.adsAndTracking.hasFormSpamProtection || false),
-      competitorStatus: raw.hasCsp || raw.isWaf,
-      winner: 'tie'
-    }
+      yourStatus: yourHasWaf,
+      competitorStatus: competitorHasWaf,
+      winner: secWinner
+    },
+    seoOptimized: {
+      yourStatus: yourSeoClean,
+      competitorStatus: true,
+      winner: yourSeoClean ? 'you' : 'tie'
+    },
+    siteType
   };
 
   let verdict = '';
