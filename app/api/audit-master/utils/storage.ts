@@ -27,6 +27,49 @@ function ensureLocalCacheDir() {
   }
 }
 
+function sanitizeAuditData(audit: AuditMasterResponse): AuditMasterResponse {
+  if (audit.quickIssues) {
+    audit.quickIssues = audit.quickIssues.map(issue => ({
+      ...issue,
+      title: issue.title.replace(/\b1 grup\b/g, '1 grupa'),
+      shortDesc: issue.shortDesc.replace(/(\d+)\s+podstron\s+posiada/g, (m, p1) => {
+        const n = parseInt(p1, 10);
+        if (n >= 2 && n <= 4) return `${n} podstrony posiadają`;
+        if (n === 1) return `1 podstrona posiada`;
+        return m;
+      }),
+      developerAction: issue.developerAction
+        .replace(/^Marcin zaimplementuje/i, 'Zaimplementuję')
+        .replace(/^Marcin wdroży/i, 'Wdrożę')
+        .replace(/^Marcin wprowadzi/i, 'Wprowadzę')
+        .replace(/^Marcin skonfiguruje/i, 'Skonfiguruję')
+        .replace(/^Marcin podepnie/i, 'Podepnę')
+        .replace(/^Marcin przeprowadzi/i, 'Przeprowadzę')
+        .replace(/\bMarcin zaimplementuje\b/g, 'zaimplementuję')
+        .replace(/\bMarcin wdroży\b/g, 'wdrożę')
+        .replace(/\bMarcin wprowadzi\b/g, 'wprowadzę')
+        .replace(/\bMarcin skonfiguruje\b/g, 'skonfiguruję')
+        .replace(/\bMarcin podepnie\b/g, 'podepnę')
+        .replace(/\bMarcin przeprowadzi\b/g, 'przeprowadzę')
+    }));
+  }
+  if (audit.evidence?.adsAndTracking?.issues) {
+    audit.evidence.adsAndTracking.issues = audit.evidence.adsAndTracking.issues.map(i => ({
+      ...i,
+      developerSolution: i.developerSolution
+        .replace(/^Marcin zaimplementuje/i, 'Zaimplementuję')
+        .replace(/^Marcin wdroży/i, 'Wdrożę')
+        .replace(/^Marcin wprowadzi/i, 'Wprowadzę')
+        .replace(/^Marcin skonfiguruje/i, 'Skonfiguruję')
+        .replace(/^Marcin podepnie/i, 'Podepnę')
+        .replace(/^Marcin przeprowadzi/i, 'Przeprowadzę')
+        .replace(/\bMarcin zaimplementuje\b/g, 'zaimplementuję')
+        .replace(/\bMarcin wdroży\b/g, 'wdrożę')
+    }));
+  }
+  return audit;
+}
+
 export async function getAuditByToken(token: string): Promise<AuditMasterResponse | null> {
   // 1. Sprawdź Supabase
   if (supabase) {
@@ -38,10 +81,10 @@ export async function getAuditByToken(token: string): Promise<AuditMasterRespons
         .maybeSingle();
 
       if (!error && data?.data) {
-        return {
+        return sanitizeAuditData({
           ...(data.data as AuditMasterResponse),
           cached: true
-        };
+        });
       }
     } catch {
       // Fallback do lokalnego cache
@@ -55,10 +98,10 @@ export async function getAuditByToken(token: string): Promise<AuditMasterRespons
     if (fs.existsSync(filePath)) {
       const raw = fs.readFileSync(filePath, 'utf-8');
       const parsed = JSON.parse(raw) as AuditMasterResponse;
-      return {
+      return sanitizeAuditData({
         ...parsed,
         cached: true
-      };
+      });
     }
   } catch {
     // Ignoruj
@@ -94,10 +137,10 @@ export async function getAuditByDomain(
         .maybeSingle();
 
       if (!error && data?.data) {
-        return {
+        return sanitizeAuditData({
           ...(data.data as AuditMasterResponse),
           cached: true
-        };
+        });
       }
     } catch {
       // Fallback do lokalnego cache

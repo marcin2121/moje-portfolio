@@ -52,38 +52,64 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
 
       <div className="space-y-6">
         {issues.map((issue) => {
-          const style = getSeverityStyle(issue.severity);
           const isOpen = openDrawerId === issue.id;
+          const cleanTitle = issue.title.replace(/\b1 grup\b/g, '1 grupa');
+          const cleanShortDesc = issue.shortDesc.replace(/(\d+)\s+podstron\s+posiada/g, (m, p1) => {
+            const n = parseInt(p1, 10);
+            if (n >= 2 && n <= 4) return `${n} podstrony posiadają`;
+            if (n === 1) return `1 podstrona posiada`;
+            return m;
+          });
+          const cleanDeveloperAction = issue.developerAction
+            .replace(/^Marcin zaimplementuje/i, 'Zaimplementuję')
+            .replace(/^Marcin wdroży/i, 'Wdrożę')
+            .replace(/^Marcin wprowadzi/i, 'Wprowadzę')
+            .replace(/^Marcin skonfiguruje/i, 'Skonfiguruję')
+            .replace(/^Marcin podepnie/i, 'Podepnę')
+            .replace(/^Marcin przeprowadzi/i, 'Przeprowadzę')
+            .replace(/\bMarcin zaimplementuje\b/g, 'zaimplementuję')
+            .replace(/\bMarcin wdroży\b/g, 'wdrożę')
+            .replace(/\bMarcin wprowadzi\b/g, 'wprowadzę')
+            .replace(/\bMarcin skonfiguruje\b/g, 'skonfiguruję')
+            .replace(/\bMarcin podepnie\b/g, 'podepnę')
+            .replace(/\bMarcin przeprowadzi\b/g, 'przeprowadzę');
+
+          const affectedText = issue.affectedCount === 1
+            ? '1 podstrona'
+            : (issue.affectedCount && issue.affectedCount >= 2 && issue.affectedCount <= 4)
+              ? `${issue.affectedCount} podstrony`
+              : `${issue.affectedCount} podstron`;
 
           return (
             <div
               key={issue.id}
-              className={`bg-white/90 border border-slate-200/70 rounded-2xl p-6 md:p-7 ${style.accentBar} shadow-[0_4px_25px_rgba(0,0,0,0.03)] transition-all`}
+              className="p-6 md:p-8 rounded-2xl border border-slate-200/80 bg-slate-50/40 hover:bg-slate-50/70 transition-colors"
             >
-              {/* Pasek nagłówka problemu */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                <div className="flex items-center gap-3">
-                  <span className={`px-2.5 py-1 rounded-md font-mono text-[11px] font-bold uppercase tracking-wider ${style.tag}`}>
-                    {style.label}
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-2">
+                  <span className={`font-mono text-xs font-bold px-2.5 py-1 rounded-md uppercase tracking-wider ${
+                    issue.severity === 'critical'
+                      ? 'bg-rose-100 text-rose-800 border border-rose-200'
+                      : 'bg-amber-100 text-amber-800 border border-amber-200'
+                  }`}>
+                    {issue.severity === 'critical' ? 'Krytyczny wyciek / błąd' : 'Wąskie gardło'}
                   </span>
-                  {issue.affectedCount && issue.affectedCount > 0 && (
+                  {issue.affectedCount !== undefined && (
                     <span className="font-mono text-xs text-slate-500">
-                      Dotyczy: <strong className="text-slate-800">{issue.affectedCount} podstron</strong>
+                      Dotyczy: <strong className="text-slate-800">{affectedText}</strong>
                     </span>
                   )}
                 </div>
               </div>
 
               <h4 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight mb-2">
-                {issue.title}
+                {cleanTitle}
               </h4>
               <p className="text-xs sm:text-sm text-slate-600 mb-5 leading-relaxed">
-                {issue.shortDesc}
+                {cleanShortDesc}
               </p>
 
-              {/* Dwa skontrastowane bloki: Co tracisz vs Co Marcin wdroży */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                {/* 1. Co tracisz (Wpływ finansowy) */}
                 <div className="bg-rose-50/50 border border-rose-200/60 rounded-xl p-4 border-l-2 border-l-rose-600">
                   <div className="flex items-center gap-2 mb-1.5">
                     <TrendingDown className="w-4 h-4 text-rose-600 shrink-0" />
@@ -96,7 +122,6 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
                   </p>
                 </div>
 
-                {/* 2. Co dla Ciebie wdrożę */}
                 <div className="bg-slate-50/80 border border-slate-200/80 rounded-xl p-4 border-l-2 border-l-slate-900">
                   <div className="flex items-center gap-2 mb-1.5">
                     <Wrench className="w-4 h-4 text-slate-900 shrink-0" />
@@ -105,12 +130,11 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
                     </span>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed">
-                    {issue.developerAction}
+                    {cleanDeveloperAction}
                   </p>
                 </div>
               </div>
 
-              {/* Rozwijana szuflada z dowodami */}
               {issue.details && issue.details.length > 0 && (
                 <div className="pt-3 border-t border-slate-100">
                   <button
