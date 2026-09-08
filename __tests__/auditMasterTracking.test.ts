@@ -148,4 +148,30 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
     expect(evidence.adsAndTracking.issues.some(i => i.id === 'leak-add-to-cart')).toBe(false);
     expect(evidence.adsAndTracking.adBudgetLeakRisk).toBe('none');
   });
+
+  it('potwierdza 100% canonical, 0 duplikatów title i 0 thin content dla poprawnie skonfigurowanych stron', () => {
+    const page1: PageAuditResult = { ...mockPage, url: 'https://molendadevelopment.pl', title: 'Marcin Molenda | Precyzyjne Systemy', canonical: 'https://molendadevelopment.pl', wordCount: 450, isThinContent: false };
+    const page2: PageAuditResult = { ...mockPage, url: 'https://molendadevelopment.pl/wdrozenia', title: 'Case Studies i Wdrożenia Headless', canonical: 'https://molendadevelopment.pl/wdrozenia', wordCount: 420, isThinContent: false };
+    const page3: PageAuditResult = { ...mockPage, url: 'https://molendadevelopment.pl/narzedzia', title: 'Bezpłatne Narzędzia Inżynieryjne', canonical: 'https://molendadevelopment.pl/narzedzia', wordCount: 370, isThinContent: false };
+    const page4: PageAuditResult = { ...mockPage, url: 'https://molendadevelopment.pl/polityka-prywatnosci', title: 'Polityka Prywatności i RODO', canonical: 'https://molendadevelopment.pl/polityka-prywatnosci', wordCount: 420, isThinContent: false };
+
+    const signals: PageTrackingSignals[] = [
+      { hasGoogleAds: false, hasGtm: false, hasGa4: false, hasMetaPixel: false, hasTikTokPixel: false, hasConsentModeV2: false, hasDataLayer: false, hasAddToCartTracking: false, hasPurchaseTracking: false, hasCartButtons: false, hasLeadForms: true },
+      { hasGoogleAds: false, hasGtm: false, hasGa4: false, hasMetaPixel: false, hasTikTokPixel: false, hasConsentModeV2: false, hasDataLayer: false, hasAddToCartTracking: false, hasPurchaseTracking: false, hasCartButtons: false, hasLeadForms: false },
+      { hasGoogleAds: false, hasGtm: false, hasGa4: false, hasMetaPixel: false, hasTikTokPixel: false, hasConsentModeV2: false, hasDataLayer: false, hasAddToCartTracking: false, hasPurchaseTracking: false, hasCartButtons: false, hasLeadForms: false },
+      { hasGoogleAds: false, hasGtm: false, hasGa4: false, hasMetaPixel: false, hasTikTokPixel: false, hasConsentModeV2: false, hasDataLayer: false, hasAddToCartTracking: false, hasPurchaseTracking: false, hasCartButtons: false, hasLeadForms: false }
+    ];
+
+    const evidence = buildEvidenceSummary([page1, page2, page3, page4], signals, 'services');
+    expect(evidence.missingCanonicalCount).toBe(0);
+    expect(evidence.missingCanonicalUrls).toHaveLength(0);
+    expect(evidence.duplicateTitleGroups).toHaveLength(0);
+    expect(evidence.thinContentCount).toBe(0);
+    expect(evidence.thinContentUrls).toHaveLength(0);
+
+    const quickIssues = generateQuickCriticalIssues(evidence, undefined, 'services');
+    expect(quickIssues.some(i => i.id === 'quick-missing-canonical')).toBe(false);
+    expect(quickIssues.some(i => i.id === 'quick-duplicate-titles')).toBe(false);
+    expect(quickIssues.some(i => i.id === 'quick-thin-content')).toBe(false);
+  });
 });

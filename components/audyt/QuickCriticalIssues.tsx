@@ -18,20 +18,7 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
     setOpenDrawerId(prev => (prev === id ? null : id));
   };
 
-  const getSeverityStyle = (severity: 'critical' | 'warning') => {
-    if (severity === 'critical') {
-      return {
-        tag: 'border border-rose-200/80 bg-rose-50/70 text-rose-700',
-        label: 'Krytyczny wyciek / błąd',
-        accentBar: 'border-l-4 border-l-rose-600'
-      };
-    }
-    return {
-      tag: 'border border-amber-200/80 bg-amber-50/70 text-amber-700',
-      label: 'Wąskie gardło',
-      accentBar: 'border-l-4 border-l-amber-500'
-    };
-  };
+
 
   return (
     <div className="bg-white/80 border border-slate-200/70 rounded-3xl p-6 md:p-10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)]">

@@ -7,8 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Zap, 
   ShieldCheck, 
-  Layers, 
-  CheckCircle2, 
   ExternalLink,
   Cpu,
   FileCode2,

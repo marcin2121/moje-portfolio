@@ -20,7 +20,10 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Marcin Molenda | Precyzyjne Systemy, Web & Mobile",
+  title: {
+    default: "Marcin Molenda | Precyzyjne Systemy, Web & Mobile",
+    template: "%s | Marcin Molenda",
+  },
   description: "Dedykowane systemy i aplikacje webowe oparte o Next.js 16 i Supabase. Architektura bez kompromisów, od JDG po duże firmy. Szybkość ładowania < 1s.",
   keywords: ['tworzenie stron internetowych', 'programista Next.js', 'aplikacje webowe', 'aplikacje mobilne', 'developer Polska', 'optymalizacja SEO'],
 
@@ -31,6 +34,9 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
   },
   metadataBase: new URL('https://molendadevelopment.pl'),
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: 'Marcin Molenda | Strony i Aplikacje Web & Mobile',
     description: 'Dedykowane strony i aplikacje webowe w Next.js 16. Szybkość ładowania < 1s. Obsługa firm z całej Polski.',

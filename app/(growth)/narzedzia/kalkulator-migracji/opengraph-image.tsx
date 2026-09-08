@@ -9,7 +9,6 @@ export default async function Image(req: Request) {
   // Oczekujemy, że Next.js wstrzyknie obiekt Request, z którego wyciągniemy parametry
   const { searchParams } = new URL(req.url);
   const lost = searchParams.get('lost');
-  const time = searchParams.get('time');
 
   if (lost) {
     return new ImageResponse(

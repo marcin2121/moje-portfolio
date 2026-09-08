@@ -26,7 +26,7 @@ describe('withValidation', () => {
     name: z.string(),
   });
 
-  const mockHandler = vi.fn(async (data, req) => {
+  const mockHandler = vi.fn(async (data: { name: string }) => {
     return NextResponse.json({ success: true, data });
   });
 
@@ -37,7 +37,7 @@ describe('withValidation', () => {
       json: vi.fn().mockResolvedValue({ name: 'Test' }),
     } as unknown as Request;
 
-    const response: any = await wrapped(request);
+    const response = await wrapped(request) as { status: number; body?: unknown };
 
     expect(mockHandler).toHaveBeenCalledWith({ name: 'Test' }, request);
     expect(response.status).toBe(200);
@@ -51,7 +51,7 @@ describe('withValidation', () => {
       json: vi.fn().mockResolvedValue({ age: 25 }), // missing 'name'
     } as unknown as Request;
 
-    const response: any = await wrapped(request);
+    const response = await wrapped(request) as { status: number; body?: unknown };
 
     expect(mockHandler).not.toHaveBeenCalled();
     expect(NextResponse.json).toHaveBeenCalledWith({ error: 'Invalid Payload' }, { status: 400 });
@@ -67,7 +67,7 @@ describe('withValidation', () => {
       json: vi.fn().mockRejectedValue(new Error('Syntax Error')),
     } as unknown as Request;
 
-    const response: any = await wrapped(request);
+    const response = await wrapped(request) as { status: number; body?: unknown };
 
     expect(NextResponse.json).toHaveBeenCalledWith({ error: 'Internal Server Error' }, { status: 500 });
     expect(response.status).toBe(500);

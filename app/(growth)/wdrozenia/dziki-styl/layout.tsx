@@ -3,6 +3,9 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Jak odchudziliśmy sklep DzikiStyl.com o 23MB? | Case Study',
   description: 'Zobacz w jaki sposób zmiana architektury na Edge-first pozwoliła drastycznie zmniejszyć wagę sklepu Dziki Styl, poprawiając czas ładowania i konwersję.',
+  alternates: {
+    canonical: '/wdrozenia/dziki-styl',
+  },
   openGraph: {
     title: 'Jak odchudziliśmy sklep DzikiStyl.com o 23MB? | Case Study',
     description: 'Zobacz w jaki sposób zmiana architektury na Edge-first pozwoliła drastycznie zmniejszyć wagę sklepu Dziki Styl, poprawiając czas ładowania i konwersję.',

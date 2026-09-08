@@ -68,7 +68,7 @@ export default function RLTPolskaCaseStudy() {
               </div>
               <div>
                 <p className="text-3xl font-bold text-slate-900">100%</p>
-                <p className="text-xs uppercase tracking-wider text-orange-600 mt-1 font-semibold">Gwarancji Uptime'u</p>
+                <p className="text-xs uppercase tracking-wider text-orange-600 mt-1 font-semibold">Gwarancji Uptime&apos;u</p>
               </div>
             </div>
           </section>
@@ -84,7 +84,7 @@ export default function RLTPolskaCaseStudy() {
           <div>
             <h3 className="text-3xl font-bold text-slate-900 mb-4">1. Nieskończone Skalowanie (Serverless Edge)</h3>
             <p className="text-slate-600 text-lg leading-relaxed">
-              Kiedy influencerka wrzuca relację z Twoim hitem sprzedażowym, ruch rośnie z 10 do 1000 osób w minutę. Stary serwer w takiej sytuacji odcinał zasilanie. Nasza architektura "Serverless" w ułamku sekundy klonuje się na setki małych serwerów, płynnie przyjmując każdy pik obciążenia. Ty liczysz zyski, a nie straty z błędu 508.
+              Kiedy influencerka wrzuca relację z Twoim hitem sprzedażowym, ruch rośnie z 10 do 1000 osób w minutę. Stary serwer w takiej sytuacji odcinał zasilanie. Nasza architektura &quot;Serverless&quot; w ułamku sekundy klonuje się na setki małych serwerów, płynnie przyjmując każdy pik obciążenia. Ty liczysz zyski, a nie straty z błędu 508.
             </p>
           </div>
 

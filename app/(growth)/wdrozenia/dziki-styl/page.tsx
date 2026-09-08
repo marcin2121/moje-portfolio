@@ -90,9 +90,9 @@ export default function DzikiStylCaseStudy() {
 
         <h2 className="text-2xl text-slate-900 font-bold mt-12 mb-4">Dlaczego to ma znaczenie?</h2>
         <ul className="space-y-4 mb-16 text-slate-600">
-          <li><strong className="text-slate-900">Błyskawiczne DOM Content Loaded:</strong> Użytkownik nie czeka na "ładowanie się" sklepu.</li>
-          <li><strong className="text-slate-900">Efektywność budżetu reklamowego:</strong> Każde kliknięcie w reklamę FB zamienia się w wizytę, a nie w "loading screen".</li>
-          <li><strong className="text-slate-900">Brak "ukrytych kosztów":</strong> Usunęliśmy 15 zbędnych skryptów śledzących, które nie wnosiły żadnej wartości dla biznesu.</li>
+          <li><strong className="text-slate-900">Błyskawiczne DOM Content Loaded:</strong> Użytkownik nie czeka na &quot;ładowanie się&quot; sklepu.</li>
+          <li><strong className="text-slate-900">Efektywność budżetu reklamowego:</strong> Każde kliknięcie w reklamę FB zamienia się w wizytę, a nie w &quot;loading screen&quot;.</li>
+          <li><strong className="text-slate-900">Brak &quot;ukrytych kosztów&quot;:</strong> Usunęliśmy 15 zbędnych skryptów śledzących, które nie wnosiły żadnej wartości dla biznesu.</li>
         </ul>
 
         {/* Dodane wstawki */}
@@ -110,7 +110,7 @@ export default function DzikiStylCaseStudy() {
           <section className="grid md:grid-cols-2 gap-6">
             <div className="p-6 bg-white rounded-xl border border-slate-200 shadow-premium-soft">
               <h3 className="text-orange-600 font-bold mb-2">Frictionless Checkout</h3>
-              <p className="text-sm text-slate-600">Konfigurator bez przeładowań. Funkcja "magicznego linku" pozwala pracownikowi wysłać gotowy koszyk do szefa, który jednym kliknięciem akceptuje zamówienie.</p>
+              <p className="text-sm text-slate-600">Konfigurator bez przeładowań. Funkcja &quot;magicznego linku&quot; pozwala pracownikowi wysłać gotowy koszyk do szefa, który jednym kliknięciem akceptuje zamówienie.</p>
             </div>
             <div className="p-6 bg-white rounded-xl border border-slate-200 shadow-premium-soft">
               <h3 className="text-orange-600 font-bold mb-2">Automatyzacja DTP</h3>
@@ -145,7 +145,7 @@ export default function DzikiStylCaseStudy() {
         <div className="mt-16 p-8 bg-orange-50 border border-orange-200/60 rounded-2xl text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-6 shadow-premium-soft">
           <div>
             <h3 className="text-orange-600 font-bold mb-2 text-xl">Twój sklep ma podobne objawy?</h3>
-            <p className="text-slate-600 m-0">Jeśli czujesz, że Twój system "puchnie" i nie domyka konwersji, nie musisz migrować wszystkiego od razu. Zróbmy darmowy audyt wagi.</p>
+            <p className="text-slate-600 m-0">Jeśli czujesz, że Twój system &quot;puchnie&quot; i nie domyka konwersji, nie musisz migrować wszystkiego od razu. Zróbmy darmowy audyt wagi.</p>
           </div>
           <Link href="/#kontakt" className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 shadow-[0_8px_20px_rgba(249,115,22,0.2)] transition-all hover:scale-105 whitespace-nowrap">
             Zamów audyt wagi →

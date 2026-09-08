@@ -52,9 +52,10 @@ export async function crawlDomain(
   // 1. Zbieranie listy URL-i do przeskanowania (Sitemap + fallback Homepage links)
   const discoveredUrls = await discoverUrls(origin, targetUrl);
   
-  // Ograniczamy do maxPages, upewniając się, że homepage jest na 1. miejscu
+  // Ograniczamy do maxPages, upewniając się, że homepage jest na 1. miejscu i nie ma duplikatów z trailing slash
   const normalizedTarget = normalizeUrl(targetUrl, origin);
-  const queue = Array.from(new Set([normalizedTarget, ...discoveredUrls]))
+  const normalizedDiscovered = discoveredUrls.map(u => normalizeUrl(u, origin));
+  const queue = Array.from(new Set([normalizedTarget, ...normalizedDiscovered]))
     .filter(u => isValidInternalUrl(u, hostname))
     .slice(0, maxPages);
 
@@ -876,7 +877,11 @@ function normalizeUrl(url: string, origin: string): string {
   try {
     const u = new URL(url, origin);
     u.hash = '';
-    return u.toString();
+    let res = u.toString();
+    if (res.endsWith('/')) {
+      res = res.slice(0, -1);
+    }
+    return res;
   } catch {
     return url;
   }

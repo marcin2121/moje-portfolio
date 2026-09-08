@@ -3,6 +3,9 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Stowarzyszenie KAS | Case Study: Headless Next.js, WCAG 2.2 AA & 98/100 YellowLabTools',
   description: 'Zobacz jak stworzyliśmy nowoczesny, w 100% dostępny cyfrowo portal dla Stowarzyszenia KAS: 16 127 linii czystego kodu TypeScript, 4x100 Google PageSpeed i 98/100 YellowLabTools.',
+  alternates: {
+    canonical: '/wdrozenia/stowarzyszeniekas',
+  },
   openGraph: {
     title: 'Stowarzyszenie KAS | Case Study: Headless Next.js, WCAG 2.2 AA & 98/100 YellowLabTools',
     description: 'Architektura Headless Next.js, pełna zgodność z WCAG 2.2 AA, 16 127 linii kodu i certyfikowana dostępność cyfrowa.',

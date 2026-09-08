@@ -12,24 +12,36 @@ const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: fals
 export default function PrivacyPolicy() {
   const sections = [
     {
-      title: "1. Administrator Danych",
-      content: "Administratorem Twoich danych osobowych jest Marcin Molenda, prowadzący działalność gospodarczą pod firmą Molenda Development, NIP: 7981489581, REGON: 545325616, z siedzibą przy ul. Jodłowej 28, 98-220 Zduńska Wola. Kontakt w sprawach ochrony danych osobowych możliwy jest pod adresem e-mail: kontakt@molendadevelopment.pl."
+      title: "1. Administrator Danych Osobowych",
+      content: "Administratorem Twoich danych osobowych jest Marcin Molenda, prowadzący działalność gospodarczą pod firmą Molenda Development, NIP: 7981489581, REGON: 545325616, z siedzibą przy ul. Jodłowej 28, 98-220 Zduńska Wola. Wszelkie zapytania oraz wnioski dotyczące ochrony danych i realizacji przysługujących praw prosimy kierować na dedykowany adres e-mail: kontakt@molendadevelopment.pl."
     },
     {
-      title: "2. Cel i podstawa prawna",
-      content: "Dane osobowe przetwarzane są wyłącznie w celu obsługi zapytań wysyłanych przez formularz kontaktowy (prawnie uzasadniony interes Administratora) oraz realizacji ewentualnych usług (umowa). Przetwarzanie odbywa się zgodnie z RODO."
+      title: "2. Podstawa Prawna i Cele Przetwarzania",
+      content: "Dane osobowe przetwarzane są na podstawie Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 (RODO): w celu realizacji kontaktu, przygotowania wyceny lub audytu technologicznego na Twoje życzenie (art. 6 ust. 1 lit. b RODO), w celu wykonania zawartej umowy o świadczenie usług programistycznych, a także w oparciu o prawnie uzasadniony interes Administratora (art. 6 ust. 1 lit. f RODO) polegający na ochronie infrastruktury serwerowej przed nadużyciami, spamem i atakami sieciowymi."
     },
     {
-      title: "3. Zakres zbierania i odbiorcy",
-      content: "Zbieramy wyłącznie dane niezbędne do kontaktu: Imię/Nazwa Firmy oraz Adres e-mail. Twoje dane nie są sprzedawane ani przekazywane podmiotom trzecim w celach marketingowych. Mogą być powierzone wyłącznie zaufanym dostawcom technologii (np. Resend do bezpiecznej obsługi korespondencji e-mail)."
+      title: "3. Zakres Danych i Odbiorcy",
+      content: "Gromadzimy wyłącznie minimum danych niezbędnych do celów biznesowych: imię, nazwisko lub nazwę firmy, adres e-mail, numer telefonu oraz adres URL analizowanej witryny. Twoje dane osobowe nigdy nie są sprzedawane, wypożyczane ani udostępniane podmiotom trzecim w celach reklamowych. Mogą być przekazywane wyłącznie zaufanym podmiotom zapewniającym infrastrukturę techniczną (np. certyfikowanym dostawcom usług e-mail, takim jak Resend, oraz certyfikowanym centrom danych) na podstawie umów powierzenia przetwarzania danych."
     },
     {
-      title: "4. Pliki Cookies i Analityka",
-      content: "Strona wykorzystuje narzędzie analityczne Umami, które nie wykorzystuje plików cookies (jest w 100% zgodne z RODO i nie zbiera danych identyfikacyjnych użytkownika). Cookies mogą być zapisywane wyłącznie przez przeglądarkę na potrzeby techniczne (np. lokalna pamięć podręczna)."
+      title: "4. Analityka Cookieless i Poszanowanie Prywatności",
+      content: "Serwis wykorzystuje nowoczesne, etyczne narzędzie analityczne Umami Analytics, które działa w technologii Cookieless. Oznacza to, że nie zapisujemy na Twoim urządzeniu żadnych śledzących plików cookies, nie gromadzimy unikalnych identyfikatorów ani nie tworzymy profili behawioralnych. Adresy IP są natychmiast anonimizowane przed zapisaniem. Dzięki temu korzystanie z serwisu jest w 100% zgodne z dyrektywą e-Privacy i RODO bez konieczności wyświetlania inwazyjnych banerów cookies."
     },
     {
-      title: "5. Prawa Użytkownika",
-      content: "Masz prawo żądania dostępu do swoich danych, ich sprostowania, usunięcia ('prawo do bycia zapomnianym'), ograniczenia przetwarzania oraz wniesienia skargi do organu nadzorczego (PUODO)."
+      title: "5. Okres Przechowywania Danych (Retencja)",
+      content: "Dane przekazane w formularzu kontaktowym lub zapytaniu o audyt przechowywane są przez okres niezbędny do przeprowadzenia rozmów biznesowych i obsługi zlecenia, a w przypadku nawiązania współpracy – przez czas trwania umowy oraz okres przedawnienia ewentualnych roszczeń wynikający z przepisów prawa (w tym prawa podatkowego i rachunkowości)."
+    },
+    {
+      title: "6. Bezpieczeństwo i Szyfrowanie Połączeń",
+      content: "Stosujemy rygorystyczne standardy inżynieryjne w celu ochrony przesyłanych informacji. Całość transmisji danych zabezpieczona jest nowoczesnym protokołem kryptograficznym TLS 1.3 z wymuszeniem szyfrowania nagłówkiem HSTS (Strict-Transport-Security). Formularze zabezpieczone są przed atakami CSRF oraz botami bez uciążliwych mechanizmów CAPTCHA."
+    },
+    {
+      title: "7. Prawa Osoby, Której Dane Dotyczą",
+      content: "Przysługuje Ci prawo żądania dostępu do treści swoich danych, ich sprostowania, usunięcia ('prawo do bycia zapomnianym'), ograniczenia przetwarzania, przenoszenia danych oraz wniesienia sprzeciwu wobec przetwarzania. Masz również prawo wniesienia skargi do organu nadzorczego – Prezesa Urzędu Ochrony Danych Osobowych (PUODO, ul. Stawki 2, 00-193 Warszawa)."
+    },
+    {
+      title: "8. Dobrowolność i Brak Zautomatyzowanego Profilowania",
+      content: "Podanie danych jest całkowicie dobrowolne, lecz niezbędne do przesłania zapytania ofertowego lub wygenerowania audytu. Twoje dane nie podlegają zautomatyzowanemu podejmowaniu decyzji wywołującemu skutki prawne, w tym profilowaniu marketingowemu."
     }
   ];
 
@@ -69,7 +81,7 @@ export default function PrivacyPolicy() {
           <h1 className="text-4xl sm:text-5xl font-mono tracking-tighter text-slate-900">
             Polityka<br />Prywatności
           </h1>
-          <p className="text-xs font-mono text-slate-500 uppercase tracking-widest">Wersja r.01 / Ostatnia zmiana: marzec 2026</p>
+          <p className="text-xs font-mono text-slate-500 uppercase tracking-widest">Wersja r.02 / Ostatnia zmiana: wrzesień 2026</p>
         </motion.div>
 
         <motion.div 
@@ -82,10 +94,10 @@ export default function PrivacyPolicy() {
           {sections.map((section, index) => (
             <div 
               key={index} 
-              className="p-6 bg-white backdrop-blur-md border border-slate-200 rounded-2xl flex flex-col gap-3 group hover:border-orange-200 shadow-sm transition-all"
+              className="p-6 bg-white/80 backdrop-blur-md border border-slate-200/80 rounded-2xl flex flex-col gap-3 group hover:border-orange-200 shadow-sm transition-all"
             >
               <h2 className="font-mono text-sm uppercase tracking-widest text-slate-900 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-orange-500 rounded-full group-hover:scale-125 transition-transform" />
+                <span className="w-1.5 h-1.5 bg-orange-500 rounded-sm group-hover:scale-125 transition-transform" />
                 {section.title}
               </h2>
               <p className="text-sm font-light text-slate-600 leading-relaxed pl-3.5">

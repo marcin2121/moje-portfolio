@@ -3,6 +3,9 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Jak RLT Polska wyeliminowało błędy 508 w E-commerce | Case Study',
   description: 'Zobacz w jaki sposób nowa architektura Serverless Edge rozwiązała problem awarii sklepu podczas pików sprzedażowych w branży Beauty.',
+  alternates: {
+    canonical: '/wdrozenia/rltpolska',
+  },
   openGraph: {
     title: 'Jak RLT Polska wyeliminowało błędy 508 w E-commerce | Case Study',
     description: 'Zobacz w jaki sposób nowa architektura Serverless Edge rozwiązała problem awarii sklepu podczas pików sprzedażowych w branży Beauty.',

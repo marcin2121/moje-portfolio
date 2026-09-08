@@ -20,7 +20,8 @@ function CalculatorContent() {
     currentLoadTimeSeconds: parseAsFloat.withDefault(4.5)
   }, { history: 'replace', shallow: true });
 
-  const { trackSliderInteraction } = useFrictionTelemetry('calc_session_' + Date.now(), 'desktop');
+  const [sessionId] = useState(() => 'calc_session_' + Date.now());
+  const { trackSliderInteraction } = useFrictionTelemetry(sessionId, 'desktop');
 
   const outputs = React.useMemo(() => calculateNextJsMigrationROI(inputs), [inputs]);
 

@@ -3,6 +3,9 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Migracja RLT Polska do Next.js | Case Study Inżynieryjne',
   description: 'Analiza inżynieryjna migracji platformy e-commerce z PHP/WordPress na Next.js (SSG/Edge), drastycznie redukująca TTFB i ładunek JS.',
+  alternates: {
+    canonical: '/wdrozenia/migracja-rlt-polska',
+  },
   openGraph: {
     title: 'Migracja RLT Polska do Next.js | Case Study Inżynieryjne',
     description: 'Analiza inżynieryjna migracji platformy e-commerce z PHP/WordPress na Next.js (SSG/Edge), drastycznie redukująca TTFB i ładunek JS.',

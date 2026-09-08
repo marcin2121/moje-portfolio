@@ -27,7 +27,6 @@ export default function AdsAndTrackingCard({ tracking, domain, siteType = 'servi
   const isMedium = tracking.adBudgetLeakRisk === 'medium';
   const hasAnyAdTracking = tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasTikTokPixel || tracking.hasGoogleTagManager || tracking.hasGA4;
   const hasGoogleTracking = tracking.hasGoogleAds || tracking.hasGA4;
-  const hasCart = isEcommerce || !!tracking.hasCartButtons;
 
   return (
     <div className="bg-white/80 border border-slate-200/70 rounded-3xl p-6 md:p-10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)]">

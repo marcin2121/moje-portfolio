@@ -44,7 +44,8 @@ describe('useFrictionTelemetry', () => {
     });
 
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    const fetchCall = (global.fetch as any).mock.calls[0];
+    const fetchMock = global.fetch as unknown as { mock: { calls: [unknown, { body: string }][] } };
+    const fetchCall = fetchMock.mock.calls[0];
     const payload = JSON.parse(fetchCall[1].body);
     
     expect(payload.journey[0].metadata_summary).toContain('Interactions: 2');
