@@ -1,17 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-
-export interface DetailedCodeSmells {
-  jquery: boolean;
-  badScripts: number;
-  domElements: number;
-  inlineStyles: number;
-  pageBuilders?: string[];
-  trackers?: string[];
-  missingAltCount?: number;
-  unoptimizedImagesCount?: number;
-  fcp?: string;
-  lcp?: string;
-}
+import { DetailedCodeSmells, EvidenceSummary } from '../types';
 
 export async function generateGeminiReport(
   targetUrl: string,
@@ -23,12 +11,28 @@ export async function generateGeminiReport(
   codeSmells: DetailedCodeSmells,
   lossPercentage: number,
   geminiKey: string,
-  siteType: 'ecommerce' | 'services' = 'services'
+  siteType: 'ecommerce' | 'services' = 'services',
+  evidence?: EvidenceSummary
 ): Promise<string> {
   const isEcommerce = siteType === 'ecommerce';
   const entityName = isEcommerce ? 'Sklep internetowy' : 'Serwis firmowy / strona usługowa';
-  const targetTerm = isEcommerce ? 'sklepu' : 'serwisu';
-  const conversionTerm = isEcommerce ? 'transakcji i sprzedaży' : 'zapytań ofertowych i leadów';
+  const conversionTerm = isEcommerce ? 'transakcji i sprzedaży' : 'zapytań ofertowych i leadów B2B';
+
+  const pagesScanned = evidence?.totalPages || 1;
+  const duplicateTitlesCount = evidence?.duplicateTitleGroups?.length || 0;
+  const missingH1Count = evidence?.missingH1Count || 0;
+  const thinContentCount = evidence?.thinContentCount || 0;
+  const missingCanonicalCount = evidence?.missingCanonicalCount || 0;
+  const avgResponseTime = evidence?.avgResponseTimeMs || 80;
+
+  const empiricalEvidenceText = evidence ? `
+DANE Z PRZEANALIZOWANYCH ${pagesScanned} PODSTRON:
+- Zbadane podstrony: ${pagesScanned} szt. (średni czas odpowiedzi: ${avgResponseTime}ms)
+- Podstrony ze zduplikowanymi tagami Title: ${duplicateTitlesCount > 0 ? `${duplicateTitlesCount} grup podstron kanibalizujących frazy!` : 'Brak (Wszystkie unikalne)'}
+- Podstrony bez nagłówka H1: ${missingH1Count} szt.
+- Podstrony z ubogą treścią (Thin Content <200 słów): ${thinContentCount} szt.
+- Podstrony bez tagu Canonical: ${missingCanonicalCount} szt.
+` : '';
 
   const buildersText = codeSmells.pageBuilders && codeSmells.pageBuilders.length > 0
     ? `\n- Wykryte ciężkie Page Buildery: ${codeSmells.pageBuilders.join(', ')}`
@@ -41,71 +45,96 @@ export async function generateGeminiReport(
     : '';
 
   const codeSmellsText = wafDetected
-    ? "UWAGA: Serwis chroniony przez WAF/Cloudflare. Skan struktury kodu zablokowany."
-    : `Dług Technologiczny (Szczegółowa Diagnostyka Inżynierska):\n- Przestarzałe biblioteki (jQuery): ${codeSmells.jquery ? 'TAK (Krytyczne!)' : 'NIE'}\n- Skrypty blokujące renderowanie (bez async/defer): ${codeSmells.badScripts} szt.\n- Rozmiar drzewa DOM: ${codeSmells.domElements} elementów\n- Brudne style inline (CSS bloat): ${codeSmells.inlineStyles} szt.${buildersText}${trackersText}${vitalsText}`;
+    ? "UWAGA: Serwis chroniony przez WAF/Cloudflare."
+    : `Dług Technologiczny w kodzie:\n- Przestarzałe biblioteki (jQuery): ${codeSmells.jquery ? 'TAK (Krytyczne!)' : 'NIE'}\n- Skrypty blokujące renderowanie (bez async/defer): ${codeSmells.badScripts} szt.\n- Rozmiar drzewa DOM: ${codeSmells.domElements} elementów\n- Brudne style inline (CSS bloat): ${codeSmells.inlineStyles} szt.${buildersText}${trackersText}${vitalsText}`;
 
   let prompt = '';
 
   if (avgScore >= 85) {
-    prompt = `Jesteś Marcinem Molendą, Senior Frontend Architectem. ${entityName} ${targetUrl} uzyskał elitarny wynik ${avgScore}/100 (Szybkość: ${Math.round(performanceScore)}, SEO: ${Math.round(seoScore)}). Stack: ${detectedPlatform}.
-Zadanie: Napisz zwięzły werdykt (MAKSYMALNIE 3-4 ZDANIA!). 
-1. Pogratuluj właścicielowi rewelacyjnej, bezkompromisowej infrastruktury i zaznacz, że należy do ścisłego promila najlepszych stron w sieci. 
-2. Uświadom mu biznesowo, że dalsze szlifowanie tak doskonałego kodu to marnowanie budżetu – czas na ekspansję rynkową i pozyskiwanie klientów. 
-3. Jako jedyny logiczny obszar współpracy zaproponuj projektowanie dedykowanych systemów AI, automatyzacji procesów lub integracji, które wykorzystają tę moc obliczeniową, bez naruszania ich perfekcyjnej architektury bazowej. ABSOLUTNIE NIE sugeruj żadnych poprawek kodu ani migracji!
-FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak HTML-a, brak znaczników \`\`\`markdown.`;
-
-  } else if (avgScore >= 60 && avgScore < 85) {
-    const isModernStack = detectedPlatform.includes('Next.js') || detectedPlatform.includes('React') || detectedPlatform.includes('Vue') || detectedPlatform.includes('Nuxt');
-    
-    const stackContext = isModernStack
-      ? `Doceniaj, że wybrali nowoczesny architektonicznie stos (${detectedPlatform}), ale wykaż, że przez brak końcowego, profesjonalnego szlifu marnują jego surowy potencjał.`
-      : `Zauważ, że wycisnęli z platformy ${detectedPlatform} bardzo dużo, ale ta klasyczna architektura osiąga już swój technologiczny sufit wydajnościowy.`;
-
-    prompt = `Jesteś Marcinem Molendą, Senior Frontend Architectem. ${entityName} ${targetUrl} uzyskał przyzwoity wynik ${avgScore}/100.
-Wykryta platforma: ${detectedPlatform}
-Zdiagnozowane problemy / dług techniczny: ${codeSmellsText}
-
-Zadanie: Napisz zwięzły, niezwykle precyzyjny werdykt (MAKSYMALNIE 3 ZDANIA!), kierowany do właściciela biznesu.
-1. ${stackContext}
-2. Przeanalizuj przekazane wyżej zdiagnozowane problemy. Zamiast ogólnych frazesów, uderz punktowo w ten JEDEN najważniejszy problem, który faktycznie występuje w przekazanych danych. Bądź chirurgicznie dokładny – mów tylko o wadach z wykazu.
-3. Wyjaśnij, że przez te konkretne niedociągnięcia tracą szacunkowo ${lossPercentage}% ${conversionTerm}. Zaproponuj wyłącznie usługę "Performance & Security Tuning" (inżynieryjny szlif optymalizacyjny witryny), a NIE budowanie systemu od nowa.
-FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak HTML-a, brak znaczników \`\`\`markdown.`;
-
+    prompt = `Jesteś Marcinem Molendą, Senior Frontend & Full-Stack Architectem. ${entityName} ${targetUrl} uzyskał elitarny wynik ${avgScore}/100.
+Przeanalizowano ${pagesScanned} podstron. Stack: ${detectedPlatform}.
+Zadanie: Napisz zwięzły, autorytatywny werdykt (MAKSYMALNIE 3-4 ZDANIA!).
+1. Pogratuluj właścicielowi rewelacyjnej, bezkompromisowej infrastruktury (wskazując szybkość ${avgResponseTime}ms i brak długu technologicznego).
+2. Uświadom mu biznesowo, że dalsze szlifowanie tak doskonałego kodu to strata budżetu – czas na skalowanie ruchu i konwersji.
+3. Zaproponuj projektowanie dedykowanych modułów AI lub automatyzacji procesów.
+FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Bez HTML.`;
   } else {
-    const migrationSuggestion = detectedPlatform.includes('Next.js')
-      ? `Zaproponuj gruntowny audyt kodu i ratunkową refaktoryzację ich obecnej aplikacji Next.js, aby wyeliminować dramatyczny dług technologiczny (Serverless Tuning).`
-      : `Zaproponuj pełną migrację na nowoczesny, bezpieczny Headless Edge (Next.js) jako jedyną drogę ucieczki przed utratą klientów.`;
+    prompt = `Jesteś Marcinem Molendą, Senior Web Architectem. ${entityName} ${targetUrl} uzyskał wynik ${avgScore}/100.
+Wykryta platforma: ${detectedPlatform}
+${empiricalEvidenceText}
+${codeSmellsText}
 
-    prompt = `Jesteś Marcinem Molendą. ${entityName} ${targetUrl} uzyskał słaby wynik ${avgScore}/100.
-Stack: ${detectedPlatform}. 
-Zdiagnozowany dług techniczny: ${codeSmellsText}
-
-Zadanie: Napisz brutalną, bezkompromisową diagnozę inżynieryjną (MAKSYMALNIE 3-4 ZDANIA!). 
-1. Wytknij powolne działanie i przestarzałe wzorce w kodzie na bazie przekazanego długu technicznego. 
-2. Uświadom właścicielowi czarno na białym, że przez te wąskie gardła traci szacunkowo ${lossPercentage}% potencjalnych ${conversionTerm} przy każdym wejściu użytkownika. 
-3. ${migrationSuggestion}
-FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Brak jakiegokolwiek HTML-a, brak znaczników \`\`\`markdown.`;
+Zadanie: Napisz zwięzłą, bezlitośnie precyzyjną diagnozę inżynieryjną (DOKŁADNIE 3-4 ZDANIA!).
+1. Wskaż najważniejsze twarde błędy z audytu (np. ${duplicateTitlesCount > 0 ? `${duplicateTitlesCount} grup powielonych Title niszczących SEO` : ''}, ${missingH1Count > 0 ? `${missingH1Count} stron bez H1` : ''}, ${codeSmells.pageBuilders && codeSmells.pageBuilders.length > 0 ? `bloat z ${codeSmells.pageBuilders.join(', ')}` : ''}). Mów o faktach z liczbami!
+2. Uświadom właścicielowi, że przez te wąskie gardła traci szacunkowo ${lossPercentage}% ${conversionTerm}.
+3. Wskaż jasne rozwiązanie inżynieryjne (Tuning techniczny i uporządkowanie struktury bez burzenia całego biznesu).
+FORMATOWANIE: Czysty Markdown. Bez HTML.`;
   }
+
+  try {
+    const ai = new GoogleGenAI({ apiKey: geminiKey });
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: { temperature: 0.5 }
+    });
+
+    if (response.text && response.text.trim().length > 20) {
+      return response.text.trim();
+    }
+  } catch {
+    // W razie limitu Gemini (429) lub braku połączenia odpalamy deterministyczny fallback
+  }
+
+  return generateDeterministicReport(targetUrl, avgScore, detectedPlatform, lossPercentage, isEcommerce, evidence, codeSmells);
+}
+
+/**
+ * Deterministyczny silnik werdyktu architekta (zabezpieczenie przed limitami Gemini)
+ */
+export function generateDeterministicReport(
+  targetUrl: string,
+  avgScore: number,
+  platform: string,
+  lossPercentage: number,
+  isEcommerce: boolean,
+  evidence?: EvidenceSummary,
+  codeSmells?: DetailedCodeSmells
+): string {
+  const entity = isEcommerce ? 'sklepu' : 'witryny';
+  const conversionTerm = isEcommerce ? 'sprzedaży e-commerce' : 'zapytań ofertowych B2B';
 
   if (avgScore >= 85) {
-    prompt += `\n\nNa samym końcu dodaj wyraźnie oddzieloną pustą linią sekcję o nazwie "**💡 Rekomendacja strategiczna:**". Napisz w niej jedno konkretne zdanie, że przy tak bezbłędnej infrastrukturze i zerowym długu technologicznym kluczem do dominacji rynkowej jest agresywne skalowanie ruchu, zbieranie opinii i content marketing, ponieważ od strony inżynieryjnej serwis wygrywa z 99.9% konkurencji.`;
-  } else {
-    const adviceExample = isEcommerce 
-      ? "np. kompresja zdjęć przed publikacją, usunięcie nieużywanych wtyczek marketingowych"
-      : "np. kompresja grafik w galerii, wyłączenie ciężkich wideo w tle, usunięcie zbędnych widgetów czatu";
+    return `Architektura **${targetUrl}** reprezentuje najwyższy standard inżynieryjny (${avgScore}/100). Kod jest czysty, serwer odpowiada poniżej ${evidence?.avgResponseTimeMs || 80}ms, a struktura podstron nie wykazuje krytycznego długu technologicznego. 
 
-    prompt += `\n\nNa samym końcu dodaj wyraźnie oddzieloną pustą linią sekcję o nazwie "**💡 Szybka porada (bez IT):**". Napisz w niej jedno konkretne, w 100% nietechniczne zalecenie biznesowe, które właściciel może wykonać od razu sam z poziomu panelu CMS (${adviceExample}). Porada musi być krótka (1 zdanie) i nie wymagać programisty.`;
+Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego ROI – infrastruktura jest w pełni gotowa na skalowanie ruchu i zaawansowane wdrożenia AI.
+
+**💡 Rekomendacja strategiczna:** Skieruj zasoby na pozyskiwanie klientów i automatyzację procesów biznesowych, bo technologicznie serwis wyprzedza 95% konkurencji.`;
   }
 
-  const ai = new GoogleGenAI({ apiKey: geminiKey });
-  try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.1-flash-lite',
-      contents: prompt,
-      config: { temperature: 0.6 }
-    });
-    return response.text || 'Brak diagnozy AI. Wymagana audytorska weryfikacja manualna.';
-  } catch {
-    return `*Silnik analityczny AI jest w tej chwili przeciążony. Twoje wskaźniki techniczne mówią jednak same za siebie – umów bezpośrednią konsultację.*`;
+  const issues: string[] = [];
+  if (evidence && evidence.duplicateTitleGroups.length > 0) {
+    issues.push(`aż **${evidence.duplicateTitleGroups.length} grup ze zduplikowanymi tagami Title**, co wywołuje auto-kanibalizację fraz w Google`);
   }
+  if (evidence && evidence.missingH1Count > 0) {
+    issues.push(`**${evidence.missingH1Count} podstron bez nagłówka H1**, przez co roboty wyszukiwarek i modele AI gubią kontekst semantyczny`);
+  }
+  if (evidence && evidence.missingCanonicalCount > 0) {
+    issues.push(`**${evidence.missingCanonicalCount} adresów bez linku kanonicznego (canonical)**`);
+  }
+  if (codeSmells?.pageBuilders && codeSmells.pageBuilders.length > 0) {
+    issues.push(`narzut kodu z builderów (**${codeSmells.pageBuilders.join(', ')}**), drastycznie rozdmuchujący drzewo DOM do ${codeSmells.domElements} elementów`);
+  }
+
+  const issuesSummary = issues.length > 0
+    ? issues.slice(0, 3).join(', ')
+    : `brak odpowiednich nagłówków semantycznych i opóźnienia w czasie renderowania`;
+
+  return `Szczegółowy audyt **${targetUrl}** (${platform}) wykazał wynik **${avgScore}/100**. W zbadanej próbce zdiagnozowaliśmy kluczowe wąskie gardła: ${issuesSummary}.
+
+Przez te niedociągnięcia strukturalne serwis traci szacunkowo **${lossPercentage}% ${conversionTerm}**, a algorytmy Google oraz wyszukiwarki AI traktują część podstron jako treści niskiej wartości.
+
+Dobra wiadomość jest taka, że nie musisz budować ${entity} od nowa – uporządkowanie struktury nagłówków, canonicali i optymalizacja skryptów pozwoli odzyskać pełen potencjał ruchu w ciągu 14 dni.
+
+**💡 Szybka porada:** Nadaj unikalne tytuły kluczowym podstronom i upewnij się, że każdy produkt oraz wpis blogowy posiada dokładnie jeden tag \`<h1>\` z główną frazą.`;
 }

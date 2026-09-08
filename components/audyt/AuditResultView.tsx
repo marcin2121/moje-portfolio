@@ -1,223 +1,481 @@
 'use client';
 
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Zap, Search, Server, Settings, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Shield, Zap, Search, Server, Settings, Copy, Check } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { AuditMasterResponse } from '@/app/api/audit-master/types';
+import AuditEvidenceCard from './AuditEvidenceCard';
+import PagesTable from './PagesTable';
+import AuditConsultationForm from './AuditConsultationForm';
 
-export type Pillar = {
-  name: string;
-  score: number;
-  interpretation: string;
-};
-
-export interface AuditResult {
-  url: string;
-  overallScore: number;
-  lossPercentage: number;
-  aiReport: string;
-  pillars: Pillar[];
-  siteType?: 'ecommerce' | 'services';
-  error?: string;
-}
-
-const getScoreColor = (score: number) => {
-  if (score >= 80) return 'text-emerald-600';
-  if (score >= 50) return 'text-amber-600';
-  return 'text-rose-600';
-};
-
-const getScoreBg = (score: number) => {
-  if (score >= 80) return 'bg-emerald-50/50 border-emerald-200/60';
-  if (score >= 50) return 'bg-amber-50/50 border-amber-200/60';
-  return 'bg-rose-50/50 border-rose-200/60';
-};
-
-const Activity = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-  </svg>
-);
-
-const getPillarIcon = (name: string) => {
-  switch(name) {
-    case 'Szybkość': return <Zap className="w-5 h-5" />;
-    case 'SEO': return <Search className="w-5 h-5" />;
-    case 'Skalowalność': return <Server className="w-5 h-5" />;
-    case 'Automatyzacja': return <Settings className="w-5 h-5" />;
-    case 'Bezpieczeństwo': return <Shield className="w-5 h-5" />;
-    default: return <Activity className="w-5 h-5" />;
-  }
-};
+export type { AuditMasterResponse as AuditResult };
 
 interface AuditResultViewProps {
-  result: AuditResult | null;
+  result: AuditMasterResponse;
   onRetry: () => void;
 }
 
-export default function AuditResultView({ result, onRetry }: AuditResultViewProps) {
-  if (!result) return null;
+export default function AuditResultView({ result }: AuditResultViewProps) {
+  const [copied, setCopied] = useState(false);
 
   const isEcommerce = result.siteType === 'ecommerce';
-  const targetLabel = isEcommerce ? 'Twój sklep' : 'Twój serwis';
   const conversionLabel = isEcommerce ? 'straty sprzedaży' : 'utraconych zapytań';
 
+  const copyShareLink = () => {
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://molendadevelopment.pl';
+    const link = `${origin}/narzedzia/audyt?token=${result.token}`;
+    navigator.clipboard.writeText(link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return 'text-emerald-700';
+    if (score >= 50) return 'text-amber-600';
+    return 'text-rose-600';
+  };
+
+  const evidence = result.evidence;
+  const pages = result.pages || [];
+  const hasProducts = evidence?.categoriesSummary?.products && evidence.categoriesSummary.products.count > 0;
+  const hasBlog = evidence?.categoriesSummary?.blog && evidence.categoriesSummary.blog.count > 0;
+
   return (
-    <AnimatePresence>
-      {!result.error ? (
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <div className="lg:col-span-1 bg-white/70 border border-slate-200/60 shadow-premium-soft rounded-3xl p-8 flex flex-col justify-center items-center text-center">
-              <p className="text-slate-500 font-mono text-xs uppercase tracking-widest mb-4">Wynik Główny</p>
-              <div className={`text-7xl font-black mb-2 ${getScoreColor(result.overallScore)} tracking-tight`}>
-                {result.overallScore}<span className="text-2xl text-slate-400 font-normal">/100</span>
-              </div>
-              <p className="text-slate-500 text-xs mt-3">
-                Średnia z 5 kluczowych filarów odporności cyfrowej.
-              </p>
-            </div>
-
-            <div className="lg:col-span-2 bg-white/80 border border-slate-200/60 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-8 md:p-10 relative overflow-hidden flex flex-col justify-center">
-              <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
-                <Server className="w-48 h-48 text-slate-900" />
-              </div>
-              <div className="relative z-10">
-                <h3 className="text-orange-600 font-bold tracking-widest uppercase text-xs mb-3 flex items-center gap-2">
-                  <Shield className="w-4 h-4" /> Werdykt Architekta (Analiza AI)
-                </h3>
-                <div className="prose max-w-none text-slate-600 leading-relaxed text-base prose-p:mb-3 prose-strong:text-slate-900 prose-ul:my-3 prose-li:my-1 font-light">
-                  <ReactMarkdown>{result.aiReport}</ReactMarkdown>
-                </div>
-              </div>
-            </div>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className="space-y-12"
+    >
+      {/* Pasek Nagłówka Audytu + Kopiowanie Linku */}
+      <div className="bg-white/80 border border-slate-200/70 rounded-3xl p-6 md:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)] flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+          <div className="flex items-center gap-3 mb-1">
+            <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-wider">
+              Raport audytu domeny
+            </span>
+            {result.cached && (
+              <span className="text-[11px] font-mono text-emerald-800 bg-emerald-100/70 px-2.5 py-0.5 rounded-md font-semibold">
+                Błyskawiczny cache
+              </span>
+            )}
           </div>
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+            {result.domain}
+          </h2>
+          <p className="text-xs text-slate-500 font-mono mt-1">
+            Przeanalizowano {evidence?.totalPages || 1} podstron · Wygenerowano: {new Date(result.createdAt).toLocaleDateString('pl-PL')}
+          </p>
+        </div>
 
-          <h3 className="text-xl font-bold text-slate-900 mb-6 tracking-tight">Analiza Filarów (Szczegóły)</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {result.pillars.map((pillar, idx) => (
-              <motion.div 
-                key={pillar.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.08 * idx }}
-                className={`p-6 rounded-2xl border ${getScoreBg(pillar.score)} flex flex-col h-full`}
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className={`${getScoreColor(pillar.score)}`}>
-                      {getPillarIcon(pillar.name)}
-                    </div>
-                    <span className="font-bold text-slate-900 text-sm">{pillar.name}</span>
-                  </div>
-                  <span className={`text-xl font-black ${getScoreColor(pillar.score)} font-mono`}>{pillar.score}</span>
-                </div>
-                <p className="text-slate-600 text-xs mt-auto leading-relaxed">
-                  {pillar.interpretation}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Warunkowe Sekcje Rekomendacji */}
-          {result.overallScore >= 85 ? (
-            /* WERSJA 1: ELITA (Top 1%) */
-            <div className="w-full bg-emerald-50/50 border border-emerald-200/70 shadow-premium-soft rounded-3xl p-8 mt-8">
-              <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                <div className="text-center md:text-left">
-                  <h2 className="text-2xl font-bold text-emerald-700">Architektura Klasy Premium</h2>
-                  <p className="mt-1 text-sm text-slate-600">
-                    {targetLabel} wyprzedza rynkowe standardy. Nie potrzebujesz klasycznego software house&apos;u do poprawek.
-                  </p>
-                </div>
-                <div className="text-center md:text-right shrink-0">
-                  <span className="text-[10px] uppercase tracking-widest text-emerald-600 font-mono font-bold">Status Systemu</span>
-                  <p className="text-3xl font-black text-slate-900">ELITA</p>
-                </div>
-              </div>
-              <div className="mt-6 border-t border-emerald-200/50 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p className="text-xs text-slate-600 text-center md:text-left">Szukasz partnera do budowy dedykowanych narzędzi AI lub zaawansowanych automatyzacji?</p>
-                <Link 
-                  href="/#kontakt"
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap shadow-sm hover:scale-105"
-                >
-                  Porozmawiajmy o dedykowanych modułach AI →
-                </Link>
-              </div>
-            </div>
-          ) : result.overallScore >= 60 ? (
-            /* WERSJA 2: ZŁOTY ŚRODEK (Wymaga Tuningu) */
-            <div className="w-full bg-blue-50/50 border border-blue-200/70 shadow-premium-soft rounded-3xl p-8 mt-8">
-              <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                <div className="text-center md:text-left">
-                  <h2 className="text-2xl font-bold text-blue-700">Solidny Fundament, Brak Szlifu</h2>
-                  <p className="mt-1 text-sm text-slate-600">
-                    Masz bardzo dobrą bazę, ale brakuje inżynieryjnej precyzji w detalach. Przez to nie wykorzystujesz w pełni potencjału technologii.
-                  </p>
-                </div>
-                <div className="text-center md:text-right shrink-0">
-                  <span className="text-[10px] uppercase tracking-widest text-blue-600 font-mono font-bold">Niewykorzystany Potencjał</span>
-                  <p className="text-3xl font-black text-slate-900 tracking-tight">
-                    ~{result.lossPercentage}% <span className="text-xs text-blue-600 font-normal">{conversionLabel}</span>
-                  </p>
-                </div>
-              </div>
-              <div className="mt-6 border-t border-blue-200/50 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p className="text-xs text-slate-600 text-center md:text-left">Zamknijmy luki bezpieczeństwa i zoptymalizujmy infrastrukturę w ramach szybkiego tuningu.</p>
-                <Link 
-                  href="/#kontakt"
-                  className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap shadow-sm hover:scale-105"
-                >
-                  Zamów Performance & Security Tuning →
-                </Link>
-              </div>
-            </div>
-          ) : (
-            /* WERSJA 3: AGONIA (Czerwony Dług Technologiczny) */
-            <>
-              <div className="w-full bg-rose-50/50 border border-rose-200/70 shadow-premium-soft rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between mt-8 relative overflow-hidden group">
-                <div className="flex-1 text-center md:text-left relative z-10">
-                  <h3 className="text-xl font-bold text-slate-900 mb-1">Krytyczny Dług Technologiczny</h3>
-                  <p className="text-xs text-slate-600">Przez opóźnienia, błędy architektoniczne i brak automatyzacji, Twój biznes traci potencjał z każdym kliknięciem.</p>
-                </div>
-                
-                <div className="text-center md:text-right mt-4 md:mt-0 flex flex-col items-center md:items-end relative z-10 shrink-0">
-                  <span className="text-[10px] font-mono font-bold text-rose-600 mb-1 tracking-wider uppercase">Szacowana strata zapytań</span>
-                  <div className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-                    {result.lossPercentage}% <span className="text-base text-rose-600 font-normal">odbiorców</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-orange-50/50 border border-orange-200/70 shadow-premium rounded-3xl p-8 text-center mt-8">
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">Czas zlikwidować wąskie gardła.</h2>
-                <p className="text-slate-600 text-sm mb-6 max-w-xl mx-auto font-light leading-relaxed">
-                  Nie pozwól, aby powolna strona paliła Twój budżet. Skonsultujmy bezpłatnie architekturę Twojego serwisu i wdróżmy nowoczesny Headless Edge.
-                </p>
-                <Link 
-                  href="/#kontakt"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-all text-sm shadow-[0_8px_20px_rgba(249,115,22,0.25)] hover:scale-105"
-                >
-                  Skonsultuj plan naprawczy <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </>
-          )}
-
-        </motion.div>
-      ) : (
-        <div className="bg-rose-50 border border-rose-200 rounded-2xl p-6 text-center">
-          <p className="text-rose-600 font-bold mb-2 text-sm">Błąd Analizy</p>
-          <p className="text-slate-600 text-xs">{result.error}</p>
-          <button onClick={onRetry} className="mt-4 text-orange-600 font-semibold text-xs hover:underline">
-            Spróbuj ponownie
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={copyShareLink}
+            className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm active:scale-95"
+          >
+            {copied ? (
+              <>
+                <Check className="w-4 h-4 text-emerald-400" />
+                <span>Link skopiowany!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-4 h-4" />
+                <span>Kopiuj unikalny link do audytu</span>
+              </>
+            )}
           </button>
         </div>
+      </div>
+
+      {/* Hero Bento: Wynik Główny + Werdykt Architekta */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Karta Wyniku */}
+        <div className="lg:col-span-1 bg-white/70 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+          <p className="text-slate-500 font-mono text-xs uppercase tracking-widest mb-3">Wynik Główny</p>
+          <div className={`text-7xl font-black mb-2 ${getScoreColor(result.overallScore)} tracking-tight font-sans`}>
+            {result.overallScore}<span className="text-2xl text-slate-400 font-normal">/100</span>
+          </div>
+
+          <div className="mt-4 p-3 bg-rose-50/70 border border-rose-200/60 rounded-xl w-full text-center">
+            <span className="text-xs font-mono text-rose-700 font-bold block">
+              Szacowana utrata {conversionLabel}:
+            </span>
+            <span className="text-xl font-black text-rose-600 font-mono">
+              ~{result.lossPercentage}%
+            </span>
+          </div>
+
+          <p className="text-slate-500 text-[11px] font-mono mt-4">
+            Średnia ważona z analizy kodu, Core Web Vitals, indeksacji i bezpieczeństwa.
+          </p>
+        </div>
+
+        {/* Karta Werdyktu AI */}
+        <div className="lg:col-span-2 bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-8 md:p-10 relative overflow-hidden flex flex-col justify-center">
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-orange-600 uppercase tracking-widest mb-3">
+              <Shield className="w-4 h-4" />
+              <span>Diagnoza Architekta (Synteza Inżynieryjna)</span>
+            </div>
+            <div className="prose max-w-none text-slate-700 leading-relaxed text-sm md:text-base prose-p:mb-3 prose-strong:text-slate-900 prose-ul:my-2 prose-li:my-0.5">
+              <ReactMarkdown>{result.aiReport}</ReactMarkdown>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 9 Bento Cards: Szybki Przegląd Audytu (Dashboard metryk) */}
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+            Przegląd filarów witryny
+          </h3>
+          <span className="text-xs font-mono text-slate-500">
+            {evidence?.totalPages || 0} podstron przeskanowanych
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* 1. Indeksowalność */}
+          <div className="bg-white/70 border border-slate-200/70 rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Search className="w-4 h-4 text-emerald-600" />
+                <h4 className="font-bold text-sm text-slate-900">Indeksowalność</h4>
+              </div>
+              <span className="text-xs font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded">
+                ✓ OK
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs text-slate-600 font-mono">
+              <div className="flex justify-between"><span>Sprawdzonych:</span> <strong>{evidence?.totalPages}</strong></div>
+              <div className="flex justify-between"><span>Status 200 OK:</span> <strong className="text-emerald-700">{evidence?.status200Count}</strong></div>
+              <div className="flex justify-between"><span>Przekierowania 3xx:</span> <strong>{evidence?.redirectsCount}</strong></div>
+              <div className="flex justify-between"><span>Błędy 4xx/5xx:</span> <strong>{evidence?.errorsCount}</strong></div>
+              <div className="flex justify-between"><span>Tag noindex:</span> <strong>{evidence?.noIndexCount}</strong></div>
+            </div>
+          </div>
+
+          {/* 2. Tytuły stron (Title) */}
+          <div className="bg-white/70 border border-slate-200/70 rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Settings className="w-4 h-4 text-amber-600" />
+                <h4 className="font-bold text-sm text-slate-900">Tytuły stron (Title)</h4>
+              </div>
+              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                (evidence?.duplicateTitleGroups?.length || 0) > 0 ? 'text-amber-700 bg-amber-50' : 'text-emerald-700 bg-emerald-50'
+              }`}>
+                {(evidence?.duplicateTitleGroups?.length || 0) > 0 ? `⚠ ${evidence?.duplicateTitleGroups.length} grup duplikatów` : '✓ OK'}
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs text-slate-600 font-mono">
+              <div className="flex justify-between"><span>Bez tytułu:</span> <strong>{evidence?.missingTitleCount}</strong></div>
+              <div className="flex justify-between"><span>Zduplikowane grupy:</span> <strong className="text-amber-600">{evidence?.duplicateTitleGroups?.length || 0}</strong></div>
+              <div className="flex justify-between"><span>Średnia długość:</span> <strong>{evidence?.avgMetaLength || 0} znaków</strong></div>
+            </div>
+          </div>
+
+          {/* 3. Meta description */}
+          <div className="bg-white/70 border border-slate-200/70 rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Search className="w-4 h-4 text-slate-600" />
+                <h4 className="font-bold text-sm text-slate-900">Meta description</h4>
+              </div>
+              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                (evidence?.missingMetaCount || 0) > 0 ? 'text-amber-700 bg-amber-50' : 'text-emerald-700 bg-emerald-50'
+              }`}>
+                {(evidence?.missingMetaCount || 0) > 0 ? `⚠ Brak na ${evidence?.missingMetaCount}` : '✓ OK'}
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs text-slate-600 font-mono">
+              <div className="flex justify-between"><span>Bez opisu:</span> <strong>{evidence?.missingMetaCount}</strong></div>
+              <div className="flex justify-between"><span>Średnia długość:</span> <strong>{evidence?.avgMetaLength} znaków</strong></div>
+              <div className="text-[11px] text-slate-400 mt-1">Optymalnie: 150-160 znaków</div>
+            </div>
+          </div>
+
+          {/* 4. Nagłówki H1 */}
+          <div className="bg-white/70 border border-slate-200/70 rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-rose-600" />
+                <h4 className="font-bold text-sm text-slate-900">Nagłówki H1</h4>
+              </div>
+              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                (evidence?.missingH1Count || 0) > 0 ? 'text-rose-700 bg-rose-50' : 'text-emerald-700 bg-emerald-50'
+              }`}>
+                {(evidence?.missingH1Count || 0) > 0 ? `🔴 ${evidence?.missingH1Count} bez H1` : '✓ OK'}
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs text-slate-600 font-mono">
+              <div className="flex justify-between"><span>Podstron bez H1:</span> <strong className="text-rose-600">{evidence?.missingH1Count}</strong></div>
+              <div className="flex justify-between"><span>Podstron z H1:</span> <strong>{(evidence?.totalPages || 0) - (evidence?.missingH1Count || 0)}</strong></div>
+              <div className="text-[11px] text-slate-400 mt-1">Każda strona powinna mieć dokładnie jeden H1</div>
+            </div>
+          </div>
+
+          {/* 5. Treść (Content) */}
+          <div className="bg-white/70 border border-slate-200/70 rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Server className="w-4 h-4 text-amber-600" />
+                <h4 className="font-bold text-sm text-slate-900">Treść (Content)</h4>
+              </div>
+              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                (evidence?.thinContentCount || 0) > 0 ? 'text-amber-700 bg-amber-50' : 'text-emerald-700 bg-emerald-50'
+              }`}>
+                {(evidence?.thinContentCount || 0) > 0 ? `⚠ ${evidence?.thinContentCount} thin content` : '✓ OK'}
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs text-slate-600 font-mono">
+              <div className="flex justify-between"><span>Thin content (&lt;200 słów):</span> <strong className="text-amber-600">{evidence?.thinContentCount}</strong></div>
+              <div className="flex justify-between"><span>Wystarczająca treść:</span> <strong>{(evidence?.totalPages || 0) - (evidence?.thinContentCount || 0)}</strong></div>
+            </div>
+          </div>
+
+          {/* 6. Wydajność serwera & PSI */}
+          <div className="bg-white/70 border border-slate-200/70 rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-emerald-600" />
+                <h4 className="font-bold text-sm text-slate-900">Wydajność</h4>
+              </div>
+              <span className="text-xs font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded">
+                {evidence?.avgResponseTimeMs}ms
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs text-slate-600 font-mono">
+              <div className="flex justify-between"><span>Średni czas odpowiedzi TTFB:</span> <strong>{evidence?.avgResponseTimeMs}ms</strong></div>
+              <div className="flex justify-between"><span>Platforma:</span> <strong className="truncate max-w-[130px]">{result.detectedPlatform}</strong></div>
+              {result.codeSmells?.lcp && (
+                <div className="flex justify-between"><span>LCP (Largest Paint):</span> <strong>{result.codeSmells.lcp}</strong></div>
+              )}
+            </div>
+          </div>
+
+          {/* 7. Canonical */}
+          <div className="bg-white/70 border border-slate-200/70 rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Search className="w-4 h-4 text-slate-600" />
+                <h4 className="font-bold text-sm text-slate-900">Tagi Canonical</h4>
+              </div>
+              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                (evidence?.missingCanonicalCount || 0) > 0 ? 'text-rose-700 bg-rose-50' : 'text-emerald-700 bg-emerald-50'
+              }`}>
+                {(evidence?.missingCanonicalCount || 0) > 0 ? `🔴 ${evidence?.missingCanonicalCount} bez canonical` : '✓ OK'}
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs text-slate-600 font-mono">
+              <div className="flex justify-between"><span>Poprawny canonical:</span> <strong>{(evidence?.totalPages || 0) - (evidence?.missingCanonicalCount || 0)}</strong></div>
+              <div className="flex justify-between"><span>Brak canonical:</span> <strong className="text-rose-600">{evidence?.missingCanonicalCount}</strong></div>
+            </div>
+          </div>
+
+          {/* 8. Obrazy i Alt */}
+          <div className="bg-white/70 border border-slate-200/70 rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Settings className="w-4 h-4 text-emerald-600" />
+                <h4 className="font-bold text-sm text-slate-900">Obrazy i Alt</h4>
+              </div>
+              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                (evidence?.missingAltTotal || 0) > 0 ? 'text-amber-700 bg-amber-50' : 'text-emerald-700 bg-emerald-50'
+              }`}>
+                {(evidence?.missingAltTotal || 0) > 0 ? `⚠ ${evidence?.missingAltTotal} bez alt` : '✓ OK'}
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs text-slate-600 font-mono">
+              <div className="flex justify-between"><span>Brakujące atrybuty alt:</span> <strong>{evidence?.missingAltTotal}</strong></div>
+              <div className="text-[11px] text-slate-400 mt-1">Atrybut alt jest kluczowy dla WCAG i Google Grafika</div>
+            </div>
+          </div>
+
+          {/* 9. Bezpieczeństwo & Architektura Kodu */}
+          <div className="bg-white/70 border border-slate-200/70 rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-emerald-600" />
+                <h4 className="font-bold text-sm text-slate-900">Architektura & Bezpieczeństwo</h4>
+              </div>
+              <span className="text-xs font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded">
+                Wynik: {result.pillars.find(p => p.name === 'Bezpieczeństwo')?.score || 50}/100
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs text-slate-600 font-mono">
+              <div className="flex justify-between"><span>Elementy DOM:</span> <strong>{result.codeSmells?.domElements || 0}</strong></div>
+              <div className="flex justify-between"><span>Skrypty blokujące:</span> <strong>{result.codeSmells?.badScripts || 0}</strong></div>
+              {result.codeSmells?.pageBuilders && result.codeSmells.pageBuilders.length > 0 && (
+                <div className="flex justify-between"><span>Page Buildery:</span> <strong className="text-amber-600">{result.codeSmells.pageBuilders.join(', ')}</strong></div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Sekcja 1: Twarde Sprawdzenia Całej Witryny (Kluczowe Dowody) */}
+      <div className="bg-white/70 border border-slate-200/70 rounded-3xl p-6 md:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+          <div>
+            <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+              🌐 Cała witryna: kluczowe sprawdzenia
+            </h3>
+            <p className="text-xs text-slate-500 font-mono mt-0.5">
+              Szczegółowa lista technicznych weryfikacji wraz z dokładnymi adresami URL
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <AuditEvidenceCard
+            title="Dostępność stron (status HTTP)"
+            description={`${evidence?.status200Count}/${evidence?.totalPages} stron zwraca poprawny kod 200 OK. Błędy: ${evidence?.errorsCount}, przekierowania: ${evidence?.redirectsCount}.`}
+            status={evidence?.errorsCount === 0 ? 'ok' : 'bad'}
+            percentage={((evidence?.status200Count || 0) / (evidence?.totalPages || 1)) * 100}
+            metaText={`${evidence?.status200Count}/${evidence?.totalPages}`}
+          />
+
+          <AuditEvidenceCard
+            title="Tytuły stron (Title)"
+            description={`${(evidence?.totalPages || 0) - (evidence?.missingTitleCount || 0)}/${evidence?.totalPages} stron ma zdefiniowany tag title.`}
+            status={evidence?.missingTitleCount === 0 ? 'ok' : 'bad'}
+            percentage={(((evidence?.totalPages || 0) - (evidence?.missingTitleCount || 0)) / (evidence?.totalPages || 1)) * 100}
+            metaText={`${(evidence?.totalPages || 0) - (evidence?.missingTitleCount || 0)}/${evidence?.totalPages}`}
+          />
+
+          {evidence && evidence.duplicateTitleGroups.length > 0 && (
+            <AuditEvidenceCard
+              title="Zduplikowane tytuły stron"
+              description={`Wykryto ${evidence.duplicateTitleGroups.length} grup ze zduplikowanymi tytułami. Google traktuje to jako auto-kanibalizację fraz i sygnał niskiej jakości.`}
+              status="warn"
+              percentage={Math.max(20, 100 - evidence.duplicateTitleGroups.length * 20)}
+              metaText={`${evidence.duplicateTitleGroups.length} grup`}
+              detailsLabel="Grupy ze zduplikowanymi tytułami:"
+              details={evidence.duplicateTitleGroups.map(g => ({
+                label: `« ${g.title} » (${g.count} stron)`,
+                sublabel: g.urls.join(', ')
+              }))}
+            />
+          )}
+
+          <AuditEvidenceCard
+            title="Nagłówki H1"
+            description={`${(evidence?.totalPages || 0) - (evidence?.missingH1Count || 0)}/${evidence?.totalPages} stron posiada nagłówek H1. ${evidence?.missingH1Count || 0} podstron nie posiada głównego nagłówka semantycznego.`}
+            status={(evidence?.missingH1Count || 0) === 0 ? 'ok' : 'bad'}
+            percentage={(((evidence?.totalPages || 0) - (evidence?.missingH1Count || 0)) / (evidence?.totalPages || 1)) * 100}
+            metaText={`${(evidence?.totalPages || 0) - (evidence?.missingH1Count || 0)}/${evidence?.totalPages}`}
+            detailsLabel="Strony bez nagłówka H1:"
+            details={evidence?.missingH1Urls.map(u => ({ url: u })) || []}
+          />
+
+          <AuditEvidenceCard
+            title="Tag canonical (linki kanoniczne)"
+            description={`${(evidence?.totalPages || 0) - (evidence?.missingCanonicalCount || 0)}/${evidence?.totalPages} stron posiada poprawny tag canonical zapobiegający duplikatom w indeksie.`}
+            status={(evidence?.missingCanonicalCount || 0) === 0 ? 'ok' : 'bad'}
+            percentage={(((evidence?.totalPages || 0) - (evidence?.missingCanonicalCount || 0)) / (evidence?.totalPages || 1)) * 100}
+            metaText={`${(evidence?.totalPages || 0) - (evidence?.missingCanonicalCount || 0)}/${evidence?.totalPages}`}
+            detailsLabel="Strony bez tagu canonical:"
+            details={evidence?.missingCanonicalUrls.map(u => ({ url: u })) || []}
+          />
+
+          <AuditEvidenceCard
+            title="Objętość treści (Thin Content <200 słów)"
+            description={`${(evidence?.totalPages || 0) - (evidence?.thinContentCount || 0)}/${evidence?.totalPages} stron posiada wystarczającą ilość treści. ${evidence?.thinContentCount || 0} podstron ma bardzo krótki tekst.`}
+            status={(evidence?.thinContentCount || 0) === 0 ? 'ok' : 'warn'}
+            percentage={(((evidence?.totalPages || 0) - (evidence?.thinContentCount || 0)) / (evidence?.totalPages || 1)) * 100}
+            metaText={`${(evidence?.totalPages || 0) - (evidence?.thinContentCount || 0)}/${evidence?.totalPages}`}
+            detailsLabel="Strony z thin content (<200 słów):"
+            details={evidence?.thinContentUrls.map(t => ({ url: t.url, sublabel: `${t.wordCount} słów` })) || []}
+          />
+        </div>
+      </div>
+
+      {/* Sekcja 2: Produkty (jeśli wykryto w sklepie) */}
+      {hasProducts && evidence?.categoriesSummary?.products && (
+        <div className="bg-white/70 border border-slate-200/70 rounded-3xl p-6 md:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+            <div>
+              <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+                🛍️ Produkty sklepu
+              </h3>
+              <p className="text-xs text-slate-500 font-mono mt-0.5">
+                Przeanalizowano {evidence.categoriesSummary.products.count} kart produktowych
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <AuditEvidenceCard
+              title="Nagłówki H1 na kartach produktów"
+              description={evidence.categoriesSummary.products.missingH1 === 0
+                ? 'Wszystkie zbadane produkty posiadają główny nagłówek H1 z nazwą produktu.'
+                : `${evidence.categoriesSummary.products.missingH1} produktów nie ma nagłówka H1.`}
+              status={evidence.categoriesSummary.products.missingH1 === 0 ? 'ok' : 'bad'}
+              percentage={((evidence.categoriesSummary.products.count - evidence.categoriesSummary.products.missingH1) / evidence.categoriesSummary.products.count) * 100}
+              metaText={`${evidence.categoriesSummary.products.count - evidence.categoriesSummary.products.missingH1}/${evidence.categoriesSummary.products.count}`}
+            />
+
+            <AuditEvidenceCard
+              title="Dane strukturalne Schema Product"
+              description={evidence.categoriesSummary.products.missingSchema === 0
+                ? 'Wszystkie produkty posiadają mikrodane JSON-LD Product (ceny, dostępność, oceny w Google).'
+                : `${evidence.categoriesSummary.products.missingSchema} produktów nie ma znaczników Schema Product.`}
+              status={evidence.categoriesSummary.products.missingSchema === 0 ? 'ok' : 'info'}
+              percentage={((evidence.categoriesSummary.products.count - evidence.categoriesSummary.products.missingSchema) / evidence.categoriesSummary.products.count) * 100}
+              metaText={`${evidence.categoriesSummary.products.count - evidence.categoriesSummary.products.missingSchema}/${evidence.categoriesSummary.products.count}`}
+            />
+          </div>
+        </div>
       )}
-    </AnimatePresence>
+
+      {/* Sekcja 3: Blog (jeśli wykryto artykuły) */}
+      {hasBlog && evidence?.categoriesSummary?.blog && (
+        <div className="bg-white/70 border border-slate-200/70 rounded-3xl p-6 md:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+            <div>
+              <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+                📝 Sekcja Blogowa / Artykuły
+              </h3>
+              <p className="text-xs text-slate-500 font-mono mt-0.5">
+                Przeanalizowano {evidence.categoriesSummary.blog.count} wpisów blogowych (średnio {evidence.categoriesSummary.blog.avgWordCount || 0} słów/wpis)
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <AuditEvidenceCard
+              title="Nagłówki H1 we wpisach blogowych"
+              description={evidence.categoriesSummary.blog.missingH1 === 0
+                ? 'Wszystkie artykuły posiadają poprawny nagłówek H1 z tytułem artykułu.'
+                : `${evidence.categoriesSummary.blog.missingH1} wpisów blogowych nie ma tagu H1.`}
+              status={evidence.categoriesSummary.blog.missingH1 === 0 ? 'ok' : 'bad'}
+              percentage={((evidence.categoriesSummary.blog.count - evidence.categoriesSummary.blog.missingH1) / evidence.categoriesSummary.blog.count) * 100}
+              metaText={`${evidence.categoriesSummary.blog.count - evidence.categoriesSummary.blog.missingH1}/${evidence.categoriesSummary.blog.count}`}
+            />
+
+            <AuditEvidenceCard
+              title="Dane strukturalne Schema Article"
+              description={evidence.categoriesSummary.blog.missingSchema === 0
+                ? 'Wszystkie wpisy blogowe posiadają mikrodane Article (zrozumiałe dla wyszukiwarek AI i Google).'
+                : `${evidence.categoriesSummary.blog.missingSchema} wpisów nie ma mikrodanych Schema Article.`}
+              status={evidence.categoriesSummary.blog.missingSchema === 0 ? 'ok' : 'info'}
+              percentage={((evidence.categoriesSummary.blog.count - evidence.categoriesSummary.blog.missingSchema) / evidence.categoriesSummary.blog.count) * 100}
+              metaText={`${evidence.categoriesSummary.blog.count - evidence.categoriesSummary.blog.missingSchema}/${evidence.categoriesSummary.blog.count}`}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Sekcja 4: Interaktywna Tabela Wszystkich Podstron */}
+      {pages.length > 0 && <PagesTable pages={pages} />}
+
+      {/* Sekcja 5: Formularz Konsultacji & Lead Capture */}
+      <AuditConsultationForm domain={result.domain} token={result.token} />
+    </motion.div>
   );
 }
