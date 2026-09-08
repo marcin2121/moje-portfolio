@@ -25,7 +25,9 @@ export interface PageTrackingSignals {
   hasGa4: boolean;
   ga4Id?: string;
   hasMetaPixel: boolean;
+  metaPixelId?: string;
   hasTikTokPixel: boolean;
+  tikTokPixelId?: string;
   hasConsentModeV2: boolean;
   hasDataLayer: boolean;
   hasAddToCartTracking: boolean;
@@ -158,6 +160,92 @@ async function discoverUrls(origin: string, fallbackUrl: string): Promise<string
 }
 
 /**
+ * Ekstrakcja sygnałów telemetrycznych, pikseli i tagów reklamowych z kodu HTML
+ */
+export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI): PageTrackingSignals {
+  const lowerHtml = rawHtml.toLowerCase();
+  const cheerioInstance = $ || cheerio.load(rawHtml);
+
+  // 1. Google Ads
+  let googleAdsId: string | undefined;
+  const awMatch = rawHtml.match(/AW-[0-9]{7,12}/) || rawHtml.match(/AW-[A-Za-z0-9_-]+/);
+  if (awMatch) googleAdsId = awMatch[0];
+  const hasGoogleAds = !!googleAdsId || lowerHtml.includes('google_conversion_id') || lowerHtml.includes('googleadservices.com');
+
+  // 2. Google Tag Manager (specyficzny kontener GTM, nie mylić z gtag/js)
+  let gtmId: string | undefined;
+  const gtmMatch = rawHtml.match(/GTM-[A-Z0-9]{4,10}/);
+  if (gtmMatch) gtmId = gtmMatch[0];
+  const hasGtm = !!gtmId || lowerHtml.includes('googletagmanager.com/gtm.js');
+
+  // 3. Google Analytics 4 & Google Tag (obsługuje standardowe G- oraz ujednolicone GT- np. z Google Site Kit)
+  let ga4Id: string | undefined;
+  const ga4Match = rawHtml.match(/G-[A-Z0-9]{6,12}/) || rawHtml.match(/GT-[A-Za-z0-9_-]{6,16}/);
+  if (ga4Match) ga4Id = ga4Match[0];
+  const hasGa4 = !!ga4Id || lowerHtml.includes('google-analytics.com') ||
+    lowerHtml.includes('gtag/js?id=g-') || lowerHtml.includes('gtag/js?id=gt-') ||
+    lowerHtml.includes('gtag("config", "gt-') || lowerHtml.includes("gtag('config', 'gt-") ||
+    lowerHtml.includes('gtag("config", "g-') || lowerHtml.includes("gtag('config', 'g-");
+
+  // 4. Meta Pixel (Facebook Ads) - standardowy snippet fbq(), wtyczki typu PixelYourSite, noscript fallback
+  let metaPixelId: string | undefined;
+  const metaMatch = rawHtml.match(/fbq\(\s*['"]init['"]\s*,\s*['"]([0-9]{10,20})['"]\)/i)
+    || rawHtml.match(/facebook\.com\/tr\?id=([0-9]{10,20})/i)
+    || rawHtml.match(/["']pixelIds["']\s*:\s*\[\s*["']([0-9]{10,20})["']/i)
+    || rawHtml.match(/["']pixel_id["']\s*:\s*["']([0-9]{10,20})["']/i)
+    || rawHtml.match(/["']fbPixelId["']\s*:\s*["']([0-9]{10,20})["']/i);
+  if (metaMatch) metaPixelId = metaMatch[1];
+  const hasMetaPixel = !!metaPixelId || lowerHtml.includes('connect.facebook.net') ||
+    lowerHtml.includes('fbq(') || lowerHtml.includes('_fbp') ||
+    lowerHtml.includes('facebook.com/tr') || lowerHtml.includes('pixelyoursite');
+
+  // TikTok Pixel
+  let tikTokPixelId: string | undefined;
+  const tikTokMatch = rawHtml.match(/ttq\.load\(\s*['"]([A-Z0-9]{10,25})['"]\)/i);
+  if (tikTokMatch) tikTokPixelId = tikTokMatch[1];
+  const hasTikTokPixel = !!tikTokPixelId || lowerHtml.includes('analytics.tiktok.com') || lowerHtml.includes('ttq.load');
+
+  // 5. Google Consent Mode v2 (Konieczny od marca 2024 w UE dla Google Ads)
+  const hasConsentModeV2 = lowerHtml.includes('ad_storage') || lowerHtml.includes('ad_user_data') || lowerHtml.includes('ad_personalization') ||
+    lowerHtml.includes('consent_default') || lowerHtml.includes('cookiebot') || lowerHtml.includes('cookieyes') ||
+    lowerHtml.includes('onetrust') || lowerHtml.includes('termly') || lowerHtml.includes('complianz') || lowerHtml.includes('iubenda');
+
+  // 6. dataLayer
+  const hasDataLayer = lowerHtml.includes('datalayer') || lowerHtml.includes('datalayer.push');
+
+  // 7. Zdarzenia koszykowe (add_to_cart / purchase)
+  const hasAddToCartTracking = /add_to_cart|addtocart|'addtocart'|"addtocart"/i.test(rawHtml);
+  const hasPurchaseTracking = /purchase|'purchase'|"purchase"/i.test(rawHtml);
+
+  // 8. Przyciski koszyka w HTML (np. WooCommerce, PrestaShop, Shopify, Custom)
+  const cartButtonsCount = cheerioInstance('button[name="add-to-cart"], .add_to_cart_button, .single_add_to_cart_button, [data-action="add-to-cart"], button[data-product_id], a.ajax_add_to_cart, .btn-add-to-cart, form.cart, [id*="add-to-cart"], [class*="add-to-cart"]').length;
+  const buttonTexts = cheerioInstance('button, a.btn, a.button, input[type="submit"]').text().toLowerCase();
+  const hasCartButtons = cartButtonsCount > 0 || buttonTexts.includes('dodaj do koszyka') || buttonTexts.includes('do koszyka') || buttonTexts.includes('add to cart');
+
+  // 9. Formularze kontaktowe / zapytania ofertowe
+  const hasLeadForms = cheerioInstance('form:not([role="search"])').length > 0;
+
+  return {
+    hasGoogleAds,
+    googleAdsId,
+    hasGtm,
+    gtmId,
+    hasGa4,
+    ga4Id,
+    hasMetaPixel,
+    metaPixelId,
+    hasTikTokPixel,
+    tikTokPixelId,
+    hasConsentModeV2,
+    hasDataLayer,
+    hasAddToCartTracking,
+    hasPurchaseTracking,
+    hasCartButtons,
+    hasLeadForms
+  };
+}
+
+/**
  * Błyskawiczna analiza pojedynczej podstrony przez Cheerio
  */
 async function analyzeSinglePage(
@@ -178,67 +266,7 @@ async function analyzeSinglePage(
     const $ = cheerio.load(html);
 
     // --- TELEMETRYKA, KODY REKLAMOWE I ANALITYKA (Przed usunięciem skryptów) ---
-    const rawHtml = html;
-    const lowerHtml = rawHtml.toLowerCase();
-
-    // 1. Google Ads
-    let googleAdsId: string | undefined;
-    const awMatch = rawHtml.match(/AW-[0-9]{7,12}/) || rawHtml.match(/AW-[A-Za-z0-9_-]+/);
-    if (awMatch) googleAdsId = awMatch[0];
-    const hasGoogleAds = !!googleAdsId || lowerHtml.includes('google_conversion_id') || lowerHtml.includes('googleadservices.com');
-
-    // 2. Google Tag Manager
-    let gtmId: string | undefined;
-    const gtmMatch = rawHtml.match(/GTM-[A-Z0-9]{4,10}/);
-    if (gtmMatch) gtmId = gtmMatch[0];
-    const hasGtm = !!gtmId || lowerHtml.includes('googletagmanager.com/gtm.js');
-
-    // 3. Google Analytics 4
-    let ga4Id: string | undefined;
-    const ga4Match = rawHtml.match(/G-[A-Z0-9]{6,12}/);
-    if (ga4Match) ga4Id = ga4Match[0];
-    const hasGa4 = !!ga4Id || lowerHtml.includes('google-analytics.com') || lowerHtml.includes('gtag/js?id=g-');
-
-    // 4. Meta & TikTok Pixels
-    const hasMetaPixel = lowerHtml.includes('connect.facebook.net') || lowerHtml.includes('fbq(') || lowerHtml.includes('_fbp');
-    const hasTikTokPixel = lowerHtml.includes('analytics.tiktok.com') || lowerHtml.includes('ttq.load');
-
-    // 5. Google Consent Mode v2 (Konieczny od marca 2024 w UE dla Google Ads)
-    const hasConsentModeV2 = lowerHtml.includes('ad_storage') || lowerHtml.includes('ad_user_data') || lowerHtml.includes('ad_personalization') ||
-      lowerHtml.includes('consent_default') || lowerHtml.includes('cookiebot') || lowerHtml.includes('cookieyes') ||
-      lowerHtml.includes('onetrust') || lowerHtml.includes('termly') || lowerHtml.includes('complianz') || lowerHtml.includes('iubenda');
-
-    // 6. dataLayer
-    const hasDataLayer = lowerHtml.includes('datalayer') || lowerHtml.includes('datalayer.push');
-
-    // 7. Zdarzenia koszykowe (add_to_cart / purchase)
-    const hasAddToCartTracking = /add_to_cart|addtocart|'addtocart'|"addtocart"/i.test(rawHtml);
-    const hasPurchaseTracking = /purchase|'purchase'|"purchase"/i.test(rawHtml);
-
-    // 8. Przyciski koszyka w HTML (np. WooCommerce, PrestaShop, Shopify, Custom)
-    const cartButtonsCount = $('button[name="add-to-cart"], .add_to_cart_button, .single_add_to_cart_button, [data-action="add-to-cart"], button[data-product_id], a.ajax_add_to_cart, .btn-add-to-cart, form.cart, [id*="add-to-cart"], [class*="add-to-cart"]').length;
-    const buttonTexts = $('button, a.btn, a.button, input[type="submit"]').text().toLowerCase();
-    const hasCartButtons = cartButtonsCount > 0 || buttonTexts.includes('dodaj do koszyka') || buttonTexts.includes('do koszyka') || buttonTexts.includes('add to cart');
-
-    // 9. Formularze kontaktowe / zapytania ofertowe
-    const hasLeadForms = $('form:not([role="search"])').length > 0;
-
-    const trackingSignals: PageTrackingSignals = {
-      hasGoogleAds,
-      googleAdsId,
-      hasGtm,
-      gtmId,
-      hasGa4,
-      ga4Id,
-      hasMetaPixel,
-      hasTikTokPixel,
-      hasConsentModeV2,
-      hasDataLayer,
-      hasAddToCartTracking,
-      hasPurchaseTracking,
-      hasCartButtons,
-      hasLeadForms
-    };
+    const trackingSignals = extractTrackingSignals(html, $);
 
     // --- ANALIZA SEMANTYCZNA I STRUKTURALNA ---
     // Tytuł
@@ -449,7 +477,9 @@ export function buildEvidenceSummary(
   const hasGA4 = signals.some(s => s.hasGa4);
   const ga4Id = signals.find(s => s.ga4Id)?.ga4Id;
   const hasMetaPixel = signals.some(s => s.hasMetaPixel);
+  const metaPixelId = signals.find(s => s.metaPixelId)?.metaPixelId;
   const hasTikTokPixel = signals.some(s => s.hasTikTokPixel);
+  const tikTokPixelId = signals.find(s => s.tikTokPixelId)?.tikTokPixelId;
   const hasConsentModeV2 = signals.some(s => s.hasConsentModeV2);
   const hasDataLayer = signals.some(s => s.hasDataLayer);
   const hasAddToCartTracking = signals.some(s => s.hasAddToCartTracking);
@@ -526,7 +556,9 @@ export function buildEvidenceSummary(
     hasGA4,
     ga4Id,
     hasMetaPixel,
+    metaPixelId,
     hasTikTokPixel,
+    tikTokPixelId,
     hasConsentModeV2,
     hasDataLayer,
     hasAddToCartTracking,
@@ -778,8 +810,12 @@ export function generateQuickCriticalIssues(
     const detailsList: { label?: string; sublabel?: string }[] = [];
     if (evidence.adsAndTracking.googleAdsId) detailsList.push({ label: `Google Ads ID: ${evidence.adsAndTracking.googleAdsId}` });
     if (evidence.adsAndTracking.gtmId) detailsList.push({ label: `Google Tag Manager: ${evidence.adsAndTracking.gtmId}` });
-    if (evidence.adsAndTracking.ga4Id) detailsList.push({ label: `GA4 Measurement ID: ${evidence.adsAndTracking.ga4Id}` });
-    if (evidence.adsAndTracking.hasMetaPixel) detailsList.push({ label: 'Wykryto Meta Pixel (Facebook Ads)' });
+    if (evidence.adsAndTracking.ga4Id) detailsList.push({ label: `Google Tag / GA4 ID: ${evidence.adsAndTracking.ga4Id}` });
+    if (evidence.adsAndTracking.metaPixelId) {
+      detailsList.push({ label: `Meta Pixel ID: ${evidence.adsAndTracking.metaPixelId}` });
+    } else if (evidence.adsAndTracking.hasMetaPixel) {
+      detailsList.push({ label: 'Wykryto Meta Pixel (Facebook Ads)' });
+    }
     detailsList.push({
       label: 'Zdarzenie koszykowe / konwersja',
       sublabel: evidence.adsAndTracking.hasAddToCartTracking ? 'Wykryto poprawnie' : 'BRAK zdarzenia w kodzie wtyczki/koszyka!'

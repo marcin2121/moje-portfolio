@@ -57,7 +57,9 @@ export interface AdsAndTrackingAudit {
   hasGA4: boolean;
   ga4Id?: string;
   hasMetaPixel: boolean;
+  metaPixelId?: string;
   hasTikTokPixel: boolean;
+  tikTokPixelId?: string;
   hasConsentModeV2: boolean;
   hasDataLayer: boolean;
   hasAddToCartTracking: boolean;

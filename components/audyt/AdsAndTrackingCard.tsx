@@ -144,7 +144,7 @@ export default function AdsAndTrackingCard({ tracking, domain, siteType = 'servi
             )}
           </div>
           <div className="font-mono text-xs text-slate-700 font-medium truncate">
-            {tracking.ga4Id || (tracking.hasGA4 ? 'Strumień GA4 aktywny' : 'Brak identyfikatora G-')}
+            {tracking.ga4Id || (tracking.hasGA4 ? 'Strumień GA4 / Google Tag aktywny' : 'Brak identyfikatora G- / GT-')}
           </div>
           <div className="text-[11px] text-slate-500 mt-1">
             Nowoczesne śledzenie ścieżek zakupowych użytkowników
@@ -169,7 +169,7 @@ export default function AdsAndTrackingCard({ tracking, domain, siteType = 'servi
             )}
           </div>
           <div className="font-mono text-xs text-slate-700 font-medium truncate">
-            {tracking.hasMetaPixel ? 'Skrypt fbq() zainicjalizowany' : 'Brak kodu Facebook Pixel'}
+            {tracking.metaPixelId ? `ID: ${tracking.metaPixelId}` : (tracking.hasMetaPixel ? 'Skrypt Meta Pixel aktywny' : 'Brak kodu Facebook Pixel')}
           </div>
           <div className="text-[11px] text-slate-500 mt-1">
             Śledzenie odbiorców reklam na Facebooku i Instagramie

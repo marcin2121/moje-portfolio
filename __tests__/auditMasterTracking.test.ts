@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildEvidenceSummary, generateQuickCriticalIssues, PageTrackingSignals } from '../app/api/audit-master/utils/crawler';
+import { buildEvidenceSummary, generateQuickCriticalIssues, extractTrackingSignals, PageTrackingSignals } from '../app/api/audit-master/utils/crawler';
 import { PageAuditResult } from '../app/api/audit-master/types';
 import { generateDeterministicReport } from '../app/api/audit-master/utils/geminiAI';
 
@@ -200,8 +200,8 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
   });
 
   it('generuje poprawną gramatycznie deklinację polską dla wykrytych uchybień (np. 2 podstrony bez H1, 1 grupa)', () => {
-    const page1: PageAuditResult = { ...mockPage, url: 'https://test.pl/1', h1Count: 0, canonical: undefined, title: 'Duplikat' };
-    const page2: PageAuditResult = { ...mockPage, url: 'https://test.pl/2', h1Count: 0, canonical: undefined, title: 'Duplikat' };
+    const page1: PageAuditResult = { ...mockPage, url: 'https://test.pl/1', h1Count: 0, canonical: null, title: 'Duplikat' };
+    const page2: PageAuditResult = { ...mockPage, url: 'https://test.pl/2', h1Count: 0, canonical: null, title: 'Duplikat' };
     const signals: PageTrackingSignals[] = [
       { hasGoogleAds: false, hasGtm: false, hasGa4: false, hasMetaPixel: false, hasTikTokPixel: false, hasConsentModeV2: false, hasDataLayer: false, hasAddToCartTracking: false, hasPurchaseTracking: false, hasCartButtons: false, hasLeadForms: true },
       { hasGoogleAds: false, hasGtm: false, hasGa4: false, hasMetaPixel: false, hasTikTokPixel: false, hasConsentModeV2: false, hasDataLayer: false, hasAddToCartTracking: false, hasPurchaseTracking: false, hasCartButtons: false, hasLeadForms: true }
@@ -222,4 +222,84 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
     expect(report).toContain('1 grupę ze zduplikowanymi tagami Title');
     expect(report).toContain('2 adresy bez linku kanonicznego');
   });
+
+  describe('extractTrackingSignals (Parsowanie surowego HTML)', () => {
+    it('wykrywa Meta Pixel i wyciąga ID z konfiguracji PixelYourSite (kazus tropilapka.pl)', () => {
+      const tropilapkaHtml = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <script type="text/javascript">
+              /* <![CDATA[ */
+              var pysOptions = {"staticEvents":{"facebook":{"init":[]}},"pixelIds":["2018990982314087"],"dynamicEvents":[]};
+              /* ]]> */
+            </script>
+            <noscript>
+              <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2018990982314087&ev=PageView&noscript=1" />
+            </noscript>
+            <script src="/wp-content/plugins/pixelyoursite/dist/scripts/public.js"></script>
+          </head>
+          <body>
+            <button name="add-to-cart" value="123">Dodaj do koszyka</button>
+          </body>
+        </html>
+      `;
+
+      const signals = extractTrackingSignals(tropilapkaHtml);
+      expect(signals.hasMetaPixel).toBe(true);
+      expect(signals.metaPixelId).toBe('2018990982314087');
+      expect(signals.hasCartButtons).toBe(true);
+    });
+
+    it('wykrywa Google Analytics 4 z formatem Google Tag GT- z Google Site Kit (kazus tropilapka.pl)', () => {
+      const tropilapkaSiteKitHtml = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <script src="https://www.googletagmanager.com/gtag/js?id=GT-NGKQSSXM" id="google_gtagjs-js" async></script>
+            <script id="google_gtagjs-js-after">
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag("set","linker",{"domains":["tropilapka.pl"]});
+              gtag("js", new Date());
+              gtag("set", "developer_id.dZTNiMT", true);
+              gtag("config", "GT-NGKQSSXM", {"groups":"default"});
+            </script>
+          </head>
+          <body>
+            <h1>Tropiłapka</h1>
+          </body>
+        </html>
+      `;
+
+      const signals = extractTrackingSignals(tropilapkaSiteKitHtml);
+      expect(signals.hasGa4).toBe(true);
+      expect(signals.ga4Id).toBe('GT-NGKQSSXM');
+      expect(signals.hasDataLayer).toBe(true);
+      // Upewnij się, że NIE zgłasza fałszywego GTM (ponieważ jest to gtag/js, a nie kontener GTM!)
+      expect(signals.hasGtm).toBe(false);
+      expect(signals.gtmId).toBeUndefined();
+    });
+
+    it('wykrywa standardowy kontener GTM, gdy zainstalowano gtm.js z kodem GTM-', () => {
+      const gtmHtml = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-K39X9WZ');</script>
+          </head>
+          <body></body>
+        </html>
+      `;
+
+      const signals = extractTrackingSignals(gtmHtml);
+      expect(signals.hasGtm).toBe(true);
+      expect(signals.gtmId).toBe('GTM-K39X9WZ');
+    });
+  });
 });
+
