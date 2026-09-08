@@ -300,6 +300,51 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
       expect(signals.hasGtm).toBe(true);
       expect(signals.gtmId).toBe('GTM-K39X9WZ');
     });
+
+    it('nie generuje fałszywego hasAddToCartTracking ze zwykłych klas CSS WooCommerce (.add_to_cart_button) ani tablic konfiguracyjnych (kazus tropilapka.pl)', () => {
+      const wooCommerceButtonHtml = `
+        <html>
+          <body>
+            <div class="product">
+              <a href="?add-to-cart=99" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Dodaj do koszyka</a>
+              <script>
+                window._googlesitekit = { wcdata: { eventsToTrack: ["add_to_cart","purchase"] } };
+                var cartbounty = { custom_button_selectors: ".cartbounty-add-to-cart, .add_to_cart_button" };
+              </script>
+            </div>
+          </body>
+        </html>
+      `;
+
+      const signals = extractTrackingSignals(wooCommerceButtonHtml);
+      expect(signals.hasCartButtons).toBe(true);
+      // Nie może być uznane za add_to_cart tracking, dopóki nie ma realnej emisji eventu JS!
+      expect(signals.hasAddToCartTracking).toBe(false);
+      expect(signals.hasPurchaseTracking).toBe(false);
+    });
+
+    it('poprawnie wykrywa rzeczywistą emisję add_to_cart przez dataLayer.push lub fbq/gtag', () => {
+      const dataLayerHtml = `
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: 'add_to_cart',
+            ecommerce: {
+              currency: 'PLN',
+              value: 149.00,
+              items: [{ item_id: 'LEG-1', item_name: 'Legowisko' }]
+            }
+          });
+        </script>
+      `;
+      expect(extractTrackingSignals(dataLayerHtml).hasAddToCartTracking).toBe(true);
+
+      const fbqHtml = `<script>fbq('track', 'AddToCart', { content_name: 'Legowisko', value: 149, currency: 'PLN' });</script>`;
+      expect(extractTrackingSignals(fbqHtml).hasAddToCartTracking).toBe(true);
+
+      const gtagHtml = `<script>gtag('event', 'add_to_cart', { items: [{ id: '123' }] });</script>`;
+      expect(extractTrackingSignals(gtagHtml).hasAddToCartTracking).toBe(true);
+    });
   });
 });
 

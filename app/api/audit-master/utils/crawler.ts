@@ -214,8 +214,22 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
   const hasDataLayer = lowerHtml.includes('datalayer') || lowerHtml.includes('datalayer.push');
 
   // 7. Zdarzenia koszykowe (add_to_cart / purchase)
-  const hasAddToCartTracking = /add_to_cart|addtocart|'addtocart'|"addtocart"/i.test(rawHtml);
-  const hasPurchaseTracking = /purchase|'purchase'|"purchase"/i.test(rawHtml);
+  // Weryfikacja RZECZYWISTEJ emisji zdarzenia (dataLayer.push, gtag, fbq, ttq),
+  // a nie samych klas CSS WordPressa (.add_to_cart_button) czy zwykłych słów w tekście.
+  const hasAddToCartTracking =
+    /(?:window\.)?dataLayer\.push\s*\(\s*\{[^}]*['"](?:event['"]\s*:\s*['"])?add_to_cart['"]/i.test(rawHtml) ||
+    /(?:window\.)?gtag\s*\(\s*['"]event['"]\s*,\s*['"]add_to_cart['"]/i.test(rawHtml) ||
+    /(?:window\.)?fbq\s*\(\s*['"]track['"]\s*,\s*['"]AddToCart['"]/i.test(rawHtml) ||
+    /(?:window\.)?ttq\.track\s*\(\s*['"]AddToCart['"]/i.test(rawHtml) ||
+    /['"]dynamicEvents['"]\s*:\s*\{[^}]*['"]AddToCart['"]/i.test(rawHtml) ||
+    /gtm4wp\.addProductToCartEEC/i.test(rawHtml);
+
+  const hasPurchaseTracking =
+    /(?:window\.)?dataLayer\.push\s*\(\s*\{[^}]*['"](?:event['"]\s*:\s*['"])?purchase['"]/i.test(rawHtml) ||
+    /(?:window\.)?gtag\s*\(\s*['"]event['"]\s*,\s*['"]purchase['"]/i.test(rawHtml) ||
+    /(?:window\.)?fbq\s*\(\s*['"]track['"]\s*,\s*['"]Purchase['"]/i.test(rawHtml) ||
+    /(?:window\.)?ttq\.track\s*\(\s*['"](?:CompletePayment|PlaceAnOrder)['"]/i.test(rawHtml) ||
+    /['"]dynamicEvents['"]\s*:\s*\{[^}]*['"]Purchase['"]/i.test(rawHtml);
 
   // 8. Przyciski koszyka w HTML (np. WooCommerce, PrestaShop, Shopify, Custom)
   const cartButtonsCount = cheerioInstance('button[name="add-to-cart"], .add_to_cart_button, .single_add_to_cart_button, [data-action="add-to-cart"], button[data-product_id], a.ajax_add_to_cart, .btn-add-to-cart, form.cart, [id*="add-to-cart"], [class*="add-to-cart"]').length;
@@ -490,7 +504,7 @@ export function buildEvidenceSummary(
   const trackingIssues: TrackingIssue[] = [];
 
   // Scenariusz 1: Płatne reklamy + profil sklepu / przycisk koszyka bez zdarzenia add_to_cart (Kazus tropilapka.pl)
-  if ((hasGoogleAds || hasMetaPixel || hasTikTokPixel || hasGoogleTagManager) && hasCartButtons && !hasAddToCartTracking) {
+  if ((hasGoogleAds || hasMetaPixel || hasTikTokPixel || hasGoogleTagManager || hasGA4) && hasCartButtons && !hasAddToCartTracking) {
     trackingIssues.push({
       id: 'leak-add-to-cart',
       title: 'Krytyczny wyciek budżetu reklamowego: brak zdarzenia add_to_cart',
