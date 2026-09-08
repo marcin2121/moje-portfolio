@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { buildEvidenceSummary, generateQuickCriticalIssues, PageTrackingSignals } from '../app/api/audit-master/utils/crawler';
 import { PageAuditResult } from '../app/api/audit-master/types';
+import { generateDeterministicReport } from '../app/api/audit-master/utils/geminiAI';
 
 describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', () => {
   const mockPage: PageAuditResult = {
@@ -173,5 +174,52 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
     expect(quickIssues.some(i => i.id === 'quick-missing-canonical')).toBe(false);
     expect(quickIssues.some(i => i.id === 'quick-duplicate-titles')).toBe(false);
     expect(quickIssues.some(i => i.id === 'quick-thin-content')).toBe(false);
+  });
+
+  it('generuje rzetelną syntezę inżynieryjną dla witryny ze 100% czystym SEO (nie wymyśla braków H1 ani canonicali)', () => {
+    const page: PageAuditResult = { ...mockPage, url: 'https://molendadevelopment.pl', title: 'Marcin Molenda', canonical: 'https://molendadevelopment.pl', wordCount: 500, isThinContent: false };
+    const signals: PageTrackingSignals[] = [{ hasGoogleAds: false, hasGtm: false, hasGa4: false, hasMetaPixel: false, hasTikTokPixel: false, hasConsentModeV2: false, hasDataLayer: true, hasAddToCartTracking: false, hasPurchaseTracking: false, hasCartButtons: false, hasLeadForms: true }];
+    const evidence = buildEvidenceSummary([page], signals, 'services');
+
+    const report = generateDeterministicReport(
+      'https://molendadevelopment.pl',
+      81,
+      'Next.js / React (Serverless Edge)',
+      13,
+      false, // services
+      evidence,
+      { jquery: false, badScripts: 0, domElements: 1058, inlineStyles: 12, pageBuilders: [], trackers: [] }
+    );
+
+    // Nie może halucynować o braku H1 ani o brakujących canonicalach!
+    expect(report).not.toContain('brak odpowiednich nagłówków semantycznych');
+    expect(report).not.toContain('uporządkuję strukturę nagłówków i canonicali');
+    expect(report).not.toContain('add_to_cart');
+    // Powinien podkreślić czystą strukturę lub skupić się na telemetrii i renderowaniu DOM
+    expect(report).toContain('struktura semantyczna i indeksacja są w 100% czyste');
+  });
+
+  it('generuje poprawną gramatycznie deklinację polską dla wykrytych uchybień (np. 2 podstrony bez H1, 1 grupa)', () => {
+    const page1: PageAuditResult = { ...mockPage, url: 'https://test.pl/1', h1Count: 0, canonical: undefined, title: 'Duplikat' };
+    const page2: PageAuditResult = { ...mockPage, url: 'https://test.pl/2', h1Count: 0, canonical: undefined, title: 'Duplikat' };
+    const signals: PageTrackingSignals[] = [
+      { hasGoogleAds: false, hasGtm: false, hasGa4: false, hasMetaPixel: false, hasTikTokPixel: false, hasConsentModeV2: false, hasDataLayer: false, hasAddToCartTracking: false, hasPurchaseTracking: false, hasCartButtons: false, hasLeadForms: true },
+      { hasGoogleAds: false, hasGtm: false, hasGa4: false, hasMetaPixel: false, hasTikTokPixel: false, hasConsentModeV2: false, hasDataLayer: false, hasAddToCartTracking: false, hasPurchaseTracking: false, hasCartButtons: false, hasLeadForms: true }
+    ];
+    const evidence = buildEvidenceSummary([page1, page2], signals, 'services');
+
+    const report = generateDeterministicReport(
+      'https://test.pl',
+      60,
+      'WordPress',
+      25,
+      false,
+      evidence
+    );
+
+    // Poprawna deklinacja w języku polskim
+    expect(report).toContain('2 podstrony bez nagłówka H1');
+    expect(report).toContain('1 grupę ze zduplikowanymi tagami Title');
+    expect(report).toContain('2 adresy bez linku kanonicznego');
   });
 });

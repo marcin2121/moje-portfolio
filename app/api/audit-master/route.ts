@@ -154,7 +154,14 @@ export async function POST(req: Request) {
       if (crawlData.evidence.missingH1Count > 0) penalty += 15;
       if (crawlData.evidence.missingCanonicalCount > 0) penalty += 10;
       if (crawlData.evidence.thinContentCount > crawlData.evidence.totalPages * 0.3) penalty += 10;
-      finalSeoScore = Math.max(25, Math.min(100, Math.round(finalSeoScore - penalty)));
+      if (crawlData.evidence.missingTitleCount > 0) penalty += 10;
+
+      if (penalty === 0) {
+        // Wszystkie zbadane podstrony posiadają wzorowe H1, canonical, unikalne title i pełną treść
+        finalSeoScore = Math.max(finalSeoScore, 98);
+      } else {
+        finalSeoScore = Math.max(25, Math.min(100, Math.round(finalSeoScore - penalty)));
+      }
     }
 
     // Wyliczanie szybkich błędów krytycznych (Top wycieki budżetu i SEO)
@@ -301,7 +308,8 @@ async function analyzeRootUrl(targetUrl: string) {
       $('script[src]').each((_, el) => {
         const isAsync = $(el).attr('async') !== undefined;
         const isDefer = $(el).attr('defer') !== undefined;
-        if (!isAsync && !isDefer) codeSmells.badScripts++;
+        const isNoModule = $(el).attr('nomodule') !== undefined;
+        if (!isAsync && !isDefer && !isNoModule) codeSmells.badScripts++;
       });
 
       if (lowerHtml.includes('elementor')) codeSmells.pageBuilders?.push('Elementor');
