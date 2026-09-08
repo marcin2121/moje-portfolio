@@ -76,8 +76,8 @@ export async function POST(req: Request) {
     const cleanDomain = new URL(targetUrl).hostname.toLowerCase().replace(/^www\./, '');
 
     // ⚡ SPRAWDZENIE TRWAŁEGO CACHE (Supabase / local disk)
-    // Jeśli domena była audytowana w ciągu ostatnich 7 dni, zwróć gotowy wynik natychmiast!
-    const existingAudit = await getAuditByDomain(cleanDomain, 7);
+    // Jeśli domena była audytowana w ciągu ostatnich 7 dni dla danego profilu, zwróć gotowy wynik natychmiast!
+    const existingAudit = await getAuditByDomain(cleanDomain, 7, currentSiteType);
     if (existingAudit) {
       return NextResponse.json({
         ...existingAudit,
@@ -88,7 +88,7 @@ export async function POST(req: Request) {
     // 🚀 ODPALENIE WIELOPODSTRONICOWEGO CRAWLERA I ANALIZATORA STRUKTURY
     // Ograniczenie czasu i concurrency dostosowane do Hetzner VPS (4GB RAM)
     const [crawlResult, rootAnalysisResult] = await Promise.allSettled([
-      crawlDomain(targetUrl, { maxPages: 35, maxTimeMs: 12000, concurrency: 4 }),
+      crawlDomain(targetUrl, { maxPages: 35, maxTimeMs: 12000, concurrency: 4, siteType: currentSiteType }),
       analyzeRootUrl(targetUrl)
     ]);
 

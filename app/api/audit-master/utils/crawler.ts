@@ -14,6 +14,7 @@ interface CrawlOptions {
   maxPages?: number;
   maxTimeMs?: number;
   concurrency?: number;
+  siteType?: 'ecommerce' | 'services';
 }
 
 export interface PageTrackingSignals {
@@ -81,7 +82,7 @@ export async function crawlDomain(
   }
 
   // 3. Agregacja twardych dowodów (Evidence Engine) wraz z telemetryką
-  const evidence = buildEvidenceSummary(pages, signals);
+  const evidence = buildEvidenceSummary(pages, signals, options.siteType ?? 'services');
 
   return { pages, evidence };
 }
@@ -433,8 +434,10 @@ function extractSchemaTypes(obj: unknown, results: string[]): void {
  */
 export function buildEvidenceSummary(
   pages: PageAuditResult[],
-  signals: PageTrackingSignals[] = []
+  signals: PageTrackingSignals[] = [],
+  siteType: 'ecommerce' | 'services' = 'services'
 ): EvidenceSummary {
+  const isEcommerce = siteType === 'ecommerce';
   const totalPages = pages.length;
 
   // 1. Analiza telemetryki i kampanii reklamowych
@@ -450,12 +453,12 @@ export function buildEvidenceSummary(
   const hasDataLayer = signals.some(s => s.hasDataLayer);
   const hasAddToCartTracking = signals.some(s => s.hasAddToCartTracking);
   const hasPurchaseTracking = signals.some(s => s.hasPurchaseTracking);
-  const hasCartButtons = signals.some(s => s.hasCartButtons);
+  const hasCartButtons = isEcommerce || signals.some(s => s.hasCartButtons);
   const hasLeadForms = signals.some(s => s.hasLeadForms);
 
   const trackingIssues: TrackingIssue[] = [];
 
-  // Scenariusz 1: Płatne reklamy + przycisk koszyka bez zdarzenia add_to_cart (Kazus tropilapka.pl)
+  // Scenariusz 1: Płatne reklamy + profil sklepu / przycisk koszyka bez zdarzenia add_to_cart (Kazus tropilapka.pl)
   if ((hasGoogleAds || hasMetaPixel || hasTikTokPixel || hasGoogleTagManager) && hasCartButtons && !hasAddToCartTracking) {
     trackingIssues.push({
       id: 'leak-add-to-cart',
@@ -487,12 +490,14 @@ export function buildEvidenceSummary(
       severity: 'warning',
       description: 'Zainstalowano GTM, ale aplikacja nie udostępnia uporządkowanego obiektu dataLayer.',
       impact: 'Tagi analityczne opierają się na niestabilnych selektorach HTML w DOM, które psują się przy drobnych zmianach wizualnych w sklepie.',
-      developerSolution: 'Wdrożę natywną warstwę window.dataLayer z pełnym schematem GA4 e-commerce.'
+      developerSolution: isEcommerce
+        ? 'Wdrożę natywną warstwę window.dataLayer z pełnym schematem GA4 e-commerce.'
+        : 'Wdrożę uporządkowaną warstwę window.dataLayer ze schematem zdarzeń biznesowych (lead_generate, form_submit).'
     });
   }
 
   // Scenariusz 4: Brak śledzenia konwersji leada przy płatnych reklamach (serwisy usługowe)
-  if ((hasGoogleAds || hasMetaPixel) && hasLeadForms && !hasDataLayer && !hasCartButtons) {
+  if ((hasGoogleAds || hasMetaPixel) && hasLeadForms && !hasDataLayer && !isEcommerce) {
     trackingIssues.push({
       id: 'leak-lead-conversion',
       title: 'Płatne reklamy bez precyzyjnego śledzenia zapytań ofertowych',

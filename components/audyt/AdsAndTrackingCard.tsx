@@ -18,14 +18,16 @@ import { AdsAndTrackingAudit } from '@/app/api/audit-master/types';
 interface AdsAndTrackingCardProps {
   tracking: AdsAndTrackingAudit;
   domain: string;
+  siteType?: 'ecommerce' | 'services';
 }
 
-export default function AdsAndTrackingCard({ tracking, domain }: AdsAndTrackingCardProps) {
+export default function AdsAndTrackingCard({ tracking, domain, siteType = 'services' }: AdsAndTrackingCardProps) {
+  const isEcommerce = siteType === 'ecommerce';
   const isCritical = tracking.adBudgetLeakRisk === 'critical';
   const isMedium = tracking.adBudgetLeakRisk === 'medium';
   const hasAnyAdTracking = tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasTikTokPixel || tracking.hasGoogleTagManager || tracking.hasGA4;
   const hasGoogleTracking = tracking.hasGoogleAds || tracking.hasGA4;
-  const hasCart = !!tracking.hasCartButtons;
+  const hasCart = isEcommerce || !!tracking.hasCartButtons;
 
   return (
     <div className="bg-white/80 border border-slate-200/70 rounded-3xl p-6 md:p-10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
@@ -34,14 +36,16 @@ export default function AdsAndTrackingCard({ tracking, domain }: AdsAndTrackingC
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-widest">
-              Analityka & Kampanie Płatne
+              Analityka & Kampanie Płatne {isEcommerce ? '· E-commerce' : '· Usługi / B2B'}
             </span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
             Budżet Reklamowy & Telemetryka (Google & Meta Ads)
           </h3>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-            Czy Twój budżet na Google Ads i Meta Ads nie jest przepalany przez błędy w kodzie koszyka i brak telemetryki zdarzeń?
+            {isEcommerce
+              ? 'Czy Twój budżet na Google Ads i Meta Ads nie jest przepalany przez błędy w kodzie koszyka i brak telemetryki zdarzeń e-commerce?'
+              : 'Czy Twój budżet na Google Ads i Meta Ads nie jest przepalany przez brak telemetryki wysłanych formularzy i zapytań B2B?'}
           </p>
         </div>
 
@@ -228,20 +232,26 @@ export default function AdsAndTrackingCard({ tracking, domain }: AdsAndTrackingC
           </div>
         </div>
 
-        {/* 6. Zdarzenia koszykowe (add_to_cart / dataLayer) */}
+        {/* 6. Zdarzenia koszykowe (e-commerce) / Lead konwersja (usługi) */}
         <div className={`p-4 rounded-2xl border ${
-          hasCart
+          isEcommerce
             ? tracking.hasAddToCartTracking
               ? 'bg-emerald-50/40 border-emerald-200/70'
               : 'bg-rose-50/40 border-rose-200/70'
-            : 'bg-slate-50/30 border-slate-200/50'
+            : tracking.hasDataLayer
+              ? 'bg-emerald-50/40 border-emerald-200/70'
+              : hasAnyAdTracking
+                ? 'bg-amber-50/40 border-amber-200/70'
+                : 'bg-slate-50/30 border-slate-200/50'
         }`}>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <ShoppingCart className={`w-4 h-4 ${hasCart ? 'text-amber-600' : 'text-slate-400'}`} />
-              <span className="font-bold text-xs text-slate-900">Zdarzenie add_to_cart</span>
+              <ShoppingCart className={`w-4 h-4 ${isEcommerce ? 'text-amber-600' : 'text-slate-500'}`} />
+              <span className="font-bold text-xs text-slate-900">
+                {isEcommerce ? 'Zdarzenie add_to_cart' : 'Śledzenie Leadów / Formularzy'}
+              </span>
             </div>
-            {hasCart ? (
+            {isEcommerce ? (
               tracking.hasAddToCartTracking ? (
                 <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
                   Rejestrowane
@@ -251,6 +261,14 @@ export default function AdsAndTrackingCard({ tracking, domain }: AdsAndTrackingC
                   Brak w kodzie!
                 </span>
               )
+            ) : tracking.hasDataLayer ? (
+              <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
+                dataLayer OK
+              </span>
+            ) : hasAnyAdTracking ? (
+              <span className="text-[11px] font-mono font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
+                Brak eventu
+              </span>
             ) : (
               <span className="text-[11px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
                 Brak koszyka
@@ -258,22 +276,30 @@ export default function AdsAndTrackingCard({ tracking, domain }: AdsAndTrackingC
             )}
           </div>
           <div className={`font-mono text-xs font-semibold truncate ${
-            hasCart
+            isEcommerce
               ? tracking.hasAddToCartTracking
                 ? 'text-emerald-800'
                 : 'text-rose-700'
-              : 'text-slate-600'
+              : tracking.hasDataLayer
+                ? 'text-emerald-800'
+                : hasAnyAdTracking
+                  ? 'text-amber-800'
+                  : 'text-slate-600'
           }`}>
-            {hasCart
+            {isEcommerce
               ? tracking.hasAddToCartTracking
                 ? 'dataLayer.push() aktywne'
                 : 'Przycisk koszyka nie emituje eventu'
-              : 'Nie dotyczy (serwis B2B / portfolio)'}
+              : tracking.hasDataLayer
+                ? 'Zdarzenia konwersji w dataLayer'
+                : tracking.hasLeadForms
+                  ? 'Wykryto formularz bez zdarzenia generate_lead'
+                  : 'Serwis usługowy (brak koszyka e-commerce)'}
           </div>
           <div className="text-[11px] text-slate-500 mt-1">
-            {hasCart
+            {isEcommerce
               ? 'Kluczowy sygnał intencji dla Smart Bidding Google Ads'
-              : 'Dla tego typu witryny kluczowe jest śledzenie formularzy (Lead)'}
+              : 'Dla witryn usługowych kluczowe jest mierzenie wysłanych zapytań (Leadów)'}
           </div>
         </div>
       </div>

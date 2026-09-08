@@ -67,18 +67,28 @@ export async function getAuditByToken(token: string): Promise<AuditMasterRespons
   return null;
 }
 
-export async function getAuditByDomain(domain: string, maxAgeDays = 7): Promise<AuditMasterResponse | null> {
+export async function getAuditByDomain(
+  domain: string,
+  maxAgeDays = 7,
+  siteType?: 'ecommerce' | 'services'
+): Promise<AuditMasterResponse | null> {
   const cleanDomain = domain.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('/')[0];
   const cutoffTime = new Date(Date.now() - maxAgeDays * 24 * 60 * 60 * 1000).toISOString();
 
   // 1. Sprawdź Supabase
   if (supabase) {
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('audit_reports')
         .select('data, created_at')
         .eq('domain', cleanDomain)
-        .gte('created_at', cutoffTime)
+        .gte('created_at', cutoffTime);
+
+      if (siteType) {
+        query = query.eq('site_type', siteType);
+      }
+
+      const { data, error } = await query
         .order('created_at', { ascending: false })
         .limit(1)
         .maybeSingle();
@@ -100,11 +110,15 @@ export async function getAuditByDomain(domain: string, maxAgeDays = 7): Promise<
     const domainMapPath = path.join(LOCAL_CACHE_DIR, 'domains_index.json');
     if (fs.existsSync(domainMapPath)) {
       const mapRaw = fs.readFileSync(domainMapPath, 'utf-8');
-      const map = JSON.parse(mapRaw) as Record<string, { token: string; timestamp: number }>;
-      const record = map[cleanDomain];
+      const map = JSON.parse(mapRaw) as Record<string, { token: string; timestamp: number; siteType?: string }>;
+      const key = siteType ? `${cleanDomain}:${siteType}` : cleanDomain;
+      const record = map[key] || map[cleanDomain];
 
       if (record && Date.now() - record.timestamp < maxAgeDays * 24 * 60 * 60 * 1000) {
-        return getAuditByToken(record.token);
+        const audit = await getAuditByToken(record.token);
+        if (audit && (!siteType || audit.siteType === siteType)) {
+          return audit;
+        }
       }
     }
   } catch {
@@ -142,7 +156,7 @@ export async function saveAudit(audit: AuditMasterResponse): Promise<{ token: st
 
     // Aktualizuj indeks domen
     const domainMapPath = path.join(LOCAL_CACHE_DIR, 'domains_index.json');
-    let map: Record<string, { token: string; timestamp: number }> = {};
+    let map: Record<string, { token: string; timestamp: number; siteType?: string }> = {};
     if (fs.existsSync(domainMapPath)) {
       try {
         map = JSON.parse(fs.readFileSync(domainMapPath, 'utf-8'));
@@ -150,7 +164,9 @@ export async function saveAudit(audit: AuditMasterResponse): Promise<{ token: st
         map = {};
       }
     }
-    map[cleanDomain] = { token: audit.token, timestamp: Date.now() };
+    const entry = { token: audit.token, timestamp: Date.now(), siteType: audit.siteType };
+    map[cleanDomain] = entry;
+    map[`${cleanDomain}:${audit.siteType}`] = entry;
     fs.writeFileSync(domainMapPath, JSON.stringify(map, null, 2), 'utf-8');
   } catch {
     // Ignoruj

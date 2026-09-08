@@ -6,9 +6,11 @@ import { ArrowRight, CheckCircle2, Loader2, Phone, Mail } from 'lucide-react';
 interface AuditConsultationFormProps {
   domain: string;
   token?: string;
+  siteType?: 'ecommerce' | 'services';
 }
 
-export default function AuditConsultationForm({ domain, token }: AuditConsultationFormProps) {
+export default function AuditConsultationForm({ domain, token, siteType = 'services' }: AuditConsultationFormProps) {
+  const isEcommerce = siteType === 'ecommerce';
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
@@ -60,19 +62,21 @@ export default function AuditConsultationForm({ domain, token }: AuditConsultati
   };
 
   return (
-    <div className="bg-slate-900 text-white rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-[0_20px_50px_rgba(15,23,42,0.15)] mb-12">
+    <div className="mt-16 bg-slate-900 border border-slate-800 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
       {/* Subtelny ambient glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-2xl relative z-10">
         <span className="text-orange-400 font-mono text-xs uppercase tracking-widest font-semibold block mb-3">
-          Konsultacja Inżynieryjna 1-na-1
+          Konsultacja Inżynieryjna 1-na-1 {isEcommerce ? '· Sklep E-commerce' : '· Serwis B2B'}
         </span>
         <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">
           Chcesz omówić wyniki audytu dla {domain}?
         </h3>
         <p className="text-slate-400 text-sm leading-relaxed mb-8">
-          Przejdźmy wspólnie przez wąskie gardła w kodzie. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej pokażę Ci czarno na białym, jak zabezpieczyć budżet reklamowy przed przepalaniem, odblokować telemetrykę zdarzeń i wdrożyć 3 kluczowe poprawki w kodzie bez burzenia obecnej strony.
+          {isEcommerce
+            ? 'Przejdźmy wspólnie przez wąskie gardła w kodzie sklepu. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej pokażę Ci czarno na białym, jak zabezpieczyć budżet reklamowy e-commerce przed przepalaniem, odblokować telemetrykę koszyka (add_to_cart) i wdrożyć kluczowe poprawki w architekturze sklepu.'
+            : 'Przejdźmy wspólnie przez wąskie gardła w kodzie. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej pokażę Ci czarno na białym, jak zabezpieczyć budżet reklamowy przed przepalaniem, odblokować telemetrykę zdarzeń i wdrożyć 3 kluczowe poprawki w kodzie bez burzenia obecnej strony.'}
         </p>
 
         {isSuccess ? (
@@ -107,7 +111,7 @@ export default function AuditConsultationForm({ domain, token }: AuditConsultati
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="twoj-email@firma.pl"
+                    placeholder="twoj@email.pl"
                     className="w-full bg-slate-800/90 border border-slate-700/80 rounded-xl pl-10 pr-4 py-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 font-mono transition-colors"
                   />
                 </div>
@@ -139,7 +143,9 @@ export default function AuditConsultationForm({ domain, token }: AuditConsultati
                 type="text"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="np. chcemy naprawić śledzenie konwersji, poprawić pozycje w Google, usunąć dług techniczny"
+                placeholder={isEcommerce
+                  ? "np. chcemy naprawić śledzenie koszyka (add_to_cart), przyspieszyć sklep, obniżyć porzucenia koszyka"
+                  : "np. chcemy naprawić śledzenie konwersji, poprawić pozycje w Google, usunąć dług techniczny"}
                 className="w-full bg-slate-800/90 border border-slate-700/80 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 transition-colors"
               />
             </div>

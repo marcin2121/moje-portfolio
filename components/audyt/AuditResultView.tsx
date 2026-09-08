@@ -137,7 +137,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
 
       {/* SEKCJA 2: Audyt Kampanii Płatnych & Telemetryki (Google & Meta Ads, Consent Mode v2, add_to_cart) */}
       {evidence?.adsAndTracking && (
-        <AdsAndTrackingCard tracking={evidence.adsAndTracking} domain={result.domain} />
+        <AdsAndTrackingCard tracking={evidence.adsAndTracking} domain={result.domain} siteType={result.siteType} />
       )}
 
       {/* SEKCJA 3: Asymetryczny Bento Grid filarów technicznych */}
@@ -488,7 +488,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       {pages.length > 0 && <PagesTable pages={pages} />}
 
       {/* Sekcja 5: Formularz Konsultacji & Lead Capture */}
-      <AuditConsultationForm domain={result.domain} token={result.token} />
+      <AuditConsultationForm domain={result.domain} token={result.token} siteType={result.siteType} />
     </motion.div>
   );
 }
