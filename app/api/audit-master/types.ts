@@ -66,6 +66,16 @@ export interface AdsAndTrackingAudit {
   hasPurchaseTracking: boolean;
   hasCartButtons?: boolean;
   hasLeadForms?: boolean;
+  // Rozszerzony Silnik Wycieków Finansowych (Financial Leak Engine)
+  hasViewItemTracking?: boolean;
+  hasProductSchema?: boolean;
+  hasOmnibusCompliance?: boolean;
+  hasExpressPayments?: boolean;
+  hasClickableContacts?: boolean;
+  hasClickToCallTracking?: boolean;
+  hasFormSpamProtection?: boolean;
+  hasOpenGraph?: boolean;
+  variantTimeoutUrls?: string[];
   adBudgetLeakRisk: 'none' | 'low' | 'medium' | 'critical';
   issues: TrackingIssue[];
 }

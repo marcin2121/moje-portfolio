@@ -345,6 +345,101 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
       const gtagHtml = `<script>gtag('event', 'add_to_cart', { items: [{ id: '123' }] });</script>`;
       expect(extractTrackingSignals(gtagHtml).hasAddToCartTracking).toBe(true);
     });
+
+    it('wykrywa brak zdarzenia view_item / ViewContent jako krytyczny paraliż dynamicznego remarketingu', () => {
+      const productPage: PageAuditResult = {
+        ...mockPage,
+        url: 'https://sklep-testowy.pl/produkt/legowisko',
+        category: 'product'
+      };
+
+      const signals: PageTrackingSignals[] = [
+        {
+          hasGoogleAds: false,
+          hasGtm: false,
+          hasGa4: true,
+          ga4Id: 'G-XYZ123',
+          hasMetaPixel: true,
+          metaPixelId: '1234567890',
+          hasTikTokPixel: false,
+          hasConsentModeV2: true,
+          hasDataLayer: true,
+          hasAddToCartTracking: false,
+          hasPurchaseTracking: false,
+          hasCartButtons: true,
+          hasLeadForms: false,
+          hasViewItemTracking: false // BŁĄD: brak view_item!
+        }
+      ];
+
+      const evidence = buildEvidenceSummary([productPage], signals, 'ecommerce');
+      const viewItemIssue = evidence.adsAndTracking.issues.find(i => i.id === 'leak-view-item');
+
+      expect(viewItemIssue).toBeDefined();
+      expect(viewItemIssue?.severity).toBe('critical');
+      expect(viewItemIssue?.impact).toContain('Dynamiczne reklamy');
+      expect(viewItemIssue?.developerSolution).toContain('view_item');
+    });
+
+    it('wykrywa wyciek z wariantów produktów z błędem 504 / timeoutem (kazus tropilapka.pl)', () => {
+      const slowVariantPage: PageAuditResult = {
+        ...mockPage,
+        url: 'https://sklep.pl/produkt/legowisko/?attribute_pa_kolor=jeziorko',
+        statusCode: 504,
+        responseTimeMs: 3002
+      };
+
+      const evidence = buildEvidenceSummary([mockPage, slowVariantPage], [], 'ecommerce');
+      const variantIssue = evidence.adsAndTracking.issues.find(i => i.id === 'leak-variant-slow-or-timeout');
+
+      expect(variantIssue).toBeDefined();
+      expect(variantIssue?.severity).toBe('critical');
+      expect(variantIssue?.impact).toContain('100% budżetu');
+      expect(variantIssue?.developerSolution).toContain('Redis');
+    });
+
+    it('wykrywa brak dyrektywy Omnibus przy cenach promocyjnych', () => {
+      const promoPageHtml = `
+        <html>
+          <body>
+            <div class="product">
+              <span class="price"><del>199 zł</del> <ins>149 zł</ins></span>
+            </div>
+          </body>
+        </html>
+      `;
+
+      const signals = extractTrackingSignals(promoPageHtml);
+      expect(signals.hasSalePrice).toBe(true);
+      expect(signals.hasOmnibusMention).toBe(false);
+
+      const evidence = buildEvidenceSummary([mockPage], [signals], 'ecommerce');
+      const omnibusIssue = evidence.adsAndTracking.issues.find(i => i.id === 'leak-omnibus-missing');
+
+      expect(omnibusIssue).toBeDefined();
+      expect(omnibusIssue?.severity).toBe('warning');
+      expect(omnibusIssue?.impact).toContain('UOKiK');
+    });
+
+    it('wykrywa nieklikalny numer telefonu w treści serwisu usługowego / B2B', () => {
+      const b2bHtml = `
+        <html>
+          <body>
+            <p>Skontaktuj się z nami: 501 234 567 lub biuro@firma.pl</p>
+          </body>
+        </html>
+      `;
+
+      const signals = extractTrackingSignals(b2bHtml);
+      expect(signals.hasUnclickablePhone).toBe(true);
+      expect(signals.hasClickablePhone).toBe(false);
+
+      const evidence = buildEvidenceSummary([mockPage], [signals], 'services');
+      const phoneIssue = evidence.adsAndTracking.issues.find(i => i.id === 'leak-unclickable-phone-email');
+
+      expect(phoneIssue).toBeDefined();
+      expect(phoneIssue?.impact).toContain('utratę nawet 40-50%');
+    });
   });
 });
 

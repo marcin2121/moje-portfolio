@@ -308,7 +308,7 @@ export default function AdsAndTrackingCard({ tracking, domain, siteType = 'servi
         <div className="space-y-4">
           <h4 className="font-bold text-slate-900 text-sm tracking-tight flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-amber-600" />
-            <span>Zdiagnozowane wąskie gardła analityczne na {domain}:</span>
+            <span>Zdiagnozowane wąskie gardła i wycieki finansowe na {domain}:</span>
           </h4>
 
           {tracking.issues.map((issue) => (
@@ -340,7 +340,7 @@ export default function AdsAndTrackingCard({ tracking, domain, siteType = 'servi
                   <TrendingDown className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
                   <div>
                     <span className="text-[11px] font-mono font-bold text-slate-800 block mb-0.5">
-                      Wpływ na koszty reklam:
+                      Wpływ biznesowy i straty:
                     </span>
                     <p className="text-xs text-slate-600 leading-relaxed">
                       {issue.impact}

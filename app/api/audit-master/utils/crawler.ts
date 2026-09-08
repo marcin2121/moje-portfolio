@@ -34,6 +34,17 @@ export interface PageTrackingSignals {
   hasPurchaseTracking: boolean;
   hasCartButtons: boolean;
   hasLeadForms: boolean;
+  // Nowe sygnały wycieków finansowych:
+  hasViewItemTracking?: boolean;
+  hasProductSchema?: boolean;
+  hasSalePrice?: boolean;
+  hasOmnibusMention?: boolean;
+  hasClickablePhone?: boolean;
+  hasUnclickablePhone?: boolean;
+  hasClickToCallTracking?: boolean;
+  hasFormSpamProtection?: boolean;
+  hasOpenGraph?: boolean;
+  hasExpressPayments?: boolean;
 }
 
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 (MolendaDevAuditBot/2.0)';
@@ -239,6 +250,55 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
   // 9. Formularze kontaktowe / zapytania ofertowe
   const hasLeadForms = cheerioInstance('form:not([role="search"])').length > 0;
 
+  // 10. Zdarzenie view_item / ViewContent (Dynamiczny Remarketing E-Commerce)
+  const hasViewItemTracking =
+    /(?:window\.)?dataLayer\.push\s*\(\s*\{[^}]*['"](?:event['"]\s*:\s*['"])?view_item['"]/i.test(rawHtml) ||
+    /(?:window\.)?gtag\s*\(\s*['"]event['"]\s*,\s*['"]view_item['"]/i.test(rawHtml) ||
+    /(?:window\.)?fbq\s*\(\s*['"]track['"]\s*,\s*['"]ViewContent['"]/i.test(rawHtml) ||
+    /(?:window\.)?ttq\.track\s*\(\s*['"]ViewContent['"]/i.test(rawHtml) ||
+    /['"]dynamicEvents['"]\s*:\s*\{[^}]*['"]ViewContent['"]/i.test(rawHtml) ||
+    /gtm4wp\.changeDetailViewEEC/i.test(rawHtml);
+
+  // 11. Dane strukturalne Schema.org Product
+  const hasProductSchema =
+    lowerHtml.includes('"@type":"product"') ||
+    lowerHtml.includes('"@type": "product"') ||
+    lowerHtml.includes('itemtype="https://schema.org/product"') ||
+    lowerHtml.includes('itemtype="http://schema.org/product"');
+
+  // 12. Dyrektywa Omnibus (Cena promocyjna vs najniższa cena z 30 dni)
+  const hasSalePrice = cheerioInstance('del, .del, .sale-price, .special-price, .old-price, .was-price, .regular-price, ins').length > 0 ||
+    /cena\s+regularna|przekre[sś]lona/i.test(rawHtml);
+  const hasOmnibusMention = /najni[zż]sza\s+cena\s+z\s+(?:ostatnich\s+)?30\s+dni|omnibus|cena\s+sprzed\s+obni[zż]ki/i.test(rawHtml);
+
+  // 13. Kontakt telefoniczny (klikalne linki tel: vs goły tekst)
+  const hasClickablePhone = cheerioInstance('a[href^="tel:"]').length > 0;
+  const bodyText = cheerioInstance('body').text();
+  const phoneRegex = /(?:\+48\s*)?(?:[1-9]\d{1,2}[\s-]?\d{3}[\s-]?\d{3}|[1-9]\d{1}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2})/;
+  const hasPhoneInText = phoneRegex.test(bodyText);
+  const hasUnclickablePhone = hasPhoneInText && !hasClickablePhone;
+
+  // 14. Śledzenie kliknięć w połączenie telefoniczne (click_to_call)
+  const hasClickToCallTracking = hasClickablePhone && (
+    lowerHtml.includes('click_to_call') || lowerHtml.includes('contact_call') ||
+    lowerHtml.includes('tel_click') || lowerHtml.includes('phone_click') ||
+    lowerHtml.includes('contact_phone') || lowerHtml.includes('lead_call')
+  );
+
+  // 15. Zabezpieczenie antyspamowe formularzy (Turnstile / reCAPTCHA / Honeypot)
+  const hasFormSpamProtection = hasLeadForms && (
+    lowerHtml.includes('turnstile') || lowerHtml.includes('recaptcha') ||
+    lowerHtml.includes('hcaptcha') || lowerHtml.includes('honeypot') ||
+    lowerHtml.includes('cf-turnstile') || lowerHtml.includes('g-recaptcha') ||
+    lowerHtml.includes('wpcf7-form-control-wrap')
+  );
+
+  // 16. Open Graph dla social media (og:image)
+  const hasOpenGraph = cheerioInstance('meta[property="og:image"], meta[name="og:image"]').length > 0;
+
+  // 17. Szybkie płatności mobilne (BLIK, Apple Pay, Google Pay, BNPL)
+  const hasExpressPayments = /blik|apple\s*pay|google\s*pay|paypo|klarna|twisto/i.test(rawHtml);
+
   return {
     hasGoogleAds,
     googleAdsId,
@@ -255,7 +315,17 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
     hasAddToCartTracking,
     hasPurchaseTracking,
     hasCartButtons,
-    hasLeadForms
+    hasLeadForms,
+    hasViewItemTracking,
+    hasProductSchema,
+    hasSalePrice,
+    hasOmnibusMention,
+    hasClickablePhone,
+    hasUnclickablePhone,
+    hasClickToCallTracking,
+    hasFormSpamProtection,
+    hasOpenGraph,
+    hasExpressPayments
   };
 }
 
@@ -501,6 +571,26 @@ export function buildEvidenceSummary(
   const hasCartButtons = isEcommerce || signals.some(s => s.hasCartButtons);
   const hasLeadForms = signals.some(s => s.hasLeadForms);
 
+  // Nowe sygnały wycieków finansowych
+  const hasViewItemTracking = signals.some(s => s.hasViewItemTracking);
+  const hasProductSchema = signals.some(s => s.hasProductSchema);
+  const hasSalePrice = signals.some(s => s.hasSalePrice);
+  const hasOmnibusMention = signals.some(s => s.hasOmnibusMention);
+  const hasClickableContacts = signals.some(s => s.hasClickablePhone);
+  const hasUnclickablePhone = signals.some(s => s.hasUnclickablePhone);
+  const hasClickToCallTracking = signals.some(s => s.hasClickToCallTracking);
+  const hasFormSpamProtection = signals.some(s => s.hasFormSpamProtection);
+  const hasOpenGraph = signals.some(s => s.hasOpenGraph);
+  const hasExpressPayments = signals.some(s => s.hasExpressPayments);
+
+  const hasProductPages = isEcommerce || pages.some(p => p.category === 'product' || p.url.includes('/produkt/') || p.url.includes('/product/'));
+  const hasOmnibusCompliance = hasSalePrice ? hasOmnibusMention : true;
+
+  // Wykrywanie wariantów zwracających błędy (504 timeout / bardzo wolne > 2.5s)
+  const variantTimeoutUrls = pages
+    .filter(p => (p.url.includes('attribute_') || p.url.includes('?')) && (p.statusCode >= 500 || p.responseTimeMs >= 2500))
+    .map(p => p.url);
+
   const trackingIssues: TrackingIssue[] = [];
 
   // Scenariusz 1: Płatne reklamy + profil sklepu / przycisk koszyka bez zdarzenia add_to_cart (Kazus tropilapka.pl)
@@ -553,12 +643,111 @@ export function buildEvidenceSummary(
     });
   }
 
+  // Scenariusz 5: E-commerce / Strona produktu z pikselami/GA4, ale bez zdarzenia view_item / ViewContent (Paraliż Dynamicznego Remarketingu)
+  if ((hasGoogleAds || hasMetaPixel || hasTikTokPixel || hasGA4) && hasProductPages && !hasViewItemTracking) {
+    trackingIssues.push({
+      id: 'leak-view-item',
+      title: 'Paraliż Dynamicznego Remarketingu: brak zdarzenia view_item / ViewContent',
+      severity: 'critical',
+      description: 'Wykryto kody śledzące płatnych kampanii, ale karty produktów nie wysyłają zdarzenia view_item (GA4) ani ViewContent (Meta Pixel) z ID i ceną produktu.',
+      impact: 'Dynamiczne reklamy produktowe (Meta DPA) oraz kampanie Google Performance Max nie wiedzą, co dokładnie oglądał użytkownik. Zamiast spersonalizowanej oferty oglądanego produktu, klient widzi przypadkowe banery, co obniża konwersję powracających o 35-50%.',
+      developerSolution: 'Wdrożę w szablonie produktu automatyczny dispatch zdarzeń view_item oraz ViewContent ze zmiennymi id, price i currency w 24h.'
+    });
+  }
+
+  // Scenariusz 6: Wyciek z wariantów produktów (504 Gateway Timeout / >2.5s) - kazus Tropiłapka
+  if (variantTimeoutUrls.length > 0) {
+    trackingIssues.push({
+      id: 'leak-variant-slow-or-timeout',
+      title: `Krytyczny wyciek budżetu z reklam wariantów: błędy ${variantTimeoutUrls.length} podstron (504 / >2.5s)`,
+      severity: 'critical',
+      description: `Podstrony z wariantami produktów zwracają błąd 504 Gateway Timeout lub ładują się powyżej 2.5 sekundy (dotyczy m.in. ${variantTimeoutUrls[0]}).`,
+      impact: 'Gdy użytkownik klika w reklamę produktową z wybranym rozmiarem/kolorem z Google Shopping lub Meta Ads, widzi biały ekran błędu. 100% budżetu wydanego na to kliknięcie zostaje bezpowrotnie przepalone, a klient natychmiast kupuje u konkurencji.',
+      developerSolution: 'Zoptymalizuję zapytania SQL wariantów w bazie, usunę wąskie gardła w szablonie i wdrożę object caching (Redis) w 24–48h, obniżając czas odpowiedzi poniżej 300ms.'
+    });
+  }
+
+  // Scenariusz 7: Brak dyrektywy Omnibus przy cenach promocyjnych
+  if (isEcommerce && hasSalePrice && !hasOmnibusMention) {
+    trackingIssues.push({
+      id: 'leak-omnibus-missing',
+      title: 'Ryzyko kar UOKiK i utraty zaufania: brak dyrektywy Omnibus przy promocjach',
+      severity: 'warning',
+      description: 'Wykryto przekreślone ceny promocyjne, ale brak wymaganej prawem w UE informacji o najniższej cenie towaru z 30 dni przed obniżką.',
+      impact: 'Ryzyko dotkliwych kar finansowych od Urzędu Ochrony Konkurencji i Konsumentów (UOKiK, do 10% rocznego obrotu przedsiębiorcy) oraz utrata zaufania kupujących podejrzewających sztuczne zawyżanie cen.',
+      developerSolution: 'Wdrożę automatyczny, zgodny z prawem moduł dyrektywy Omnibus w szablonie karty produktu i koszyka w 24h.'
+    });
+  }
+
+  // Scenariusz 8: Brak Rich Snippets w Google (Schema.org Product / Offer)
+  if (isEcommerce && hasProductPages && !hasProductSchema) {
+    trackingIssues.push({
+      id: 'leak-schema-product-missing',
+      title: 'Brak Rich Snippets w Google: brak Schema.org Product / Offer',
+      severity: 'warning',
+      description: 'Podstrony produktów nie zawierają pełnych danych strukturalnych Schema.org (Product, Offer, AggregateRating).',
+      impact: 'Produkty w wynikach wyszukiwania Google nie wyświetlają gwiazdek ocen, aktualnej ceny ani statusu dostępności. Przez to CTR spada o 25-40% na rzecz konkurencji mającej bogate wyniki wyszukiwania.',
+      developerSolution: 'Zaimplementuję zwalidowany kod JSON-LD Schema.org Product ze stanami magazynowymi i ceną zgodny z Google Rich Results w 24h.'
+    });
+  }
+
+  // Scenariusz 9: Brak szybkich płatności mobilnych (BLIK, Apple Pay, Google Pay)
+  if (isEcommerce && !hasExpressPayments) {
+    trackingIssues.push({
+      id: 'leak-express-payments-missing',
+      title: 'Wysoki wskaźnik porzuconych koszyków mobilnych: brak BLIK / Apple Pay',
+      severity: 'warning',
+      description: 'W kodzie sklepu nie wykryto wzmianki o integracji z ekspresowymi portfelami mobilnymi (BLIK, Apple Pay, Google Pay).',
+      impact: 'W polskim e-commerce ponad 70% zakupów mobilnych finalizowanych jest przez BLIK i Apple Pay. Konieczność wpisywania danych karty lub logowania do banku powoduje porzucenie do 35% koszyków na smartfonach.',
+      developerSolution: 'Wdrożę bramkę płatności ekspresowych One-Click Checkout (Stripe / PayU / P24) z bezpośrednim przyciskiem Apple Pay / Google Pay na karcie produktu w 24h.'
+    });
+  }
+
+  // Scenariusz 10: Nieklikalny numer telefonu w serwisie usługowym / B2B
+  if (!isEcommerce && hasUnclickablePhone) {
+    trackingIssues.push({
+      id: 'leak-unclickable-phone-email',
+      title: 'Utrata połączeń na smartfonach: nieklikalny numer telefonu w treści',
+      severity: 'warning',
+      description: 'Wykryto numer telefonu w treści strony, który nie jest aktywnym linkiem <a href="tel:...">.',
+      impact: 'Klient wchodzący ze smartfona z płatnej reklamy nie może kliknąć, aby połączyć się z biurem – musi ręcznie kopiować lub przepisywać numer. Powoduje to utratę nawet 40-50% potencjalnych połączeń telefonicznych.',
+      developerSolution: 'Przekształcę wszystkie wystąpienia numerów telefonów w klikalne przyciski tel: z mikro-animacją i podpiętą telemetrią kliknięć w 24h.'
+    });
+  }
+
+  // Scenariusz 11: Brak ochrony antyspamowej formularzy
+  if (hasLeadForms && !hasFormSpamProtection) {
+    trackingIssues.push({
+      id: 'leak-unprotected-form-spam',
+      title: 'Zanieczyszczenie kampanii reklamowych: formularz bez ochrony antyspamowej',
+      severity: 'warning',
+      description: 'Formularze kontaktowe nie posiadają zabezpieczenia przed botami (Turnstile, reCAPTCHA v3, Honeypot).',
+      impact: 'Automatyczne boty zalewają skrzynkę spamem. Co gorsza, fikcyjne wysyłki zanieczyszczają algorytmy Google/Meta Ads fałszywymi konwersjami, przez co reklamy optymalizują się pod spamerów zamiast realnych klientów.',
+      developerSolution: 'Zintegruję niewidoczną dla ludzi ochronę Cloudflare Turnstile lub inteligentny honeypot bez denerwujących puzzli captcha w 24h.'
+    });
+  }
+
+  // Scenariusz 12: Brak tagów Open Graph (og:image)
+  if (!hasOpenGraph) {
+    trackingIssues.push({
+      id: 'leak-opengraph-missing',
+      title: 'Martwe udostępnianie w social media: brak tagów Open Graph (og:image)',
+      severity: 'info',
+      description: 'Brak dedykowanych meta-tagów og:image, og:title i og:description do podglądu linków w mediach społecznościowych.',
+      impact: 'Gdy potencjalny klient udostępnia link do oferty na Messengerze, WhatsAppie czy LinkedInie, pojawia się pusty szary prostokąt. Spadek klikalności (CTR) takich linków wynosi ponad 60%.',
+      developerSolution: 'Wdrożę dynamiczny mechanizm Open Graph ze skalibrowanymi grafikami podglądu 1200x630px w 24h.'
+    });
+  }
+
+  const hasAnyAds = hasGoogleAds || hasMetaPixel || hasTikTokPixel || hasGA4 || hasGoogleTagManager;
   let adBudgetLeakRisk: 'none' | 'low' | 'medium' | 'critical' = 'none';
-  if (trackingIssues.some(i => i.severity === 'critical')) {
+  if (!hasAnyAds) {
+    adBudgetLeakRisk = 'none';
+  } else if (trackingIssues.some(i => i.severity === 'critical')) {
     adBudgetLeakRisk = 'critical';
   } else if (trackingIssues.some(i => i.severity === 'warning')) {
     adBudgetLeakRisk = 'medium';
-  } else if (hasGoogleAds || hasMetaPixel) {
+  } else {
     adBudgetLeakRisk = 'low';
   }
 
@@ -579,6 +768,15 @@ export function buildEvidenceSummary(
     hasPurchaseTracking,
     hasCartButtons,
     hasLeadForms,
+    hasViewItemTracking,
+    hasProductSchema,
+    hasOmnibusCompliance,
+    hasExpressPayments,
+    hasClickableContacts,
+    hasClickToCallTracking,
+    hasFormSpamProtection,
+    hasOpenGraph,
+    variantTimeoutUrls,
     adBudgetLeakRisk,
     issues: trackingIssues
   };
