@@ -1,3 +1,5 @@
+import { SiteType, SITE_TYPE_LABELS } from '../types';
+
 /**
  * Moduł powiadomień Discord Webhook
  * Działa w trybie Fire-and-Forget – nie blokuje odpowiedzi serwera i nie opóźnia użytkownika.
@@ -9,7 +11,7 @@ interface AuditNotificationParams {
   overallScore: number;
   lossPercentage: number;
   detectedPlatform: string;
-  siteType: 'ecommerce' | 'services';
+  siteType: SiteType;
   criticalLeaksCount?: number;
   competitorDomain?: string;
   competitorScore?: number;
@@ -49,7 +51,7 @@ export async function notifyAuditGenerated(params: AuditNotificationParams): Pro
 
     // Kolor w zależności od wyniku: Zielony (>=80), Bursztynowy (50-79), Czerwony (<50)
     const color = overallScore >= 80 ? 0x10b981 : overallScore >= 50 ? 0xf59e0b : 0xe11d48;
-    const siteLabel = siteType === 'ecommerce' ? '🛒 E-commerce (Sklep)' : '🏢 Usługi / B2B';
+    const siteLabel = SITE_TYPE_LABELS[siteType] || (siteType === 'ecommerce' ? '🛒 E-commerce (Sklep)' : '🏢 Usługi / B2B');
     const auditUrl = `https://molendadevelopment.pl/narzedzia/audyt?token=${token}`;
 
     const fields = [

@@ -9,7 +9,7 @@ import { getAuditByToken, getAuditByDomain, saveAudit } from './utils/storage';
 import { evaluateAllCheckpoints } from './utils/checkpointsCatalog';
 import { fetchCompetitorData, buildCompetitorBenchmark } from './utils/competitorAnalyzer';
 import { notifyAuditGenerated } from './utils/discordNotifier';
-import { AuditMasterResponse, DetailedCodeSmells } from './types';
+import { AuditMasterResponse, DetailedCodeSmells, SiteType } from './types';
 
 export async function GET(req: Request) {
   try {
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       if (cached) return NextResponse.json(cached);
     }
 
-    const currentSiteType: 'ecommerce' | 'services' = siteType === 'ecommerce' ? 'ecommerce' : 'services';
+    const requestedSiteType: SiteType = (siteType as SiteType) || 'services';
     
     if (!url || typeof url !== 'string' || url.length > 500) {
       return NextResponse.json({ error: 'URL jest nieprawidłowy lub zbyt długi' }, { status: 400 });
@@ -100,7 +100,7 @@ export async function POST(req: Request) {
     // ⚡ SPRAWDZENIE TRWAŁEGO CACHE (Supabase / local disk)
     // Jeśli użytkownik NIE podał konkurenta do benchmarku i domena była audytowana w ciągu 7 dni, zwróć cache natychmiast!
     if (!validCompetitorUrl) {
-      const existingAudit = await getAuditByDomain(cleanDomain, 7, currentSiteType);
+      const existingAudit = await getAuditByDomain(cleanDomain, 7, requestedSiteType);
       if (existingAudit) {
         return NextResponse.json({
           ...existingAudit,
@@ -112,7 +112,7 @@ export async function POST(req: Request) {
     // 🚀 ODPALENIE WIELOPODSTRONICOWEGO CRAWLERA, ANALIZATORA ORAZ BENCHMARKU KONKURENTA W JEDNYM PROMISE.ALLSETTLED
     // Ograniczenie czasu i concurrency dostosowane do Hetzner VPS (4GB RAM)
     const [crawlResult, rootAnalysisResult, competitorResult] = await Promise.allSettled([
-      crawlDomain(targetUrl, { maxPages: 35, maxTimeMs: 12000, concurrency: 4, siteType: currentSiteType }),
+      crawlDomain(targetUrl, { maxPages: 35, maxTimeMs: 12000, concurrency: 4, siteType: requestedSiteType }),
       analyzeRootUrl(targetUrl),
       validCompetitorUrl ? fetchCompetitorData(validCompetitorUrl) : Promise.resolve(null)
     ]);
@@ -208,7 +208,14 @@ export async function POST(req: Request) {
       finalPerformanceScore = Math.min(100, measuredPerf);
     }
 
-    // Wyliczanie szybkich błędów krytycznych (Top wycieki budżetu i SEO)
+    // Precyzyjne ustalenie profilu: jeśli użytkownik nie wybrał ściśle określonego podtypu (lub podał domyślne 'services'),
+    // wykorzystujemy twarde sygnały wykryte przez crawler w DOM/HTML (np. ngo_foundation, gov_public, education)
+    const currentSiteType: SiteType =
+      requestedSiteType !== 'services'
+        ? requestedSiteType
+        : (crawlData.evidence.detectedProfile || 'b2b_services');
+
+    // Wyliczanie szybkich błędów krytycznych (Top wycieki budżetu i SEO dostosowane do profilu)
     const quickIssues = generateQuickCriticalIssues(
       crawlData.evidence,
       rootData.codeSmells,

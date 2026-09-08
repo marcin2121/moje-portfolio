@@ -79,6 +79,35 @@ export interface AdsAndTrackingAudit {
   variantTimeoutUrls?: string[];
   adBudgetLeakRisk: 'none' | 'low' | 'medium' | 'critical';
   issues: TrackingIssue[];
+  profileSignals?: ProfileSignals;
+}
+
+export type SiteType =
+  | 'ecommerce'
+  | 'b2b_services'
+  | 'local_services'
+  | 'ngo_foundation'
+  | 'gov_public'
+  | 'education'
+  | 'services';
+
+export const SITE_TYPE_LABELS: Record<SiteType, string> = {
+  ecommerce: 'E-Commerce & Sklep',
+  b2b_services: 'Usługi B2B & Doradztwo',
+  local_services: 'Usługi Lokalne (B2C)',
+  ngo_foundation: 'NGO / Fundacja / Stowarzyszenie',
+  gov_public: 'Urząd / Administracja publiczna (BIP)',
+  education: 'Szkoła / Edukacja',
+  services: 'Usługi / B2B'
+};
+
+export interface ProfileSignals {
+  hasBipLink?: boolean;
+  hasDeklaracjaDostepnosci?: boolean;
+  hasEdziennik?: boolean;
+  hasDonationOrKrs?: boolean;
+  hasLocalBusinessSignals?: boolean;
+  hasB2bSignals?: boolean;
 }
 
 export interface EvidenceSummary {
@@ -109,6 +138,9 @@ export interface EvidenceSummary {
       badCount: number;
     };
   };
+  detectedProfile?: SiteType;
+  profileLabel?: string;
+  profileSignals?: ProfileSignals;
 }
 
 export interface Pillar {
@@ -178,7 +210,7 @@ export interface MergedCheckpoint extends CatalogCheckpointDefinition {
 export interface QuickCriticalIssue {
   id: string;
   title: string;
-  type: 'tracking' | 'seo' | 'performance' | 'architecture';
+  type: 'tracking' | 'seo' | 'performance' | 'architecture' | 'security';
   severity: 'critical' | 'warning';
   shortDesc: string;
   affectedCount?: number;
@@ -227,7 +259,7 @@ export interface CompetitorMetrics {
     competitorStatus: boolean;
     winner: 'you' | 'competitor' | 'tie';
   };
-  siteType?: 'ecommerce' | 'services';
+  siteType?: SiteType;
 }
 
 export interface CompetitorBenchmark {
@@ -248,7 +280,9 @@ export interface AuditMasterResponse {
   token: string;
   url: string;
   domain: string;
-  siteType: 'ecommerce' | 'services';
+  siteType: SiteType;
+  detectedProfile?: SiteType;
+  profileLabel?: string;
   overallScore: number;
   lossPercentage: number;
   aiReport: string;

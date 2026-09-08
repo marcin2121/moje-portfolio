@@ -25,7 +25,12 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
   const [copied, setCopied] = useState(false);
 
   const isEcommerce = result.siteType === 'ecommerce';
-  const conversionLabel = isEcommerce ? 'straty sprzedaży' : 'utraconych zapytań';
+  let conversionLabel = 'utraconych zapytań i leadów';
+  if (isEcommerce) conversionLabel = 'straty sprzedaży';
+  else if (result.siteType === 'ngo_foundation') conversionLabel = 'utraty darowizn i wsparcia 1.5%';
+  else if (result.siteType === 'gov_public') conversionLabel = 'spadku dostępności i zaufania obywateli';
+  else if (result.siteType === 'education') conversionLabel = 'utraty zaufania rodziców i kandydatów';
+  else if (result.siteType === 'local_services') conversionLabel = 'utraconych rezerwacji i telefonów';
 
   const copyShareLink = () => {
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://molendadevelopment.pl';

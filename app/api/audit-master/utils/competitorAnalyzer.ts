@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import { extractTrackingSignals } from './crawler';
-import { CompetitorBenchmark, CompetitorMetrics, EvidenceSummary } from '../types';
+import { CompetitorBenchmark, CompetitorMetrics, EvidenceSummary, SiteType } from '../types';
 
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
@@ -145,7 +145,7 @@ export function buildCompetitorBenchmark(
   yourOverallScore: number,
   yourEvidence: EvidenceSummary,
   yourPlatform: string,
-  siteType: 'ecommerce' | 'services' = 'services',
+  siteType: SiteType = 'services',
   yourSecurityScore: number = 85
 ): CompetitorBenchmark | null {
   if (!raw) return null;
@@ -236,24 +236,36 @@ export function buildCompetitorBenchmark(
   let verdict = '';
   let strategicAdvice = '';
 
+  const isPublicOrNgo = siteType === 'gov_public' || siteType === 'education' || siteType === 'ngo_foundation';
+
   if (winner === 'you') {
     verdict = `Twój serwis wyprzedza ${raw.domain} o ${scoreDiff} punktów. Posiadasz nowocześniejszą architekturę i wyższą odporność inżynieryjną.`;
     if (!raw.hasAddToCart && siteType === 'ecommerce') {
       strategicAdvice = `Konkurent nie śledzi zdarzenia add_to_cart, przez co przepala budżety na Google i Meta Ads. To idealny moment na agresywne przejęcie jego klientów w płatnych kampaniach.`;
+    } else if (isPublicOrNgo) {
+      strategicAdvice = `Utrzymaj wzorowe standardy dostępności cyfrowej i szybkości. Twój serwis jest stabilniejszy i bardziej przystępny dla użytkowników niż porównywana jednostka.`;
     } else {
       strategicAdvice = `Utrzymaj przewagę technologiczną i skup się na skalowaniu ruchu oraz konwersji, bo Twoja witryna jest wyraźnie lepiej zoptymalizowana.`;
     }
   } else if (winner === 'competitor') {
     const gap = Math.abs(scoreDiff);
     verdict = `Konkurent (${raw.domain}) wyprzedza Cię o ${gap} punktów pod kątem szybkości i warstwy telemetrycznej.`;
-    if (raw.hasAddToCart && !yourAddToCart) {
+    if (raw.hasAddToCart && !yourAddToCart && siteType === 'ecommerce') {
       strategicAdvice = `Rywal ma precyzyjnie skonfigurowany Smart Bidding i remarketing koszykowy, przez co kupuje ruch taniej. Wdrożenie warstwy telemetrycznej w 24h zniweluje tę stratę.`;
+    } else if (isPublicOrNgo) {
+      strategicAdvice = `Optymalizacja czasu odpowiedzi serwera oraz weryfikacja dostępności WCAG pozwoli Ci wyprzedzić porównywany serwis pod kątem standardów cyfrowych.`;
     } else {
       strategicAdvice = `Optymalizacja czasu odpowiedzi serwera oraz uzupełnienie brakujących mikrodanych pozwoli Ci przegonić konkurenta w wynikach wyszukiwania w ciągu 14 dni.`;
     }
   } else {
     verdict = `Oba serwisy reprezentują zbliżony standard inżynieryjny (różnica poniżej 3 punktów).`;
-    strategicAdvice = `O zwycięstwie decydują detale: mikrosekundy czasu ładowania, wdrożenie One-Click checkoutu (BLIK) oraz automatyzacje AI lejków sprzedażowych.`;
+    if (isPublicOrNgo) {
+      strategicAdvice = `O przewadze decydują detale: mikrosekundy czasu ładowania, pełna zgodność z Deklaracją Dostępności WCAG oraz intuicyjna nawigacja mobilna.`;
+    } else if (siteType === 'ecommerce') {
+      strategicAdvice = `O zwycięstwie decydują detale: mikrosekundy czasu ładowania, wdrożenie One-Click checkoutu (BLIK) oraz remarketing koszykowy.`;
+    } else {
+      strategicAdvice = `O zwycięstwie decydują detale: mikrosekundy czasu ładowania, wdrożenie formularzy z ochroną anty-bot oraz automatyzacje AI lejków zapytań.`;
+    }
   }
 
   return {

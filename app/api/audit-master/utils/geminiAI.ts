@@ -1,5 +1,11 @@
 import { GoogleGenAI } from '@google/genai';
-import { DetailedCodeSmells, EvidenceSummary, QuickCriticalIssue } from '../types';
+import { 
+  EvidenceSummary, 
+  DetailedCodeSmells, 
+  QuickCriticalIssue, 
+  SiteType, 
+  SITE_TYPE_LABELS 
+} from '../types';
 import { pluralizePolish } from './crawler';
 
 export async function generateGeminiReport(
@@ -12,13 +18,49 @@ export async function generateGeminiReport(
   codeSmells: DetailedCodeSmells,
   lossPercentage: number,
   geminiKey: string,
-  siteType: 'ecommerce' | 'services' = 'services',
+  siteType: SiteType = 'services',
   evidence?: EvidenceSummary,
   quickIssues?: QuickCriticalIssue[]
 ): Promise<string> {
   const isEcommerce = siteType === 'ecommerce';
-  const entityName = isEcommerce ? 'Sklep internetowy' : 'Serwis firmowy / strona usługowa';
-  const conversionTerm = isEcommerce ? 'transakcji i sprzedaży' : 'zapytań ofertowych i leadów B2B';
+  
+  let entityName = 'Serwis firmowy / strona usługowa';
+  let conversionTerm = 'zapytań ofertowych i leadów B2B';
+  let goalDescription = 'pozyskiwanie zapytań ofertowych (RFP) i nowych klientów biznesowych';
+  let lossDescription = 'utrata zapytań ofertowych i kontraktów B2B na rzecz bezpośredniej konkurencji';
+  let architectRoleDescription = 'jako Senior Architect wdrożę w 24-48h uszczelnienie lejków i naprawę semantyki';
+
+  if (siteType === 'ecommerce') {
+    entityName = 'Sklep internetowy e-commerce';
+    conversionTerm = 'transakcji i sprzedaży e-commerce';
+    goalDescription = 'przychód, konwersja koszyka i wysoki ROAS z kampanii produktowych';
+    lossDescription = 'porzucone koszyki i bezpośrednia utrata przychodów ze sprzedaży';
+    architectRoleDescription = 'jako Senior Full-Stack Architect wdrożę dedykowaną warstwę telemetryczną dataLayer oraz uporządkuję strukturę nagłówków i canonicali w 24–48 godzin';
+  } else if (siteType === 'gov_public') {
+    entityName = 'Portal urzędu / administracji publicznej (BIP)';
+    conversionTerm = 'sprawnej obsługi mieszkańców i procedur e-urzędu';
+    goalDescription = 'sprawna obsługa spraw mieszkańców, dostępność cyfrowa (WCAG 2.1 AA) i odciążenie urzędu';
+    lossDescription = 'utrudnienia w załatwianiu spraw przez e-obywateli, kolejki w urzędzie i ryzyko kar finansowych do 10 000 zł z ustawy o dostępności cyfrowej';
+    architectRoleDescription = 'jako Senior Architect wdrożę oficjalną deklarację dostępności WCAG 2.1 AA, uporządkuję linki do procedur i wyeliminuję duplikaty w 24-48h bez burzenia obecnej struktury portalu';
+  } else if (siteType === 'education') {
+    entityName = 'Portal placówki oświatowej / szkoły';
+    conversionTerm = 'skuteczności naboru i zaufania rodziców';
+    goalDescription = 'rekrutacja nowych roczników, zaufanie rodziców i przejrzystość planów lekcji/komunikatów';
+    lossDescription = 'odpływ kandydatów w naborze do lepiej widocznych szkół i chaos komunikacyjny z rodzicami';
+    architectRoleDescription = 'jako Senior Architect uporządkuję strukturę semantyczną szkoły, wdrożę jednoznaczne tytuły i dostępność cyfrową w 24-48h';
+  } else if (siteType === 'ngo_foundation') {
+    entityName = 'Portal organizacji pożytku publicznego / NGO';
+    conversionTerm = 'zgłoszeń podopiecznych i wsparcia statutowego';
+    goalDescription = 'dotarcie do osób w kryzysie/podopiecznych, zaufanie darczyńców 1.5% oraz komisji grantowych';
+    lossDescription = 'bariery w dotarciu do bezpłatnej pomocy statutowej oraz spadek wpłat 1.5% podatku i zaufania grantodawców';
+    architectRoleDescription = 'jako Senior Architect uporządkuję architekturę informacji, wyeliminuję kanibalizację fraz i zabezpieczę formularze w 24-48h';
+  } else if (siteType === 'local_services') {
+    entityName = 'Strona usług lokalnych / gabinetu';
+    conversionTerm = 'bezpośrednich telefonów i wizyt klientów z okolicy';
+    goalDescription = 'rezerwacje wizyt, dojazd z Google Maps i bezpośrednie telefony od klientów z okolicy';
+    lossDescription = 'odpływ lokalnych klientów do konkurencji z sąsiedniej ulicy przez nieklikalny telefon lub słabą widoczność w Google Maps';
+    architectRoleDescription = 'jako Senior Architect przekształcę kontakt w klikalne przyciski tel:, wdrożę mikrodane LocalBusiness i uporządkuję strukturę podstron w 24-48h';
+  }
 
   const pagesScanned = evidence?.totalPages || 1;
   const duplicateTitlesCount = evidence?.duplicateTitleGroups?.length || 0;
@@ -65,23 +107,23 @@ ${quickIssuesText}
 
   if (avgScore >= 85) {
     prompt = `Jesteś Marcinem Molendą, Senior Frontend & Full-Stack Architectem. ${entityName} ${targetUrl} uzyskał elitarny wynik ${avgScore}/100.
-Przeanalizowano ${pagesScanned} podstron. Stack: ${detectedPlatform}.
+Przeanalizowano ${pagesScanned} podstron. Stack: ${detectedPlatform}. Profil: ${SITE_TYPE_LABELS[siteType] || 'Usługi'}.
 Zadanie: Napisz zwięzły, autorytatywny werdykt (MAKSYMALNIE 3-4 ZDANIA!).
 1. Pogratuluj właścicielowi rewelacyjnej, bezkompromisowej infrastruktury (wskazując szybkość ${avgResponseTime}ms i brak długu technologicznego).
-2. Uświadom mu biznesowo, że dalsze szlifowanie tak doskonałego kodu to strata budżetu – czas na skalowanie ruchu i konwersji.
-3. Zaproponuj projektowanie dedykowanych modułów AI lub automatyzacji procesów biznesowych.
+2. Uświadom mu, że dalsze szlifowanie tak doskonałego kodu to strata zasobów – czas na realizację celów: ${goalDescription}.
+3. Zaproponuj projektowanie dedykowanych modułów AI lub automatyzacji procesów.
 FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Bez HTML.`;
   } else {
     prompt = `Jesteś Marcinem Molendą, Senior Web & Full-Stack Architectem. ${entityName} ${targetUrl} uzyskał wynik ${avgScore}/100.
-Wykryta platforma: ${detectedPlatform}
+Wykryta platforma: ${detectedPlatform}. Profil organizacji: ${SITE_TYPE_LABELS[siteType] || 'Usługi'}.
 ${empiricalEvidenceText}
 ${codeSmellsText}
 
-Zadanie: Napisz zwięzłą, bezlitośnie precyzyjną diagnozę inżynieryjną w języku twardych korzyści finansowych (DOKŁADNIE 3-4 ZDANIA!).
-1. Jeśli wykryto błędy telemetryki lub brak add_to_cart / Consent Mode v2 przy reklamach – wskaż to bezwzględnie jako wyciek budżetu reklamowego (Smart Bidding działa na ślepo i przepala budżet).
-2. Wskaż pozostałe twarde liczby (np. ${duplicateTitlesCount > 0 ? `${duplicateTitlesCount} grup powielonych Title niszczących pozycje w Google` : ''}, ${missingH1Count > 0 ? `${missingH1Count} stron bez H1` : ''}). KATEGORYCZNY ZAKAZ wymyślania błędów H1, canonicali czy duplikatów, jeśli ich liczba w danych wynosi 0. Jeśli struktura SEO jest czysta (0 błędów H1 i canonical), wyraźnie to podkreśl i skup się wyłącznie na telemetrii i wydajności.
-3. Podkreśl szacowaną stratę ~${lossPercentage}% ${conversionTerm}.
-4. Przedstaw w pierwszej osobie ("Co dla Ciebie wdrożę: Wdrożę...", "Zaimplementuję...", "Uporządkuję..."), co Ty jako Senior Architect (Marcin) możesz konkretnie wdrożyć w kodzie w 24-48h bez burzenia obecnej strony. KATEGORYCZNY ZAKAZ pisania o sobie w 3. osobie ("Marcin wdroży", "Marcin może"). Zawsze pisz w 1. osobie ("Wdrożę").
+Zadanie: Napisz zwięzłą, bezlitośnie precyzyjną diagnozę inżynieryjną dopasowaną do profilu ${entityName} (DOKŁADNIE 3-4 ZDANIA!).
+1. Jeśli witryna prowadzi płatne reklamy (Google Ads / Meta Ads) i wykryto luki telemetryczne – wskaż to jako wyciek budżetu reklamowego. JEŚLI WITRYNA NIE PROWADZI PŁATNYCH REKLAM (jak w przypadku wielu NGO, urzędów czy szkół), KATEGORYCZNIE ZAKAZANE JEST wspominanie o "przepalaniu budżetu na Performance Max / Smart Bidding". Wtedy skup się na misji witryny: ${goalDescription}.
+2. Wskaż pozostałe twarde liczby (np. ${duplicateTitlesCount > 0 ? `${duplicateTitlesCount} grup powielonych Title niszczących pozycje w Google` : ''}, ${missingH1Count > 0 ? `${missingH1Count} stron bez H1` : ''}). KATEGORYCZNY ZAKAZ wymyślania błędów, których nie ma w dowodach. Jeśli struktura SEO jest czysta (0 błędów H1 i canonical), wyraźnie to podkreśl.
+3. Podkreśl szacowaną stratę ~${lossPercentage}% w obszarze: ${conversionTerm} (${lossDescription}).
+4. Przedstaw w pierwszej osobie ("Co dla Ciebie wdrożę: Wdrożę...", "Zaimplementuję...", "Uporządkuję..."), co Ty jako Senior Architect (Marcin) możesz konkretnie wdrożyć w kodzie w 24-48h bez burzenia obecnej strony (wskazówka dla profilu: ${architectRoleDescription}). KATEGORYCZNY ZAKAZ pisania o sobie w 3. osobie ("Marcin wdroży"). Zawsze pisz w 1. osobie ("Wdrożę").
 FORMATOWANIE: Czysty Markdown. Bez HTML.`;
   }
 
@@ -100,7 +142,7 @@ FORMATOWANIE: Czysty Markdown. Bez HTML.`;
     // W razie limitu Gemini (429) lub braku połączenia odpalamy deterministyczny fallback
   }
 
-  return generateDeterministicReport(targetUrl, avgScore, detectedPlatform, lossPercentage, isEcommerce, evidence, codeSmells);
+  return generateDeterministicReport(targetUrl, avgScore, detectedPlatform, lossPercentage, isEcommerce, evidence, codeSmells, siteType);
 }
 
 /**
@@ -113,17 +155,35 @@ export function generateDeterministicReport(
   lossPercentage: number,
   isEcommerce: boolean,
   evidence?: EvidenceSummary,
-  codeSmells?: DetailedCodeSmells
+  codeSmells?: DetailedCodeSmells,
+  siteType: SiteType = 'services'
 ): string {
-  const entity = isEcommerce ? 'sklepu' : 'witryny';
-  const conversionTerm = isEcommerce ? 'sprzedaży e-commerce' : 'zapytań ofertowych B2B';
+  let entity = 'witryny';
+  let conversionTerm = 'zapytań ofertowych B2B';
+
+  if (siteType === 'ecommerce') {
+    entity = 'sklepu';
+    conversionTerm = 'sprzedaży e-commerce';
+  } else if (siteType === 'gov_public') {
+    entity = 'portalu urzędu';
+    conversionTerm = 'sprawnej obsługi mieszkańców';
+  } else if (siteType === 'education') {
+    entity = 'portalu szkoły';
+    conversionTerm = 'zgłoszeń rekrutacyjnych i zaufania rodziców';
+  } else if (siteType === 'ngo_foundation') {
+    entity = 'portalu organizacji';
+    conversionTerm = 'zgłoszeń podopiecznych i wpłat statutowych';
+  } else if (siteType === 'local_services') {
+    entity = 'strony usługowej';
+    conversionTerm = 'rezerwacji i telefonów klientów';
+  }
 
   if (avgScore >= 85) {
     return `Architektura **${targetUrl}** reprezentuje najwyższy standard inżynieryjny (${avgScore}/100). Kod jest czysty, serwer odpowiada poniżej ${evidence?.avgResponseTimeMs || 80}ms, a struktura podstron nie wykazuje długu technologicznego. 
 
 Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego ROI – infrastruktura jest w pełni gotowa na skalowanie ruchu i wdrożenia automatyzacji AI.
 
-**💡 Rekomendacja strategiczna:** Skieruj zasoby na pozyskiwanie klientów i skalowanie kampanii, bo technologicznie serwis wyprzedza 95% konkurencji rynkowej.`;
+**💡 Rekomendacja strategiczna:** Skieruj zasoby na realizację celów i pozyskiwanie odbiorców, bo technologicznie serwis wyprzedza 95% konkurencji rynkowej.`;
   }
 
   const issues: string[] = [];
@@ -131,7 +191,7 @@ Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego 
   // 1. Krytyczne błędy telemetryki
   const trackingIssue = evidence?.adsAndTracking?.issues?.find(i => i.severity === 'critical');
   if (trackingIssue) {
-    issues.push(`**${trackingIssue.title.toLowerCase()}**, przez co algorytmy reklamowe Google i Meta optymalizują kampanie po omacku`);
+    issues.push(`**${trackingIssue.title.toLowerCase()}**, przez co algorytmy reklamowe optymalizują kampanie po omacku`);
   }
 
   if (evidence && evidence.duplicateTitleGroups.length > 0) {
@@ -157,7 +217,7 @@ Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego 
     if (codeSmells?.domElements && codeSmells.domElements > 1200) {
       issues.push(`rozmiar drzewa DOM (${codeSmells.domElements} elementów), który warto odchudzić pod kątem Core Web Vitals na urządzeniach mobilnych`);
     }
-    if (evidence?.adsAndTracking && !evidence.adsAndTracking.hasGoogleAds && !evidence.adsAndTracking.hasGoogleTagManager) {
+    if (evidence?.adsAndTracking && !evidence.adsAndTracking.hasGoogleAds && !evidence.adsAndTracking.hasGoogleTagManager && (siteType === 'ecommerce' || siteType === 'b2b_services')) {
       issues.push(`brak wdrożonych tagów Google Tag Manager i Google Ads przed planowanym skalowaniem kampanii płatnych`);
     }
   }
@@ -166,34 +226,49 @@ Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego 
     ? issues.slice(0, 3).join(', ')
     : (hasStructuralIssues
         ? `brak odpowiednich nagłówków semantycznych i błędy kanonizacji`
-        : `rezerwy optymalizacyjne w czasie renderowania DOM oraz brak telemetryki kampanii płatnych`);
+        : `rezerwy optymalizacyjne w czasie renderowania DOM oraz brak telemetryki`);
 
   let solutionText: string;
   let quickStepText: string;
 
   if (hasStructuralIssues) {
-    solutionText = isEcommerce
-      ? `jako Full-Stack Architect wdrożę w Twoim sklepie dedykowaną warstwę telemetryczną dataLayer oraz uporządkuję strukturę nagłówków i canonicali w 24–48 godzin, odzyskując pełen zwrot z inwestycji.`
-      : `jako Full-Stack Architect uporządkuję strukturę semantyczną witryny, wdrożę unikalne tagi canonical i zoptymalizuję architekturę kodu pod kątem konwersji B2B w 24–48 godzin, odzyskując pełen zwrot z inwestycji.`;
-
-    quickStepText = isEcommerce
-      ? ((trackingIssue || !evidence?.adsAndTracking?.hasAddToCartTracking)
-          ? `Wdrożenie precyzyjnego śledzenia zdarzeń koszykowych (add_to_cart) oraz wyeliminowanie zduplikowanych tytułów stron natychmiast obniży koszt pozyskania klienta (CAC) i odblokuje inteligentne algorytmy Target ROAS.`
-          : `Wyeliminowanie zduplikowanych tytułów stron oraz wdrożenie tagów canonical natychmiast odzyska utracone pozycje w Google i obniży koszt pozyskania klienta (CAC).`)
-      : `Uporządkowanie struktury nagłówków H1, wdrożenie unikalnych tagów Title i kanonicznych adresów natychmiast odzyska utracony ruch organiczny i podniesie widoczność w zapytaniach ofertowych.`;
+    if (siteType === 'ecommerce') {
+      solutionText = `jako Full-Stack Architect wdrożę w Twoim sklepie dedykowaną warstwę telemetryczną dataLayer oraz uporządkuję strukturę nagłówków i canonicali w 24–48 godzin, odzyskując pełen zwrot z inwestycji.`;
+      quickStepText = (trackingIssue || !evidence?.adsAndTracking?.hasAddToCartTracking)
+        ? `Wdrożenie precyzyjnego śledzenia zdarzeń koszykowych (add_to_cart) oraz wyeliminowanie zduplikowanych tytułów stron natychmiast obniży koszt pozyskania klienta (CAC) i odblokuje inteligentne algorytmy Target ROAS.`
+        : `Wyeliminowanie zduplikowanych tytułów stron oraz wdrożenie tagów canonical natychmiast odzyska utracone pozycje w Google i obniży koszt pozyskania klienta (CAC).`;
+    } else if (siteType === 'gov_public') {
+      solutionText = `jako Full-Stack Architect wdrożę oficjalną deklarację dostępności WCAG 2.1 AA, uporządkuję linki kanoniczne do procedur i wyeliminuję błędy semantyczne w 24–48 godzin, w pełni zabezpieczając portal przed karami z KPRM.`;
+      quickStepText = `Wdrożenie Deklaracji Dostępności WCAG oraz uporządkowanie tytułów procedur natychmiast usunie ryzyko sankcji prawnych i ułatwi mieszkańcom załatwianie spraw online.`;
+    } else if (siteType === 'education') {
+      solutionText = `jako Full-Stack Architect uporządkuję strukturę nagłówków i tytułów szkoły, zapewnię pełną czytelność mobilną dla rodziców i wdrożę tagi canonical w 24–48 godzin.`;
+      quickStepText = `Wdrożenie unikalnych tytułów podstron rekrutacyjnych i uzupełnienie brakujących H1 natychmiast wzmocni pozycję szkoły w wyszukiwarkach przed okresem naboru.`;
+    } else if (siteType === 'ngo_foundation') {
+      solutionText = `jako Full-Stack Architect wyeliminuję kanibalizację słów kluczowych, uzupełnię tagi alternatywne dla dostępności i zabezpieczę formularze w 24–48 godzin, ułatwiając podopiecznym dotarcie do pomocy.`;
+      quickStepText = `Wdrożenie unikalnych tytułów podstron, tagów canonical oraz zabezpieczenia antyspamowego formularzy natychmiast uszczelni lejek pomocowy i ułatwi przekazywanie 1.5% podatku.`;
+    } else if (siteType === 'local_services') {
+      solutionText = `jako Full-Stack Architect wdrożę klikalne przyciski tel: na smartfonach, uzupełnię mikrodane LocalBusiness i uporządkuję strukturę podstron w 24–48 godzin, zatrzymując lokalnych klientów.`;
+      quickStepText = `Uruchomienie klikalnego numeru telefonu w nagłówku oraz uporządkowanie tagów lokalnych natychmiast zwiększy liczbę zapytań i telefonów od klientów z okolicy.`;
+    } else {
+      solutionText = `jako Full-Stack Architect uporządkuję strukturę semantyczną witryny, wdrożę unikalne tagi canonical i zoptymalizuję architekturę kodu pod kątem konwersji B2B w 24–48 godzin, odzyskując pełen zwrot z inwestycji.`;
+      quickStepText = `Uporządkowanie struktury nagłówków H1, wdrożenie unikalnych tagów Title i kanonicznych adresów natychmiast odzyska utracony ruch organiczny i podniesie widoczność w zapytaniach ofertowych.`;
+    }
   } else {
-    solutionText = isEcommerce
-      ? `struktura SEO i nagłówki w Twoim sklepie są w 100% wzorowe – jako Full-Stack Architect zoptymalizuję budżet renderowania DOM i skonfiguruję zaawansowaną telemetrię e-commerce w 24–48 godzin, przygotowując sklep na agresywne skalowanie sprzedaży.`
-      : `struktura semantyczna i indeksacja są w 100% czyste – jako Full-Stack Architect skonfiguruję dedykowaną telemetrię zdarzeń B2B i przyspieszę renderowanie mobilne w 24–48 godzin, maksymalizując pozyskiwanie wartościowych leadów.`;
-
-    quickStepText = isEcommerce
-      ? `Wdrożenie kontenera GTM z obsługą Consent Mode v2 oraz mikro-akceleracja renderowania natychmiast podniesie współczynnik konwersji mobilnej i przygotuje sklep na kampanie Performance Max.`
-      : `Wdrożenie kontenera Google Tag Manager ze śledzeniem zdarzeń (generate_lead) oraz mikro-akceleracja DOM w pełni zabezpieczą budżet reklamowy przed startem kampanii Google & Meta Ads.`;
+    if (siteType === 'ecommerce') {
+      solutionText = `struktura SEO i nagłówki w Twoim sklepie są w 100% wzorowe – jako Full-Stack Architect zoptymalizuję budżet renderowania DOM i skonfiguruję zaawansowaną telemetrię e-commerce w 24–48 godzin, przygotowując sklep na agresywne skalowanie sprzedaży.`;
+      quickStepText = `Wdrożenie kontenera GTM z obsługą Consent Mode v2 oraz mikro-akceleracja renderowania natychmiast podniesie współczynnik konwersji mobilnej i przygotuje sklep na kampanie Performance Max.`;
+    } else if (siteType === 'gov_public' || siteType === 'education' || siteType === 'ngo_foundation') {
+      solutionText = `struktura semantyczna i indeksacja są w 100% czyste – jako Full-Stack Architect zoptymalizuję dostępność cyfrową i szybkość renderowania mobilnego w 24–48 godzin.`;
+      quickStepText = `Mikro-akceleracja DOM i weryfikacja kontrastów WCAG zapewnią wzorową dostępność serwisu dla wszystkich użytkowników.`;
+    } else {
+      solutionText = `struktura semantyczna i indeksacja są w 100% czyste – jako Full-Stack Architect skonfiguruję dedykowaną telemetrię zdarzeń B2B i przyspieszę renderowanie mobilne w 24–48 godzin, maksymalizując pozyskiwanie wartościowych leadów.`;
+      quickStepText = `Wdrożenie kontenera Google Tag Manager ze śledzeniem zdarzeń (generate_lead) oraz mikro-akceleracja DOM w pełni zabezpieczą budżet reklamowy przed startem kampanii Google & Meta Ads.`;
+    }
   }
 
   const lossText = hasStructuralIssues
-    ? `Przez te niedociągnięcia strukturalne i telemetryczne serwis traci szacunkowo **${lossPercentage}% ${conversionTerm}**, a budżety reklamowe są częściowo przepalane na nieskuteczny ruch.`
-    : `Mimo wzorowej struktury SEO, brak zaawansowanej telemetrii kampanii i rezerwy w czasie renderowania mogą obniżać potencjał pozyskiwania leadów o szacunkowo **${lossPercentage}% ${conversionTerm}**.`;
+    ? `Przez te niedociągnięcia strukturalne serwis traci szacunkowo **${lossPercentage}% ${conversionTerm}**.`
+    : `Mimo wzorowej struktury SEO, rezerwy w czasie renderowania mogą obniżać potencjał w obszarze: **${conversionTerm}** o szacunkowo **${lossPercentage}%**.`;
 
   return `Szczegółowy audyt **${targetUrl}** (${platform}) wykazał wynik **${avgScore}/100**. W zbadanej próbce zdiagnozowaliśmy kluczowe wąskie gardła: ${issuesSummary}.
 

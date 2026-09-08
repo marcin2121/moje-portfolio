@@ -14,16 +14,17 @@ import {
   Database,
   Mail
 } from 'lucide-react';
-import { AdsAndTrackingAudit } from '@/app/api/audit-master/types';
+import { AdsAndTrackingAudit, SiteType, SITE_TYPE_LABELS } from '@/app/api/audit-master/types';
 
 interface AdsAndTrackingCardProps {
   tracking: AdsAndTrackingAudit;
   domain: string;
-  siteType?: 'ecommerce' | 'services';
+  siteType?: SiteType;
 }
 
 export default function AdsAndTrackingCard({ tracking, domain, siteType = 'services' }: AdsAndTrackingCardProps) {
   const isEcommerce = siteType === 'ecommerce';
+  const isPublicOrNgo = siteType === 'gov_public' || siteType === 'education' || siteType === 'ngo_foundation';
   const isCritical = tracking.adBudgetLeakRisk === 'critical';
   const isMedium = tracking.adBudgetLeakRisk === 'medium';
   const hasAnyAdTracking = tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasTikTokPixel || tracking.hasGoogleTagManager || tracking.hasGA4;
@@ -36,14 +37,22 @@ export default function AdsAndTrackingCard({ tracking, domain, siteType = 'servi
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-widest">
-              Analityka & Kampanie Płatne {isEcommerce ? '· E-commerce' : '· Usługi / B2B'}
+              Analityka & Telemetryka {SITE_TYPE_LABELS[siteType] ? `· ${SITE_TYPE_LABELS[siteType]}` : (isEcommerce ? '· E-commerce' : '· Usługi / B2B')}
             </span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-            Budżet Reklamowy & Telemetryka (Google & Meta Ads)
+            {isPublicOrNgo || !hasAnyAdTracking
+              ? 'Prywatność, Telemetryka & Formularze'
+              : 'Budżet Reklamowy & Telemetryka (Google & Meta Ads)'}
           </h3>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-            {isEcommerce
+            {siteType === 'gov_public'
+              ? 'Czy serwis administracji publicznej chroni dane mieszkańców i petentów, posiada zabezpieczenia formularzy przed botami i działa zgodnie z RODO?'
+              : siteType === 'education'
+              ? 'Czy witryna placówki edukacyjnej poprawnie i bezpiecznie przetwarza dane uczniów i rodziców oraz chroni formularze rekrutacyjne przed spamem?'
+              : siteType === 'ngo_foundation'
+              ? 'Czy serwis organizacji pozarządowej prawidłowo mierzy zaangażowanie darczyńców bez naruszania prywatności i bez spamu w formularzach kontaktowych?'
+              : isEcommerce
               ? 'Czy Twój budżet na Google Ads i Meta Ads nie jest przepalany przez błędy w kodzie koszyka i brak telemetryki zdarzeń e-commerce?'
               : 'Czy Twój budżet na Google Ads i Meta Ads nie jest przepalany przez brak telemetryki wysłanych formularzy i zapytań B2B?'}
           </p>

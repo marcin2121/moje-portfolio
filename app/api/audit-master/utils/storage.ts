@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { AuditMasterResponse } from '../types';
+import { AuditMasterResponse, SiteType } from '../types';
 import { evaluateAllCheckpoints } from './checkpointsCatalog';
 import fs from 'fs';
 import path from 'path';
@@ -183,7 +183,7 @@ export async function getAuditByToken(token: string): Promise<AuditMasterRespons
 export async function getAuditByDomain(
   domain: string,
   maxAgeDays = 7,
-  siteType?: 'ecommerce' | 'services'
+  siteType?: SiteType
 ): Promise<AuditMasterResponse | null> {
   const cleanDomain = domain.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('/')[0];
   const cutoffTime = new Date(Date.now() - maxAgeDays * 24 * 60 * 60 * 1000).toISOString();

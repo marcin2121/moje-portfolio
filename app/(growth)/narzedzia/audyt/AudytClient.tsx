@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Loader2, Building2, ShoppingCart, Swords } from 'lucide-react';
 import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
+import { SiteType } from '@/app/api/audit-master/types';
 
 export function AudytClient() {
   const searchParams = useSearchParams();
@@ -15,7 +16,7 @@ export function AudytClient() {
   const [url, setUrl] = useState(urlParam || '');
   const [competitorUrl, setCompetitorUrl] = useState(competitorParam || '');
   const [showCompetitor, setShowCompetitor] = useState(!!competitorParam);
-  const [siteType, setSiteType] = useState<'services' | 'ecommerce'>('services');
+  const [siteType, setSiteType] = useState<SiteType>('services');
   const [isScanning, setIsScanning] = useState(false);
   const [scanStep, setScanStep] = useState(0);
   const [result, setResult] = useState<AuditResult | null>(null);
@@ -30,7 +31,7 @@ export function AudytClient() {
     "Kompilacja twardych dowodów i diagnoza Architekta AI..."
   ];
 
-  const handleScan = React.useCallback(async (targetUrl: string, currentSiteType: 'services' | 'ecommerce', targetCompetitorUrl?: string) => {
+  const handleScan = React.useCallback(async (targetUrl: string, currentSiteType: SiteType, targetCompetitorUrl?: string) => {
     if (!targetUrl) return;
 
     setIsScanning(true);

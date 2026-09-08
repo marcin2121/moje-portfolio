@@ -4,7 +4,8 @@ import {
   CheckpointStats,
   EvidenceSummary,
   PageAuditResult,
-  DetailedCodeSmells
+  DetailedCodeSmells,
+  SiteType
 } from '../types';
 
 /**
@@ -925,7 +926,7 @@ export function evaluateAllCheckpoints(
   evidence: EvidenceSummary,
   pages: PageAuditResult[],
   codeSmells: DetailedCodeSmells,
-  siteType: 'ecommerce' | 'services',
+  siteType: SiteType = 'services',
   rootData?: {
     detectedPlatform?: string;
     securityScore?: number;
@@ -935,7 +936,9 @@ export function evaluateAllCheckpoints(
   }
 ): { evals: CheckpointEvaluation[]; stats: CheckpointStats } {
   const isEcommerce = siteType === 'ecommerce';
+  const isPublicOrNgo = siteType === 'gov_public' || siteType === 'education' || siteType === 'ngo_foundation';
   const tracking = evidence.adsAndTracking;
+  const hasPaidAds = tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasTikTokPixel;
   const evals: CheckpointEvaluation[] = [];
 
   const addEval = (
@@ -991,9 +994,11 @@ export function evaluateAllCheckpoints(
   }
 
   // track-consent-mode-v2
-  if (tracking.hasConsentModeV2) {
+  if (isPublicOrNgo || !hasPaidAds) {
+    addEval('track-consent-mode-v2', 'passed', 'Czystość telemetryczna (Brak komercyjnych pikseli)');
+  } else if (tracking.hasConsentModeV2) {
     addEval('track-consent-mode-v2', 'passed', 'Zgodne z Consent Mode v2');
-  } else if (tracking.hasGoogleAds || tracking.hasGA4) {
+  } else if (tracking.hasGoogleAds) {
     addEval('track-consent-mode-v2', 'failed', 'Brak parametrów ad_storage');
   } else {
     addEval('track-consent-mode-v2', 'passed', 'Brak tagów Google wymagających zgód');
@@ -1064,7 +1069,9 @@ export function evaluateAllCheckpoints(
   }
 
   // track-ad-leak-risk
-  if (tracking.adBudgetLeakRisk === 'critical') {
+  if (isPublicOrNgo || !hasPaidAds) {
+    addEval('track-ad-leak-risk', 'passed', 'Brak wycieków budżetu (Serwis bez płatnych reklam)');
+  } else if (tracking.adBudgetLeakRisk === 'critical') {
     addEval('track-ad-leak-risk', 'failed', 'Krytyczne wycieki budżetu reklamowego');
   } else if (tracking.adBudgetLeakRisk === 'medium') {
     addEval('track-ad-leak-risk', 'warning', 'Średnie ryzyko strat budżetu');
@@ -1171,7 +1178,9 @@ export function evaluateAllCheckpoints(
 
   // seo-title-cannibalization
   if (evidence.duplicateTitleGroups.length > 0) {
-    addEval('seo-title-cannibalization', 'failed', `${evidence.duplicateTitleGroups.length} grup duplikatów`);
+    const count = evidence.duplicateTitleGroups.length;
+    const groupWord = count === 1 ? '1 grupa duplikatów' : (count >= 2 && count <= 4) ? `${count} grupy duplikatów` : `${count} grup duplikatów`;
+    addEval('seo-title-cannibalization', 'failed', groupWord);
   } else {
     addEval('seo-title-cannibalization', 'passed', 'Tytuły w 100% unikalne');
   }
@@ -1407,7 +1416,10 @@ export function evaluateAllCheckpoints(
 
   // sec-form-spam-protection
   if (tracking.hasLeadForms && !tracking.hasFormSpamProtection) {
-    addEval('sec-form-spam-protection', 'warning', 'Formularz bez ochrony antyspamowej');
+    let spamMetric = 'Formularz bez ochrony antyspamowej';
+    if (siteType === 'gov_public') spamMetric = 'Formularz bez ochrony (Ryzyko spamu w pismach)';
+    else if (siteType === 'ngo_foundation') spamMetric = 'Brak ochrony formularza wolontariatu/pomocy';
+    addEval('sec-form-spam-protection', 'warning', spamMetric);
   } else {
     addEval('sec-form-spam-protection', 'passed', 'Ochrona antyspamowa obecna');
   }
@@ -1428,11 +1440,33 @@ export function evaluateAllCheckpoints(
   // sec-privacy-policy
   addEval('sec-privacy-policy', 'passed', 'Polityka prywatności dostępna');
 
-  // sec-terms-of-service
-  addEval('sec-terms-of-service', 'passed', 'Regulamin podlinkowany');
+  // sec-terms-of-service (Dla podmiotów publicznych i szkół: Deklaracja Dostępności WCAG 2.1 AA)
+  if (siteType === 'gov_public' || siteType === 'education') {
+    if (evidence.profileSignals?.hasDeklaracjaDostepnosci) {
+      addEval('sec-terms-of-service', 'passed', 'Deklaracja Dostępności WCAG 2.1 AA');
+    } else {
+      addEval(
+        'sec-terms-of-service',
+        'failed',
+        'Brak Deklaracji Dostępności WCAG (Wymóg prawny)',
+        undefined,
+        'Portal nie posiada podlinkowanej Deklaracji Dostępności wymaganej od podmiotów publicznych Ustawą z 4 kwietnia 2019 r. Ryzyko nałożenia kar finansowych do 10 000 zł przez Ministra Cyfryzacji / KPRM.'
+      );
+    }
+  } else {
+    addEval('sec-terms-of-service', 'passed', 'Regulamin podlinkowany');
+  }
 
   // sec-company-details
-  addEval('sec-company-details', 'passed', 'Dane rejestrowe firmy');
+  if (siteType === 'gov_public') {
+    addEval('sec-company-details', 'passed', 'Dane teleadresowe urzędu');
+  } else if (siteType === 'education') {
+    addEval('sec-company-details', 'passed', 'Dane placówki oświatowej');
+  } else if (siteType === 'ngo_foundation') {
+    addEval('sec-company-details', 'passed', 'Dane rejestrowe KRS / OPP');
+  } else {
+    addEval('sec-company-details', 'passed', 'Dane rejestrowe firmy');
+  }
 
   // Podsumowanie statystyk
   const total = evals.length;

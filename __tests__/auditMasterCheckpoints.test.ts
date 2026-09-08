@@ -6,8 +6,14 @@ import {
 import {
   EvidenceSummary,
   PageAuditResult,
-  DetailedCodeSmells
+  DetailedCodeSmells,
+  SITE_TYPE_LABELS
 } from '@/app/api/audit-master/types';
+import {
+  detectAccurateSiteType,
+  pluralizePolish,
+  PageTrackingSignals
+} from '@/app/api/audit-master/utils/crawler';
 
 describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
   it('should have exactly 80 structured checkpoints in the knowledge base catalog', () => {
@@ -373,5 +379,322 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
     );
     const evalFail = resFail.evals.find(e => e.id === 'perf-ttfb-server');
     expect(evalFail?.status).toBe('failed');
+  });
+
+  it('correctly handles Polish pluralization grammar (1 grupa, 2 grupy, 5 grup)', () => {
+    expect(pluralizePolish(1, 'grupa', 'grupy', 'grup')).toBe('1 grupa');
+    expect(pluralizePolish(2, 'grupa', 'grupy', 'grup')).toBe('2 grupy');
+    expect(pluralizePolish(3, 'grupa', 'grupy', 'grup')).toBe('3 grupy');
+    expect(pluralizePolish(4, 'grupa', 'grupy', 'grup')).toBe('4 grupy');
+    expect(pluralizePolish(5, 'grupa', 'grupy', 'grup')).toBe('5 grup');
+    expect(pluralizePolish(12, 'grupa', 'grupy', 'grup')).toBe('12 grup');
+    expect(pluralizePolish(21, 'grupa', 'grupy', 'grup')).toBe('21 grup');
+    expect(pluralizePolish(22, 'grupa', 'grupy', 'grup')).toBe('22 grupy');
+    expect(pluralizePolish(105, 'grupa', 'grupy', 'grup')).toBe('105 grup');
+  });
+
+  describe('3-Level Profile Detection Engine (detectAccurateSiteType)', () => {
+    const emptySignals: PageTrackingSignals = {
+      hasGoogleAds: false,
+      hasGtm: false,
+      hasGa4: false,
+      hasMetaPixel: false,
+      hasTikTokPixel: false,
+      hasConsentModeV2: false,
+      hasDataLayer: false,
+      hasAddToCartTracking: false,
+      hasPurchaseTracking: false,
+      hasCartButtons: false,
+      hasLeadForms: false,
+      hasClickablePhone: false,
+      hasUnclickablePhone: false,
+      hasClickToCallTracking: false,
+      hasFormSpamProtection: false,
+      hasOpenGraph: false,
+      hasProductSchema: false,
+      hasExpressPayments: false,
+      hasBipLink: false,
+      hasDeklaracjaDostepnosci: false,
+      hasEdziennik: false,
+      hasDonationOrKrs: false,
+      hasLocalBusinessSignals: false,
+      hasB2bSignals: false
+    };
+
+    const createMockPage = (partial: Partial<PageAuditResult>): PageAuditResult => ({
+      url: 'https://example.com/',
+      category: 'home',
+      statusCode: 200,
+      responseTimeMs: 100,
+      title: 'Example',
+      titleLength: 7,
+      metaDescription: '',
+      metaLength: 0,
+      h1Count: 1,
+      h1Text: '',
+      canonical: null,
+      hasSelfCanonical: false,
+      wordCount: 100,
+      isThinContent: false,
+      imagesCount: 0,
+      missingAltCount: 0,
+      schemas: [],
+      hasNoIndex: false,
+      internalLinksCount: 0,
+      externalLinksCount: 0,
+      ...partial
+    });
+
+    it('classifies stowarzyszeniekas.pl as ngo_foundation (DOM KRS + donation signals)', () => {
+      const mockPages: PageAuditResult[] = [
+        createMockPage({
+          url: 'https://stowarzyszeniekas.pl/',
+          title: 'Stowarzyszenie KAS - Wspieramy rozwój',
+          metaDescription: 'Pomagamy dzieciom i młodzieży',
+          h1Text: 'Stowarzyszenie KAS',
+          wordCount: 450
+        })
+      ];
+
+      const signals: PageTrackingSignals[] = [
+        {
+          ...emptySignals,
+          hasDonationOrKrs: true,
+          hasLeadForms: true
+        }
+      ];
+
+      const detected = detectAccurateSiteType(mockPages, signals, 'https://stowarzyszeniekas.pl');
+      expect(detected.profile).toBe('ngo_foundation');
+      expect(detected.label).toBe(SITE_TYPE_LABELS.ngo_foundation);
+    });
+
+    it('classifies school domain (sp12.edu.pl) as education', () => {
+      const mockPages: PageAuditResult[] = [
+        createMockPage({
+          url: 'https://sp12.edu.pl/',
+          title: 'Szkoła Podstawowa nr 12',
+          h1Text: 'Witamy w SP12',
+          wordCount: 300
+        })
+      ];
+
+      const signals: PageTrackingSignals[] = [
+        {
+          ...emptySignals,
+          hasEdziennik: true
+        }
+      ];
+
+      const detected = detectAccurateSiteType(mockPages, signals, 'https://sp12.edu.pl');
+      expect(detected.profile).toBe('education');
+      expect(detected.label).toBe(SITE_TYPE_LABELS.education);
+    });
+
+    it('classifies public administration (.gov.pl / BIP) as gov_public', () => {
+      const mockPages: PageAuditResult[] = [
+        createMockPage({
+          url: 'https://ug-wieliczka.gov.pl/',
+          title: 'Urząd Gminy Wieliczka - BIP',
+          h1Text: 'Biuletyn Informacji Publicznej',
+          wordCount: 800
+        })
+      ];
+
+      const signals: PageTrackingSignals[] = [
+        {
+          ...emptySignals,
+          hasBipLink: true,
+          hasDeklaracjaDostepnosci: true
+        }
+      ];
+
+      const detected = detectAccurateSiteType(mockPages, signals, 'https://ug-wieliczka.gov.pl');
+      expect(detected.profile).toBe('gov_public');
+      expect(detected.label).toBe(SITE_TYPE_LABELS.gov_public);
+    });
+
+    it('classifies ecommerce when cart and checkout buttons are detected', () => {
+      const mockPages: PageAuditResult[] = [
+        createMockPage({
+          url: 'https://moj-sklep.pl/',
+          title: 'Super Sklep - Kup online',
+          h1Text: 'Bestsellery w super cenach',
+          wordCount: 500
+        })
+      ];
+
+      const signals: PageTrackingSignals[] = [
+        {
+          ...emptySignals,
+          hasCartButtons: true,
+          hasAddToCartTracking: true,
+          hasProductSchema: true
+        }
+      ];
+
+      const detected = detectAccurateSiteType(mockPages, signals, 'https://moj-sklep.pl');
+      expect(detected.profile).toBe('ecommerce');
+      expect(detected.label).toBe(SITE_TYPE_LABELS.ecommerce);
+    });
+  });
+
+  describe('Conditional Checkpoint Evaluations per Profile', () => {
+    it('marks Consent Mode v2 & Ad leak as PASSED for NGO without active Google Ads', () => {
+      const ngoEvidence: EvidenceSummary = {
+        totalPages: 10,
+        avgResponseTimeMs: 100,
+        status200Count: 10,
+        redirectsCount: 0,
+        errorsCount: 0,
+        noIndexCount: 0,
+        missingTitleCount: 0,
+        duplicateTitleGroups: [],
+        missingMetaCount: 0,
+        avgMetaLength: 140,
+        missingH1Count: 0,
+        missingH1Urls: [],
+        thinContentCount: 0,
+        thinContentUrls: [],
+        missingCanonicalCount: 0,
+        missingCanonicalUrls: [],
+        missingAltTotal: 0,
+        detectedProfile: 'ngo_foundation',
+        profileSignals: {
+          hasDonationOrKrs: true,
+          hasBipLink: false,
+          hasDeklaracjaDostepnosci: false,
+          hasEdziennik: false,
+          hasLocalBusinessSignals: false,
+          hasB2bSignals: false
+        },
+        adsAndTracking: {
+          hasGoogleAds: false, // Brak reklam Google Ads!
+          hasGoogleTagManager: true,
+          hasGA4: true, // Jest tylko GA4
+          hasMetaPixel: false,
+          hasTikTokPixel: false,
+          hasConsentModeV2: false,
+          hasDataLayer: true,
+          hasAddToCartTracking: false,
+          hasPurchaseTracking: false,
+          hasCartButtons: false,
+          hasLeadForms: true,
+          hasClickableContacts: true,
+          hasClickToCallTracking: true,
+          hasFormSpamProtection: false,
+          hasOpenGraph: true,
+          adBudgetLeakRisk: 'none',
+          issues: []
+        },
+        categoriesSummary: {
+          overall: { goodCount: 10, warnCount: 0, badCount: 0 }
+        }
+      };
+
+      const { evals } = evaluateAllCheckpoints(
+        ngoEvidence,
+        [],
+        { jquery: false, badScripts: 0, domElements: 500, inlineStyles: 0 },
+        'ngo_foundation',
+        { detectedPlatform: 'Next.js' }
+      );
+
+      // Consent Mode v2 nie może być oznaczony jako błąd krytyczny dla NGO bez reklam!
+      const consentEval = evals.find(e => e.id === 'track-consent-mode-v2');
+      expect(consentEval?.status).toBe('passed');
+      expect(consentEval?.metric).toContain('Czystość telemetryczna (Brak komercyjnych pikseli)');
+
+      // Ad leak risk musi być passed (brak wycieków z reklam)
+      const adLeakEval = evals.find(e => e.id === 'track-ad-leak-risk');
+      expect(adLeakEval?.status).toBe('passed');
+      expect(adLeakEval?.metric).toContain('Brak wycieków budżetu');
+    });
+
+    it('enforces Deklaracja Dostępności WCAG 2.1 AA for gov_public in sec-terms-of-service', () => {
+      const govEvidenceMissingDeklaracja: EvidenceSummary = {
+        totalPages: 5,
+        avgResponseTimeMs: 120,
+        status200Count: 5,
+        redirectsCount: 0,
+        errorsCount: 0,
+        noIndexCount: 0,
+        missingTitleCount: 0,
+        duplicateTitleGroups: [],
+        missingMetaCount: 0,
+        avgMetaLength: 150,
+        missingH1Count: 0,
+        missingH1Urls: [],
+        thinContentCount: 0,
+        thinContentUrls: [],
+        missingCanonicalCount: 0,
+        missingCanonicalUrls: [],
+        missingAltTotal: 0,
+        detectedProfile: 'gov_public',
+        profileSignals: {
+          hasBipLink: true,
+          hasDeklaracjaDostepnosci: false, // Brak deklaracji dostępności!
+          hasEdziennik: false,
+          hasDonationOrKrs: false,
+          hasLocalBusinessSignals: false,
+          hasB2bSignals: false
+        },
+        adsAndTracking: {
+          hasGoogleAds: false,
+          hasGoogleTagManager: false,
+          hasGA4: false,
+          hasMetaPixel: false,
+          hasTikTokPixel: false,
+          hasConsentModeV2: false,
+          hasDataLayer: false,
+          hasAddToCartTracking: false,
+          hasPurchaseTracking: false,
+          hasCartButtons: false,
+          hasLeadForms: true,
+          hasClickableContacts: true,
+          hasClickToCallTracking: true,
+          hasFormSpamProtection: true,
+          hasOpenGraph: true,
+          adBudgetLeakRisk: 'none',
+          issues: []
+        },
+        categoriesSummary: {
+          overall: { goodCount: 5, warnCount: 0, badCount: 0 }
+        }
+      };
+
+      const resultFail = evaluateAllCheckpoints(
+        govEvidenceMissingDeklaracja,
+        [],
+        { jquery: false, badScripts: 0, domElements: 500, inlineStyles: 0 },
+        'gov_public',
+        { detectedPlatform: 'Własny kod' }
+      );
+
+      const termsEvalFail = resultFail.evals.find(e => e.id === 'sec-terms-of-service');
+      expect(termsEvalFail?.status).toBe('failed');
+      expect(termsEvalFail?.metric).toContain('Brak Deklaracji Dostępności WCAG');
+
+      // Teraz z deklaracją dostępności:
+      const govEvidenceWithDeklaracja: EvidenceSummary = {
+        ...govEvidenceMissingDeklaracja,
+        profileSignals: {
+          ...govEvidenceMissingDeklaracja.profileSignals!,
+          hasDeklaracjaDostepnosci: true
+        }
+      };
+
+      const resultPass = evaluateAllCheckpoints(
+        govEvidenceWithDeklaracja,
+        [],
+        { jquery: false, badScripts: 0, domElements: 500, inlineStyles: 0 },
+        'gov_public',
+        { detectedPlatform: 'Własny kod' }
+      );
+
+      const termsEvalPass = resultPass.evals.find(e => e.id === 'sec-terms-of-service');
+      expect(termsEvalPass?.status).toBe('passed');
+      expect(termsEvalPass?.metric).toContain('Deklaracja Dostępności WCAG');
+    });
   });
 });

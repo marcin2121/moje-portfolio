@@ -24,7 +24,9 @@ import {
   CheckpointCategory,
   CheckpointEvaluation,
   CheckpointStats,
-  MergedCheckpoint
+  MergedCheckpoint,
+  SiteType,
+  SITE_TYPE_LABELS
 } from '@/app/api/audit-master/types';
 import { CHECKPOINTS_CATALOG } from '@/app/api/audit-master/utils/checkpointsCatalog';
 
@@ -32,7 +34,7 @@ interface AuditChecklistSectionProps {
   evaluations?: CheckpointEvaluation[];
   stats?: CheckpointStats;
   domain: string;
-  siteType?: 'ecommerce' | 'services';
+  siteType?: SiteType;
 }
 
 const CATEGORY_LABELS: Record<CheckpointCategory, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
@@ -64,9 +66,9 @@ export default function AuditChecklistSection({
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // Automatyczny reset filtru kategorii, gdy witryna usługowa ma w URL wybrane ecommerce_cro
+  // Automatyczny reset filtru kategorii, gdy witryna nie-ecommerce ma w URL wybrane ecommerce_cro
   useEffect(() => {
-    if (siteType === 'services' && selectedCategory === 'ecommerce_cro') {
+    if (siteType !== 'ecommerce' && selectedCategory === 'ecommerce_cro') {
       setSelectedCategory('all');
     }
   }, [siteType, selectedCategory, setSelectedCategory]);
@@ -83,8 +85,8 @@ export default function AuditChecklistSection({
           return false;
         }
 
-        // 2. Jeśli profil to Usługi / B2B:
-        if (siteType === 'services') {
+        // 2. Jeśli profil to nie e-commerce (usługi, B2B, urząd, szkoła, NGO):
+        if (siteType !== 'ecommerce') {
           // Całkowite wykluczenie modułów koszykowych / e-commerce
           if (def.category === 'ecommerce_cro') {
             return false;
@@ -193,7 +195,7 @@ export default function AuditChecklistSection({
             </span>
           </div>
           <span className="font-mono text-[11px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80">
-            {siteType === 'services' ? 'Profil: Usługi / B2B' : 'Profil: E-Commerce & Sklep'}
+            {SITE_TYPE_LABELS[siteType] ? `Profil: ${SITE_TYPE_LABELS[siteType]}` : (siteType === 'ecommerce' ? 'Profil: E-Commerce & Sklep' : 'Profil: Usługi / B2B')}
           </span>
         </div>
         <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
@@ -314,7 +316,7 @@ export default function AuditChecklistSection({
           </button>
           {(Object.keys(CATEGORY_LABELS) as CheckpointCategory[])
             .filter(catKey => {
-              if (siteType === 'services' && catKey === 'ecommerce_cro') return false;
+              if (siteType !== 'ecommerce' && catKey === 'ecommerce_cro') return false;
               return true;
             })
             .map(catKey => {

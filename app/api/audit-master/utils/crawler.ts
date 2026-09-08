@@ -7,14 +7,17 @@ import {
   AdsAndTrackingAudit,
   TrackingIssue,
   QuickCriticalIssue,
-  DetailedCodeSmells
+  DetailedCodeSmells,
+  SiteType,
+  SITE_TYPE_LABELS,
+  ProfileSignals
 } from '../types';
 
 interface CrawlOptions {
   maxPages?: number;
   maxTimeMs?: number;
   concurrency?: number;
-  siteType?: 'ecommerce' | 'services';
+  siteType?: SiteType;
 }
 
 export interface PageTrackingSignals {
@@ -45,6 +48,13 @@ export interface PageTrackingSignals {
   hasFormSpamProtection?: boolean;
   hasOpenGraph?: boolean;
   hasExpressPayments?: boolean;
+  // Sygnały profilu (Profile Signals)
+  hasBipLink?: boolean;
+  hasDeklaracjaDostepnosci?: boolean;
+  hasEdziennik?: boolean;
+  hasDonationOrKrs?: boolean;
+  hasLocalBusinessSignals?: boolean;
+  hasB2bSignals?: boolean;
 }
 
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 (MolendaDevAuditBot/2.0)';
@@ -95,8 +105,11 @@ export async function crawlDomain(
     }
   }
 
-  // 3. Agregacja twardych dowodów (Evidence Engine) wraz z telemetryką
-  const evidence = buildEvidenceSummary(pages, signals, options.siteType ?? 'services');
+  // 3. Autodetekcja dokładnego profilu na podstawie twardych sygnałów zebranych stron
+  const detected = detectAccurateSiteType(pages, signals, origin, options.siteType);
+
+  // 4. Agregacja twardych dowodów (Evidence Engine) wraz z telemetryką
+  const evidence = buildEvidenceSummary(pages, signals, detected.profile);
 
   return { pages, evidence };
 }
@@ -310,6 +323,45 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
   // 17. Szybkie płatności mobilne (BLIK, Apple Pay, Google Pay, BNPL)
   const hasExpressPayments = /blik|apple\s*pay|google\s*pay|paypo|klarna|twisto/i.test(rawHtml);
 
+  // 18. Sygnały profilu: Urząd / Administracja publiczna (BIP, deklaracja dostępności)
+  const hasBipLink = cheerioInstance('a[href*="bip."], a[href*="/bip"], [src*="bip."]').length > 0 ||
+    lowerHtml.includes('biuletyn informacji publicznej') ||
+    lowerHtml.includes('bip.gov.pl') ||
+    /uchwa[łl]a\s+rady|zarz[ąa]dzenie\s+(?:burmistrza|prezydenta|w[óo]jta)|dziennik\s+ustaw/i.test(rawHtml);
+
+  const hasDeklaracjaDostepnosci = cheerioInstance('a[href*="deklaracja-dostepnosci"], a[href*="deklaracjadostepnosci"], a[href*="dostepnosc"]').length > 0 ||
+    lowerHtml.includes('deklaracja dostępności') || lowerHtml.includes('deklaracja dostepnosci') ||
+    lowerHtml.includes('dostępność cyfrowa') || lowerHtml.includes('dostepnosc cyfrowa') ||
+    lowerHtml.includes('wcag 2.1') || lowerHtml.includes('wcag 2.0');
+
+  // 19. Sygnały profilu: Szkoła / Edukacja (Librus, Vulcan, e-dziennik)
+  const hasEdziennik = cheerioInstance('a[href*="vulcan.net.pl"], a[href*="librus.pl"], a[href*="mobidziennik"], a[href*="uonetplus"]').length > 0 ||
+    lowerHtml.includes('e-dziennik') || lowerHtml.includes('dziennik elektroniczny') ||
+    lowerHtml.includes('rada pedagogiczna') || lowerHtml.includes('samorząd uczniowski') ||
+    lowerHtml.includes('plan lekcji');
+
+  // 20. Sygnały profilu: NGO / Fundacja / Stowarzyszenie (Siepomaga, 1.5%, KRS, darowizny)
+  const hasDonationOrKrs = cheerioInstance('a[href*="siepomaga.pl"], a[href*="fanimani.pl"], a[href*="zrzutka.pl"], a[href*="pomagam.pl"]').length > 0 ||
+    /krs\s*0{3,4}\d{6,7}/i.test(rawHtml) ||
+    /1[,.]5\s*%\s*(?:podatku|krs)/i.test(rawHtml) ||
+    lowerHtml.includes('działalność statutowa') || lowerHtml.includes('dzialalnosc statutowa') ||
+    lowerHtml.includes('organizacja pożytku publicznego') ||
+    (lowerHtml.includes('wolontariat') && (lowerHtml.includes('stowarzyszenie') || lowerHtml.includes('fundacja') || lowerHtml.includes('pomoc')));
+
+  // 21. Sygnały profilu: Usługi Lokalne (Google Maps, Booksy, ZnanyLekarz, godziny otwarcia)
+  const hasLocalBusinessSignals = cheerioInstance('a[href*="maps.google.com"], a[href*="google.com/maps"], a[href*="maps.app.goo.gl"], a[href*="booksy.com"], a[href*="znanylekarz.pl"]').length > 0 ||
+    lowerHtml.includes('"@type":"localbusiness"') || lowerHtml.includes('"@type": "localbusiness"') ||
+    lowerHtml.includes('"@type":"medicalbusiness"') || lowerHtml.includes('"@type":"dentist"') ||
+    lowerHtml.includes('"@type":"restaurant"') || lowerHtml.includes('"@type":"beautysalon"') ||
+    lowerHtml.includes('"@type":"autorepair"') ||
+    /godziny\s+otwarcia|um[óo]w\s+wizyt[ęe]|dojazd\s+do\s+(?:nas|gabinetu|salonu)|cennik\s+us[łl]ug/i.test(rawHtml);
+
+  // 22. Sygnały profilu: Usługi B2B / Korporacyjne (LinkedIn Tag, HubSpot, Salesforce, RFP)
+  const hasB2bSignals = lowerHtml.includes('snap.licdn.com') || lowerHtml.includes('linkedin.com/insight') ||
+    lowerHtml.includes('js.hs-scripts.com') || lowerHtml.includes('salesforce') ||
+    lowerHtml.includes('"@type":"professionalservice"') || lowerHtml.includes('"@type": "professionalservice"') ||
+    /oferta\s+dla\s+firm|zapytaj\s+o\s+wycen[ęe]|case\s+study|nasze\s+wdro[żz]enia|konsultacje\s+b2b/i.test(rawHtml);
+
   return {
     hasGoogleAds,
     googleAdsId,
@@ -336,7 +388,13 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
     hasClickToCallTracking,
     hasFormSpamProtection,
     hasOpenGraph,
-    hasExpressPayments
+    hasExpressPayments,
+    hasBipLink,
+    hasDeklaracjaDostepnosci,
+    hasEdziennik,
+    hasDonationOrKrs,
+    hasLocalBusinessSignals,
+    hasB2bSignals
   };
 }
 
@@ -554,15 +612,135 @@ function extractSchemaTypes(obj: unknown, results: string[]): void {
 }
 
 /**
+ * 3-poziomowy silnik precyzyjnej detekcji profilu witryny (HTML / DOM / TLD / Słowa kluczowe)
+ */
+export function detectAccurateSiteType(
+  pages: PageAuditResult[],
+  signals: PageTrackingSignals[],
+  origin: string,
+  userHint?: SiteType
+): { profile: SiteType; label: string; confidence: number } {
+  const lowerOrigin = origin.toLowerCase();
+
+  let govScore = 0;
+  let eduScore = 0;
+  let ngoScore = 0;
+  let ecomScore = 0;
+  let b2bScore = 0;
+  let localScore = 0;
+
+  // 1. TLD i struktura domeny
+  if (lowerOrigin.includes('.gov.pl') || lowerOrigin.includes('.bip.')) govScore += 120;
+  if (lowerOrigin.includes('.edu.pl') || lowerOrigin.includes('.edu')) eduScore += 120;
+  if (lowerOrigin.includes('.org.pl') || lowerOrigin.includes('.ngo')) ngoScore += 40;
+
+  if (/\b(?:urzad|gmina|powiat|starostwo|miasto|ug-|um-)\b/i.test(lowerOrigin) || lowerOrigin.includes('/bip')) govScore += 45;
+  if (/\b(?:szkola|liceum|technikum|uniwersytet|przedszkole|sp\d|lo\d|zespol-szkol)\b/i.test(lowerOrigin)) eduScore += 45;
+  if (/\b(?:stowarzyszenie|fundacja|pomoc|zbiorka|ngo|krs)\b/i.test(lowerOrigin)) ngoScore += 45;
+  if (/\b(?:sklep|shop|store|butik)\b/i.test(lowerOrigin)) ecomScore += 35;
+
+  // 2. Twarde sygnały telemetryczne z podstron
+  const hasBipLink = signals.some(s => s.hasBipLink);
+  const hasDeklaracja = signals.some(s => s.hasDeklaracjaDostepnosci);
+  const hasEdziennik = signals.some(s => s.hasEdziennik);
+  const hasDonation = signals.some(s => s.hasDonationOrKrs);
+  const hasLocal = signals.some(s => s.hasLocalBusinessSignals);
+  const hasB2b = signals.some(s => s.hasB2bSignals);
+
+  if (hasBipLink) govScore += 60;
+  if (hasDeklaracja) {
+    govScore += 30;
+    eduScore += 30;
+  }
+  if (hasEdziennik) eduScore += 70;
+  if (hasDonation) ngoScore += 60;
+  if (hasLocal) localScore += 50;
+  if (hasB2b) b2bScore += 45;
+
+  // E-commerce sygnały koszykowe
+  const hasAddToCart = signals.some(s => s.hasAddToCartTracking || s.hasPurchaseTracking);
+  const hasCartButtons = signals.some(s => s.hasCartButtons);
+  const hasProductSchema = signals.some(s => s.hasProductSchema || s.hasSalePrice || s.hasOmnibusMention);
+  const hasProductUrls = pages.some(p => p.category === 'product' || p.url.includes('/produkt/') || p.url.includes('/sklep/'));
+
+  if (hasAddToCart) ecomScore += 80;
+  if (hasCartButtons) ecomScore += 45;
+  if (hasProductSchema) ecomScore += 35;
+  if (hasProductUrls) ecomScore += 35;
+
+  // 3. Analiza treści, nagłówków H1 i tytułów podstron
+  for (const page of pages) {
+    const title = (page.title || '').toLowerCase();
+    const h1 = (page.h1Text || '').toLowerCase();
+    const combined = `${title} ${h1}`;
+
+    if (/biuletyn\s+informacji\s+publicznej|bip|uchwa[łl]a\s+rady|zarz[ąa]dzenie|sesja\s+rady/i.test(combined)) govScore += 25;
+    if (/szko[łl]a\s+podstawowa|liceum|technikum|plan\s+lekcji|rekrutacja\s+do\s+szko[łl]y/i.test(combined)) eduScore += 25;
+    if (/stowarzyszenie|fundacja|wolontariat|podopieczn|darczy[ńn]c|1[,.]5\s*%/i.test(combined)) ngoScore += 25;
+    if (/koszyk|kasa|zam[óo]wienie|sklep\s+online/i.test(combined)) ecomScore += 25;
+    if (/um[óo]w\s+wizyt[ęe]|godziny\s+otwarcia|cennik|dojazd|gabinet|salon|warsztat/i.test(combined)) localScore += 20;
+    if (/oferta\s+b2b|wdro[żz]enia|dla\s+firm|case\s+study|konsultacje|zapytaj\s+o\s+wycen[ęe]/i.test(combined)) b2bScore += 20;
+  }
+
+  // Wpływ userHint
+  if (userHint === 'ecommerce') ecomScore += 35;
+  else if (userHint === 'gov_public') govScore += 40;
+  else if (userHint === 'education') eduScore += 40;
+  else if (userHint === 'ngo_foundation') ngoScore += 40;
+  else if (userHint === 'local_services') localScore += 40;
+  else if (userHint === 'b2b_services') b2bScore += 40;
+
+  const scores: { profile: SiteType; score: number }[] = [
+    { profile: 'gov_public', score: govScore },
+    { profile: 'education', score: eduScore },
+    { profile: 'ngo_foundation', score: ngoScore },
+    { profile: 'ecommerce', score: ecomScore },
+    { profile: 'local_services', score: localScore },
+    { profile: 'b2b_services', score: b2bScore }
+  ];
+
+  scores.sort((a, b) => b.score - a.score);
+  const best = scores[0];
+
+  let finalProfile: SiteType = 'b2b_services';
+  if (best.score >= 30) {
+    finalProfile = best.profile;
+  } else if (userHint && userHint !== 'services') {
+    finalProfile = userHint;
+  } else if (localScore > b2bScore) {
+    finalProfile = 'local_services';
+  } else {
+    finalProfile = 'b2b_services';
+  }
+
+  return {
+    profile: finalProfile,
+    label: SITE_TYPE_LABELS[finalProfile] || 'Usługi B2B & Doradztwo',
+    confidence: best.score
+  };
+}
+
+/**
  * Agregacja wyników w zwięzłe twarde dowody (Evidence Summary) wraz z analityką reklamową
  */
 export function buildEvidenceSummary(
   pages: PageAuditResult[],
   signals: PageTrackingSignals[] = [],
-  siteType: 'ecommerce' | 'services' = 'services'
+  siteType: SiteType = 'services'
 ): EvidenceSummary {
   const isEcommerce = siteType === 'ecommerce';
+  const isPublicOrNgo = siteType === 'gov_public' || siteType === 'education' || siteType === 'ngo_foundation';
   const totalPages = pages.length;
+
+  // Sygnały profilu
+  const profileSignals: ProfileSignals = {
+    hasBipLink: signals.some(s => s.hasBipLink),
+    hasDeklaracjaDostepnosci: signals.some(s => s.hasDeklaracjaDostepnosci),
+    hasEdziennik: signals.some(s => s.hasEdziennik),
+    hasDonationOrKrs: signals.some(s => s.hasDonationOrKrs),
+    hasLocalBusinessSignals: signals.some(s => s.hasLocalBusinessSignals),
+    hasB2bSignals: signals.some(s => s.hasB2bSignals)
+  };
 
   // 1. Analiza telemetryki i kampanii reklamowych
   const hasGoogleAds = signals.some(s => s.hasGoogleAds);
@@ -616,8 +794,8 @@ export function buildEvidenceSummary(
     });
   }
 
-  // Scenariusz 2: Brak Google Consent Mode v2 (Zablokowany remarketing w UE)
-  if ((hasGoogleAds || hasGA4) && !hasConsentModeV2) {
+  // Scenariusz 2: Brak Google Consent Mode v2 (Zablokowany remarketing w UE - tylko gdy są aktywne reklamy Google Ads)
+  if (!isPublicOrNgo && hasGoogleAds && !hasConsentModeV2) {
     trackingIssues.push({
       id: 'leak-consent-mode-v2',
       title: 'Brak Google Consent Mode v2 (Zablokowany remarketing w UE)',
@@ -625,6 +803,15 @@ export function buildEvidenceSummary(
       description: 'Brak wymaganych od marca 2024 przez Google parametrów ad_storage, ad_user_data i ad_personalization.',
       impact: 'Google Ads blokuje odświeżanie list remarketingowych w UE, a kampanie Performance Max tracą modelowanie utraconych konwersji.',
       developerSolution: 'Skonfiguruję pełny standard Consent Mode v2 zintegrowany z banerem cookies i GTM zgodnie z wymogami Google i IAB TCF 2.2.'
+    });
+  } else if (!isPublicOrNgo && hasGA4 && !hasConsentModeV2 && !hasGoogleAds) {
+    trackingIssues.push({
+      id: 'leak-consent-mode-v2',
+      title: 'Zalecenie RODO: brak integracji banera zgód Consent Mode v2 z GA4',
+      severity: 'info',
+      description: 'Serwis korzysta ze statystyk Google Analytics 4 bez zintegrowanego banera zgód użytkowników.',
+      impact: 'Dobre praktyki ePrivacy i RODO w UE zalecają rejestrowanie statusu zgody analytics_storage.',
+      developerSolution: 'Wdrożę lekki baner cookies zgodny z RODO i przesyłający parametry zgód w 24h.'
     });
   }
 
@@ -750,9 +937,9 @@ export function buildEvidenceSummary(
     });
   }
 
-  const hasAnyAds = hasGoogleAds || hasMetaPixel || hasTikTokPixel || hasGA4 || hasGoogleTagManager;
+  const hasPaidAds = hasGoogleAds || hasMetaPixel || hasTikTokPixel;
   let adBudgetLeakRisk: 'none' | 'low' | 'medium' | 'critical' = 'none';
-  if (!hasAnyAds) {
+  if (!hasPaidAds || isPublicOrNgo) {
     adBudgetLeakRisk = 'none';
   } else if (trackingIssues.some(i => i.severity === 'critical')) {
     adBudgetLeakRisk = 'critical';
@@ -790,7 +977,8 @@ export function buildEvidenceSummary(
     hasOpenGraph,
     variantTimeoutUrls,
     adBudgetLeakRisk,
-    issues: trackingIssues
+    issues: trackingIssues,
+    profileSignals
   };
 
   if (totalPages === 0) {
@@ -815,7 +1003,10 @@ export function buildEvidenceSummary(
       adsAndTracking,
       categoriesSummary: {
         overall: { goodCount: 0, warnCount: 0, badCount: 0 }
-      }
+      },
+      detectedProfile: siteType,
+      profileLabel: SITE_TYPE_LABELS[siteType] || 'Usługi B2B & Doradztwo',
+      profileSignals
     };
   }
 
@@ -990,7 +1181,10 @@ export function buildEvidenceSummary(
         warnCount: overallWarn,
         badCount: overallBad
       }
-    }
+    },
+    detectedProfile: siteType,
+    profileLabel: SITE_TYPE_LABELS[siteType] || 'Usługi B2B & Doradztwo',
+    profileSignals
   };
 }
 
@@ -1023,12 +1217,12 @@ export function formatPodstronyPosiada(count: number): string {
 export function generateQuickCriticalIssues(
   evidence: EvidenceSummary,
   codeSmells?: DetailedCodeSmells,
-  siteType: 'ecommerce' | 'services' = 'services'
+  siteType: SiteType = 'services'
 ): QuickCriticalIssue[] {
   const issues: QuickCriticalIssue[] = [];
   const isEcommerce = siteType === 'ecommerce';
 
-  // 1. Priorytet: Płatne kampanie i wyciek budżetu reklamowego (Kazus tropilapka)
+  // 1. Priorytet: Płatne kampanie i wyciek budżetu reklamowego (tylko gdy są realne błędy krytyczne kampanii)
   const criticalTracking = evidence.adsAndTracking.issues.find(i => i.severity === 'critical');
   if (criticalTracking) {
     const detailsList: { label?: string; sublabel?: string }[] = [];
@@ -1057,10 +1251,37 @@ export function generateQuickCriticalIssues(
     });
   }
 
-  // 2. Priorytet: Auto-kanibalizacja tytułów Title
+  // 2. Priorytet: Dla podmiotów publicznych i szkół – brak Deklaracji Dostępności (wymóg ustawowy)
+  if ((siteType === 'gov_public' || siteType === 'education') && !evidence.profileSignals?.hasDeklaracjaDostepnosci) {
+    issues.push({
+      id: 'quick-missing-wcag-declaration',
+      title: 'Brak Deklaracji Dostępności cyfrowej (Wymóg prawny WCAG)',
+      type: 'security',
+      severity: 'critical',
+      shortDesc: 'Portal nie posiada podlinkowanej Deklaracji Dostępności wymaganej Ustawą z dnia 4 kwietnia 2019 r.',
+      businessImpact: 'Ryzyko nałożenia kar finansowych do 10 000 zł przez Ministra Cyfryzacji / KPRM oraz bariera dla osób ze szczególnymi potrzebami.',
+      developerAction: 'Opracuję i wdrożę w stopce zgodną z wytycznymi WCAG 2.1 AA Deklarację Dostępności z deklaracją architektoniczną w 24h.'
+    });
+  }
+
+  // 3. Priorytet: Auto-kanibalizacja tytułów Title
   if (evidence.duplicateTitleGroups.length > 0) {
     const totalAffected = evidence.duplicateTitleGroups.reduce((acc, g) => acc + g.count, 0);
     const groupsText = pluralizePolish(evidence.duplicateTitleGroups.length, 'grupa', 'grupy', 'grup');
+    
+    let impactText = 'Zamiast jednej silnej pozycji w TOP 3, Twoje podstrony rotują i zbijają się nawzajem, marnując bezpłatne zapytania ofertowe z Google.';
+    if (isEcommerce) {
+      impactText = 'Zamiast jednej silnej pozycji w TOP 3, Twoje produkty i kategorie rotują i zbijają się nawzajem, marnując bezpłatną sprzedaż z Google.';
+    } else if (siteType === 'gov_public') {
+      impactText = 'Mieszkańcy szukający konkretnych procedur lub wniosków trafiają na przypadkowe podstrony urzędu, co potęguje frustrację i generuje niepotrzebne telefony do sekretariatu.';
+    } else if (siteType === 'education') {
+      impactText = 'Kandydaci i rodzice szukający informacji o naborze lub profilach klas trafiają na nieaktualne strony, co obniża pozycję szkoły w rankingu rekrutacyjnym.';
+    } else if (siteType === 'ngo_foundation') {
+      impactText = 'Osoby w kryzysie oraz darczyńcy szukający wsparcia lub celu 1.5% trafiają na błędne podstrony, co utrudnia dotarcie do bezpłatnej pomocy statutowej.';
+    } else if (siteType === 'local_services') {
+      impactText = 'Lokalni klienci szukający Twojego gabinetu lub usług w okolicy trafiają na zduplikowane podstrony i ostatecznie przechodzą do konkurencji z sąsiedniej ulicy.';
+    }
+
     issues.push({
       id: 'quick-duplicate-titles',
       title: `Auto-kanibalizacja w Google: ${groupsText} identycznych tagów Title`,
@@ -1068,9 +1289,7 @@ export function generateQuickCriticalIssues(
       severity: 'critical',
       shortDesc: `Aż ${formatPodstronyPosiada(totalAffected)} identyczne tytuły, przez co konkurują ze sobą na te same frazy w wynikach wyszukiwania.`,
       affectedCount: totalAffected,
-      businessImpact: isEcommerce
-        ? 'Zamiast jednej silnej pozycji w TOP 3, Twoje produkty i kategorie rotują i zbijają się nawzajem, marnując bezpłatną sprzedaż z Google.'
-        : 'Zamiast jednej silnej pozycji w TOP 3, Twoje podstrony rotują i zbijają się nawzajem, marnując bezpłatne zapytania ofertowe z Google.',
+      businessImpact: impactText,
       developerAction: 'Zaimplementuję dynamiczny szablon unikalnych tagów Title w warstwie CMS/kodu z automatycznym sufiksem wyróżniającym w 24h.',
       details: evidence.duplicateTitleGroups.slice(0, 4).map(g => ({
         label: `« ${g.title} » (${g.count} stron)`,
@@ -1079,7 +1298,7 @@ export function generateQuickCriticalIssues(
     });
   }
 
-  // 3. Priorytet: Brakujące nagłówki semantyczne H1
+  // 4. Priorytet: Brakujące nagłówki semantyczne H1
   if (evidence.missingH1Count > 0) {
     issues.push({
       id: 'quick-missing-h1',
@@ -1094,8 +1313,8 @@ export function generateQuickCriticalIssues(
     });
   }
 
-  // 4. Priorytet: Consent Mode v2 (jeśli nie był dodany wyżej) lub Canonical / Dług techniczny
-  const consentIssue = evidence.adsAndTracking.issues.find(i => i.id === 'leak-consent-mode-v2');
+  // 5. Priorytet: Consent Mode v2 (jeśli nie był dodany wyżej) lub Canonical / Dług techniczny
+  const consentIssue = evidence.adsAndTracking.issues.find(i => i.id === 'leak-consent-mode-v2' && i.severity === 'critical');
   if (consentIssue && !issues.some(i => i.id === 'quick-tracking-leak')) {
     issues.push({
       id: 'quick-consent-mode',
@@ -1107,6 +1326,15 @@ export function generateQuickCriticalIssues(
       developerAction: consentIssue.developerSolution
     });
   } else if (evidence.missingCanonicalCount > 0) {
+    let canonicalImpact = 'Rozpraszanie autorytetu domeny PageRank i marnowanie budżetu indeksowania (Crawl Budget) Google.';
+    if (siteType === 'gov_public') {
+      canonicalImpact = 'Rozpraszanie autorytetu domeny i ryzyko indeksowania roboczych linków zamiast oficjalnych procedur urzędowych.';
+    } else if (siteType === 'education') {
+      canonicalImpact = 'Rozpraszanie widoczności portalu szkoły w wynikach wyszukiwania na rzecz nieoficjalnych lub roboczych adresów.';
+    } else if (siteType === 'ngo_foundation') {
+      canonicalImpact = 'Rozpraszanie widoczności programów pomocowych i zbiórek w Google na rzecz przypadkowych duplikatów.';
+    }
+
     issues.push({
       id: 'quick-missing-canonical',
       title: `Brak tagów Canonical na ${pluralizePolish(evidence.missingCanonicalCount, 'podstronie', 'podstronach', 'podstronach')}`,
@@ -1114,7 +1342,7 @@ export function generateQuickCriticalIssues(
       severity: 'warning',
       shortDesc: 'Strony nie informują wyszukiwarki o oficjalnym adresie kanonicznym, co grozi tworzeniem niekontrolowanych duplikatów.',
       affectedCount: evidence.missingCanonicalCount,
-      businessImpact: 'Rozpraszanie autorytetu domeny PageRank i marnowanie budżetu indeksowania (Crawl Budget) Google.',
+      businessImpact: canonicalImpact,
       developerAction: 'Zaimplementuję samoodnoszący się tag <link rel="canonical"> w nagłówku witryny wyliczany na bieżąco z czystego URL.',
       details: evidence.missingCanonicalUrls.slice(0, 5).map(u => ({ url: u }))
     });

@@ -2,11 +2,12 @@
 
 import React, { useState } from 'react';
 import { ArrowRight, CheckCircle2, Loader2, Phone, Mail } from 'lucide-react';
+import { SiteType, SITE_TYPE_LABELS } from '@/app/api/audit-master/types';
 
 interface AuditConsultationFormProps {
   domain: string;
   token?: string;
-  siteType?: 'ecommerce' | 'services';
+  siteType?: SiteType;
 }
 
 export default function AuditConsultationForm({ domain, token, siteType = 'services' }: AuditConsultationFormProps) {
@@ -68,13 +69,17 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
 
       <div className="max-w-2xl relative z-10">
         <span className="text-orange-400 font-mono text-xs uppercase tracking-widest font-semibold block mb-3">
-          Konsultacja Inżynieryjna 1-na-1 {isEcommerce ? '· Sklep E-commerce' : '· Serwis B2B'}
+          Konsultacja Inżynieryjna 1-na-1 {SITE_TYPE_LABELS[siteType] ? `· ${SITE_TYPE_LABELS[siteType]}` : (isEcommerce ? '· Sklep E-commerce' : '· Serwis B2B')}
         </span>
         <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">
           Chcesz omówić wyniki audytu dla {domain}?
         </h3>
         <p className="text-slate-400 text-sm leading-relaxed mb-8">
-          {isEcommerce
+          {siteType === 'gov_public' || siteType === 'education'
+            ? 'Przejdźmy wspólnie przez wąskie gardła serwisu. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej wskażę czarno na białym, jak spełnić wymagania prawne WCAG 2.1 AA (Deklaracja Dostępności), zabezpieczyć formularze przed botami i wdrożyć kluczowe poprawki w architekturze bez konieczności kosztownej przebudowy.'
+            : siteType === 'ngo_foundation'
+            ? 'Przejdźmy wspólnie przez wąskie gardła serwisu. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej wskażę czarno na białym, jak zabezpieczyć formularze przed spamem, ułatwić darczyńcom wpłaty i poprawić widoczność apeli w Google.'
+            : isEcommerce
             ? 'Przejdźmy wspólnie przez wąskie gardła w kodzie sklepu. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej pokażę Ci czarno na białym, jak zabezpieczyć budżet reklamowy e-commerce przed przepalaniem, odblokować telemetrykę koszyka (add_to_cart) i wdrożyć kluczowe poprawki w architekturze sklepu.'
             : 'Przejdźmy wspólnie przez wąskie gardła w kodzie. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej pokażę Ci czarno na białym, jak zabezpieczyć budżet reklamowy przed przepalaniem, odblokować telemetrykę zdarzeń i wdrożyć 3 kluczowe poprawki w kodzie bez burzenia obecnej strony.'}
         </p>
