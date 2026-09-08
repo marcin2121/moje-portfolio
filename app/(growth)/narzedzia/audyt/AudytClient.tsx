@@ -187,7 +187,7 @@ export function AudytClient() {
               className="text-xs font-mono font-semibold text-slate-600 hover:text-orange-600 flex items-center gap-1.5 transition-colors"
             >
               <Swords className="w-3.5 h-3.5 text-orange-500" />
-              <span>{showCompetitor ? 'Ukryj porównanie z konkurentem' : '⚔️ Porównaj z konkurentem (Benchmark Head-to-Head)'}</span>
+              <span>{showCompetitor ? 'Ukryj porównanie z konkurentem' : 'Porównaj z konkurentem'}</span>
             </button>
           </div>
 

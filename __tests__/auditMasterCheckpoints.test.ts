@@ -12,8 +12,10 @@ import {
 import {
   detectAccurateSiteType,
   pluralizePolish,
-  PageTrackingSignals
+  PageTrackingSignals,
+  buildEvidenceSummary
 } from '@/app/api/audit-master/utils/crawler';
+import { generateDeterministicReport } from '@/app/api/audit-master/utils/geminiAI';
 
 describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
   it('should have exactly 80 structured checkpoints in the knowledge base catalog', () => {
@@ -695,6 +697,319 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
       const termsEvalPass = resultPass.evals.find(e => e.id === 'sec-terms-of-service');
       expect(termsEvalPass?.status).toBe('passed');
       expect(termsEvalPass?.metric).toContain('Deklaracja Dostępności WCAG');
+    });
+  });
+
+  describe('Audit Master: 6 Contextual Architecture Rules', () => {
+    it('1. Thin Content Contextualization: excludes interactive tools/contact pages from thin content penalties', () => {
+      const toolPage: PageAuditResult = {
+        url: 'https://pomoc-ngo.pl/narzedzia/apteczka-pomocowa',
+        category: 'info',
+        statusCode: 200,
+        responseTimeMs: 80,
+        title: 'Apteczka Pomocowa - Narzędzie Interaktywne',
+        titleLength: 42,
+        metaDescription: 'Interaktywny selektor pomocy',
+        metaLength: 28,
+        h1Count: 1,
+        canonical: 'https://pomoc-ngo.pl/narzedzia/apteczka-pomocowa',
+        hasSelfCanonical: true,
+        wordCount: 85, // Mniej niż 200 słów, ale to aplikacja webowa!
+        isThinContent: false,
+        isFunctionalPage: true,
+        imagesCount: 1,
+        missingAltCount: 0,
+        schemas: [],
+        hasNoIndex: false,
+        internalLinksCount: 5,
+        externalLinksCount: 1
+      };
+
+      const regularContentPage: PageAuditResult = {
+        url: 'https://pomoc-ngo.pl/o-nas',
+        category: 'info',
+        statusCode: 200,
+        responseTimeMs: 90,
+        title: 'O nas',
+        titleLength: 5,
+        metaDescription: 'Kim jesteśmy',
+        metaLength: 12,
+        h1Count: 1,
+        canonical: 'https://pomoc-ngo.pl/o-nas',
+        hasSelfCanonical: true,
+        wordCount: 450,
+        isThinContent: false,
+        isFunctionalPage: false,
+        imagesCount: 2,
+        missingAltCount: 0,
+        schemas: [],
+        hasNoIndex: false,
+        internalLinksCount: 10,
+        externalLinksCount: 0
+      };
+
+      const evidence = buildEvidenceSummary([toolPage, regularContentPage], [{
+        hasGoogleAds: false,
+        hasGtm: false,
+        hasGa4: true,
+        ga4Id: 'G-112233',
+        hasMetaPixel: false,
+        hasTikTokPixel: false,
+        hasConsentModeV2: false,
+        hasDataLayer: false,
+        hasAddToCartTracking: false,
+        hasPurchaseTracking: false,
+        hasCartButtons: false,
+        hasLeadForms: true
+      }]);
+
+      expect(evidence.thinContentCount).toBe(0);
+      expect(evidence.thinContentUrls.length).toBe(0);
+
+      const result = evaluateAllCheckpoints(
+        evidence,
+        [toolPage, regularContentPage],
+        { jquery: false, badScripts: 0, domElements: 300, inlineStyles: 2 },
+        'ngo_foundation',
+        { detectedPlatform: 'Next.js' }
+      );
+
+      const thinContentEval = result.evals.find(e => e.id === 'seo-thin-content');
+      expect(thinContentEval?.status).toBe('passed');
+      expect(thinContentEval?.metric).toContain('strony narzędziowe/użytkowe wyłączone');
+    });
+
+    it('2. RODO Art. 9: ngo_foundation / gov_public without Clarity/Hotjar is passed as Privacy First', () => {
+      const mockEvidence: EvidenceSummary = {
+        totalPages: 4,
+        avgResponseTimeMs: 85,
+        status200Count: 4,
+        redirectsCount: 0,
+        errorsCount: 0,
+        noIndexCount: 0,
+        missingTitleCount: 0,
+        duplicateTitleGroups: [],
+        missingMetaCount: 0,
+        avgMetaLength: 130,
+        missingH1Count: 0,
+        missingH1Urls: [],
+        thinContentCount: 0,
+        thinContentUrls: [],
+        missingCanonicalCount: 0,
+        missingCanonicalUrls: [],
+        missingAltTotal: 0,
+        adsAndTracking: {
+          hasGoogleAds: false,
+          hasGoogleTagManager: false,
+          hasGA4: false,
+          hasMetaPixel: false,
+          hasTikTokPixel: false,
+          hasConsentModeV2: false,
+          hasDataLayer: false,
+          hasAddToCartTracking: false,
+          hasPurchaseTracking: false,
+          hasCartButtons: false,
+          hasLeadForms: true,
+          adBudgetLeakRisk: 'none',
+          issues: []
+        },
+        categoriesSummary: {
+          overall: { goodCount: 4, warnCount: 0, badCount: 0 }
+        }
+      };
+
+      // Profil NGO: brak session recordingu powinien być oceniony jako Privacy First (passed)
+      const ngoResult = evaluateAllCheckpoints(
+        mockEvidence,
+        [],
+        { jquery: false, badScripts: 0, domElements: 400, inlineStyles: 0, trackers: [] },
+        'ngo_foundation',
+        { detectedPlatform: 'Next.js' }
+      );
+
+      const sessionEval = ngoResult.evals.find(e => e.id === 'track-session-recording');
+      expect(sessionEval?.status).toBe('passed');
+      expect(sessionEval?.metric).toContain('RODO Art. 9');
+      expect(sessionEval?.metric).toContain('Privacy First');
+
+      // Natomiast dla komercyjnego e-commerce brak Clarity/Hotjar powinien dać ostrzeżenie
+      const ecomResult = evaluateAllCheckpoints(
+        mockEvidence,
+        [],
+        { jquery: false, badScripts: 0, domElements: 400, inlineStyles: 0, trackers: [] },
+        'ecommerce',
+        { detectedPlatform: 'Shopware' }
+      );
+
+      const ecomSessionEval = ecomResult.evals.find(e => e.id === 'track-session-recording');
+      expect(ecomSessionEval?.status).toBe('warning');
+    });
+
+    it('3. Telemetry Flexibility: hasGA4 passes track-gtm-installed at 100% without GTM container penalty', () => {
+      const mockEvidence: EvidenceSummary = {
+        totalPages: 3,
+        avgResponseTimeMs: 70,
+        status200Count: 3,
+        redirectsCount: 0,
+        errorsCount: 0,
+        noIndexCount: 0,
+        missingTitleCount: 0,
+        duplicateTitleGroups: [],
+        missingMetaCount: 0,
+        avgMetaLength: 120,
+        missingH1Count: 0,
+        missingH1Urls: [],
+        thinContentCount: 0,
+        thinContentUrls: [],
+        missingCanonicalCount: 0,
+        missingCanonicalUrls: [],
+        missingAltTotal: 0,
+        adsAndTracking: {
+          hasGoogleAds: false,
+          hasGoogleTagManager: false, // Brak GTM
+          hasGA4: true, // Jest natywny GA4!
+          ga4Id: 'G-NEXTJS99',
+          hasMetaPixel: false,
+          hasTikTokPixel: false,
+          hasConsentModeV2: false,
+          hasDataLayer: false,
+          hasAddToCartTracking: false,
+          hasPurchaseTracking: false,
+          hasCartButtons: false,
+          hasLeadForms: false,
+          adBudgetLeakRisk: 'none',
+          issues: []
+        },
+        categoriesSummary: {
+          overall: { goodCount: 3, warnCount: 0, badCount: 0 }
+        }
+      };
+
+      const result = evaluateAllCheckpoints(
+        mockEvidence,
+        [],
+        { jquery: false, badScripts: 0, domElements: 300, inlineStyles: 0 },
+        'b2b_services',
+        { detectedPlatform: 'Next.js' }
+      );
+
+      const gtmEval = result.evals.find(e => e.id === 'track-gtm-installed');
+      expect(gtmEval?.status).toBe('passed');
+      expect(gtmEval?.metric).toContain('Natywny GA4');
+      expect(gtmEval?.metric).toContain('G-NEXTJS99');
+    });
+
+    it('4. Click-to-Call in React: tel: link + GA4 is passed without static Cheerio penalty', () => {
+      const mockEvidence: EvidenceSummary = {
+        totalPages: 2,
+        avgResponseTimeMs: 65,
+        status200Count: 2,
+        redirectsCount: 0,
+        errorsCount: 0,
+        noIndexCount: 0,
+        missingTitleCount: 0,
+        duplicateTitleGroups: [],
+        missingMetaCount: 0,
+        avgMetaLength: 140,
+        missingH1Count: 0,
+        missingH1Urls: [],
+        thinContentCount: 0,
+        thinContentUrls: [],
+        missingCanonicalCount: 0,
+        missingCanonicalUrls: [],
+        missingAltTotal: 0,
+        adsAndTracking: {
+          hasGoogleAds: false,
+          hasGoogleTagManager: false,
+          hasGA4: true, // Aktywny GA4
+          ga4Id: 'G-REACT001',
+          hasMetaPixel: false,
+          hasTikTokPixel: false,
+          hasConsentModeV2: false,
+          hasDataLayer: false,
+          hasAddToCartTracking: false,
+          hasPurchaseTracking: false,
+          hasCartButtons: false,
+          hasLeadForms: false,
+          hasClickableContacts: true, // Jest link a[href^="tel:"]
+          hasClickToCallTracking: false, // W statycznym HTML brak inline stringa click_to_call
+          adBudgetLeakRisk: 'none',
+          issues: []
+        },
+        categoriesSummary: {
+          overall: { goodCount: 2, warnCount: 0, badCount: 0 }
+        }
+      };
+
+      const result = evaluateAllCheckpoints(
+        mockEvidence,
+        [],
+        { jquery: false, badScripts: 0, domElements: 350, inlineStyles: 0 },
+        'local_services',
+        { detectedPlatform: 'Next.js' }
+      );
+
+      const callEval = result.evals.find(e => e.id === 'track-click-to-call');
+      expect(callEval?.status).toBe('passed');
+      expect(callEval?.metric).toContain('event delegation');
+    });
+
+    it('5. Tone of Voice Guardrail: avgScore >= 85 produces strategic advice without alarming agency buzzwords', () => {
+      const mockEvidence: EvidenceSummary = {
+        totalPages: 5,
+        avgResponseTimeMs: 60,
+        status200Count: 5,
+        redirectsCount: 0,
+        errorsCount: 0,
+        noIndexCount: 0,
+        missingTitleCount: 0,
+        duplicateTitleGroups: [],
+        missingMetaCount: 0,
+        avgMetaLength: 140,
+        missingH1Count: 0,
+        missingH1Urls: [],
+        thinContentCount: 0,
+        thinContentUrls: [],
+        missingCanonicalCount: 0,
+        missingCanonicalUrls: [],
+        missingAltTotal: 0,
+        adsAndTracking: {
+          hasGoogleAds: false,
+          hasGoogleTagManager: true,
+          hasGA4: true,
+          hasMetaPixel: false,
+          hasTikTokPixel: false,
+          hasConsentModeV2: false,
+          hasDataLayer: true,
+          hasAddToCartTracking: false,
+          hasPurchaseTracking: false,
+          hasCartButtons: false,
+          hasLeadForms: true,
+          adBudgetLeakRisk: 'none',
+          issues: []
+        },
+        categoriesSummary: {
+          overall: { goodCount: 5, warnCount: 0, badCount: 0 }
+        }
+      };
+
+      const report = generateDeterministicReport(
+        'https://fundacja-dobro.pl',
+        92, // Elitarny wynik
+        'Next.js (Edge)',
+        4,
+        false,
+        mockEvidence,
+        { jquery: false, badScripts: 0, domElements: 450, inlineStyles: 2 },
+        'ngo_foundation'
+      );
+
+      expect(report).toContain('92/100');
+      expect(report).toContain('1.5% podatku');
+      expect(report).not.toContain('wyciek budżetu');
+      expect(report).not.toContain('przepalanie budżetu');
+      expect(report).not.toContain('fałszywe konwersje');
+      expect(report).not.toContain('paraliż');
     });
   });
 });

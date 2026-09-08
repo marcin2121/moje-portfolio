@@ -13,6 +13,7 @@ export interface PageAuditResult {
   hasSelfCanonical: boolean;
   wordCount: number;
   isThinContent: boolean;
+  isFunctionalPage?: boolean;
   imagesCount: number;
   missingAltCount: number;
   schemas: string[];

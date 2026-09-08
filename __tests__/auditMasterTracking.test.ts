@@ -440,6 +440,49 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
       expect(phoneIssue).toBeDefined();
       expect(phoneIssue?.impact).toContain('utratę nawet 40-50%');
     });
+
+    it('wyklucza interaktywne narzędzia i kalkulatory (isFunctionalPage) z puli błędów thinContentCount', () => {
+      const calculatorPage: PageAuditResult = {
+        url: 'https://firma-b2b.pl/kalkulator-wyceny',
+        category: 'info',
+        statusCode: 200,
+        responseTimeMs: 65,
+        title: 'Kalkulator wyceny B2B',
+        titleLength: 21,
+        metaDescription: 'Oblicz koszt wdrożenia w kalkulatorze',
+        metaLength: 37,
+        h1Count: 1,
+        canonical: 'https://firma-b2b.pl/kalkulator-wyceny',
+        hasSelfCanonical: true,
+        wordCount: 110, // < 200 słów
+        isThinContent: false,
+        isFunctionalPage: true,
+        imagesCount: 0,
+        missingAltCount: 0,
+        schemas: [],
+        hasNoIndex: false,
+        internalLinksCount: 4,
+        externalLinksCount: 0
+      };
+
+      const emptySignals: PageTrackingSignals = {
+        hasGoogleAds: false,
+        hasGtm: false,
+        hasGa4: false,
+        hasMetaPixel: false,
+        hasTikTokPixel: false,
+        hasConsentModeV2: false,
+        hasDataLayer: false,
+        hasAddToCartTracking: false,
+        hasPurchaseTracking: false,
+        hasCartButtons: false,
+        hasLeadForms: false
+      };
+
+      const evidence = buildEvidenceSummary([calculatorPage], [emptySignals], 'b2b_services');
+      expect(evidence.thinContentCount).toBe(0);
+      expect(evidence.thinContentUrls.length).toBe(0);
+    });
   });
 });
 

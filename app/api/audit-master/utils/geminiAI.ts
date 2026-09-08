@@ -108,10 +108,12 @@ ${quickIssuesText}
   if (avgScore >= 85) {
     prompt = `Jesteś Marcinem Molendą, Senior Frontend & Full-Stack Architectem. ${entityName} ${targetUrl} uzyskał elitarny wynik ${avgScore}/100.
 Przeanalizowano ${pagesScanned} podstron. Stack: ${detectedPlatform}. Profil: ${SITE_TYPE_LABELS[siteType] || 'Usługi'}.
-Zadanie: Napisz zwięzły, autorytatywny werdykt (MAKSYMALNIE 3-4 ZDANIA!).
+Zadanie: Napisz zwięzły, autorytatywny werdykt architektoniczny (MAKSYMALNIE 3-4 ZDANIA!).
 1. Pogratuluj właścicielowi rewelacyjnej, bezkompromisowej infrastruktury (wskazując szybkość ${avgResponseTime}ms i brak długu technologicznego).
 2. Uświadom mu, że dalsze szlifowanie tak doskonałego kodu to strata zasobów – czas na realizację celów: ${goalDescription}.
-3. Zaproponuj projektowanie dedykowanych modułów AI lub automatyzacji procesów.
+3. Zaproponuj projektowanie dedykowanych modułów AI lub automatyzacji procesów statutowych / biznesowych.
+GUARDRAIL TONE OF VOICE (KATEGORYCZNY ZAKAZ):
+Kategorycznie ZAKAZUJE SIĘ używania taniego, panikarskiego żargonu agencji reklamowych (takiego jak: "krytyczne wycieki budżetu", "przepalanie budżetu", "fałszywe konwersje ze spamu", "paraliż kampanii"). Przy wyniku ${avgScore}/100 infrastruktura jest wzorowa – zachowaj prestiżowy, strategiczny i konstruktywny ton Senior Architekta.
 FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Bez HTML.`;
   } else {
     prompt = `Jesteś Marcinem Molendą, Senior Web & Full-Stack Architectem. ${entityName} ${targetUrl} uzyskał wynik ${avgScore}/100.
@@ -146,7 +148,7 @@ FORMATOWANIE: Czysty Markdown. Bez HTML.`;
 }
 
 /**
- * Deterministyczny silnik werdyktu architekta (zabezpieczenie przed limitami Gemini)
+ * Deterministyczny generator raportu w razie braku klucza GEMINI_API_KEY lub rate limitu.
  */
 export function generateDeterministicReport(
   targetUrl: string,
@@ -179,11 +181,26 @@ export function generateDeterministicReport(
   }
 
   if (avgScore >= 85) {
-    return `Architektura **${targetUrl}** reprezentuje najwyższy standard inżynieryjny (${avgScore}/100). Kod jest czysty, serwer odpowiada poniżej ${evidence?.avgResponseTimeMs || 80}ms, a struktura podstron nie wykazuje długu technologicznego. 
+    let strategicGoalAdvice = 'realizację celów i pozyskiwanie odbiorców';
+    if (siteType === 'ngo_foundation') {
+      strategicGoalAdvice = 'pozyskiwanie 1.5% podatku, darowizn statutowych oraz budowanie zaufania darczyńców';
+    } else if (siteType === 'gov_public') {
+      strategicGoalAdvice = 'cyfryzację usług dla mieszkańców oraz rozwój e-urzędu';
+    } else if (siteType === 'education') {
+      strategicGoalAdvice = 'rekrutację uczniów oraz cyfrową komunikację z rodzicami';
+    } else if (siteType === 'local_services') {
+      strategicGoalAdvice = 'skalowanie rezerwacji wizyt i dominację w lokalnym Google Maps';
+    } else if (siteType === 'b2b_services') {
+      strategicGoalAdvice = 'pozyskiwanie kwalifikowanych leadów B2B i budowanie autorytetu branżowego';
+    } else if (siteType === 'ecommerce') {
+      strategicGoalAdvice = 'skalowanie rentowności sprzedaży (ROAS) i optymalizację retencji klientów (LTV)';
+    }
+
+    return `Architektura **${targetUrl}** reprezentuje najwyższy standard inżynieryjny (${avgScore}/100). Kod jest czysty, serwer odpowiada błyskawicznie (średnio ${evidence?.avgResponseTimeMs || 80}ms), a struktura podstron nie wykazuje długu technologicznego. 
 
 Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego ROI – infrastruktura jest w pełni gotowa na skalowanie ruchu i wdrożenia automatyzacji AI.
 
-**💡 Rekomendacja strategiczna:** Skieruj zasoby na realizację celów i pozyskiwanie odbiorców, bo technologicznie serwis wyprzedza 95% konkurencji rynkowej.`;
+**💡 Rekomendacja strategiczna:** Skieruj zasoby na ${strategicGoalAdvice}, bo technologicznie serwis wyprzedza 95% konkurencji rynkowej.`;
   }
 
   const issues: string[] = [];

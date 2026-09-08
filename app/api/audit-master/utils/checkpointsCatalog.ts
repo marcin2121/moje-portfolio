@@ -1004,11 +1004,13 @@ export function evaluateAllCheckpoints(
     addEval('track-consent-mode-v2', 'passed', 'Brak tagów Google wymagających zgód');
   }
 
-  // track-gtm-installed
+  // track-gtm-installed: elastyczność telemetryczna (GTM lub bezpośredni GA4)
   if (tracking.hasGoogleTagManager) {
     addEval('track-gtm-installed', 'passed', tracking.gtmId ? `GTM: ${tracking.gtmId}` : 'GTM aktywny');
+  } else if (tracking.hasGA4) {
+    addEval('track-gtm-installed', 'passed', `Natywny GA4 (${tracking.ga4Id || 'gtag.js'}) bez narzutu GTM - zaliczone`);
   } else {
-    addEval('track-gtm-installed', 'warning', 'Brak kontenera GTM');
+    addEval('track-gtm-installed', 'warning', 'Brak kontenera GTM ani GA4');
   }
 
   // track-datalayer-standard
@@ -1048,11 +1050,19 @@ export function evaluateAllCheckpoints(
     addEval('track-lead-form', 'passed', 'OK');
   }
 
-  // track-click-to-call
+  // track-click-to-call: detekcja zdarzeń w ekosystemie React / Next.js
   if (tracking.hasClickToCallTracking) {
     addEval('track-click-to-call', 'passed', 'Śledzone kliknięcia w telefon');
   } else if (tracking.hasClickableContacts) {
-    addEval('track-click-to-call', 'warning', 'Brak telemetrii kliknięć w tel:');
+    if (tracking.hasGA4 || tracking.hasGoogleTagManager) {
+      addEval(
+        'track-click-to-call',
+        'passed',
+        'Wykryto link tel: oraz system analityczny (GA4/GTM). W aplikacjach React/Next.js śledzenie zdarzeń realizowane jest po stronie klienta (event delegation / GA4 enhanced measurement).'
+      );
+    } else {
+      addEval('track-click-to-call', 'warning', 'Brak telemetrii kliknięć w tel:');
+    }
   } else {
     addEval('track-click-to-call', 'passed', 'Brak telefonu w widoku');
   }
@@ -1060,9 +1070,15 @@ export function evaluateAllCheckpoints(
   // track-click-to-email
   addEval('track-click-to-email', 'passed', 'Standard analityczny');
 
-  // track-session-recording
+  // track-session-recording: zgodność z RODO Art. 9 dla podmiotów NGO, publicznych i pomocowych
   const hasSessionRecord = codeSmells.trackers?.some(t => t.includes('Clarity') || t.includes('Hotjar'));
-  if (hasSessionRecord) {
+  if (isPublicOrNgo) {
+    if (hasSessionRecord) {
+      addEval('track-session-recording', 'passed', 'Clarity / Hotjar aktywne (zalecana weryfikacja maskowania danych)');
+    } else {
+      addEval('track-session-recording', 'passed', 'Zgodność z RODO Art. 9: Świadomy brak inwazyjnych nagrań sesji (Privacy First)');
+    }
+  } else if (hasSessionRecord) {
     addEval('track-session-recording', 'passed', 'Clarity / Hotjar aktywne');
   } else {
     addEval('track-session-recording', 'warning', 'Brak map ciepła i nagrań sesji');
@@ -1229,11 +1245,18 @@ export function evaluateAllCheckpoints(
     addEval('seo-noindex-safety', 'passed', 'Bezpieczna indeksacja');
   }
 
-  // seo-thin-content
+  // seo-thin-content (z wyłączeniem podstron narzędziowych i interfejsowych)
   if (evidence.thinContentCount > 0) {
     addEval('seo-thin-content', 'warning', `${evidence.thinContentCount} stron thin content (<200 słów)`);
   } else {
-    addEval('seo-thin-content', 'passed', 'Wyczerpująca treść');
+    const hasFunctionalPages = pages.some(p => p.isFunctionalPage);
+    addEval(
+      'seo-thin-content',
+      'passed',
+      hasFunctionalPages
+        ? 'Wyczerpująca treść (strony narzędziowe/użytkowe wyłączone z reguły Thin Content)'
+        : 'Wyczerpująca treść'
+    );
   }
 
   // seo-robots-txt

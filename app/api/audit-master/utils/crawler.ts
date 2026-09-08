@@ -441,25 +441,9 @@ async function analyzeSinglePage(
     const cleanCanonical = canonicalRaw ? canonicalRaw.split('?')[0].replace(/\/$/, '') : null;
     const hasSelfCanonical = cleanCanonical !== null && (cleanCanonical === cleanCurrentUrl || `${cleanCanonical}/` === `${cleanCurrentUrl}/`);
 
-    // Liczba słów (Thin content check - usuwamy skrypty, style, nav, footer)
-    $('script, style, nav, footer, noscript, svg').remove();
-    const bodyText = $('body').text().replace(/\s+/g, ' ').trim();
-    const words = bodyText.length > 0 ? bodyText.split(' ').filter(w => w.length > 1) : [];
-    const wordCount = words.length;
-    const isThinContent = wordCount < 200;
-
-    // Obrazy
-    const images = $('img');
-    const imagesCount = images.length;
-    let missingAltCount = 0;
-    images.each((_, img) => {
-      const alt = $(img).attr('alt');
-      if (alt === undefined || alt === null || alt.trim() === '') {
-        missingAltCount++;
-      }
-    });
-
-    // Dane strukturalne (JSON-LD)
+    // Dane strukturalne (JSON-LD) - wyciągamy PRZED usunięciem skryptów z Cheerio!
+    // Szukamy globalnie w całym dokumencie ($('script[type="application/ld+json"]')),
+    // co poprawnie obsługuje Server Components i metadane Next.js App Router (wstrzykiwane w head i body).
     const schemas: string[] = [];
     $('script[type="application/ld+json"]').each((_, script) => {
       try {
@@ -470,11 +454,36 @@ async function analyzeSinglePage(
       }
     });
 
+    // Heurystyka stron narzędziowych, kalkulatorów i interfejsowych (Thin content contextualization)
+    let urlPathname = '';
+    try {
+      urlPathname = new URL(url).pathname.toLowerCase();
+    } catch {
+      urlPathname = url.toLowerCase();
+    }
+    const isFunctionalPath = /^\/(?:narzedzia|narzędzia|kalkulator|generator|apteczka|kontakt|kontakt-.*|pliki|pliki-do-pobrania|logowanie|login|rejestracja|register|koszyk|cart|checkout|zamowienie|pomoc|formularz|deklaracja-dostepnosci|polityka-prywatnosci|regulamin)(?:\/|$|\?)/i.test(urlPathname);
+
+    // Wykrywanie interaktywnego DOM przed usunięciem kontrolek
+    const interactiveElementsCount = $('form, button, canvas, input, select, textarea, [data-interactive], [role="button"]').length;
+    const hasInteractiveDOM = interactiveElementsCount >= 2;
+    const isFunctionalPage = isFunctionalPath || hasInteractiveDOM;
+
+    // Obrazy (przed usunięciem z DOM)
+    const images = $('img');
+    const imagesCount = images.length;
+    let missingAltCount = 0;
+    images.each((_, img) => {
+      const alt = $(img).attr('alt');
+      if (alt === undefined || alt === null || alt.trim() === '') {
+        missingAltCount++;
+      }
+    });
+
     // Robots / Noindex
     const robotsMeta = $('meta[name="robots"]').attr('content') || '';
     const hasNoIndex = robotsMeta.toLowerCase().includes('noindex');
 
-    // Linki wewnętrzne i zewnętrzne
+    // Linki wewnętrzne i zewnętrzne (przed usunięciem)
     let internalLinksCount = 0;
     let externalLinksCount = 0;
     const currentHost = new URL(origin).hostname;
@@ -493,6 +502,13 @@ async function analyzeSinglePage(
         // Ignorujemy
       }
     });
+
+    // Liczba słów (Thin content check - usuwamy skrypty, style, nav, footer, noscript, svg)
+    $('script, style, nav, footer, noscript, svg').remove();
+    const bodyText = $('body').text().replace(/\s+/g, ' ').trim();
+    const words = bodyText.length > 0 ? bodyText.split(' ').filter(w => w.length > 1) : [];
+    const wordCount = words.length;
+    const isThinContent = !isFunctionalPage && wordCount < 200;
 
     // Kategoryzacja URL
     const category = categorizeUrl(url, schemas, origin);
@@ -513,6 +529,7 @@ async function analyzeSinglePage(
         hasSelfCanonical,
         wordCount,
         isThinContent,
+        isFunctionalPage,
         imagesCount,
         missingAltCount,
         schemas: Array.from(new Set(schemas)),
@@ -539,6 +556,7 @@ async function analyzeSinglePage(
         hasSelfCanonical: false,
         wordCount: 0,
         isThinContent: true,
+        isFunctionalPage: false,
         imagesCount: 0,
         missingAltCount: 0,
         schemas: [],
@@ -1060,7 +1078,7 @@ export function buildEvidenceSummary(
       missingH1Urls.push(p.url);
     }
 
-    if (p.isThinContent) {
+    if (p.isThinContent && !p.isFunctionalPage) {
       thinContent++;
       thinContentUrls.push({ url: p.url, wordCount: p.wordCount });
     }
