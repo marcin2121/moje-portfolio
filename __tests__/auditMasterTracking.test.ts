@@ -57,7 +57,7 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
     expect(leakIssue).toBeDefined();
     expect(leakIssue?.severity).toBe('critical');
     expect(leakIssue?.impact).toContain('Smart Bidding');
-    expect(leakIssue?.developerSolution).toContain('Marcin');
+    expect(leakIssue?.developerSolution).toContain('Wdrożę');
   });
 
   it('wykrywa brak Google Consent Mode v2 przy aktywnym GA4/Google Ads', () => {
@@ -116,11 +116,36 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
     // Pierwszy problem to wyciek budżetu reklamowego
     expect(quickIssues[0].type).toBe('tracking');
     expect(quickIssues[0].severity).toBe('critical');
-    expect(quickIssues[0].developerAction).toContain('Marcin');
+    expect(quickIssues[0].developerAction).toContain('Wdrożę');
 
-    // Drugi problem to auto-kanibalizacja zduplikowanych tytułów
+    // Drugi problem to auto-kanibalizacja zduplikowanych tytułów z poprawną polską gramatyką (1 grupa)
     expect(quickIssues[1].type).toBe('seo');
-    expect(quickIssues[1].title).toContain('Auto-kanibalizacja');
+    expect(quickIssues[1].title).toBe('Auto-kanibalizacja w Google: 1 grupa identycznych tagów Title');
+    expect(quickIssues[1].shortDesc).toContain('2 podstrony posiadają identyczne tytuły');
+    expect(quickIssues[1].developerAction).toContain('Zaimplementuję');
     expect(quickIssues[1].affectedCount).toBe(2);
+  });
+
+  it('nie generuje błędu add_to_cart dla witryn bez koszyka (np. portfolio lub serwisy usługowe B2B)', () => {
+    const signals: PageTrackingSignals[] = [
+      {
+        hasGoogleAds: false,
+        hasGtm: false,
+        hasGa4: false,
+        hasMetaPixel: false,
+        hasTikTokPixel: false,
+        hasConsentModeV2: false,
+        hasDataLayer: false,
+        hasAddToCartTracking: false,
+        hasPurchaseTracking: false,
+        hasCartButtons: false, // Brak koszyka!
+        hasLeadForms: true
+      }
+    ];
+
+    const evidence = buildEvidenceSummary([mockPage], signals);
+    expect(evidence.adsAndTracking.hasCartButtons).toBe(false);
+    expect(evidence.adsAndTracking.issues.some(i => i.id === 'leak-add-to-cart')).toBe(false);
+    expect(evidence.adsAndTracking.adBudgetLeakRisk).toBe('none');
   });
 });

@@ -46,7 +46,7 @@ export interface TrackingIssue {
   severity: 'critical' | 'warning' | 'info';
   description: string;
   impact: string; // Język korzyści: co klient traci (np. przepalany budżet)
-  developerSolution: string; // Co Marcin może zrobić w kodzie
+  developerSolution: string; // Co dla Ciebie wdrożę w kodzie
 }
 
 export interface AdsAndTrackingAudit {
@@ -62,6 +62,8 @@ export interface AdsAndTrackingAudit {
   hasDataLayer: boolean;
   hasAddToCartTracking: boolean;
   hasPurchaseTracking: boolean;
+  hasCartButtons?: boolean;
+  hasLeadForms?: boolean;
   adBudgetLeakRisk: 'none' | 'low' | 'medium' | 'critical';
   issues: TrackingIssue[];
 }
@@ -123,7 +125,7 @@ export interface QuickCriticalIssue {
   shortDesc: string;
   affectedCount?: number;
   businessImpact: string; // ile pieniędzy / pozycji ucieka
-  developerAction: string; // jak Marcin to naprawia
+  developerAction: string; // Co dla Ciebie wdrożę w kodzie
   details?: { url?: string; label?: string; sublabel?: string }[];
 }
 

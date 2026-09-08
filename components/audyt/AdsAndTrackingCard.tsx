@@ -23,6 +23,9 @@ interface AdsAndTrackingCardProps {
 export default function AdsAndTrackingCard({ tracking, domain }: AdsAndTrackingCardProps) {
   const isCritical = tracking.adBudgetLeakRisk === 'critical';
   const isMedium = tracking.adBudgetLeakRisk === 'medium';
+  const hasAnyAdTracking = tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasTikTokPixel || tracking.hasGoogleTagManager || tracking.hasGA4;
+  const hasGoogleTracking = tracking.hasGoogleAds || tracking.hasGA4;
+  const hasCart = !!tracking.hasCartButtons;
 
   return (
     <div className="bg-white/80 border border-slate-200/70 rounded-3xl p-6 md:p-10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
@@ -44,7 +47,12 @@ export default function AdsAndTrackingCard({ tracking, domain }: AdsAndTrackingC
 
         {/* Globalny status ochrony budżetu */}
         <div className="shrink-0">
-          {isCritical ? (
+          {!hasAnyAdTracking ? (
+            <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 border border-slate-200/80 text-slate-700 font-mono text-xs font-bold">
+              <CheckCircle2 className="w-4 h-4 text-slate-400" />
+              <span>BRAK TAGÓW REKLAMOWYCH</span>
+            </div>
+          ) : isCritical ? (
             <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 font-mono text-xs font-bold">
               <AlertTriangle className="w-4 h-4 text-rose-600" />
               <span>RYZYKO PRZEPALANIA BUDŻETU</span>
@@ -166,56 +174,106 @@ export default function AdsAndTrackingCard({ tracking, domain }: AdsAndTrackingC
         </div>
 
         {/* 5. Consent Mode v2 */}
-        <div className={`p-4 rounded-2xl border ${tracking.hasConsentModeV2 ? 'bg-emerald-50/40 border-emerald-200/70' : 'bg-rose-50/40 border-rose-200/70'}`}>
+        <div className={`p-4 rounded-2xl border ${
+          hasGoogleTracking
+            ? tracking.hasConsentModeV2
+              ? 'bg-emerald-50/40 border-emerald-200/70'
+              : 'bg-rose-50/40 border-rose-200/70'
+            : 'bg-slate-50/30 border-slate-200/50'
+        }`}>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              {tracking.hasConsentModeV2 ? (
+              {hasGoogleTracking && tracking.hasConsentModeV2 ? (
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              ) : (
+              ) : hasGoogleTracking ? (
                 <ShieldAlert className="w-4 h-4 text-rose-600" />
+              ) : (
+                <ShieldCheck className="w-4 h-4 text-slate-400" />
               )}
               <span className="font-bold text-xs text-slate-900">Consent Mode v2</span>
             </div>
-            {tracking.hasConsentModeV2 ? (
-              <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
-                Zgodny (UE)
-              </span>
+            {hasGoogleTracking ? (
+              tracking.hasConsentModeV2 ? (
+                <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
+                  Zgodny (UE)
+                </span>
+              ) : (
+                <span className="text-[11px] font-mono font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded">
+                  BRAK!
+                </span>
+              )
             ) : (
-              <span className="text-[11px] font-mono font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded">
-                BRAK!
+              <span className="text-[11px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
+                Brak tagów
               </span>
             )}
           </div>
-          <div className={`font-mono text-xs font-semibold truncate ${tracking.hasConsentModeV2 ? 'text-emerald-800' : 'text-rose-700'}`}>
-            {tracking.hasConsentModeV2 ? 'ad_storage & ad_user_data OK' : 'Brak parametrów Consent v2'}
+          <div className={`font-mono text-xs font-semibold truncate ${
+            hasGoogleTracking
+              ? tracking.hasConsentModeV2
+                ? 'text-emerald-800'
+                : 'text-rose-700'
+              : 'text-slate-600'
+          }`}>
+            {hasGoogleTracking
+              ? tracking.hasConsentModeV2
+                ? 'ad_storage & ad_user_data OK'
+                : 'Brak parametrów Consent v2'
+              : 'Brak aktywnych tagów Google'}
           </div>
           <div className="text-[11px] text-slate-500 mt-1">
-            Obowiązkowy wymóg Google od marca 2024 dla reklam w UE
+            {hasGoogleTracking
+              ? 'Obowiązkowy wymóg Google od marca 2024 dla reklam w UE'
+              : 'Wymagane dopiero przy uruchomieniu kampanii Google'}
           </div>
         </div>
 
         {/* 6. Zdarzenia koszykowe (add_to_cart / dataLayer) */}
-        <div className={`p-4 rounded-2xl border ${tracking.hasAddToCartTracking ? 'bg-emerald-50/40 border-emerald-200/70' : 'bg-rose-50/40 border-rose-200/70'}`}>
+        <div className={`p-4 rounded-2xl border ${
+          hasCart
+            ? tracking.hasAddToCartTracking
+              ? 'bg-emerald-50/40 border-emerald-200/70'
+              : 'bg-rose-50/40 border-rose-200/70'
+            : 'bg-slate-50/30 border-slate-200/50'
+        }`}>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <ShoppingCart className="w-4 h-4 text-amber-600" />
+              <ShoppingCart className={`w-4 h-4 ${hasCart ? 'text-amber-600' : 'text-slate-400'}`} />
               <span className="font-bold text-xs text-slate-900">Zdarzenie add_to_cart</span>
             </div>
-            {tracking.hasAddToCartTracking ? (
-              <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
-                Rejestrowane
-              </span>
+            {hasCart ? (
+              tracking.hasAddToCartTracking ? (
+                <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
+                  Rejestrowane
+                </span>
+              ) : (
+                <span className="text-[11px] font-mono font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded">
+                  Brak w kodzie!
+                </span>
+              )
             ) : (
-              <span className="text-[11px] font-mono font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded">
-                Brak w kodzie!
+              <span className="text-[11px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
+                Brak koszyka
               </span>
             )}
           </div>
-          <div className={`font-mono text-xs font-semibold truncate ${tracking.hasAddToCartTracking ? 'text-emerald-800' : 'text-rose-700'}`}>
-            {tracking.hasAddToCartTracking ? 'dataLayer.push() aktywne' : 'Przycisk koszyka nie emituje eventu'}
+          <div className={`font-mono text-xs font-semibold truncate ${
+            hasCart
+              ? tracking.hasAddToCartTracking
+                ? 'text-emerald-800'
+                : 'text-rose-700'
+              : 'text-slate-600'
+          }`}>
+            {hasCart
+              ? tracking.hasAddToCartTracking
+                ? 'dataLayer.push() aktywne'
+                : 'Przycisk koszyka nie emituje eventu'
+              : 'Nie dotyczy (serwis B2B / portfolio)'}
           </div>
           <div className="text-[11px] text-slate-500 mt-1">
-            Kluczowy sygnał intencji dla Smart Bidding Google Ads
+            {hasCart
+              ? 'Kluczowy sygnał intencji dla Smart Bidding Google Ads'
+              : 'Dla tego typu witryny kluczowe jest śledzenie formularzy (Lead)'}
           </div>
         </div>
       </div>
@@ -269,7 +327,7 @@ export default function AdsAndTrackingCard({ tracking, domain }: AdsAndTrackingC
                   <Wrench className="w-4 h-4 text-slate-800 shrink-0 mt-0.5" />
                   <div>
                     <span className="text-[11px] font-mono font-bold text-slate-800 block mb-0.5">
-                      Co Marcin może wdrożyć w kodzie:
+                      Co dla Ciebie wdrożę w kodzie:
                     </span>
                     <p className="text-xs text-slate-600 leading-relaxed">
                       {issue.developerSolution}

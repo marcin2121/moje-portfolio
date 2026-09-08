@@ -80,7 +80,7 @@ Zadanie: Napisz zwięzłą, bezlitośnie precyzyjną diagnozę inżynieryjną w 
 1. Jeśli wykryto błędy telemetryki lub brak add_to_cart / Consent Mode v2 przy reklamach – wskaż to bezwzględnie jako wyciek budżetu reklamowego (Smart Bidding działa na ślepo i przepala budżet).
 2. Wskaż pozostałe twarde liczby (np. ${duplicateTitlesCount > 0 ? `${duplicateTitlesCount} grup powielonych Title niszczących pozycje w Google` : ''}, ${missingH1Count > 0 ? `${missingH1Count} stron bez H1` : ''}).
 3. Podkreśl szacowaną stratę ~${lossPercentage}% ${conversionTerm}.
-4. Przedstaw, co Ty jako Developer (Marcin) możesz konkretnie wdrożyć w kodzie (np. natywny dataLayer, uporządkowanie meta-tagów i usunięcie długu w 24-48h bez burzenia całego biznesu).
+4. Przedstaw w pierwszej osobie ("Co dla Ciebie wdrożę: Wdrożę...", "Zaimplementuję...", "Uporządkuję..."), co Ty jako Senior Architect (Marcin) możesz konkretnie wdrożyć w kodzie w 24-48h bez burzenia obecnej strony. KATEGORYCZNY ZAKAZ pisania o sobie w 3. osobie ("Marcin wdroży", "Marcin może"). Zawsze pisz w 1. osobie ("Wdrożę").
 FORMATOWANIE: Czysty Markdown. Bez HTML.`;
   }
 

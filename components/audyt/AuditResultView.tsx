@@ -10,6 +10,7 @@ import PagesTable from './PagesTable';
 import AuditConsultationForm from './AuditConsultationForm';
 import QuickCriticalIssues from './QuickCriticalIssues';
 import AdsAndTrackingCard from './AdsAndTrackingCard';
+import { pluralizePolish } from '@/app/api/audit-master/utils/crawler';
 
 export type { AuditMasterResponse as AuditResult };
 
@@ -181,7 +182,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
               <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
                 (evidence?.duplicateTitleGroups?.length || 0) > 0 ? 'text-amber-700 bg-amber-50' : 'text-emerald-700 bg-emerald-50'
               }`}>
-                {(evidence?.duplicateTitleGroups?.length || 0) > 0 ? `⚠ ${evidence?.duplicateTitleGroups.length} grup duplikatów` : '✓ OK'}
+                {(evidence?.duplicateTitleGroups?.length || 0) > 0 ? `⚠ ${pluralizePolish(evidence?.duplicateTitleGroups.length || 0, 'grupa duplikatów', 'grupy duplikatów', 'grup duplikatów')}` : '✓ OK'}
               </span>
             </div>
             <div className="space-y-1.5 text-xs text-slate-600 font-mono">
@@ -363,10 +364,10 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           {evidence && evidence.duplicateTitleGroups.length > 0 && (
             <AuditEvidenceCard
               title="Zduplikowane tytuły stron"
-              description={`Wykryto ${evidence.duplicateTitleGroups.length} grup ze zduplikowanymi tytułami. Google traktuje to jako auto-kanibalizację fraz i sygnał niskiej jakości.`}
+              description={`Wykryto ${pluralizePolish(evidence.duplicateTitleGroups.length, 'grupę', 'grupy', 'grup')} ze zduplikowanymi tytułami. Google traktuje to jako auto-kanibalizację fraz i sygnał niskiej jakości.`}
               status="warn"
               percentage={Math.max(20, 100 - evidence.duplicateTitleGroups.length * 20)}
-              metaText={`${evidence.duplicateTitleGroups.length} grup`}
+              metaText={pluralizePolish(evidence.duplicateTitleGroups.length, 'grupa', 'grupy', 'grup')}
               detailsLabel="Grupy ze zduplikowanymi tytułami:"
               details={evidence.duplicateTitleGroups.map(g => ({
                 label: `« ${g.title} » (${g.count} stron)`,
@@ -377,7 +378,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
 
           <AuditEvidenceCard
             title="Nagłówki H1"
-            description={`${(evidence?.totalPages || 0) - (evidence?.missingH1Count || 0)}/${evidence?.totalPages} stron posiada nagłówek H1. ${evidence?.missingH1Count || 0} podstron nie posiada głównego nagłówka semantycznego.`}
+            description={`${(evidence?.totalPages || 0) - (evidence?.missingH1Count || 0)}/${evidence?.totalPages} stron posiada nagłówek H1. ${pluralizePolish(evidence?.missingH1Count || 0, 'podstrona nie posiada', 'podstrony nie posiadają', 'podstron nie posiada')} głównego nagłówka semantycznego.`}
             status={(evidence?.missingH1Count || 0) === 0 ? 'ok' : 'bad'}
             percentage={(((evidence?.totalPages || 0) - (evidence?.missingH1Count || 0)) / (evidence?.totalPages || 1)) * 100}
             metaText={`${(evidence?.totalPages || 0) - (evidence?.missingH1Count || 0)}/${evidence?.totalPages}`}
@@ -397,7 +398,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
 
           <AuditEvidenceCard
             title="Objętość treści (Thin Content <200 słów)"
-            description={`${(evidence?.totalPages || 0) - (evidence?.thinContentCount || 0)}/${evidence?.totalPages} stron posiada wystarczającą ilość treści. ${evidence?.thinContentCount || 0} podstron ma bardzo krótki tekst.`}
+            description={`${(evidence?.totalPages || 0) - (evidence?.thinContentCount || 0)}/${evidence?.totalPages} stron posiada wystarczającą ilość treści. ${pluralizePolish(evidence?.thinContentCount || 0, 'podstrona ma', 'podstrony mają', 'podstron ma')} bardzo krótki tekst.`}
             status={(evidence?.thinContentCount || 0) === 0 ? 'ok' : 'warn'}
             percentage={(((evidence?.totalPages || 0) - (evidence?.thinContentCount || 0)) / (evidence?.totalPages || 1)) * 100}
             metaText={`${(evidence?.totalPages || 0) - (evidence?.thinContentCount || 0)}/${evidence?.totalPages}`}

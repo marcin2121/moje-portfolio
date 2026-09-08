@@ -463,7 +463,7 @@ export function buildEvidenceSummary(
       severity: 'critical',
       description: 'Wykryto kody śledzące płatnych kampanii, ale mechanizm koszyka nie wysyła zdarzenia add_to_cart do dataLayer ani pikseli reklamowych.',
       impact: 'Algorytmy Google Ads (Smart Bidding) i Meta Ads nie wiedzą, którzy użytkownicy realnie chcą kupić. Budżet jest przepalany na przypadkowe kliknięcia, a koszt pozyskania klienta (CAC) rośnie o 40-60%.',
-      developerSolution: 'Marcin wdroży w kodzie frontendu bezpośrednie wywołanie window.dataLayer.push({ event: "add_to_cart", ecommerce: { items: [...] } }) podpięte pod akcję koszyka w 24h, co natychmiast uzbroi kampanie w realne dane zakupowe.'
+      developerSolution: 'Wdrożę w kodzie frontendu bezpośrednie wywołanie window.dataLayer.push({ event: "add_to_cart", ecommerce: { items: [...] } }) podpięte pod akcję koszyka w 24h, co natychmiast uzbroi kampanie w realne dane zakupowe.'
     });
   }
 
@@ -475,7 +475,7 @@ export function buildEvidenceSummary(
       severity: 'critical',
       description: 'Brak wymaganych od marca 2024 przez Google parametrów ad_storage, ad_user_data i ad_personalization.',
       impact: 'Google Ads blokuje odświeżanie list remarketingowych w UE, a kampanie Performance Max tracą modelowanie utraconych konwersji.',
-      developerSolution: 'Marcin skonfiguruje pełny standard Consent Mode v2 zintegrowany z banerem cookies i GTM zgodnie z wymogami Google i IAB TCF 2.2.'
+      developerSolution: 'Skonfiguruję pełny standard Consent Mode v2 zintegrowany z banerem cookies i GTM zgodnie z wymogami Google i IAB TCF 2.2.'
     });
   }
 
@@ -487,7 +487,7 @@ export function buildEvidenceSummary(
       severity: 'warning',
       description: 'Zainstalowano GTM, ale aplikacja nie udostępnia uporządkowanego obiektu dataLayer.',
       impact: 'Tagi analityczne opierają się na niestabilnych selektorach HTML w DOM, które psują się przy drobnych zmianach wizualnych w sklepie.',
-      developerSolution: 'Marcin wdroży natywną warstwę window.dataLayer z pełnym schematem GA4 e-commerce.'
+      developerSolution: 'Wdrożę natywną warstwę window.dataLayer z pełnym schematem GA4 e-commerce.'
     });
   }
 
@@ -499,7 +499,7 @@ export function buildEvidenceSummary(
       severity: 'critical',
       description: 'Wykryto formularze kontaktowe i kody reklam, ale brak dedykowanego zdarzenia generate_lead po udanej wysyłce.',
       impact: 'Google Ads optymalizuje kampanie pod zwykłe wejścia na stronę zamiast pod wysłane zapytania ofertowe.',
-      developerSolution: 'Marcin podepnie dedykowane zdarzenie konwersji pod mechanizm wysyłki formularza (AJAX/Promise).'
+      developerSolution: 'Podepnę dedykowane zdarzenie konwersji pod mechanizm wysyłki formularza (AJAX/Promise).'
     });
   }
 
@@ -525,6 +525,8 @@ export function buildEvidenceSummary(
     hasDataLayer,
     hasAddToCartTracking,
     hasPurchaseTracking,
+    hasCartButtons,
+    hasLeadForms,
     adBudgetLeakRisk,
     issues: trackingIssues
   };
@@ -733,6 +735,29 @@ export function buildEvidenceSummary(
 /**
  * Generator szybkich błędów krytycznych (Top 3-4 wycieki zysku i budżetu reklamowego)
  */
+export function pluralizePolish(count: number, singular: string, few: string, many: string): string {
+  if (count === 1) return `${count} ${singular}`;
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) {
+    return `${count} ${few}`;
+  }
+  return `${count} ${many}`;
+}
+
+export function formatPodstronyPosiada(count: number): string {
+  if (count === 1) return '1 podstrona posiada';
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) {
+    return `${count} podstrony posiadają`;
+  }
+  return `${count} podstron posiada`;
+}
+
+/**
+ * Selekcja Top 3-4 problemów o najwyższym wpływie biznesowym do szybkiej diagnozy krytycznej
+ */
 export function generateQuickCriticalIssues(
   evidence: EvidenceSummary,
   codeSmells?: DetailedCodeSmells,
@@ -769,17 +794,18 @@ export function generateQuickCriticalIssues(
   // 2. Priorytet: Auto-kanibalizacja tytułów Title
   if (evidence.duplicateTitleGroups.length > 0) {
     const totalAffected = evidence.duplicateTitleGroups.reduce((acc, g) => acc + g.count, 0);
+    const groupsText = pluralizePolish(evidence.duplicateTitleGroups.length, 'grupa', 'grupy', 'grup');
     issues.push({
       id: 'quick-duplicate-titles',
-      title: `Auto-kanibalizacja w Google: ${evidence.duplicateTitleGroups.length} grup identycznych tagów Title`,
+      title: `Auto-kanibalizacja w Google: ${groupsText} identycznych tagów Title`,
       type: 'seo',
       severity: 'critical',
-      shortDesc: `Aż ${totalAffected} podstron posiada identyczne tytuły, przez co konkurują ze sobą na te same frazy w wynikach wyszukiwania.`,
+      shortDesc: `Aż ${formatPodstronyPosiada(totalAffected)} identyczne tytuły, przez co konkurują ze sobą na te same frazy w wynikach wyszukiwania.`,
       affectedCount: totalAffected,
       businessImpact: isEcommerce
         ? 'Zamiast jednej silnej pozycji w TOP 3, Twoje produkty i kategorie rotują i zbijają się nawzajem, marnując bezpłatną sprzedaż z Google.'
         : 'Zamiast jednej silnej pozycji w TOP 3, Twoje podstrony rotują i zbijają się nawzajem, marnując bezpłatne zapytania ofertowe z Google.',
-      developerAction: 'Marcin zaimplementuje dynamiczny szablon unikalnych tagów Title w warstwie CMS/kodu z automatycznym sufiksem wyróżniającym w 24h.',
+      developerAction: 'Zaimplementuję dynamiczny szablon unikalnych tagów Title w warstwie CMS/kodu z automatycznym sufiksem wyróżniającym w 24h.',
       details: evidence.duplicateTitleGroups.slice(0, 4).map(g => ({
         label: `« ${g.title} » (${g.count} stron)`,
         sublabel: g.urls.slice(0, 2).join(', ') + (g.urls.length > 2 ? ` i ${g.urls.length - 2} więcej...` : '')
@@ -791,13 +817,13 @@ export function generateQuickCriticalIssues(
   if (evidence.missingH1Count > 0) {
     issues.push({
       id: 'quick-missing-h1',
-      title: `Brak nagłówków H1 na ${evidence.missingH1Count} podstronach`,
+      title: `Brak nagłówków H1 na ${pluralizePolish(evidence.missingH1Count, 'podstronie', 'podstronach', 'podstronach')}`,
       type: 'seo',
       severity: 'warning',
       shortDesc: 'Strony nie posiadają głównego nagłówka semantycznego, który wskazuje robotom wyszukiwarek i modelom AI temat podstrony.',
       affectedCount: evidence.missingH1Count,
       businessImpact: 'Znacznie słabsza widoczność w Google na precyzyjne frazy z długiego ogona (long-tail) oraz gorsza interpretacja treści przez boty AI (SearchGPT, Gemini).',
-      developerAction: 'Marcin wprowadzi automatyczny, semantyczny tag <h1> w strukturze widoków szablonu bez naruszania aktualnego designu serwisu.',
+      developerAction: 'Wprowadzę automatyczny, semantyczny tag <h1> w strukturze widoków szablonu bez naruszania aktualnego designu serwisu.',
       details: evidence.missingH1Urls.slice(0, 5).map(u => ({ url: u }))
     });
   }
@@ -817,13 +843,13 @@ export function generateQuickCriticalIssues(
   } else if (evidence.missingCanonicalCount > 0) {
     issues.push({
       id: 'quick-missing-canonical',
-      title: `Brak tagów Canonical na ${evidence.missingCanonicalCount} podstronach`,
+      title: `Brak tagów Canonical na ${pluralizePolish(evidence.missingCanonicalCount, 'podstronie', 'podstronach', 'podstronach')}`,
       type: 'seo',
       severity: 'warning',
       shortDesc: 'Strony nie informują wyszukiwarki o oficjalnym adresie kanonicznym, co grozi tworzeniem niekontrolowanych duplikatów.',
       affectedCount: evidence.missingCanonicalCount,
       businessImpact: 'Rozpraszanie autorytetu domeny PageRank i marnowanie budżetu indeksowania (Crawl Budget) Google.',
-      developerAction: 'Marcin zaimplementuje samoodnoszący się tag <link rel="canonical"> w nagłówku witryny wyliczany na bieżąco z czystego URL.',
+      developerAction: 'Zaimplementuję samoodnoszący się tag <link rel="canonical"> w nagłówku witryny wyliczany na bieżąco z czystego URL.',
       details: evidence.missingCanonicalUrls.slice(0, 5).map(u => ({ url: u }))
     });
   } else if (codeSmells?.pageBuilders && codeSmells.pageBuilders.length > 0) {
@@ -834,7 +860,7 @@ export function generateQuickCriticalIssues(
       severity: 'warning',
       shortDesc: `Strona generuje ${codeSmells.domElements} elementów DOM i posiada ${codeSmells.badScripts} skryptów blokujących renderowanie.`,
       businessImpact: 'Opóźnienia w interakcji na smartfonach (Core Web Vitals INP/LCP), co obniża konwersję i pozycję w wyszukiwarce mobilnej.',
-      developerAction: 'Marcin przeprowadzi refaktoryzację zasobów krytycznych, odroczy ciężkie skrypty (defer/async) i przyspieszy ładowanie poniżej 1.5s.'
+      developerAction: 'Przeprowadzę refaktoryzację zasobów krytycznych, odroczę ciężkie skrypty (defer/async) i przyspieszę ładowanie poniżej 1.5s.'
     });
   }
 

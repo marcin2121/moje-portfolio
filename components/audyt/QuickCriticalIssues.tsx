@@ -96,12 +96,12 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
                   </p>
                 </div>
 
-                {/* 2. Co Marcin dla Ciebie wdroży */}
+                {/* 2. Co dla Ciebie wdrożę */}
                 <div className="bg-slate-50/80 border border-slate-200/80 rounded-xl p-4 border-l-2 border-l-slate-900">
                   <div className="flex items-center gap-2 mb-1.5">
                     <Wrench className="w-4 h-4 text-slate-900 shrink-0" />
                     <span className="font-mono text-xs font-bold text-slate-900 uppercase tracking-wider">
-                      Co Marcin dla Ciebie wdroży:
+                      Co dla Ciebie wdrożę:
                     </span>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed">
