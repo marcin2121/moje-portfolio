@@ -4,7 +4,7 @@ import * as cheerio from 'cheerio';
 import { checkRateLimit } from './utils/rateLimiter';
 import { generateGeminiReport } from './utils/geminiAI';
 import { getInterpretation } from './utils/interpretation';
-import { crawlDomain } from './utils/crawler';
+import { crawlDomain, generateQuickCriticalIssues } from './utils/crawler';
 import { getAuditByToken, getAuditByDomain, saveAudit } from './utils/storage';
 import { AuditMasterResponse, DetailedCodeSmells } from './types';
 
@@ -110,6 +110,19 @@ export async function POST(req: Request) {
       missingCanonicalCount: 0,
       missingCanonicalUrls: [],
       missingAltTotal: 0,
+      adsAndTracking: {
+        hasGoogleAds: false,
+        hasGoogleTagManager: false,
+        hasGA4: false,
+        hasMetaPixel: false,
+        hasTikTokPixel: false,
+        hasConsentModeV2: false,
+        hasDataLayer: false,
+        hasAddToCartTracking: false,
+        hasPurchaseTracking: false,
+        adBudgetLeakRisk: 'none' as const,
+        issues: []
+      },
       categoriesSummary: { overall: { goodCount: 1, warnCount: 0, badCount: 0 } }
     }};
 
@@ -144,6 +157,13 @@ export async function POST(req: Request) {
       finalSeoScore = Math.max(25, Math.min(100, Math.round(finalSeoScore - penalty)));
     }
 
+    // Wyliczanie szybkich błędów krytycznych (Top wycieki budżetu i SEO)
+    const quickIssues = generateQuickCriticalIssues(
+      crawlData.evidence,
+      rootData.codeSmells,
+      currentSiteType
+    );
+
     const avgScore = Math.round(
       (rootData.performanceScore + finalSeoScore + rootData.securityScore + rootData.scalabilityScore + rootData.automationScore) / 5
     );
@@ -162,7 +182,8 @@ export async function POST(req: Request) {
       lossPercentage,
       geminiKey,
       currentSiteType,
-      crawlData.evidence
+      crawlData.evidence,
+      quickIssues
     );
 
     // Unikalny token URL do trwałego linku (np. /narzedzia/audyt?token=a8f9c1...)
@@ -180,6 +201,7 @@ export async function POST(req: Request) {
       wafDetected: rootData.wafDetected,
       codeSmells: rootData.codeSmells,
       evidence: crawlData.evidence,
+      quickIssues,
       pages: crawlData.pages,
       createdAt: new Date().toISOString(),
       pillars: [

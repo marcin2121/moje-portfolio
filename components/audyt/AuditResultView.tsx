@@ -8,6 +8,8 @@ import { AuditMasterResponse } from '@/app/api/audit-master/types';
 import AuditEvidenceCard from './AuditEvidenceCard';
 import PagesTable from './PagesTable';
 import AuditConsultationForm from './AuditConsultationForm';
+import QuickCriticalIssues from './QuickCriticalIssues';
+import AdsAndTrackingCard from './AdsAndTrackingCard';
 
 export type { AuditMasterResponse as AuditResult };
 
@@ -127,7 +129,17 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
         </div>
       </div>
 
-      {/* 9 Bento Cards: Szybki Przegląd Audytu (Dashboard metryk) */}
+      {/* SEKCJA 1: Szybka Diagnoza Krytyczna (Top 3-4 wycieki zysku i budżetu z możliwością rozwinięcia) */}
+      {result.quickIssues && result.quickIssues.length > 0 && (
+        <QuickCriticalIssues issues={result.quickIssues} />
+      )}
+
+      {/* SEKCJA 2: Audyt Kampanii Płatnych & Telemetryki (Google & Meta Ads, Consent Mode v2, add_to_cart) */}
+      {evidence?.adsAndTracking && (
+        <AdsAndTrackingCard tracking={evidence.adsAndTracking} domain={result.domain} />
+      )}
+
+      {/* SEKCJA 3: Asymetryczny Bento Grid filarów technicznych */}
       <div>
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-bold text-slate-900 tracking-tight">
@@ -323,10 +335,10 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
           <div>
             <h3 className="text-xl font-bold text-slate-900 tracking-tight">
-              🌐 Cała witryna: kluczowe sprawdzenia
+              Weryfikacja integralności struktury i indeksacji
             </h3>
             <p className="text-xs text-slate-500 font-mono mt-0.5">
-              Szczegółowa lista technicznych weryfikacji wraz z dokładnymi adresami URL
+              Szczegółowa lista weryfikacji semantycznych i kanonicznych z dowodami w kodzie
             </p>
           </div>
         </div>
@@ -401,10 +413,10 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
             <div>
               <h3 className="text-xl font-bold text-slate-900 tracking-tight">
-                🛍️ Produkty sklepu
+                Karty produktowe & E-commerce SEO
               </h3>
               <p className="text-xs text-slate-500 font-mono mt-0.5">
-                Przeanalizowano {evidence.categoriesSummary.products.count} kart produktowych
+                Przeanalizowano {evidence.categoriesSummary.products.count} kart produktowych pod kątem H1 i Schema Product
               </p>
             </div>
           </div>
@@ -439,7 +451,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
             <div>
               <h3 className="text-xl font-bold text-slate-900 tracking-tight">
-                📝 Sekcja Blogowa / Artykuły
+                Sekcja merytoryczna & Treści pod AI (SearchGPT / Gemini)
               </h3>
               <p className="text-xs text-slate-500 font-mono mt-0.5">
                 Przeanalizowano {evidence.categoriesSummary.blog.count} wpisów blogowych (średnio {evidence.categoriesSummary.blog.avgWordCount || 0} słów/wpis)

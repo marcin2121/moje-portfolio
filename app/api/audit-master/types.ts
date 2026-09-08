@@ -40,6 +40,32 @@ export interface CategoryStats {
   badCount: number;
 }
 
+export interface TrackingIssue {
+  id: string;
+  title: string;
+  severity: 'critical' | 'warning' | 'info';
+  description: string;
+  impact: string; // Język korzyści: co klient traci (np. przepalany budżet)
+  developerSolution: string; // Co Marcin może zrobić w kodzie
+}
+
+export interface AdsAndTrackingAudit {
+  hasGoogleAds: boolean;
+  googleAdsId?: string;
+  hasGoogleTagManager: boolean;
+  gtmId?: string;
+  hasGA4: boolean;
+  ga4Id?: string;
+  hasMetaPixel: boolean;
+  hasTikTokPixel: boolean;
+  hasConsentModeV2: boolean;
+  hasDataLayer: boolean;
+  hasAddToCartTracking: boolean;
+  hasPurchaseTracking: boolean;
+  adBudgetLeakRisk: 'none' | 'low' | 'medium' | 'critical';
+  issues: TrackingIssue[];
+}
+
 export interface EvidenceSummary {
   totalPages: number;
   avgResponseTimeMs: number;
@@ -58,6 +84,7 @@ export interface EvidenceSummary {
   missingCanonicalCount: number;
   missingCanonicalUrls: string[];
   missingAltTotal: number;
+  adsAndTracking: AdsAndTrackingAudit;
   categoriesSummary: {
     products?: CategoryStats;
     blog?: CategoryStats;
@@ -88,6 +115,18 @@ export interface DetailedCodeSmells {
   lcp?: string;
 }
 
+export interface QuickCriticalIssue {
+  id: string;
+  title: string;
+  type: 'tracking' | 'seo' | 'performance' | 'architecture';
+  severity: 'critical' | 'warning';
+  shortDesc: string;
+  affectedCount?: number;
+  businessImpact: string; // ile pieniędzy / pozycji ucieka
+  developerAction: string; // jak Marcin to naprawia
+  details?: { url?: string; label?: string; sublabel?: string }[];
+}
+
 export interface AuditMasterResponse {
   token: string;
   url: string;
@@ -101,6 +140,7 @@ export interface AuditMasterResponse {
   wafDetected: boolean;
   codeSmells: DetailedCodeSmells;
   evidence: EvidenceSummary;
+  quickIssues: QuickCriticalIssue[];
   pages: PageAuditResult[];
   createdAt: string;
   cached?: boolean;

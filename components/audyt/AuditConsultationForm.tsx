@@ -66,13 +66,13 @@ export default function AuditConsultationForm({ domain, token }: AuditConsultati
 
       <div className="max-w-2xl relative z-10">
         <span className="text-orange-400 font-mono text-xs uppercase tracking-widest font-semibold block mb-3">
-          Architektoniczna Diagnoza 1-na-1
+          Konsultacja Inżynieryjna 1-na-1
         </span>
         <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">
           Chcesz omówić wyniki audytu dla {domain}?
         </h3>
         <p className="text-slate-400 text-sm leading-relaxed mb-8">
-          Przejdźmy wspólnie przez wąskie gardła w kodzie. Na bezpłatnej 15-minutowej rozmowie pokażę Ci czarno na białym, które 3 poprawki dadzą najszybszy wzrost widoczności w Google i odblokują konwersję bez kosztownej przebudowy serwisu.
+          Przejdźmy wspólnie przez wąskie gardła w kodzie. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej pokażę Ci czarno na białym, jak zabezpieczyć budżet reklamowy przed przepalaniem, odblokować telemetrykę zdarzeń i wdrożyć 3 kluczowe poprawki w kodzie bez burzenia obecnej strony.
         </p>
 
         {isSuccess ? (
@@ -83,14 +83,14 @@ export default function AuditConsultationForm({ domain, token }: AuditConsultati
                 Zgłoszenie przyjęte pomyślnie!
               </h4>
               <p className="text-slate-300 text-xs leading-relaxed">
-                Dziękuję! Skontaktuję się z Tobą telefonicznie lub mailowo w ciągu 24 godzin, aby ustalić dogodny termin 15-minutowej konsultacji.
+                Dziękuję! Skontaktuję się z Tobą telefonicznie lub mailowo w ciągu 24 godzin, aby ustalić dogodny termin 15-minutowej konsultacji technicznej.
               </p>
             </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             {errorMessage && (
-              <div className="p-3 bg-rose-500/20 border border-rose-500/40 rounded-xl text-rose-300 text-xs">
+              <div className="p-3 bg-rose-500/20 border border-rose-500/40 rounded-xl text-rose-300 text-xs font-mono">
                 {errorMessage}
               </div>
             )}
@@ -124,7 +124,7 @@ export default function AuditConsultationForm({ domain, token }: AuditConsultati
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="np. 600 100 200"
+                    placeholder="np. +48 501 234 567"
                     className="w-full bg-slate-800/90 border border-slate-700/80 rounded-xl pl-10 pr-4 py-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 font-mono transition-colors"
                   />
                 </div>
@@ -139,7 +139,7 @@ export default function AuditConsultationForm({ domain, token }: AuditConsultati
                 type="text"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="np. chcemy wejść do TOP 3 na frazy kluczowe, poprawić Core Web Vitals"
+                placeholder="np. chcemy naprawić śledzenie konwersji, poprawić pozycje w Google, usunąć dług techniczny"
                 className="w-full bg-slate-800/90 border border-slate-700/80 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 transition-colors"
               />
             </div>
@@ -147,7 +147,7 @@ export default function AuditConsultationForm({ domain, token }: AuditConsultati
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow-[0_8px_25px_rgba(249,115,22,0.3)] hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow-[0_8px_25px_rgba(249,115,22,0.3)] hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isSubmitting ? (
                 <>
@@ -156,13 +156,13 @@ export default function AuditConsultationForm({ domain, token }: AuditConsultati
                 </>
               ) : (
                 <>
-                  <span>Umów bezpłatną konsultację</span>
+                  <span>Umów 15-minutową konsultację z Marcinem</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
             <p className="text-[11px] text-slate-500 font-mono">
-              Bez zobowiązań. Rozmawiasz bezpośrednio ze mną, a nie z działem handlowym.
+              Bez zobowiązań. Rozmawiasz bezpośrednio z Senior Full-Stack Architectem, a nie z agencją marketingową.
             </p>
           </form>
         )}

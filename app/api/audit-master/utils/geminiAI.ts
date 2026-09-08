@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import { DetailedCodeSmells, EvidenceSummary } from '../types';
+import { DetailedCodeSmells, EvidenceSummary, QuickCriticalIssue } from '../types';
 
 export async function generateGeminiReport(
   targetUrl: string,
@@ -12,7 +12,8 @@ export async function generateGeminiReport(
   lossPercentage: number,
   geminiKey: string,
   siteType: 'ecommerce' | 'services' = 'services',
-  evidence?: EvidenceSummary
+  evidence?: EvidenceSummary,
+  quickIssues?: QuickCriticalIssue[]
 ): Promise<string> {
   const isEcommerce = siteType === 'ecommerce';
   const entityName = isEcommerce ? 'Sklep internetowy' : 'Serwis firmowy / strona usługowa';
@@ -25,6 +26,15 @@ export async function generateGeminiReport(
   const missingCanonicalCount = evidence?.missingCanonicalCount || 0;
   const avgResponseTime = evidence?.avgResponseTimeMs || 80;
 
+  const adsInfo = evidence?.adsAndTracking;
+  const trackingIssuesText = adsInfo?.issues && adsInfo.issues.length > 0
+    ? `\nKRYTYCZNA TELEMETRYKA I REKLAMY (WYCIEKI BUDŻETU):\n${adsInfo.issues.map(i => `- [${i.severity.toUpperCase()}] ${i.title}: ${i.impact}`).join('\n')}`
+    : '';
+
+  const quickIssuesText = quickIssues && quickIssues.length > 0
+    ? `\nZIDENTYFIKOWANE GŁÓWNE BŁĘDY KRYTYCZNE:\n${quickIssues.map(q => `- ${q.title} (${q.shortDesc})`).join('\n')}`
+    : '';
+
   const empiricalEvidenceText = evidence ? `
 DANE Z PRZEANALIZOWANYCH ${pagesScanned} PODSTRON:
 - Zbadane podstrony: ${pagesScanned} szt. (średni czas odpowiedzi: ${avgResponseTime}ms)
@@ -32,6 +42,8 @@ DANE Z PRZEANALIZOWANYCH ${pagesScanned} PODSTRON:
 - Podstrony bez nagłówka H1: ${missingH1Count} szt.
 - Podstrony z ubogą treścią (Thin Content <200 słów): ${thinContentCount} szt.
 - Podstrony bez tagu Canonical: ${missingCanonicalCount} szt.
+${trackingIssuesText}
+${quickIssuesText}
 ` : '';
 
   const buildersText = codeSmells.pageBuilders && codeSmells.pageBuilders.length > 0
@@ -56,18 +68,19 @@ Przeanalizowano ${pagesScanned} podstron. Stack: ${detectedPlatform}.
 Zadanie: Napisz zwięzły, autorytatywny werdykt (MAKSYMALNIE 3-4 ZDANIA!).
 1. Pogratuluj właścicielowi rewelacyjnej, bezkompromisowej infrastruktury (wskazując szybkość ${avgResponseTime}ms i brak długu technologicznego).
 2. Uświadom mu biznesowo, że dalsze szlifowanie tak doskonałego kodu to strata budżetu – czas na skalowanie ruchu i konwersji.
-3. Zaproponuj projektowanie dedykowanych modułów AI lub automatyzacji procesów.
+3. Zaproponuj projektowanie dedykowanych modułów AI lub automatyzacji procesów biznesowych.
 FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Bez HTML.`;
   } else {
-    prompt = `Jesteś Marcinem Molendą, Senior Web Architectem. ${entityName} ${targetUrl} uzyskał wynik ${avgScore}/100.
+    prompt = `Jesteś Marcinem Molendą, Senior Web & Full-Stack Architectem. ${entityName} ${targetUrl} uzyskał wynik ${avgScore}/100.
 Wykryta platforma: ${detectedPlatform}
 ${empiricalEvidenceText}
 ${codeSmellsText}
 
-Zadanie: Napisz zwięzłą, bezlitośnie precyzyjną diagnozę inżynieryjną (DOKŁADNIE 3-4 ZDANIA!).
-1. Wskaż najważniejsze twarde błędy z audytu (np. ${duplicateTitlesCount > 0 ? `${duplicateTitlesCount} grup powielonych Title niszczących SEO` : ''}, ${missingH1Count > 0 ? `${missingH1Count} stron bez H1` : ''}, ${codeSmells.pageBuilders && codeSmells.pageBuilders.length > 0 ? `bloat z ${codeSmells.pageBuilders.join(', ')}` : ''}). Mów o faktach z liczbami!
-2. Uświadom właścicielowi, że przez te wąskie gardła traci szacunkowo ${lossPercentage}% ${conversionTerm}.
-3. Wskaż jasne rozwiązanie inżynieryjne (Tuning techniczny i uporządkowanie struktury bez burzenia całego biznesu).
+Zadanie: Napisz zwięzłą, bezlitośnie precyzyjną diagnozę inżynieryjną w języku twardych korzyści finansowych (DOKŁADNIE 3-4 ZDANIA!).
+1. Jeśli wykryto błędy telemetryki lub brak add_to_cart / Consent Mode v2 przy reklamach – wskaż to bezwzględnie jako wyciek budżetu reklamowego (Smart Bidding działa na ślepo i przepala budżet).
+2. Wskaż pozostałe twarde liczby (np. ${duplicateTitlesCount > 0 ? `${duplicateTitlesCount} grup powielonych Title niszczących pozycje w Google` : ''}, ${missingH1Count > 0 ? `${missingH1Count} stron bez H1` : ''}).
+3. Podkreśl szacowaną stratę ~${lossPercentage}% ${conversionTerm}.
+4. Przedstaw, co Ty jako Developer (Marcin) możesz konkretnie wdrożyć w kodzie (np. natywny dataLayer, uporządkowanie meta-tagów i usunięcie długu w 24-48h bez burzenia całego biznesu).
 FORMATOWANIE: Czysty Markdown. Bez HTML.`;
   }
 
@@ -105,14 +118,21 @@ export function generateDeterministicReport(
   const conversionTerm = isEcommerce ? 'sprzedaży e-commerce' : 'zapytań ofertowych B2B';
 
   if (avgScore >= 85) {
-    return `Architektura **${targetUrl}** reprezentuje najwyższy standard inżynieryjny (${avgScore}/100). Kod jest czysty, serwer odpowiada poniżej ${evidence?.avgResponseTimeMs || 80}ms, a struktura podstron nie wykazuje krytycznego długu technologicznego. 
+    return `Architektura **${targetUrl}** reprezentuje najwyższy standard inżynieryjny (${avgScore}/100). Kod jest czysty, serwer odpowiada poniżej ${evidence?.avgResponseTimeMs || 80}ms, a struktura podstron nie wykazuje długu technologicznego. 
 
-Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego ROI – infrastruktura jest w pełni gotowa na skalowanie ruchu i zaawansowane wdrożenia AI.
+Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego ROI – infrastruktura jest w pełni gotowa na skalowanie ruchu i wdrożenia automatyzacji AI.
 
-**💡 Rekomendacja strategiczna:** Skieruj zasoby na pozyskiwanie klientów i automatyzację procesów biznesowych, bo technologicznie serwis wyprzedza 95% konkurencji.`;
+**💡 Rekomendacja strategiczna:** Skieruj zasoby na pozyskiwanie klientów i skalowanie kampanii, bo technologicznie serwis wyprzedza 95% konkurencji rynkowej.`;
   }
 
   const issues: string[] = [];
+
+  // 1. Krytyczne błędy telemetryki
+  const trackingIssue = evidence?.adsAndTracking?.issues?.find(i => i.severity === 'critical');
+  if (trackingIssue) {
+    issues.push(`**${trackingIssue.title.toLowerCase()}**, przez co algorytmy reklamowe Google i Meta optymalizują kampanie po omacku`);
+  }
+
   if (evidence && evidence.duplicateTitleGroups.length > 0) {
     issues.push(`aż **${evidence.duplicateTitleGroups.length} grup ze zduplikowanymi tagami Title**, co wywołuje auto-kanibalizację fraz w Google`);
   }
@@ -123,7 +143,7 @@ Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego 
     issues.push(`**${evidence.missingCanonicalCount} adresów bez linku kanonicznego (canonical)**`);
   }
   if (codeSmells?.pageBuilders && codeSmells.pageBuilders.length > 0) {
-    issues.push(`narzut kodu z builderów (**${codeSmells.pageBuilders.join(', ')}**), drastycznie rozdmuchujący drzewo DOM do ${codeSmells.domElements} elementów`);
+    issues.push(`narzut kodu z builderów (**${codeSmells.pageBuilders.join(', ')}**), rozdmuchujący drzewo DOM do ${codeSmells.domElements} elementów`);
   }
 
   const issuesSummary = issues.length > 0
@@ -132,9 +152,9 @@ Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego 
 
   return `Szczegółowy audyt **${targetUrl}** (${platform}) wykazał wynik **${avgScore}/100**. W zbadanej próbce zdiagnozowaliśmy kluczowe wąskie gardła: ${issuesSummary}.
 
-Przez te niedociągnięcia strukturalne serwis traci szacunkowo **${lossPercentage}% ${conversionTerm}**, a algorytmy Google oraz wyszukiwarki AI traktują część podstron jako treści niskiej wartości.
+Przez te niedociągnięcia strukturalne i telemetryczne serwis traci szacunkowo **${lossPercentage}% ${conversionTerm}**, a budżety reklamowe są częściowo przepalane na nieskuteczny ruch.
 
-Dobra wiadomość jest taka, że nie musisz budować ${entity} od nowa – uporządkowanie struktury nagłówków, canonicali i optymalizacja skryptów pozwoli odzyskać pełen potencjał ruchu w ciągu 14 dni.
+Dobra wiadomość jest taka, że nie musisz budować ${entity} od nowa – jako Full-Stack Architect wdrożę w Twoim kodzie dedykowaną warstwę telemetryczną dataLayer oraz uporządkuję strukturę nagłówków i canonicali w 24–48 godzin, odzyskując pełen zwrot z inwestycji.
 
-**💡 Szybka porada:** Nadaj unikalne tytuły kluczowym podstronom i upewnij się, że każdy produkt oraz wpis blogowy posiada dokładnie jeden tag \`<h1>\` z główną frazą.`;
+**💡 Szybki krok naprawczy:** Wdrożenie precyzyjnego śledzenia zdarzeń koszykowych (add_to_cart) oraz wyeliminowanie zduplikowanych tytułów stron natychmiast obniży koszt pozyskania klienta (CAC).`;
 }
