@@ -155,6 +155,7 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
         hasOmnibusCompliance: false, // Brak Omnibus!
         hasExpressPayments: false, // Brak BLIK!
         hasClickableContacts: false,
+        hasUnclickablePhone: true,
         hasFormSpamProtection: false,
         hasOpenGraph: false,
         variantTimeoutUrls: ['https://tropilapka.pl/produkt/legowisko/?attribute_rozmiar=xl'],
@@ -207,6 +208,69 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
     expect(evals.find(e => e.id === 'seo-h1-presence')?.status).toBe('failed');
     expect(evals.find(e => e.id === 'seo-canonical-presence')?.status).toBe('failed');
     expect(evals.find(e => e.id === 'seo-title-cannibalization')?.status).toBe('failed');
+    expect(evals.find(e => e.id === 'ux-clickable-phone')?.status).toBe('failed');
+  });
+
+  it('correctly passes ux-clickable-phone for B2B site with contact form and no phone in text (molendadevelopment.pl case)', () => {
+    const mockEvidence: EvidenceSummary = {
+      totalPages: 9,
+      avgResponseTimeMs: 120,
+      status200Count: 9,
+      redirectsCount: 0,
+      errorsCount: 0,
+      noIndexCount: 0,
+      missingTitleCount: 0,
+      duplicateTitleGroups: [],
+      missingMetaCount: 0,
+      avgMetaLength: 140,
+      missingH1Count: 0,
+      missingH1Urls: [],
+      thinContentCount: 0,
+      thinContentUrls: [],
+      missingCanonicalCount: 0,
+      missingCanonicalUrls: [],
+      missingAltTotal: 0,
+      adsAndTracking: {
+        hasGoogleAds: false,
+        hasGoogleTagManager: false,
+        hasGA4: false,
+        hasMetaPixel: false,
+        hasTikTokPixel: false,
+        hasConsentModeV2: false,
+        hasDataLayer: true,
+        hasAddToCartTracking: false,
+        hasPurchaseTracking: false,
+        hasCartButtons: false,
+        hasLeadForms: true,
+        hasClickableContacts: false,
+        hasUnclickablePhone: false, // Brak nieklikalnego telefonu w tekście!
+        hasClickToCallTracking: false,
+        hasFormSpamProtection: true,
+        hasOpenGraph: true,
+        adBudgetLeakRisk: 'none',
+        issues: []
+      },
+      categoriesSummary: {
+        overall: { goodCount: 9, warnCount: 0, badCount: 0 }
+      }
+    };
+
+    const { evals, stats } = evaluateAllCheckpoints(
+      mockEvidence,
+      [],
+      { jquery: false, badScripts: 0, domElements: 600, inlineStyles: 10, pageBuilders: [], trackers: [] },
+      'services',
+      { detectedPlatform: 'Next.js / React (Serverless Edge)', performanceScore: 98, securityScore: 90, seoScore: 95, wafDetected: true }
+    );
+
+    expect(evals.length).toBe(64);
+    expect(stats.total).toBe(64);
+    expect(stats.failed).toBe(0);
+    expect(stats.criticalLeaksCount).toBe(0);
+
+    const phoneEval = evals.find(e => e.id === 'ux-clickable-phone');
+    expect(phoneEval?.status).toBe('passed');
+    expect(phoneEval?.metric).toBe('Kontakt online / Formularz');
   });
 
   it('verifies Next.js App Router detection signatures', () => {

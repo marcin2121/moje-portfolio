@@ -1346,10 +1346,10 @@ export function evaluateAllCheckpoints(
   // ux-clickable-phone
   if (tracking.hasClickableContacts) {
     addEval('ux-clickable-phone', 'passed', 'Aktywne linki tel:');
-  } else if (!isEcommerce && tracking.hasClickableContacts === false) {
+  } else if (tracking.hasUnclickablePhone) {
     addEval('ux-clickable-phone', 'failed', 'Nieklikalny numer telefonu w tekście');
   } else {
-    addEval('ux-clickable-phone', 'passed', 'OK');
+    addEval('ux-clickable-phone', 'passed', 'Kontakt online / Formularz');
   }
 
   // ux-clickable-email

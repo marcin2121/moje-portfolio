@@ -72,6 +72,7 @@ export interface AdsAndTrackingAudit {
   hasOmnibusCompliance?: boolean;
   hasExpressPayments?: boolean;
   hasClickableContacts?: boolean;
+  hasUnclickablePhone?: boolean;
   hasClickToCallTracking?: boolean;
   hasFormSpamProtection?: boolean;
   hasOpenGraph?: boolean;

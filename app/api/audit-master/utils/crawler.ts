@@ -784,6 +784,7 @@ export function buildEvidenceSummary(
     hasOmnibusCompliance,
     hasExpressPayments,
     hasClickableContacts,
+    hasUnclickablePhone,
     hasClickToCallTracking,
     hasFormSpamProtection,
     hasOpenGraph,

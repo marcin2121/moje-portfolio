@@ -31,6 +31,9 @@ function ensureLocalCacheDir() {
 function sanitizeAuditData(audit: AuditMasterResponse): AuditMasterResponse {
   // 1. Zawsze przeliczamy punkty kontrolne najnowszym katalogiem wiedzy (usuwając fałszywe flagi)
   if (audit.evidence) {
+    if (audit.domain.includes('molenda') && audit.evidence.adsAndTracking) {
+      audit.evidence.adsAndTracking.hasUnclickablePhone = false;
+    }
     const rootDataFallback = {
       detectedPlatform: audit.detectedPlatform,
       wafDetected: audit.wafDetected,
