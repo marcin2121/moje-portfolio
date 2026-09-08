@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { DetailedCodeSmells, EvidenceSummary, QuickCriticalIssue } from '../types';
+import { pluralizePolish } from './crawler';
 
 export async function generateGeminiReport(
   targetUrl: string,
@@ -134,13 +135,14 @@ Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego 
   }
 
   if (evidence && evidence.duplicateTitleGroups.length > 0) {
-    issues.push(`aż **${evidence.duplicateTitleGroups.length} grup ze zduplikowanymi tagami Title**, co wywołuje auto-kanibalizację fraz w Google`);
+    const grpCount = evidence.duplicateTitleGroups.length;
+    issues.push(`aż **${pluralizePolish(grpCount, 'grupę', 'grupy', 'grup')} ze zduplikowanymi tagami Title**, co wywołuje auto-kanibalizację fraz w Google`);
   }
   if (evidence && evidence.missingH1Count > 0) {
-    issues.push(`**${evidence.missingH1Count} podstron bez nagłówka H1**, przez co roboty wyszukiwarek i modele AI gubią kontekst semantyczny`);
+    issues.push(`**${pluralizePolish(evidence.missingH1Count, 'podstronę', 'podstrony', 'podstron')} bez nagłówka H1**, przez co roboty wyszukiwarek i modele AI gubią kontekst semantyczny`);
   }
   if (evidence && evidence.missingCanonicalCount > 0) {
-    issues.push(`**${evidence.missingCanonicalCount} adresów bez linku kanonicznego (canonical)**`);
+    issues.push(`**${pluralizePolish(evidence.missingCanonicalCount, 'adres', 'adresy', 'adresów')} bez linku kanonicznego (canonical)**`);
   }
   if (codeSmells?.pageBuilders && codeSmells.pageBuilders.length > 0) {
     issues.push(`narzut kodu z builderów (**${codeSmells.pageBuilders.join(', ')}**), rozdmuchujący drzewo DOM do ${codeSmells.domElements} elementów`);
@@ -150,11 +152,23 @@ Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego 
     ? issues.slice(0, 3).join(', ')
     : `brak odpowiednich nagłówków semantycznych i opóźnienia w czasie renderowania`;
 
+  const solutionText = isEcommerce
+    ? `jako Full-Stack Architect wdrożę w Twoim sklepie dedykowaną warstwę telemetryczną dataLayer oraz uporządkuję strukturę nagłówków i canonicali w 24–48 godzin, odzyskując pełen zwrot z inwestycji.`
+    : `jako Full-Stack Architect uporządkuję strukturę semantyczną witryny, wdrożę unikalne tagi canonical i zoptymalizuję architekturę kodu pod kątem konwersji B2B w 24–48 godzin, odzyskując pełen zwrot z inwestycji.`;
+
+  const quickStepText = isEcommerce
+    ? ((trackingIssue || !evidence?.adsAndTracking?.hasAddToCartTracking)
+        ? `Wdrożenie precyzyjnego śledzenia zdarzeń koszykowych (add_to_cart) oraz wyeliminowanie zduplikowanych tytułów stron natychmiast obniży koszt pozyskania klienta (CAC) i odblokuje inteligentne algorytmy Target ROAS.`
+        : `Wyeliminowanie zduplikowanych tytułów stron oraz wdrożenie tagów canonical natychmiast odzyska utracone pozycje w Google i obniży koszt pozyskania klienta (CAC).`)
+    : ((evidence?.missingH1Count || (evidence?.duplicateTitleGroups?.length || 0) > 0 || (evidence?.missingCanonicalCount || 0) > 0)
+        ? `Uporządkowanie struktury nagłówków H1, wdrożenie unikalnych tagów Title i kanonicznych adresów natychmiast odzyska utracony ruch organiczny i podniesie widoczność w zapytaniach ofertowych.`
+        : `Wdrożenie dedykowanego śledzenia konwersji formularzy (generate_lead) oraz usunięcie długu w kodzie natychmiast podniesie współczynnik konwersji i obniży koszt pozyskania leadów.`);
+
   return `Szczegółowy audyt **${targetUrl}** (${platform}) wykazał wynik **${avgScore}/100**. W zbadanej próbce zdiagnozowaliśmy kluczowe wąskie gardła: ${issuesSummary}.
 
 Przez te niedociągnięcia strukturalne i telemetryczne serwis traci szacunkowo **${lossPercentage}% ${conversionTerm}**, a budżety reklamowe są częściowo przepalane na nieskuteczny ruch.
 
-Dobra wiadomość jest taka, że nie musisz budować ${entity} od nowa – jako Full-Stack Architect wdrożę w Twoim kodzie dedykowaną warstwę telemetryczną dataLayer oraz uporządkuję strukturę nagłówków i canonicali w 24–48 godzin, odzyskując pełen zwrot z inwestycji.
+Dobra wiadomość jest taka, że nie musisz budować ${entity} od nowa – ${solutionText}
 
-**💡 Szybki krok naprawczy:** Wdrożenie precyzyjnego śledzenia zdarzeń koszykowych (add_to_cart) oraz wyeliminowanie zduplikowanych tytułów stron natychmiast obniży koszt pozyskania klienta (CAC).`;
+**💡 Szybki krok naprawczy:** ${quickStepText}`;
 }

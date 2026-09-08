@@ -1,240 +1,171 @@
-'use client';
-
-import React, { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Loader2, Building2, ShoppingCart, ArrowLeft } from 'lucide-react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
-import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
+import { ArrowLeft, ShieldAlert, Cpu, Sparkles, Layers, Activity } from 'lucide-react';
+import { AudytClient } from './AudytClient';
 
-function AudytContent() {
-  const searchParams = useSearchParams();
-  const tokenParam = searchParams.get('token');
-  const urlParam = searchParams.get('url');
-
-  const [url, setUrl] = useState(urlParam || '');
-  const [siteType, setSiteType] = useState<'services' | 'ecommerce'>('services');
-  const [isScanning, setIsScanning] = useState(false);
-  const [scanStep, setScanStep] = useState(0);
-  const [result, setResult] = useState<AuditResult | null>(null);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const scanSteps = [
-    "Inicjalizacja i wykrywanie mapy witryny (sitemap.xml)...",
-    "Pobieranie i analiza do 35 kluczowych podstron...",
-    "Audyt architektury DOM, skryptów i nagłówków bezpieczeństwa...",
-    "Badanie Core Web Vitals w Google Lighthouse...",
-    "Kompilacja twardych dowodów i diagnoza Architekta AI..."
-  ];
-
-  const handleScan = React.useCallback(async (targetUrl: string, currentSiteType: 'services' | 'ecommerce') => {
-    if (!targetUrl) return;
-
-    setIsScanning(true);
-    setResult(null);
-    setScanStep(0);
-    setErrorMessage('');
-
-    // Płynna symulacja kroków dla użytkownika
-    const stepInterval = setInterval(() => {
-      setScanStep((prev) => {
-        if (prev < scanSteps.length - 1) return prev + 1;
-        return prev;
-      });
-    }, 2200);
-
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 60000);
-
-      const res = await fetch('/api/audit-master', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: targetUrl, siteType: currentSiteType }),
-        signal: controller.signal
-      });
-
-      clearTimeout(timeoutId);
-      clearInterval(stepInterval);
-
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || 'Wystąpił błąd podczas analizy.');
-      }
-
-      const data: AuditResult = await res.json();
-      setResult(data);
-    } catch (err: unknown) {
-      clearInterval(stepInterval);
-      const msg = err instanceof Error ? err.message : 'Wystąpił błąd podczas komunikacji z serwerem.';
-      setErrorMessage(msg);
-    } finally {
-      setIsScanning(false);
-    }
-  }, [scanSteps.length]);
-
-  // Jeśli w URL jest gotowy token (np. z cold maila), załaduj natychmiast z cache
-  useEffect(() => {
-    if (tokenParam) {
-      setIsScanning(true);
-      setErrorMessage('');
-      fetch(`/api/audit-master?token=${encodeURIComponent(tokenParam)}`)
-        .then(async (res) => {
-          if (!res.ok) throw new Error('Nie znaleziono zapisanego raportu.');
-          return res.json();
-        })
-        .then((data: AuditResult) => {
-          setResult(data);
-          if (data.url) setUrl(data.url);
-          if (data.siteType) setSiteType(data.siteType);
-        })
-        .catch((err: Error) => {
-          setErrorMessage(err.message);
-        })
-        .finally(() => {
-          setIsScanning(false);
-        });
-    } else if (urlParam) {
-      handleScan(urlParam, siteType);
-    }
-  }, [tokenParam, urlParam, siteType, handleScan]);
-
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleScan(url, siteType);
-  };
-
+function AudytFormFallback() {
   return (
-    <main className="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-slate-600 selection:bg-orange-500 selection:text-white">
-      <Link href="/narzedzia" className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-500 hover:text-orange-600 transition-colors mb-8 group">
-        <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-        <span>Powrót do narzędzi</span>
-      </Link>
-
-      <div className="text-center mb-10">
-        <h1 className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-slate-900">
-          Audyt Odporności Cyfrowej 2.0
-        </h1>
-        <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto font-light leading-relaxed">
-          {siteType === 'ecommerce'
-            ? 'Głęboka analiza techniczna sklepu internetowego. Crawling do 35 podstron, wykrywanie duplikatów SEO, brakujących nagłówków H1 i długu w kodzie.'
-            : 'Głęboka analiza techniczna serwisu firmowego. Sprawdź, jak błędy w strukturze i dławiące skrypty obniżają Twoją widoczność w Google i modelach AI.'}
-        </p>
-      </div>
-
-      {/* Przełącznik Profilu */}
+    <div className="w-full">
+      {/* Skeleton profilu */}
       <div className="flex justify-center mb-8">
-        <div className="bg-white/80 p-1.5 rounded-2xl border border-slate-200 flex gap-2 shadow-sm backdrop-blur-md">
-          <button
-            type="button"
-            onClick={() => setSiteType('services')}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${
-              siteType === 'services'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'text-slate-500 hover:text-slate-900'
-            }`}
-          >
-            <Building2 className="w-4 h-4" />
-            Strona Firmowa / Usługi
-          </button>
-          <button
-            type="button"
-            onClick={() => setSiteType('ecommerce')}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${
-              siteType === 'ecommerce'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'text-slate-500 hover:text-slate-900'
-            }`}
-          >
-            <ShoppingCart className="w-4 h-4" />
-            Sklep E-commerce
-          </button>
-        </div>
+        <div className="bg-white/80 p-1.5 rounded-2xl border border-slate-200 flex gap-2 shadow-sm w-80 h-12 animate-pulse" />
       </div>
 
-      {/* Formularz Skanowania */}
-      <div className="bg-white/70 border border-slate-200/70 rounded-3xl p-6 md:p-8 backdrop-blur-3xl mb-12 shadow-[0_20px_50px_rgba(0,0,0,0.04)] relative overflow-hidden">
-        <form onSubmit={onSubmit} className="relative z-10">
-          <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider font-mono">
-            {siteType === 'ecommerce' ? 'Adres sklepu internetowego (URL)' : 'Adres strony firmowej / portalu (URL)'}
-          </label>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="text"
-              required
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder={siteType === 'ecommerce' ? 'np. dzikistyl.com, rltpolska.pl' : 'np. stowarzyszeniekas.pl, moja-firma.pl'}
-              className="flex-grow bg-white/90 border-2 border-slate-200 focus:border-orange-500 rounded-xl py-3.5 px-5 text-slate-900 text-sm outline-none transition-colors shadow-inner font-mono"
-              disabled={isScanning}
-            />
-            <button
-              type="submit"
-              disabled={isScanning || !url}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 px-8 rounded-xl text-xs sm:text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(249,115,22,0.25)] hover:scale-[1.02] shrink-0 active:scale-95"
-            >
-              {isScanning ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Skanowanie witryny...</span>
-                </>
-              ) : (
-                <>
-                  <Search className="w-4 h-4" />
-                  <span>{siteType === 'ecommerce' ? 'Analizuj Sklep' : 'Analizuj Stronę'}</span>
-                </>
-              )}
-            </button>
-          </div>
-        </form>
-
-        {errorMessage && (
-          <div className="mt-4 p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-mono">
-            {errorMessage}
-          </div>
-        )}
-
-        {/* Stepper skanowania */}
-        <AnimatePresence mode="wait">
-          {isScanning && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mt-6 pt-6 border-t border-slate-100 overflow-hidden"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-slate-600 font-mono text-xs">{scanSteps[scanStep]}</span>
-                <span className="text-orange-600 font-mono font-bold text-xs">
-                  {Math.round(((scanStep + 1) / scanSteps.length) * 100)}%
-                </span>
-              </div>
-              <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-orange-500"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${((scanStep + 1) / scanSteps.length) * 100}%` }}
-                  transition={{ duration: 0.5 }}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {result && <AuditResultView result={result} onRetry={() => setResult(null)} />}
-    </main>
+      {/* Skeleton formularza */}
+      <div className="bg-white/70 border border-slate-200/70 rounded-3xl p-6 md:p-8 backdrop-blur-3xl mb-12 shadow-[0_20px_50px_rgba(0,0,0,0.04)] h-36 animate-pulse" />
+    </div>
   );
 }
 
 export default function AudytPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+    <main className="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-slate-600 selection:bg-orange-500 selection:text-white">
+      {/* Powrót */}
+      <Link 
+        href="/narzedzia" 
+        className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-500 hover:text-orange-600 transition-colors mb-8 group"
+      >
+        <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
+        <span>Powrót do narzędzi</span>
+      </Link>
+
+      {/* Nagłówek H1 renderowany statycznie na serwerze */}
+      <div className="text-center mb-10">
+        <h1 className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-slate-900">
+          Audyt Odporności Cyfrowej 2.0
+        </h1>
+        <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto font-light leading-relaxed">
+          Głęboka analiza inżynieryjna architektury stron WWW i sklepów internetowych. Prześwietlamy do 35 podstron w poszukiwaniu auto-kanibalizacji SEO, brakujących nagłówków semantycznych H1, długu w drzewie DOM oraz nieszczelności w telemetryce reklamowej Google i Meta.
+        </p>
       </div>
-    }>
-      <AudytContent />
-    </Suspense>
+
+      {/* Interaktywny skaner wewnątrz Suspense */}
+      <Suspense fallback={<AudytFormFallback />}>
+        <AudytClient />
+      </Suspense>
+
+      {/* Rozbudowana, merytoryczna sekcja inżynieryjna (>400 słów) gwarantująca pełną treść statyczną */}
+      <section className="mt-20 border-t border-slate-200/60 pt-16">
+        <div className="max-w-3xl mb-12">
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-orange-600 mb-3">
+            <Cpu className="w-4 h-4" />
+            <span>Metodyka Inżynieryjna Silnika Audytowego</span>
+          </div>
+          <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-slate-900 mb-4">
+            Co dokładnie bada silnik Audytu Odporności Cyfrowej?
+          </h2>
+          <p className="text-base text-slate-600 leading-relaxed font-light">
+            Większość internetowych testerów ogranicza się do powierzchownego zbadania strony głównej. Nasz crawler przechodzi do 35 kluczowych podstron witryny pobranych bezpośrednio z mapy strony (sitemap.xml) lub drzewa odnośników, analizując twarde dowody w kodzie źródłowym HTML i nagłówkach HTTP.
+          </p>
+        </div>
+
+        {/* Asymetryczna siatka Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          {/* Karta 1: Duża (span-2) */}
+          <div className="md:col-span-2 bg-white/80 border border-slate-200/70 rounded-3xl p-8 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-orange-50 border border-orange-200 flex items-center justify-center text-orange-600 mb-5">
+                <Layers className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 tracking-tight mb-3">
+                Architektura Semantyczna i Hierarchia H1 w Epoce AI Search
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                Współczesne roboty indeksujące Googlebot oraz modele generatywne (takie jak SearchGPT, Perplexity czy Google Gemini) interpretują kontekst biznesowy Twojej witryny w oparciu o czystą hierarchię nagłówków semantycznych HTML. Podstrona pozbawiona pojedynczego, precyzyjnego nagłówka H1 lub używająca nagłówków H1 w stopce i elementach nawigacyjnych wprowadza szum informacyjny.
+              </p>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Nasz audyt sprawdza każdą zbadaną podstronę pod kątem obecności dokładnie jednego, unikalnego nagłówka H1, eliminując ryzyko utraty pozycji w organicznych wynikach wyszukiwania oraz w odpowiedziach silników AI.
+              </p>
+            </div>
+            <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-3 text-xs font-mono text-slate-500">
+              <span className="font-bold text-slate-700">Standard:</span> Dokładnie 1 nagłówek H1 na podstronę, zawierający główną frazę intencyjną.
+            </div>
+          </div>
+
+          {/* Karta 2: Mała (span-1) */}
+          <div className="bg-white/80 border border-slate-200/70 rounded-3xl p-8 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 mb-5">
+                <ShieldAlert className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 tracking-tight mb-3">
+                Kanonizacja i Auto-Kanibalizacja
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Brak tagów <code className="text-xs bg-slate-100 px-1.5 py-0.5 rounded font-mono text-slate-800">rel=&quot;canonical&quot;</code> oraz powielone tagi Title prowadzą do wewnętrznej kanibalizacji fraz kluczowych. Zamiast budować silny autorytet pojedynczego adresu, roboty dzielą wagę domeny pomiędzy warianty podstron.
+              </p>
+            </div>
+            <div className="mt-6 pt-5 border-t border-slate-100 text-xs font-mono text-slate-500">
+              <span className="font-bold text-slate-700">Weryfikacja:</span> Wykrywanie grup duplikatów i brakujących canonicali.
+            </div>
+          </div>
+
+          {/* Karta 3: Mała (span-1) */}
+          <div className="bg-white/80 border border-slate-200/70 rounded-3xl p-8 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mb-5">
+                <Activity className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 tracking-tight mb-3">
+                Telemetria i Przepalanie Budżetów
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Kampanie Google Ads i Meta Ads wymagają twardych sygnałów z warstwy dataLayer. Błędy w zdarzeniach konwersji (generate_lead, add_to_cart, purchase) uniemożliwiają algorytmom Smart Bidding optymalizację stawek, co prowadzi do drastycznego przepalania budżetu.
+              </p>
+            </div>
+            <div className="mt-6 pt-5 border-t border-slate-100 text-xs font-mono text-slate-500">
+              <span className="font-bold text-slate-700">Weryfikacja:</span> Google Ads, GA4, Meta Pixel, Consent Mode v2.
+            </div>
+          </div>
+
+          {/* Karta 4: Duża (span-2) */}
+          <div className="md:col-span-2 bg-white/80 border border-slate-200/70 rounded-3xl p-8 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 mb-5">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 tracking-tight mb-3">
+                Wydajność Core Web Vitals i Likwidacja Długu w DOM
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                Przestarzałe szablony, kreatory stron (Elementor, Divi) oraz nieoptymalne wtyczki generują tysiące nadmiarowych węzłów DOM i dziesiątki blokujących skryptów JS. Każde dodatkowe 100 milisekund czasu ładowania (TTFB i LCP) na urządzeniach mobilnych obniża współczynnik konwersji średnio o 7%.
+              </p>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Nasz raport wskazuje dokładną liczbę elementów DOM, obecność bibliotek spowalniających renderowanie oraz konkretne pliki blokujące pierwszy render strony.
+              </p>
+            </div>
+            <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-3 text-xs font-mono text-slate-500">
+              <span className="font-bold text-slate-700">Cel inżynieryjny:</span> Render sub-sekundowy, drzewo DOM &lt; 800 węzłów, 0 skryptów blokujących.
+            </div>
+          </div>
+        </div>
+
+        {/* Sekcja korzyści i wdrożenia */}
+        <div className="bg-slate-900 text-white rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-2xl">
+          <div className="max-w-2xl relative z-10">
+            <h3 className="text-2xl md:text-3xl font-black tracking-tight mb-4 text-white">
+              Naprawa usterek w 24–48 godzin bez przebudowy witryny
+            </h3>
+            <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6 font-light">
+              Większość zidentyfikowanych w audycie wąskich gardeł (takich jak brakujące nagłówki H1, auto-kanibalizacja tagów title, brak kanonizacji czy uszkodzone zdarzenia konwersji) nie wymaga kosztownego budowania serwisu od zera. Jako Senior Full-Stack Architect wdrażam precyzyjne poprawki bezpośrednio w Twoim kodzie produkcyjnym, przywracając pełną skuteczność SEO i kampanii płatnych.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link 
+                href="/#kontakt"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-xl text-xs sm:text-sm transition-all shadow-lg hover:scale-105 active:scale-95"
+              >
+                Zamów inżynieryjne wdrożenie poprawek
+              </Link>
+              <Link 
+                href="/narzedzia/kalkulator-migracji"
+                className="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl text-xs sm:text-sm transition-all border border-white/20"
+              >
+                Sprawdź kalkulator strat e-commerce
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
