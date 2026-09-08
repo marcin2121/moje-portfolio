@@ -296,4 +296,82 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
 
     expect(isNextJs).toBe(true);
   });
+
+  it('correctly evaluates TTFB thresholds according to Google Core Web Vitals (molenda 672ms passed)', () => {
+    const baseEvidence: EvidenceSummary = {
+      totalPages: 1,
+      avgResponseTimeMs: 672, // molendadevelopment.pl case
+      status200Count: 1,
+      redirectsCount: 0,
+      errorsCount: 0,
+      noIndexCount: 0,
+      missingTitleCount: 0,
+      duplicateTitleGroups: [],
+      missingMetaCount: 0,
+      avgMetaLength: 150,
+      missingH1Count: 0,
+      missingH1Urls: [],
+      thinContentCount: 0,
+      thinContentUrls: [],
+      missingCanonicalCount: 0,
+      missingCanonicalUrls: [],
+      missingAltTotal: 0,
+      adsAndTracking: {
+        hasGoogleAds: false,
+        hasGoogleTagManager: false,
+        hasGA4: false,
+        hasMetaPixel: false,
+        hasTikTokPixel: false,
+        hasConsentModeV2: false,
+        hasDataLayer: false,
+        hasAddToCartTracking: false,
+        hasPurchaseTracking: false,
+        hasCartButtons: false,
+        hasLeadForms: true,
+        hasClickableContacts: true,
+        hasClickToCallTracking: true,
+        hasFormSpamProtection: true,
+        hasOpenGraph: true,
+        adBudgetLeakRisk: 'none',
+        issues: []
+      },
+      categoriesSummary: {
+        overall: { goodCount: 1, warnCount: 0, badCount: 0 }
+      }
+    };
+
+    // 1. molenda 672ms -> passed
+    const resGood = evaluateAllCheckpoints(
+      baseEvidence,
+      [],
+      { jquery: false, badScripts: 0, domElements: 500, inlineStyles: 0 },
+      'services',
+      { detectedPlatform: 'Next.js' }
+    );
+    const evalGood = resGood.evals.find(e => e.id === 'perf-ttfb-server');
+    expect(evalGood?.status).toBe('passed');
+    expect(evalGood?.metric).toContain('672ms');
+
+    // 2. 950ms -> warning (Needs Improvement)
+    const resWarn = evaluateAllCheckpoints(
+      { ...baseEvidence, avgResponseTimeMs: 950 },
+      [],
+      { jquery: false, badScripts: 0, domElements: 500, inlineStyles: 0 },
+      'services',
+      { detectedPlatform: 'Next.js' }
+    );
+    const evalWarn = resWarn.evals.find(e => e.id === 'perf-ttfb-server');
+    expect(evalWarn?.status).toBe('warning');
+
+    // 3. 2200ms -> failed (Poor)
+    const resFail = evaluateAllCheckpoints(
+      { ...baseEvidence, avgResponseTimeMs: 2200 },
+      [],
+      { jquery: false, badScripts: 0, domElements: 500, inlineStyles: 0 },
+      'services',
+      { detectedPlatform: 'Next.js' }
+    );
+    const evalFail = resFail.evals.find(e => e.id === 'perf-ttfb-server');
+    expect(evalFail?.status).toBe('failed');
+  });
 });

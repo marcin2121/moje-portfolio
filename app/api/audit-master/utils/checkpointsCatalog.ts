@@ -524,12 +524,12 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
   // ==========================================
   'perf-ttfb-server': {
     id: 'perf-ttfb-server',
-    name: 'Czas odpowiedzi serwera (Time To First Byte < 300ms)',
+    name: 'Czas odpowiedzi serwera (Time To First Byte < 800ms)',
     category: 'performance_vitals',
     severity: 'critical',
-    defaultDiagnosisPassed: 'Serwer odpowiada błyskawicznie – TTFB poniżej 300ms.',
-    defaultDiagnosisFailed: 'Czas odpowiedzi serwera (TTFB) przekracza 600ms, opóźniając start renderowania.',
-    businessImpact: 'Każde 100ms opóźnienia serwera obniża współczynnik konwersji o 7%. Klient widzi biały ekran i rezygnuje z wizyty.',
+    defaultDiagnosisPassed: 'Serwer odpowiada płynnie – średni TTFB poniżej 800ms (zgodnie ze standardem Google Core Web Vitals).',
+    defaultDiagnosisFailed: 'Czas odpowiedzi serwera (TTFB) przekracza 1.8s, powodując odczuwalne opóźnienie w starcie renderowania.',
+    businessImpact: 'Opóźnienia serwera powyżej 1.8s obniżają współczynnik konwersji i pogarszają pozycje w Google (Core Web Vitals).',
     businessBenefit: 'Natychmiastowe ładowanie witryny od pierwszej milisekundy. Wyższe oceny w Google Core Web Vitals i niższy współczynnik odrzuceń.',
     developerSolution: 'Wdrożę edge caching, optymalizację zapytań do bazy danych oraz kompresję na poziomie serwera w 24h.'
   },
@@ -1250,13 +1250,13 @@ export function evaluateAllCheckpoints(
   // ----------------------------------------------------
   // 4. WYDAJNOŚĆ & CORE WEB VITALS (13)
   // ----------------------------------------------------
-  // perf-ttfb-server
-  if (evidence.avgResponseTimeMs > 600) {
-    addEval('perf-ttfb-server', 'failed', `Średni TTFB: ${evidence.avgResponseTimeMs}ms`);
-  } else if (evidence.avgResponseTimeMs > 300) {
-    addEval('perf-ttfb-server', 'warning', `Średni TTFB: ${evidence.avgResponseTimeMs}ms`);
+  // perf-ttfb-server: Kalibracja zgodna ze standardem Google Core Web Vitals (Good <= 800ms, Needs Improvement 800-1800ms, Poor > 1800ms)
+  if (evidence.avgResponseTimeMs > 1800) {
+    addEval('perf-ttfb-server', 'failed', `Średni TTFB: ${evidence.avgResponseTimeMs}ms (> 1.8s)`);
+  } else if (evidence.avgResponseTimeMs > 800) {
+    addEval('perf-ttfb-server', 'warning', `Średni TTFB: ${evidence.avgResponseTimeMs}ms (800–1800ms)`);
   } else {
-    addEval('perf-ttfb-server', 'passed', `${evidence.avgResponseTimeMs}ms (Błyskawiczny)`);
+    addEval('perf-ttfb-server', 'passed', `${evidence.avgResponseTimeMs}ms (Optymalny < 800ms)`);
   }
 
   // perf-render-blocking-scripts
