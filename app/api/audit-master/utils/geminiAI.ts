@@ -103,38 +103,57 @@ ${quickIssuesText}
     ? "UWAGA: Serwis chroniony przez WAF/Cloudflare."
     : `Dług Technologiczny w kodzie:\n- Przestarzałe biblioteki (jQuery): ${codeSmells.jquery ? 'TAK (Krytyczne!)' : 'NIE'}\n- Skrypty blokujące renderowanie (bez async/defer): ${codeSmells.badScripts} szt.\n- Rozmiar drzewa DOM: ${codeSmells.domElements} elementów\n- Brudne style inline (CSS bloat): ${codeSmells.inlineStyles} szt.${buildersText}${trackersText}${vitalsText}`;
 
-  let prompt = '';
+  // --- ULEPSZONA DYNAMIKA PROMPTU DLA GEMINI ---
+  const isHighScore = avgScore >= 85;
+  const systemInstruction = `
+Jesteś Marcinem Molendą – Senior Frontend & Full-Stack Architectem. 
+Piszesz autorską, wysoce profesjonalną i zwięzłą "Diagnozę Architekta (Synteza Inżynieryjna)" dla właściciela serwisu.
+TWARDE GUARDRAILE STYLISTYCZNE:
+1. BRAK ALARMISTYCZNEGO ŻARGONU DLA WYNIKÓW >= 85:
+   Kategorycznie ZAKAZUJE SIĘ słów: "przepalanie budżetu", "wycieki", "fałszywe konwersje ze spamu", "paraliż". Witryna ma wzorowy kod.
+2. ZAKAZ WCISKANIA SZTUCZNEGO AI NA SIŁĘ:
+   Nie proponuj na siłę "projektowania modułów AI", chyba że audytowana witryna to zaawansowana platforma SaaS/Data. Dla fundacji, urzędów, szkół czy firm skup się na celach statutowych, zaufaniu darczyńców, rekrutacji lub konwersji lejków.
+3. BEZWZGLĘDNA PRAWDA DANYCH:
+   Nigdy nie wspominaj o kampaniach płatnych (Google Ads / Performance Max), jeśli audytowana witryna nie prowadzi płatnych reklam (np. NGO, instytucje publiczne, szkoły).
+4. FORMA:
+   Maksymalnie 3 zwięzłe, mięsiste zdania (lub 2 krótkie akapity). Pisz w 1. osobie ("Jako Senior Architect przeanalizowałem...", "Rekomenduję..."). Czysty Markdown (pogrubienia).
+`.trim();
 
-  if (avgScore >= 85) {
-    prompt = `Jesteś Marcinem Molendą, Senior Frontend & Full-Stack Architectem. ${entityName} ${targetUrl} uzyskał elitarny wynik ${avgScore}/100.
-Przeanalizowano ${pagesScanned} podstron. Stack: ${detectedPlatform}. Profil: ${SITE_TYPE_LABELS[siteType] || 'Usługi'}.
-Zadanie: Napisz zwięzły, autorytatywny werdykt architektoniczny (MAKSYMALNIE 3-4 ZDANIA!).
-1. Pogratuluj właścicielowi rewelacyjnej, bezkompromisowej infrastruktury (wskazując szybkość ${avgResponseTime}ms i brak długu technologicznego).
-2. Uświadom mu, że dalsze szlifowanie tak doskonałego kodu to strata zasobów – czas na realizację celów: ${goalDescription}.
-3. Zaproponuj projektowanie dedykowanych modułów AI lub automatyzacji procesów statutowych / biznesowych.
-GUARDRAIL TONE OF VOICE (KATEGORYCZNY ZAKAZ):
-Kategorycznie ZAKAZUJE SIĘ używania taniego, panikarskiego żargonu agencji reklamowych (takiego jak: "krytyczne wycieki budżetu", "przepalanie budżetu", "fałszywe konwersje ze spamu", "paraliż kampanii"). Przy wyniku ${avgScore}/100 infrastruktura jest wzorowa – zachowaj prestiżowy, strategiczny i konstruktywny ton Senior Architekta.
-FORMATOWANIE: Czysty Markdown (np. **pogrubienie**). Bez HTML.`;
+  let userPrompt = '';
+  if (isHighScore) {
+    userPrompt = `
+Serwis ${entityName} (${targetUrl}) uzyskał elitarny wynik ${avgScore}/100.
+Stack technologiczny: ${detectedPlatform}. Średni czas odpowiedzi serwera: ${avgResponseTime}ms.
+Przeanalizowano podstron: ${pagesScanned}. Profil: ${SITE_TYPE_LABELS[siteType] || 'Usługi'}.
+Zadanie:
+Napisz prestiżowy, strategiczny werdykt architektoniczny (maksymalnie 3-4 zdania):
+1. Docenienie klasy kodu: Zauważ błyskawiczny czas reakcji (${avgResponseTime}ms) oraz brak długu technologicznego na platformie ${detectedPlatform}.
+2. Przesunięcie priorytetów: Wskaż, że walka o kolejne ułamki milisekund nie ma już uzasadnienia biznesowego/statutowego – fundamenty są gotowe na pełną realizację celów: ${goalDescription}.
+3. Rekomendacja strategiczna: Zaproponuj skupienie uwagi na skalowaniu zasięgu, budowaniu autorytetu i zaufania odbiorców w obszarze właściwym dla profilu (${entityName}).
+`.trim();
   } else {
-    prompt = `Jesteś Marcinem Molendą, Senior Web & Full-Stack Architectem. ${entityName} ${targetUrl} uzyskał wynik ${avgScore}/100.
+    userPrompt = `
+Serwis ${entityName} (${targetUrl}) uzyskał wynik ${avgScore}/100.
 Wykryta platforma: ${detectedPlatform}. Profil organizacji: ${SITE_TYPE_LABELS[siteType] || 'Usługi'}.
 ${empiricalEvidenceText}
 ${codeSmellsText}
-
-Zadanie: Napisz zwięzłą, bezlitośnie precyzyjną diagnozę inżynieryjną dopasowaną do profilu ${entityName} (DOKŁADNIE 3-4 ZDANIA!).
-1. Jeśli witryna prowadzi płatne reklamy (Google Ads / Meta Ads) i wykryto luki telemetryczne – wskaż to jako wyciek budżetu reklamowego. JEŚLI WITRYNA NIE PROWADZI PŁATNYCH REKLAM (jak w przypadku wielu NGO, urzędów czy szkół), KATEGORYCZNIE ZAKAZANE JEST wspominanie o "przepalaniu budżetu na Performance Max / Smart Bidding". Wtedy skup się na misji witryny: ${goalDescription}.
-2. Wskaż pozostałe twarde liczby (np. ${duplicateTitlesCount > 0 ? `${duplicateTitlesCount} grup powielonych Title niszczących pozycje w Google` : ''}, ${missingH1Count > 0 ? `${missingH1Count} stron bez H1` : ''}). KATEGORYCZNY ZAKAZ wymyślania błędów, których nie ma w dowodach. Jeśli struktura SEO jest czysta (0 błędów H1 i canonical), wyraźnie to podkreśl.
-3. Podkreśl szacowaną stratę ~${lossPercentage}% w obszarze: ${conversionTerm} (${lossDescription}).
-4. Przedstaw w pierwszej osobie ("Co dla Ciebie wdrożę: Wdrożę...", "Zaimplementuję...", "Uporządkuję..."), co Ty jako Senior Architect (Marcin) możesz konkretnie wdrożyć w kodzie w 24-48h bez burzenia obecnej strony (wskazówka dla profilu: ${architectRoleDescription}). KATEGORYCZNY ZAKAZ pisania o sobie w 3. osobie ("Marcin wdroży"). Zawsze pisz w 1. osobie ("Wdrożę").
-FORMATOWANIE: Czysty Markdown. Bez HTML.`;
+Zadanie:
+Napisz precyzyjną diagnozę inżynieryjną (maksymalnie 3-4 zdania):
+1. Zdiagnozuj 1-2 najważniejsze realne usterki z powyższych dowodów (np. duplikaty Title, brak H1, brak analityki). Zakaz wymyślania usterek nieobecnych w dowodach!
+2. Pokaż wpływ na cel: Uświadom stratę ~${lossPercentage}% w obszarze: ${conversionTerm} (${lossDescription}). Jeśli to NGO/urząd/szkoła – nie pisz o "przepalaniu budżetu reklamowego", lecz o barierach dla odbiorców i ryzyku utraty zaufania.
+3. Plan działania w 1. osobie: Wskaż zwięźle, co jako Senior Architect możesz wdrożyć w 24-48h bez burzenia obecnej strony (${architectRoleDescription}).
+`.trim();
   }
 
   try {
     const ai = new GoogleGenAI({ apiKey: geminiKey });
     const response = await ai.models.generateContent({
       model: process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
-      contents: prompt,
-      config: { temperature: 0.5 }
+      contents: userPrompt,
+      config: { 
+        systemInstruction: systemInstruction,
+        temperature: 0.3 // niższa temperatura = większa dyscyplina i brak halucynacji
+      }
     });
 
     if (response.text && response.text.trim().length > 20) {
@@ -198,7 +217,7 @@ export function generateDeterministicReport(
 
     return `Architektura **${targetUrl}** reprezentuje najwyższy standard inżynieryjny (${avgScore}/100). Kod jest czysty, serwer odpowiada błyskawicznie (średnio ${evidence?.avgResponseTimeMs || 80}ms), a struktura podstron nie wykazuje długu technologicznego. 
 
-Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego ROI – infrastruktura jest w pełni gotowa na skalowanie ruchu i wdrożenia automatyzacji AI.
+Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego ROI – infrastruktura jest w pełni gotowa na realizację kluczowych celów i skalowanie zasięgu.
 
 **💡 Rekomendacja strategiczna:** Skieruj zasoby na ${strategicGoalAdvice}, bo technologicznie serwis wyprzedza 95% konkurencji rynkowej.`;
   }
