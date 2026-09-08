@@ -955,33 +955,39 @@ export function evaluateAllCheckpoints(
   };
 
   // ----------------------------------------------------
-  // 1. ANALITYKA, TELEMETRIA & ADS (14)
+  // 1. ANALITYKA, TELEMETRIA & ADS (11-14)
   // ----------------------------------------------------
-  // track-add-to-cart
-  if (tracking.hasAddToCartTracking) {
-    addEval('track-add-to-cart', 'passed', 'Aktywne zdarzenie add_to_cart');
-  } else if ((tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasTikTokPixel || tracking.hasGA4) && (isEcommerce || tracking.hasCartButtons)) {
-    addEval('track-add-to-cart', 'failed', 'Brak zdarzenia w kodzie koszyka');
-  } else {
-    addEval('track-add-to-cart', 'passed', isEcommerce ? 'Brak reklam' : 'Nie dotyczy (brak koszyka)');
+  // track-add-to-cart (tylko e-commerce lub gdy wykryto koszyk / tracking)
+  if (isEcommerce || tracking.hasCartButtons || tracking.hasAddToCartTracking) {
+    if (tracking.hasAddToCartTracking) {
+      addEval('track-add-to-cart', 'passed', 'Aktywne zdarzenie add_to_cart');
+    } else if (tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasTikTokPixel || tracking.hasGA4) {
+      addEval('track-add-to-cart', 'failed', 'Brak zdarzenia w kodzie koszyka');
+    } else {
+      addEval('track-add-to-cart', 'passed', 'Brak reklam');
+    }
   }
 
-  // track-purchase
-  if (tracking.hasPurchaseTracking) {
-    addEval('track-purchase', 'passed', 'Aktywne zdarzenie purchase');
-  } else if (isEcommerce && (tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasGA4)) {
-    addEval('track-purchase', 'failed', 'Brak zdarzenia transakcji purchase');
-  } else {
-    addEval('track-purchase', 'passed', isEcommerce ? 'Brak transakcji online' : 'Nie dotyczy (profil Usługi / B2B)');
+  // track-purchase (tylko e-commerce lub gdy wykryto zakup / tracking)
+  if (isEcommerce || tracking.hasPurchaseTracking) {
+    if (tracking.hasPurchaseTracking) {
+      addEval('track-purchase', 'passed', 'Aktywne zdarzenie purchase');
+    } else if (tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasGA4) {
+      addEval('track-purchase', 'failed', 'Brak zdarzenia transakcji purchase');
+    } else {
+      addEval('track-purchase', 'passed', 'Brak transakcji online');
+    }
   }
 
-  // track-view-item
-  if (tracking.hasViewItemTracking) {
-    addEval('track-view-item', 'passed', 'Aktywne zdarzenie view_item');
-  } else if (isEcommerce && (tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasGA4)) {
-    addEval('track-view-item', 'failed', 'Brak zdarzenia view_item / ViewContent');
-  } else {
-    addEval('track-view-item', 'passed', isEcommerce ? 'Brak katalogu produktów' : 'Nie dotyczy (profil Usługi / B2B)');
+  // track-view-item (tylko e-commerce lub gdy wykryto remarketing produktów)
+  if (isEcommerce || tracking.hasViewItemTracking) {
+    if (tracking.hasViewItemTracking) {
+      addEval('track-view-item', 'passed', 'Aktywne zdarzenie view_item');
+    } else if (tracking.hasGoogleAds || tracking.hasMetaPixel || tracking.hasGA4) {
+      addEval('track-view-item', 'failed', 'Brak zdarzenia view_item / ViewContent');
+    } else {
+      addEval('track-view-item', 'passed', 'Brak katalogu produktów');
+    }
   }
 
   // track-consent-mode-v2
@@ -1067,108 +1073,70 @@ export function evaluateAllCheckpoints(
   }
 
   // ----------------------------------------------------
-  // 2. E-COMMERCE, CHECKOUT & CRO (13)
+  // 2. E-COMMERCE, CHECKOUT & CRO (13 - Tylko profil E-Commerce)
   // ----------------------------------------------------
-  // ecom-variant-health
-  if (!isEcommerce) {
-    addEval('ecom-variant-health', 'passed', 'Nie dotyczy (profil Usługi / B2B)');
-  } else if (tracking.variantTimeoutUrls && tracking.variantTimeoutUrls.length > 0) {
-    addEval('ecom-variant-health', 'failed', `${tracking.variantTimeoutUrls.length} wariantów z błędem 504/>2.5s`, tracking.variantTimeoutUrls);
-  } else {
-    addEval('ecom-variant-health', 'passed', 'Warianty stabilne');
-  }
+  if (isEcommerce || tracking.hasCartButtons) {
+    // ecom-variant-health
+    if (tracking.variantTimeoutUrls && tracking.variantTimeoutUrls.length > 0) {
+      addEval('ecom-variant-health', 'failed', `${tracking.variantTimeoutUrls.length} wariantów z błędem 504/>2.5s`, tracking.variantTimeoutUrls);
+    } else {
+      addEval('ecom-variant-health', 'passed', 'Warianty stabilne');
+    }
 
-  // ecom-omnibus-compliance
-  if (!isEcommerce) {
-    addEval('ecom-omnibus-compliance', 'passed', 'Nie dotyczy (brak cen promocyjnych)');
-  } else if (tracking.hasOmnibusCompliance === false) {
-    addEval('ecom-omnibus-compliance', 'failed', 'Brak najniższej ceny z 30 dni');
-  } else {
-    addEval('ecom-omnibus-compliance', 'passed', 'Zgodne z dyrektywą Omnibus');
-  }
+    // ecom-omnibus-compliance
+    if (tracking.hasOmnibusCompliance === false) {
+      addEval('ecom-omnibus-compliance', 'failed', 'Brak najniższej ceny z 30 dni');
+    } else {
+      addEval('ecom-omnibus-compliance', 'passed', 'Zgodne z dyrektywą Omnibus');
+    }
 
-  // ecom-express-payments
-  if (!isEcommerce) {
-    addEval('ecom-express-payments', 'passed', 'Nie dotyczy (profil Usługi / B2B)');
-  } else if (!tracking.hasExpressPayments) {
-    addEval('ecom-express-payments', 'warning', 'Brak BLIK / Apple Pay w kodzie');
-  } else {
-    addEval('ecom-express-payments', 'passed', 'Wykryto płatności mobilne');
-  }
+    // ecom-express-payments
+    if (!tracking.hasExpressPayments) {
+      addEval('ecom-express-payments', 'warning', 'Brak BLIK / Apple Pay w kodzie');
+    } else {
+      addEval('ecom-express-payments', 'passed', 'Wykryto płatności mobilne');
+    }
 
-  // ecom-schema-product
-  if (!isEcommerce) {
-    addEval('ecom-schema-product', 'passed', 'Nie dotyczy (witryna usługowa)');
-  } else if (!tracking.hasProductSchema) {
-    addEval('ecom-schema-product', 'warning', 'Brak Schema.org Product');
-  } else {
-    addEval('ecom-schema-product', 'passed', 'Schema Product obecna');
-  }
+    // ecom-schema-product
+    if (!tracking.hasProductSchema) {
+      addEval('ecom-schema-product', 'warning', 'Brak Schema.org Product');
+    } else {
+      addEval('ecom-schema-product', 'passed', 'Schema Product obecna');
+    }
 
-  // ecom-schema-offers
-  if (!isEcommerce) {
-    addEval('ecom-schema-offers', 'passed', 'Nie dotyczy (witryna usługowa)');
-  } else if (!tracking.hasProductSchema) {
-    addEval('ecom-schema-offers', 'warning', 'Brak mikrodanych ofert');
-  } else {
-    addEval('ecom-schema-offers', 'passed', 'Oferty Schema w JSON-LD');
-  }
+    // ecom-schema-offers
+    if (!tracking.hasProductSchema) {
+      addEval('ecom-schema-offers', 'warning', 'Brak mikrodanych ofert');
+    } else {
+      addEval('ecom-schema-offers', 'passed', 'Oferty Schema w JSON-LD');
+    }
 
-  // ecom-schema-stock
-  if (!isEcommerce) {
-    addEval('ecom-schema-stock', 'passed', 'Nie dotyczy (brak magazynu towarów)');
-  } else {
+    // ecom-schema-stock
     addEval('ecom-schema-stock', 'passed', 'Dostępność magazynowa');
-  }
 
-  // ecom-cart-buttons
-  if (!isEcommerce) {
-    addEval('ecom-cart-buttons', 'passed', 'Nie dotyczy (brak koszyka)');
-  } else if (!tracking.hasCartButtons) {
-    addEval('ecom-cart-buttons', 'failed', 'Brak czytelnych przycisków koszyka');
-  } else {
-    addEval('ecom-cart-buttons', 'passed', 'Przyciski aktywne');
-  }
+    // ecom-cart-buttons
+    if (!tracking.hasCartButtons) {
+      addEval('ecom-cart-buttons', 'failed', 'Brak czytelnych przycisków koszyka');
+    } else {
+      addEval('ecom-cart-buttons', 'passed', 'Przyciski aktywne');
+    }
 
-  // ecom-cart-visibility
-  if (!isEcommerce) {
-    addEval('ecom-cart-visibility', 'passed', 'Nie dotyczy (profil Usługi / B2B)');
-  } else {
+    // ecom-cart-visibility
     addEval('ecom-cart-visibility', 'passed', 'Koszyk w nagłówku');
-  }
 
-  // ecom-trust-signals
-  if (!isEcommerce) {
-    addEval('ecom-trust-signals', 'passed', 'Sygnały wiarygodności B2B');
-  } else {
+    // ecom-trust-signals
     addEval('ecom-trust-signals', 'passed', 'Sygnały zaufania e-commerce');
-  }
 
-  // ecom-consumer-rights
-  if (!isEcommerce) {
-    addEval('ecom-consumer-rights', 'passed', 'Regulamin / Warunki współpracy');
-  } else {
+    // ecom-consumer-rights
     addEval('ecom-consumer-rights', 'passed', 'Informacje o zwrotach i reklamacjach');
-  }
 
-  // ecom-cross-sell
-  if (!isEcommerce) {
-    addEval('ecom-cross-sell', 'passed', 'Nie dotyczy (profil Usługi / B2B)');
-  } else {
+    // ecom-cross-sell
     addEval('ecom-cross-sell', 'passed', 'Moduły rekomendacji');
-  }
 
-  // ecom-free-shipping
-  if (!isEcommerce) {
-    addEval('ecom-free-shipping', 'passed', 'Nie dotyczy (profil Usługi / B2B)');
-  } else {
+    // ecom-free-shipping
     addEval('ecom-free-shipping', 'passed', 'Próg darmowej dostawy');
-  }
 
-  // ecom-product-images
-  if (!isEcommerce) {
-    addEval('ecom-product-images', 'passed', 'Nie dotyczy (brak katalogu SKU)');
-  } else {
+    // ecom-product-images
     const missingImgProd = evidence.categoriesSummary?.products?.missingImages || 0;
     if (missingImgProd > 0) {
       addEval('ecom-product-images', 'warning', `${missingImgProd} produktów bez zdjęć`);

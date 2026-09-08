@@ -96,9 +96,9 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
       rootData
     );
 
-    expect(evals.length).toBe(80);
-    expect(stats.total).toBe(80);
-    expect(stats.passed + stats.warning + stats.failed).toBe(80);
+    expect(evals.length).toBe(64);
+    expect(stats.total).toBe(64);
+    expect(stats.passed + stats.warning + stats.failed).toBe(64);
 
     // Weryfikacja kalibracji DOM: 614 elementów to status 'passed' (nie ma ostrzeżenia o długu)
     const domEval = evals.find(e => e.id === 'perf-dom-size');
@@ -192,6 +192,9 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
       rootData
     );
 
+    expect(evals.length).toBe(80);
+    expect(stats.total).toBe(80);
+    expect(stats.passed + stats.warning + stats.failed).toBe(80);
     expect(stats.failed).toBeGreaterThan(5);
     expect(stats.criticalLeaksCount).toBeGreaterThan(0);
 

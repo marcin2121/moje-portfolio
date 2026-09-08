@@ -11,7 +11,8 @@ import {
   ShieldCheck,
   ShieldAlert,
   ShoppingCart,
-  Database
+  Database,
+  Mail
 } from 'lucide-react';
 import { AdsAndTrackingAudit } from '@/app/api/audit-master/types';
 
@@ -245,7 +246,11 @@ export default function AdsAndTrackingCard({ tracking, domain, siteType = 'servi
         }`}>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <ShoppingCart className={`w-4 h-4 ${isEcommerce ? 'text-amber-600' : 'text-slate-500'}`} />
+              {isEcommerce ? (
+                <ShoppingCart className="w-4 h-4 text-amber-600" />
+              ) : (
+                <Mail className="w-4 h-4 text-indigo-600" />
+              )}
               <span className="font-bold text-xs text-slate-900">
                 {isEcommerce ? 'Zdarzenie add_to_cart' : 'Śledzenie Leadów / Formularzy'}
               </span>
@@ -269,8 +274,8 @@ export default function AdsAndTrackingCard({ tracking, domain, siteType = 'servi
                 Brak eventu
               </span>
             ) : (
-              <span className="text-[11px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
-                Brak koszyka
+              <span className="text-[11px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                Profil Usługi / B2B
               </span>
             )}
           </div>
@@ -293,7 +298,7 @@ export default function AdsAndTrackingCard({ tracking, domain, siteType = 'servi
                 ? 'Zdarzenia konwersji w dataLayer'
                 : tracking.hasLeadForms
                   ? 'Wykryto formularz bez zdarzenia generate_lead'
-                  : 'Serwis usługowy (brak koszyka e-commerce)'}
+                  : 'Serwis usługowy (rejestracja zapytań ofertowych)'}
           </div>
           <div className="text-[11px] text-slate-500 mt-1">
             {isEcommerce

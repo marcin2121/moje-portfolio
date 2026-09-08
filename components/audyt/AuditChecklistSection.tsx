@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQueryState } from 'nuqs';
 import {
@@ -64,30 +64,72 @@ export default function AuditChecklistSection({
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // Scalenie ewaluacji z bazą wiedzy (katalogiem 80 punktów)
+  // Automatyczny reset filtru kategorii, gdy witryna usługowa ma w URL wybrane ecommerce_cro
+  useEffect(() => {
+    if (siteType === 'services' && selectedCategory === 'ecommerce_cro') {
+      setSelectedCategory('all');
+    }
+  }, [siteType, selectedCategory, setSelectedCategory]);
+
+  // Scalenie ewaluacji z bazą wiedzy z inteligentną filtracją profilu biznesowego
   const mergedCheckpoints = useMemo<MergedCheckpoint[]>(() => {
-    return Object.keys(CHECKPOINTS_CATALOG).map(id => {
-      const def = CHECKPOINTS_CATALOG[id];
-      const evaluation = evaluations.find(e => e.id === id);
-      const status = evaluation ? evaluation.status : 'passed';
-      const metric = evaluation?.metric;
-      const evidence = evaluation?.evidence;
-      const diagnosis = evaluation?.customDiagnosis
-        || (status === 'passed' ? def.defaultDiagnosisPassed : def.defaultDiagnosisFailed);
+    return Object.keys(CHECKPOINTS_CATALOG)
+      .filter(id => {
+        const def = CHECKPOINTS_CATALOG[id];
+        const evaluation = (evaluations || []).find(e => e.id === id);
 
-      return {
-        ...def,
-        status,
-        metric,
-        evidence,
-        diagnosis
-      };
-    });
-  }, [evaluations]);
+        // 1. Zawsze odrzuć jeśli ewaluacja wprost stwierdza "Nie dotyczy"
+        if (evaluation?.metric?.toLowerCase().includes('nie dotyczy')) {
+          return false;
+        }
 
-  // Dynamiczne przeliczenie statystyk jeśli nie zostały przekazane bezpośrednio
+        // 2. Jeśli profil to Usługi / B2B:
+        if (siteType === 'services') {
+          // Całkowite wykluczenie modułów koszykowych / e-commerce
+          if (def.category === 'ecommerce_cro') {
+            return false;
+          }
+          // Wykluczenie e-commerce specyficznych trackingów (add_to_cart, purchase, view_item)
+          if (['track-add-to-cart', 'track-purchase', 'track-view-item'].includes(id)) {
+            // Ukryj jeśli brak ewaluacji lub ewaluacja mówi o braku koszyka/reklam
+            if (
+              !evaluation ||
+              evaluation.metric?.toLowerCase().includes('brak reklam') ||
+              evaluation.metric?.toLowerCase().includes('brak transakcji') ||
+              evaluation.metric?.toLowerCase().includes('brak katalogu') ||
+              evaluation.metric?.toLowerCase().includes('brak koszyka')
+            ) {
+              return false;
+            }
+          }
+        }
+
+        return true;
+      })
+      .map(id => {
+        const def = CHECKPOINTS_CATALOG[id];
+        const evaluation = (evaluations || []).find(e => e.id === id);
+        const status = evaluation ? evaluation.status : 'passed';
+        const metric = evaluation?.metric;
+        const evidence = evaluation?.evidence;
+        const diagnosis = evaluation?.customDiagnosis
+          || (status === 'passed' ? def.defaultDiagnosisPassed : def.defaultDiagnosisFailed);
+
+        return {
+          ...def,
+          status,
+          metric,
+          evidence,
+          diagnosis
+        };
+      });
+  }, [evaluations, siteType]);
+
+  // Dynamiczne przeliczenie statystyk ściśle na podstawie zakwalifikowanych punktów
   const computedStats = useMemo(() => {
-    if (stats) return stats;
+    if (stats && stats.total === mergedCheckpoints.length) {
+      return stats;
+    }
     const total = mergedCheckpoints.length;
     const failed = mergedCheckpoints.filter(c => c.status === 'failed').length;
     const warning = mergedCheckpoints.filter(c => c.status === 'warning').length;
@@ -143,10 +185,15 @@ export default function AuditChecklistSection({
     <section className="bg-white/80 border border-slate-200/70 rounded-3xl p-6 md:p-10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
       {/* Nagłówek Sekcji */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-2">
-          <Layers className="w-5 h-5 text-indigo-600" />
-          <span className="font-mono text-xs font-bold text-indigo-600 uppercase tracking-widest">
-            Rejestr Kontrolny & Korzyści Biznesowe
+        <div className="flex flex-wrap items-center gap-2.5 mb-2">
+          <div className="flex items-center gap-2">
+            <Layers className="w-5 h-5 text-indigo-600" />
+            <span className="font-mono text-xs font-bold text-indigo-600 uppercase tracking-widest">
+              Rejestr Kontrolny & Korzyści Biznesowe
+            </span>
+          </div>
+          <span className="font-mono text-[11px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80">
+            {siteType === 'services' ? 'Profil: Usługi / B2B' : 'Profil: E-Commerce & Sklep'}
           </span>
         </div>
         <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
@@ -265,31 +312,35 @@ export default function AuditChecklistSection({
           >
             Wszystkie ({mergedCheckpoints.length})
           </button>
-          {(Object.keys(CATEGORY_LABELS) as CheckpointCategory[]).map(catKey => {
-            const cat = CATEGORY_LABELS[catKey];
-            const Icon = cat.icon;
-            const count = mergedCheckpoints.filter(c => c.category === catKey).length;
-            const isCatSelected = selectedCategory === catKey;
-            const tabLabel = (siteType === 'services' && catKey === 'ecommerce_cro') ? 'E-Commerce (Pominięto)' : cat.label;
-            return (
-              <button
-                key={catKey}
-                type="button"
-                onClick={() => setSelectedCategory(catKey)}
-                className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
-                  isCatSelected
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
-                }`}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{tabLabel}</span>
-                <span className={`text-[10px] font-mono px-1 rounded ${isCatSelected ? 'bg-slate-800 text-slate-300' : 'text-slate-400'}`}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
+          {(Object.keys(CATEGORY_LABELS) as CheckpointCategory[])
+            .filter(catKey => {
+              if (siteType === 'services' && catKey === 'ecommerce_cro') return false;
+              return true;
+            })
+            .map(catKey => {
+              const cat = CATEGORY_LABELS[catKey];
+              const Icon = cat.icon;
+              const count = mergedCheckpoints.filter(c => c.category === catKey).length;
+              const isCatSelected = selectedCategory === catKey;
+              return (
+                <button
+                  key={catKey}
+                  type="button"
+                  onClick={() => setSelectedCategory(catKey)}
+                  className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
+                    isCatSelected
+                      ? 'bg-slate-900 text-white shadow-sm'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{cat.label}</span>
+                  <span className={`text-[10px] font-mono px-1 rounded ${isCatSelected ? 'bg-slate-800 text-slate-300' : 'text-slate-400'}`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
         </div>
 
         {/* Wyszukiwarka na żywo */}
@@ -313,13 +364,6 @@ export default function AuditChecklistSection({
           )}
         </div>
       </div>
-
-      {/* Informacja o pominięciu E-Commerce dla profilu usługowego */}
-      {siteType === 'services' && selectedCategory === 'ecommerce_cro' && (
-        <div className="mb-4 p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs font-mono text-slate-600 flex items-center gap-2">
-          <span>ℹ️ Wybrano profil <strong>Strona Firmowa / Usługi</strong>. Punkty specyficzne dla koszyka, wariantów i checkoutu sklepu internetowego zostały automatycznie oznaczone jako nie dotyczy.</span>
-        </div>
-      )}
 
       {/* Licznik aktywnych wyników */}
       <div className="flex items-center justify-between text-xs text-slate-500 font-mono mb-4">
