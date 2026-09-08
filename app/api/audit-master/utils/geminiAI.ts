@@ -88,7 +88,7 @@ FORMATOWANIE: Czysty Markdown. Bez HTML.`;
   try {
     const ai = new GoogleGenAI({ apiKey: geminiKey });
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: process.env.GEMINI_MODEL || 'gemini-3.5-flash',
       contents: prompt,
       config: { temperature: 0.5 }
     });
