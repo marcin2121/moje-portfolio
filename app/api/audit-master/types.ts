@@ -129,6 +129,51 @@ export interface DetailedCodeSmells {
   lcp?: string;
 }
 
+export type CheckpointCategory =
+  | 'tracking_ads'
+  | 'ecommerce_cro'
+  | 'seo_indexing'
+  | 'performance_vitals'
+  | 'ux_mobile'
+  | 'security_compliance';
+
+export type CheckpointStatus = 'passed' | 'warning' | 'failed';
+
+export interface CheckpointEvaluation {
+  id: string;
+  status: CheckpointStatus;
+  metric?: string;
+  evidence?: string[];
+  customDiagnosis?: string;
+}
+
+export interface CheckpointStats {
+  total: number;
+  passed: number;
+  warning: number;
+  failed: number;
+  criticalLeaksCount: number;
+}
+
+export interface CatalogCheckpointDefinition {
+  id: string;
+  name: string;
+  category: CheckpointCategory;
+  severity: 'critical' | 'warning' | 'good';
+  defaultDiagnosisPassed: string;
+  defaultDiagnosisFailed: string;
+  businessImpact: string; // Co klient traci, gdy ten błąd występuje
+  businessBenefit: string; // Bezpośrednia korzyść z naprawy (ROI / zysk / oszczędność)
+  developerSolution: string; // Co dla Ciebie wdrożę w kodzie w 24-48h
+}
+
+export interface MergedCheckpoint extends CatalogCheckpointDefinition {
+  status: CheckpointStatus;
+  metric?: string;
+  evidence?: string[];
+  diagnosis: string;
+}
+
 export interface QuickCriticalIssue {
   id: string;
   title: string;
@@ -155,8 +200,11 @@ export interface AuditMasterResponse {
   codeSmells: DetailedCodeSmells;
   evidence: EvidenceSummary;
   quickIssues: QuickCriticalIssue[];
+  checkpointEvals?: CheckpointEvaluation[];
+  checkpointStats?: CheckpointStats;
   pages: PageAuditResult[];
   createdAt: string;
   cached?: boolean;
   error?: string;
 }
+

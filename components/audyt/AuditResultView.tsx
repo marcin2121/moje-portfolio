@@ -10,6 +10,7 @@ import PagesTable from './PagesTable';
 import AuditConsultationForm from './AuditConsultationForm';
 import QuickCriticalIssues from './QuickCriticalIssues';
 import AdsAndTrackingCard from './AdsAndTrackingCard';
+import AuditChecklistSection from './AuditChecklistSection';
 import { pluralizePolish } from '@/app/api/audit-master/utils/crawler';
 
 export type { AuditMasterResponse as AuditResult };
@@ -140,7 +141,14 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
         <AdsAndTrackingCard tracking={evidence.adsAndTracking} domain={result.domain} siteType={result.siteType} />
       )}
 
-      {/* SEKCJA 3: Asymetryczny Bento Grid filarów technicznych */}
+      {/* SEKCJA 3: Kompleksowy Rejestr 80 Punktów Kontrolnych & Korzyści Biznesowe (ROI) */}
+      <AuditChecklistSection
+        evaluations={result.checkpointEvals}
+        stats={result.checkpointStats}
+        domain={result.domain}
+      />
+
+      {/* SEKCJA 4: Asymetryczny Bento Grid filarów technicznych */}
       <div>
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-bold text-slate-900 tracking-tight">

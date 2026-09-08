@@ -6,6 +6,7 @@ import { generateGeminiReport } from './utils/geminiAI';
 import { getInterpretation } from './utils/interpretation';
 import { crawlDomain, generateQuickCriticalIssues } from './utils/crawler';
 import { getAuditByToken, getAuditByDomain, saveAudit } from './utils/storage';
+import { evaluateAllCheckpoints } from './utils/checkpointsCatalog';
 import { AuditMasterResponse, DetailedCodeSmells } from './types';
 
 export async function GET(req: Request) {
@@ -196,6 +197,15 @@ export async function POST(req: Request) {
     // Unikalny token URL do trwałego linku (np. /narzedzia/audyt?token=a8f9c1...)
     const tokenStr = crypto.randomBytes(16).toString('hex');
 
+    // Ewaluacja 80 punktów kontrolnych (Master Audit Checklist)
+    const checkpointResult = evaluateAllCheckpoints(
+      crawlData.evidence,
+      crawlData.pages,
+      rootData.codeSmells,
+      currentSiteType,
+      rootData
+    );
+
     const responsePayload: AuditMasterResponse = {
       token: tokenStr,
       url: targetUrl,
@@ -209,6 +219,8 @@ export async function POST(req: Request) {
       codeSmells: rootData.codeSmells,
       evidence: crawlData.evidence,
       quickIssues,
+      checkpointEvals: checkpointResult.evals,
+      checkpointStats: checkpointResult.stats,
       pages: crawlData.pages,
       createdAt: new Date().toISOString(),
       pillars: [
@@ -312,31 +324,51 @@ async function analyzeRootUrl(targetUrl: string) {
         if (!isAsync && !isDefer && !isNoModule) codeSmells.badScripts++;
       });
 
-      if (lowerHtml.includes('elementor')) codeSmells.pageBuilders?.push('Elementor');
-      if (lowerHtml.includes('et_pb_section') || lowerHtml.includes('divi')) codeSmells.pageBuilders?.push('Divi Builder');
-      if (lowerHtml.includes('wpb_wrapper') || lowerHtml.includes('vc_row')) codeSmells.pageBuilders?.push('WPBakery');
-      if (lowerHtml.includes('oxygen')) codeSmells.pageBuilders?.push('Oxygen Builder');
-
       if (lowerHtml.includes('googletagmanager.com')) codeSmells.trackers?.push('Google Tag Manager');
       if (lowerHtml.includes('connect.facebook.net') || lowerHtml.includes('fbq(')) codeSmells.trackers?.push('Meta Pixel');
       if (lowerHtml.includes('analytics.tiktok.com')) codeSmells.trackers?.push('TikTok Pixel');
       if (lowerHtml.includes('hotjar.com')) codeSmells.trackers?.push('Hotjar');
       if (lowerHtml.includes('clarity.ms')) codeSmells.trackers?.push('Microsoft Clarity');
 
-      scalabilityScore = codeSmells.domElements < 800 ? 95 : codeSmells.domElements < 1500 ? 75 : codeSmells.domElements < 2500 ? 50 : 30;
+      // Rekalibracja progu DOM (<1000 elementów to super wynik we współczesnym frontendzie z SVG i komponentami)
+      scalabilityScore = codeSmells.domElements < 1000 ? 95 : codeSmells.domElements < 1800 ? 75 : codeSmells.domElements < 2800 ? 50 : 30;
       automationScore = codeSmells.badScripts === 0 ? 90 : Math.max(30, 90 - codeSmells.badScripts * 10);
 
-      if (html.includes('__NEXT_DATA__') || html.includes('/_next/static/')) {
+      // Uniwersalna detekcja Next.js (App Router z streamingiem self.__next_f + Pages Router __NEXT_DATA__)
+      const isNextJs = lowerHtml.includes('/_next/static/') || 
+                       lowerHtml.includes('self.__next_f') || 
+                       lowerHtml.includes('__next_data__') ||
+                       lowerHtml.includes('next-route-announcer');
+      const isShopify = lowerHtml.includes('cdn.shopify.com');
+      const isWordPress = lowerHtml.includes('wp-content') || lowerHtml.includes('wp-includes');
+
+      if (isNextJs) {
         detectedPlatform = 'Next.js / React (Serverless Edge)';
         scalabilityScore = Math.max(scalabilityScore, 95);
         automationScore = Math.max(automationScore, 90);
-      } else if (html.includes('cdn.shopify.com')) {
+        // Bezwzględnie czyścimy WordPressowe page buildery na Next.js (eliminacja false-positives np. Divi)
+        codeSmells.pageBuilders = [];
+      } else if (isShopify) {
         detectedPlatform = 'Shopify SaaS';
         scalabilityScore = Math.max(scalabilityScore, 80);
-      } else if (html.includes('wp-content')) {
+      } else if (isWordPress) {
         detectedPlatform = 'WordPress / WooCommerce';
         scalabilityScore = Math.min(scalabilityScore, 50);
         automationScore = Math.min(automationScore, 45);
+
+        // Precyzyjne sprawdzanie builderów WP wyłącznie w kontekście WordPressa
+        if (lowerHtml.includes('/wp-content/plugins/elementor') || lowerHtml.includes('elementor-section') || lowerHtml.includes('elementor-widget')) {
+          codeSmells.pageBuilders?.push('Elementor');
+        }
+        if (lowerHtml.includes('/wp-content/themes/divi') || lowerHtml.includes('divi-style-css') || (lowerHtml.includes('et_pb_section') && lowerHtml.includes('wp-content'))) {
+          codeSmells.pageBuilders?.push('Divi Builder');
+        }
+        if (lowerHtml.includes('/plugins/js_composer') || (lowerHtml.includes('wp-content') && (lowerHtml.includes('wpb_wrapper') || lowerHtml.includes('vc_row')))) {
+          codeSmells.pageBuilders?.push('WPBakery');
+        }
+        if (lowerHtml.includes('/wp-content/plugins/oxygen') || lowerHtml.includes('ct-section')) {
+          codeSmells.pageBuilders?.push('Oxygen Builder');
+        }
       }
     }
   } catch {

@@ -1,5 +1,6 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { AuditMasterResponse } from '../types';
+import { evaluateAllCheckpoints } from './checkpointsCatalog';
 import fs from 'fs';
 import path from 'path';
 
@@ -28,6 +29,25 @@ function ensureLocalCacheDir() {
 }
 
 function sanitizeAuditData(audit: AuditMasterResponse): AuditMasterResponse {
+  // Jeśli w cache nie ma jeszcze ewaluacji 80 punktów kontrolnych, przelicz je w locie
+  if (!audit.checkpointEvals && audit.evidence) {
+    const rootDataFallback = {
+      detectedPlatform: audit.detectedPlatform,
+      wafDetected: audit.wafDetected,
+      performanceScore: audit.pillars?.find(p => p.name === 'Szybkość')?.score || 55,
+      seoScore: audit.pillars?.find(p => p.name === 'SEO')?.score || 60,
+      securityScore: audit.pillars?.find(p => p.name === 'Bezpieczeństwo')?.score || 40
+    };
+    const { evals, stats } = evaluateAllCheckpoints(
+      audit.evidence,
+      audit.pages || [],
+      audit.codeSmells || { jquery: false, badScripts: 0, domElements: 500, inlineStyles: 0 },
+      audit.siteType || 'services',
+      rootDataFallback
+    );
+    audit.checkpointEvals = evals;
+    audit.checkpointStats = stats;
+  }
   if (audit.quickIssues) {
     audit.quickIssues = audit.quickIssues.map(issue => ({
       ...issue,

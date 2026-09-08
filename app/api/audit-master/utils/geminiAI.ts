@@ -154,7 +154,7 @@ Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego 
     (evidence?.missingCanonicalCount || 0) > 0;
 
   if (!hasStructuralIssues && issues.length === 0) {
-    if (codeSmells?.domElements && codeSmells.domElements > 800) {
+    if (codeSmells?.domElements && codeSmells.domElements > 1200) {
       issues.push(`rozmiar drzewa DOM (${codeSmells.domElements} elementów), który warto odchudzić pod kątem Core Web Vitals na urządzeniach mobilnych`);
     }
     if (evidence?.adsAndTracking && !evidence.adsAndTracking.hasGoogleAds && !evidence.adsAndTracking.hasGoogleTagManager) {
