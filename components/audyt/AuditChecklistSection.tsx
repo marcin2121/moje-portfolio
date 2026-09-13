@@ -238,12 +238,12 @@ export default function AuditChecklistSection({
               : 'bg-rose-50/50 border-rose-200/80 hover:bg-rose-50 text-slate-900'
           }`}
         >
-          <div className="flex items-center justify-between mb-1">
+          <span className="flex items-center justify-between mb-1">
             <span className={`font-mono text-xs uppercase tracking-wider ${selectedStatus === 'failed' ? 'text-rose-200' : 'text-rose-700'}`}>
               Krytyczne błędy
             </span>
             <XCircle className={`w-4 h-4 ${selectedStatus === 'failed' ? 'text-rose-300' : 'text-rose-600'}`} />
-          </div>
+          </span>
           <span className={`text-2xl md:text-3xl font-black font-mono ${selectedStatus === 'failed' ? 'text-white' : 'text-rose-600'}`}>
             {computedStats.failed}
           </span>
@@ -261,12 +261,12 @@ export default function AuditChecklistSection({
               : 'bg-amber-50/50 border-amber-200/80 hover:bg-amber-50 text-slate-900'
           }`}
         >
-          <div className="flex items-center justify-between mb-1">
+          <span className="flex items-center justify-between mb-1">
             <span className={`font-mono text-xs uppercase tracking-wider ${selectedStatus === 'warning' ? 'text-amber-200' : 'text-amber-700'}`}>
               Wąskie gardła
             </span>
             <AlertTriangle className={`w-4 h-4 ${selectedStatus === 'warning' ? 'text-amber-300' : 'text-amber-600'}`} />
-          </div>
+          </span>
           <span className={`text-2xl md:text-3xl font-black font-mono ${selectedStatus === 'warning' ? 'text-white' : 'text-amber-600'}`}>
             {computedStats.warning}
           </span>
@@ -284,12 +284,12 @@ export default function AuditChecklistSection({
               : 'bg-emerald-50/50 border-emerald-200/80 hover:bg-emerald-50 text-slate-900'
           }`}
         >
-          <div className="flex items-center justify-between mb-1">
+          <span className="flex items-center justify-between mb-1">
             <span className={`font-mono text-xs uppercase tracking-wider ${selectedStatus === 'passed' ? 'text-emerald-200' : 'text-emerald-700'}`}>
               Zaliczone
             </span>
             <CheckCircle2 className={`w-4 h-4 ${selectedStatus === 'passed' ? 'text-emerald-300' : 'text-emerald-600'}`} />
-          </div>
+          </span>
           <span className={`text-2xl md:text-3xl font-black font-mono ${selectedStatus === 'passed' ? 'text-white' : 'text-emerald-600'}`}>
             {computedStats.passed}
           </span>

@@ -91,13 +91,13 @@ export default function Configurator() {
                     onClick={() => handleSelect(opt.id)}
                     className={`w-full text-left p-5 md:p-8 rounded-2xl md:rounded-3xl border transition-all flex items-center gap-4 md:gap-6 group relative overflow-hidden ${isSelected ? 'bg-white/10 border-white/30 scale-[0.98]' : 'bg-zinc-900/40 border-white/5 hover:border-white/20 hover:bg-zinc-800/40 hover:scale-[1.02]'}`}
                   >
-                    <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl shrink-0 ${isSelected ? 'bg-white text-black' : 'bg-white/5 text-zinc-400 group-hover:text-white group-hover:bg-white/10'} transition-colors`}>
+                    <span className={`p-3 md:p-4 rounded-xl md:rounded-2xl shrink-0 block ${isSelected ? 'bg-white text-black' : 'bg-white/5 text-zinc-400 group-hover:text-white group-hover:bg-white/10'} transition-colors`}>
                       <Icon size={24} className="md:w-7 md:h-7" strokeWidth={1.5} />
-                    </div>
-                    <div className="flex-1">
-                      <div className={`text-base md:text-xl font-bold mb-1 md:mb-2 ${isSelected ? 'text-white' : 'text-zinc-200'}`}>{opt.label}</div>
-                      <div className="text-[11px] md:text-sm text-zinc-500 leading-relaxed">{fixOrphans(opt.desc)}</div>
-                    </div>
+                    </span>
+                    <span className="flex-1 block">
+                      <span className={`text-base md:text-xl font-bold mb-1 md:mb-2 block ${isSelected ? 'text-white' : 'text-zinc-200'}`}>{opt.label}</span>
+                      <span className="text-[11px] md:text-sm text-zinc-500 leading-relaxed block">{fixOrphans(opt.desc)}</span>
+                    </span>
                   </button>
                 );
               })}
@@ -133,9 +133,9 @@ export default function Configurator() {
                   onClick={() => setShowNotes(!showNotes)}
                   className="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 transition-colors text-xs md:text-sm font-mono uppercase tracking-widest"
                 >
-                  <div className={`w-4 h-4 rounded flex items-center justify-center transition-colors ${showNotes ? 'bg-orange-500 text-white' : 'border border-zinc-600'}`}>
+                  <span className={`w-4 h-4 rounded flex items-center justify-center transition-colors ${showNotes ? 'bg-orange-500 text-white' : 'border border-zinc-600'}`}>
                     {showNotes && <Check size={12} strokeWidth={3} />}
-                  </div>
+                  </span>
                   Mam uwagi
                 </button>
               </div>

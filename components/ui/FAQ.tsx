@@ -74,9 +74,9 @@ export default function FAQ() {
                   <span className={`text-lg sm:text-xl font-medium transition-colors duration-300 ${isOpen ? 'text-slate-900' : 'text-slate-600 group-hover:text-slate-900'}`}>
                     {fixOrphans(item.question)}
                   </span>
-                  <div className={`p-2 rounded-full transition-transform duration-500 shrink-0 ml-4 ${isOpen ? 'bg-orange-50 border border-orange-200 rotate-180 text-orange-600' : 'bg-white border border-slate-200 text-slate-400'}`}>
+                  <span className={`p-2 rounded-full transition-transform duration-500 shrink-0 ml-4 flex items-center justify-center ${isOpen ? 'bg-orange-50 border border-orange-200 rotate-180 text-orange-600' : 'bg-white border border-slate-200 text-slate-400'}`}>
                     <ChevronDown size={20} />
-                  </div>
+                  </span>
                 </button>
                 
                 <AnimatePresence>

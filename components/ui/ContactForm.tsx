@@ -107,13 +107,13 @@ export default function ContactForm() {
                           onClick={() => handleSelect(opt.id, opt.label)}
                           className={`w-full text-left p-4 md:p-8 rounded-2xl md:rounded-3xl border transition-all flex items-center gap-4 md:gap-6 group relative overflow-hidden ${isSelected ? 'bg-orange-50 border-orange-200 scale-[0.98] shadow-inner' : 'bg-white border-slate-200 hover:border-orange-200 hover:bg-slate-50 hover:scale-[1.02] shadow-sm'}`}
                         >
-                          <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl shrink-0 ${isSelected ? 'bg-orange-500 text-white' : 'bg-slate-100 text-slate-400 group-hover:text-orange-500 group-hover:bg-orange-50'} transition-colors`}>
+                          <span className={`p-3 md:p-4 rounded-xl md:rounded-2xl shrink-0 block ${isSelected ? 'bg-orange-500 text-white' : 'bg-slate-100 text-slate-400 group-hover:text-orange-500 group-hover:bg-orange-50'} transition-colors`}>
                             <Icon size={22} className="md:w-7 md:h-7" strokeWidth={1.5} />
-                          </div>
-                          <div className="flex-1">
-                            <div className={`text-base md:text-xl font-bold mb-0.5 md:mb-2 ${isSelected ? 'text-slate-900' : 'text-slate-700'}`}>{opt.label}</div>
-                            <div className="text-[11px] md:text-sm text-slate-500 leading-tight md:leading-relaxed line-clamp-2 md:line-clamp-none">{fixOrphans(opt.desc)}</div>
-                          </div>
+                          </span>
+                          <span className="flex-1 block">
+                            <span className={`text-base md:text-xl font-bold mb-0.5 md:mb-2 block ${isSelected ? 'text-slate-900' : 'text-slate-700'}`}>{opt.label}</span>
+                            <span className="text-[11px] md:text-sm text-slate-500 leading-tight md:leading-relaxed line-clamp-2 md:line-clamp-none block">{fixOrphans(opt.desc)}</span>
+                          </span>
                         </button>
                       );
                     })}
@@ -160,9 +160,9 @@ export default function ContactForm() {
                         onClick={() => setShowNotes(!showNotes)}
                         className="flex items-start text-left gap-3 text-slate-500 hover:text-slate-700 transition-colors text-[10px] md:text-xs font-mono uppercase tracking-widest leading-relaxed"
                       >
-                        <div className={`w-4 h-4 shrink-0 mt-[2px] rounded flex items-center justify-center transition-colors ${showNotes ? 'bg-orange-500 text-white border-orange-500' : 'border border-slate-300 bg-white'}`}>
+                        <span className={`w-4 h-4 shrink-0 mt-[2px] rounded flex items-center justify-center transition-colors ${showNotes ? 'bg-orange-500 text-white border-orange-500' : 'border border-slate-300 bg-white'}`}>
                           {showNotes && <Check size={12} strokeWidth={3} />}
-                        </div>
+                        </span>
                         <span>Mam dodatkowe uwagi lub chcę podać nazwę firmy / adres mojej obecnej strony / Facebooka (opcjonalnie)</span>
                       </button>
                     </div>

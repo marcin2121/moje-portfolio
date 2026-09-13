@@ -67,9 +67,9 @@ export default function Pricing() {
           >
             <span className="relative z-20">Biznes Lokalny i Usługi</span>
             {tierType === 'services' && (
-              <motion.div
+              <motion.span
                 layoutId="active-pill"
-                className="absolute inset-0 bg-slate-100 rounded-xl"
+                className="absolute inset-0 bg-slate-100 rounded-xl block"
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               />
             )}
@@ -82,9 +82,9 @@ export default function Pricing() {
           >
             <span className="relative z-20">Sklep Internetowy (E-commerce)</span>
             {tierType === 'ecommerce' && (
-              <motion.div
+              <motion.span
                 layoutId="active-pill"
-                className="absolute inset-0 bg-slate-100 rounded-xl"
+                className="absolute inset-0 bg-slate-100 rounded-xl block"
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               />
             )}

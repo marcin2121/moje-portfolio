@@ -39,7 +39,7 @@ export default function NotFound() {
 
           <Link href="/">
             <button className="group relative px-8 py-4 bg-slate-900 text-white font-medium tracking-wide text-sm rounded-none shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-4 overflow-hidden">
-              <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+              <span className="absolute inset-0 block bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
               <MoveLeft size={16} className="group-hover:-translate-x-1 transition-transform duration-300 relative z-10" />
               <span className="relative z-10">Wróć na Stronę Główną</span>
             </button>

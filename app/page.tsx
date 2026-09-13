@@ -348,7 +348,7 @@ export default function PortfolioHome() {
               onClick={() => scrollToSection(15)}
               className="group relative ml-1 px-6 py-2 bg-orange-500 text-white font-black uppercase text-[10px] tracking-[0.15em] rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(234,88,12,0.3)]"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <span className="absolute inset-0 block bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               <span className="relative z-10">DARMOWA WYCENA</span>
             </button>
           </div>
@@ -382,7 +382,7 @@ export default function PortfolioHome() {
                     }`}
                   >
                     <span className="truncate pr-2">{dot.title}</span>
-                    {activeDot === idx && <div className="w-1.5 h-1.5 shrink-0 rounded-full bg-orange-500 shadow-[0_0_8px_#ea580c]" />}
+                    {activeDot === idx && <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-orange-500 shadow-[0_0_8px_#ea580c] inline-block" />}
                   </button>
                 ))}
               </div>
@@ -396,15 +396,15 @@ export default function PortfolioHome() {
             onClick={() => setIsMobileTocOpen(!isMobileTocOpen)}
             className="flex flex-col gap-1.5 w-[35%] overflow-hidden pl-2 text-left group"
           >
-            <div className="text-[9px] font-mono font-bold text-slate-600 group-hover:text-slate-900 transition-colors uppercase tracking-widest truncate flex items-center gap-1.5 w-full">
+            <span className="text-[9px] font-mono font-bold text-slate-600 group-hover:text-slate-900 transition-colors uppercase tracking-widest truncate flex items-center gap-1.5 w-full">
               <span className="w-1 h-1 shrink-0 rounded-full bg-orange-500 shadow-[0_0_4px_#ea580c]" />
               <span className="truncate">{NAV_DOTS[activeDot]?.title || 'Przewijaj'}</span>
               <ChevronUp size={10} className={`shrink-0 text-slate-500 transition-transform duration-300 ${isMobileTocOpen ? 'rotate-180' : ''}`} />
-            </div>
-            <div className="relative w-full h-1 flex items-center shrink-0">
-              <div className="absolute left-0 right-0 h-full bg-slate-200 rounded-full" />
-              <motion.div className="absolute left-0 h-full bg-orange-500 rounded-full z-0 shadow-[0_0_8px_#ea580c]" style={{ width: lavaWidth }} />
-            </div>
+            </span>
+            <span className="relative w-full h-1 flex items-center shrink-0 block">
+              <span className="absolute left-0 right-0 h-full bg-slate-200 rounded-full block" />
+              <motion.span className="absolute left-0 h-full bg-orange-500 rounded-full z-0 shadow-[0_0_8px_#ea580c] block" style={{ width: lavaWidth }} />
+            </span>
           </button>
 
           <div className="flex items-center opacity-80">
