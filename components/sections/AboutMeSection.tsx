@@ -75,8 +75,7 @@ export function AboutMeSection() {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="lg:col-span-8 order-1 lg:order-2 bg-white/80 border border-slate-200 rounded-[1.6rem] xl:rounded-[2rem] p-4 lg:p-4.5 xl:p-8 relative overflow-hidden shadow-premium-soft max-h-[min(68vh,640px)] overflow-y-auto custom-scrollbar"
-            data-lenis-prevent="true"
+            className="lg:col-span-8 order-1 lg:order-2 bg-white/80 border border-slate-200 rounded-[1.6rem] xl:rounded-[2rem] p-4 lg:p-4.5 xl:p-6 2xl:p-8 relative overflow-hidden shadow-premium-soft"
           >
             {/* Subtelny wzór tła */}
             <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')]" />
