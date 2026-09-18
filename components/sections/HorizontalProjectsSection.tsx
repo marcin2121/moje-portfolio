@@ -245,78 +245,75 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
         </section>
 
         {/* Sekcja 6: Referencje */}
-        <section id="referencje" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-4 lg:px-8 xl:px-12 pt-20 lg:pt-24 xl:pt-28 pb-14 lg:pb-14 xl:pb-20 border-t lg:border-none">
-          <div 
-            className="flex flex-col w-full max-w-6xl mx-auto relative z-10 gap-3 lg:gap-3.5 xl:gap-6 px-2 py-2 max-h-[min(78vh,760px)] overflow-y-auto custom-scrollbar"
-            data-lenis-prevent="true"
-          >
+        <section id="referencje" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-4 lg:px-6 xl:px-12 pt-16 lg:pt-14 xl:pt-16 2xl:pt-24 pb-10 lg:pb-10 xl:pb-12 2xl:pb-18 border-t lg:border-none">
+          <div className="flex flex-col w-full max-w-5xl mx-auto relative z-10 gap-2.5 lg:gap-2.5 xl:gap-3.5 2xl:gap-5 px-2 py-1">
             
             {/* Michał - DzikiStyl */}
-            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-3 lg:gap-4 xl:gap-8">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-2.5 lg:gap-3 xl:gap-5 2xl:gap-8">
               <div className="shrink-0 relative z-20">
-                <a href="https://dzikistyldemo.vercel.app/" target="_blank" rel="noopener noreferrer" className="block w-16 h-16 sm:w-20 sm:h-20 lg:w-18 lg:h-18 xl:w-28 xl:h-28 rounded-full border-[3px] border-orange-500 bg-white shadow-premium relative group overflow-hidden transition-transform duration-500 hover:scale-105">
-                  <Image src="/DzikiMichał.jpg" alt="Michał - DzikiStyl" fill sizes="112px" quality={80} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
+                <a href="https://dzikistyldemo.vercel.app/" target="_blank" rel="noopener noreferrer" className="block w-14 h-14 sm:w-16 sm:h-16 lg:w-14 lg:h-14 xl:w-18 xl:h-18 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-orange-500 bg-white shadow-premium relative group overflow-hidden transition-transform duration-500 hover:scale-105">
+                  <Image src="/DzikiMichał.jpg" alt="Michał - DzikiStyl" fill sizes="96px" quality={80} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <Image src="/dzikistyl-logo.png" alt="DzikiStyl Logo" fill sizes="112px" quality={80} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply" />
+                    <Image src="/dzikistyl-logo.png" alt="DzikiStyl Logo" fill sizes="96px" quality={80} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply" />
                   </div>
                 </a>
               </div>
-              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-3.5 sm:p-4 xl:p-6 shadow-premium-soft">
-                <div className="hidden lg:block absolute top-6 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
-                <div className="hidden lg:block absolute top-6 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
-                <div className="mb-1.5">
+              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-2.5 sm:p-3.5 xl:p-4 2xl:p-5 shadow-premium-soft">
+                <div className="hidden lg:block absolute top-5 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
+                <div className="hidden lg:block absolute top-5 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
+                <div className="mb-1">
                   <h3 className="text-orange-500 font-bold tracking-widest uppercase text-xs xl:text-sm">Komentarz Michała</h3>
                   <p className="text-slate-400 font-mono text-[9px] xl:text-[10px] uppercase tracking-widest mt-0.5">Właściciel, DzikiStyl.com</p>
                 </div>
-                <div className="w-full h-px bg-slate-100 mb-2" />
-                <p className="text-xs lg:text-[12px] xl:text-sm font-normal text-slate-600 leading-relaxed italic text-left">
+                <div className="w-full h-px bg-slate-100 mb-1.5" />
+                <p className="text-[11px] lg:text-[11px] xl:text-xs 2xl:text-sm font-normal text-slate-600 leading-snug xl:leading-relaxed italic text-left">
                   &quot;{fixOrphans(`Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji. `)}<strong className="text-slate-900 font-medium">{fixOrphans(`To, co Marcin (Molenda Development) robi w pojedynkę, po prostu przekracza ludzkie pojęcie i technologicznie wyprzedza nasze czasy o 5 lat do przodu!`)}</strong>{fixOrphans(` Z całego serca polecam usługi Molenda Development każdemu. `)}<strong className="text-orange-500 font-medium">{fixOrphans(`Wielkie dzięki – zrobiłeś absolutny kosmos!`)}</strong>&quot;
                 </p>
               </div>
             </div>
 
             {/* Krzysztof - Sklep Urwis */}
-            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-3 lg:gap-4 xl:gap-8">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-2.5 lg:gap-3 xl:gap-5 2xl:gap-8">
               <div className="shrink-0 relative z-20">
-                <a href="https://www.sklep-urwis.pl" target="_blank" rel="noopener noreferrer" className="block w-16 h-16 sm:w-20 sm:h-20 lg:w-18 lg:h-18 xl:w-28 xl:h-28 rounded-full border-[3px] border-blue-500 bg-white shadow-premium relative group overflow-hidden transition-transform duration-500 hover:scale-105">
-                  <Image src="/Krzysztof_Urwis.jpg" alt="Krzysztof - Sklep Urwis" fill sizes="112px" quality={80} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
+                <a href="https://www.sklep-urwis.pl" target="_blank" rel="noopener noreferrer" className="block w-14 h-14 sm:w-16 sm:h-16 lg:w-14 lg:h-14 xl:w-18 xl:h-18 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-blue-500 bg-white shadow-premium relative group overflow-hidden transition-transform duration-500 hover:scale-105">
+                  <Image src="/Krzysztof_Urwis.jpg" alt="Krzysztof - Sklep Urwis" fill sizes="96px" quality={80} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <Image src="/sklepurwis-logo.png" alt="Urwis Logo" fill sizes="112px" quality={80} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply" />
+                    <Image src="/sklepurwis-logo.png" alt="Urwis Logo" fill sizes="96px" quality={80} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply" />
                   </div>
                 </a>
               </div>
-              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-3.5 sm:p-4 xl:p-6 shadow-premium-soft">
-                <div className="hidden lg:block absolute top-6 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
-                <div className="hidden lg:block absolute top-6 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
-                <div className="mb-1.5">
+              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-2.5 sm:p-3.5 xl:p-4 2xl:p-5 shadow-premium-soft">
+                <div className="hidden lg:block absolute top-5 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
+                <div className="hidden lg:block absolute top-5 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
+                <div className="mb-1">
                   <h3 className="text-blue-500 font-bold tracking-widest uppercase text-xs xl:text-sm">Komentarz Krzysztofa</h3>
                   <p className="text-slate-400 font-mono text-[9px] xl:text-[10px] uppercase tracking-widest mt-0.5">Właściciel, Sklep-Urwis.pl</p>
                 </div>
-                <div className="w-full h-px bg-slate-100 mb-2" />
-                <p className="text-xs lg:text-[12px] xl:text-sm font-normal text-slate-600 leading-relaxed italic text-left">
+                <div className="w-full h-px bg-slate-100 mb-1.5" />
+                <p className="text-[11px] lg:text-[11px] xl:text-xs 2xl:text-sm font-normal text-slate-600 leading-snug xl:leading-relaxed italic text-left">
                   &quot;{fixOrphans(`Polecam z całego serca. Marcin stworzył dla mojego sklepu z zabawkami aplikację, która ma w sobie wszystko (i jeszcze więcej!) - koło fortuny z rabatami, strefę zabawy z grami na telefon i kolorowanki z naszym Urwisem. `)}<strong className="text-slate-900 font-medium">{fixOrphans(`Zarówno strona sklepu, jak i aplikacja PWA przeszły moje najśmielsze oczekiwania`)}</strong> - <strong className="text-blue-600 font-medium">{fixOrphans(`czysty profesjonalizm i masa bajerów.`)}</strong>&quot;
                 </p>
               </div>
             </div>
 
             {/* Maciek - Kajaki u Maćka */}
-            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-3 lg:gap-4 xl:gap-8 pb-2">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-2.5 lg:gap-3 xl:gap-5 2xl:gap-8 pb-1">
               <div className="shrink-0 relative z-20">
-                <a href="https://kajaki-u-macka.pl" target="_blank" rel="noopener noreferrer" className="block w-16 h-16 sm:w-20 sm:h-20 lg:w-18 lg:h-18 xl:w-28 xl:h-28 rounded-full border-[3px] border-emerald-500 bg-white shadow-premium relative overflow-hidden transition-transform duration-500 hover:scale-105">
+                <a href="https://kajaki-u-macka.pl" target="_blank" rel="noopener noreferrer" className="block w-14 h-14 sm:w-16 sm:h-16 lg:w-14 lg:h-14 xl:w-18 xl:h-18 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-emerald-500 bg-white shadow-premium relative overflow-hidden transition-transform duration-500 hover:scale-105">
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-2">
-                    <Image src="/kajaki-u-macka-logo.png" alt="Kajaki u Maćka Logo" fill sizes="112px" quality={80} className="object-cover mix-blend-multiply" />
+                    <Image src="/kajaki-u-macka-logo.png" alt="Kajaki u Maćka Logo" fill sizes="96px" quality={80} className="object-cover mix-blend-multiply" />
                   </div>
                 </a>
               </div>
-              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-3.5 sm:p-4 xl:p-6 shadow-premium-soft">
-                <div className="hidden lg:block absolute top-6 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
-                <div className="hidden lg:block absolute top-6 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
-                <div className="mb-1.5">
+              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-2.5 sm:p-3.5 xl:p-4 2xl:p-5 shadow-premium-soft">
+                <div className="hidden lg:block absolute top-5 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
+                <div className="hidden lg:block absolute top-5 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
+                <div className="mb-1">
                   <h3 className="text-emerald-500 font-bold tracking-widest uppercase text-xs xl:text-sm">Komentarz Maćka</h3>
                   <p className="text-slate-400 font-mono text-[9px] xl:text-[10px] uppercase tracking-widest mt-0.5">Właściciel, Kajaki u Maćka</p>
                 </div>
-                <div className="w-full h-px bg-slate-100 mb-2" />
-                <p className="text-xs lg:text-[12px] xl:text-sm font-normal text-slate-600 leading-relaxed italic text-left">
+                <div className="w-full h-px bg-slate-100 mb-1.5" />
+                <p className="text-[11px] lg:text-[11px] xl:text-xs 2xl:text-sm font-normal text-slate-600 leading-snug xl:leading-relaxed italic text-left">
                   &quot;{fixOrphans(`O stary, `)}<strong className="text-slate-900 font-medium">{fixOrphans(`ta strona jest tak kozak, nie spodziewałem się aż takiego efektu!`)}</strong>{fixOrphans(` Wygląda naprawdę obłędnie. `)}<br></br>{fixOrphans(`Oprócz zjawiskowej strony, Marcin od zera założył i skonfigurował moją Wizytówkę Google i Fanpage na Facebooku, zachowując ten sam świetny motyw wizualny. Dał mi też potężne, praktyczne rady jak z nich korzystać, żeby skutecznie ściągać klientów na rzekę. `)}<strong className="text-emerald-600 font-medium">{fixOrphans(`Jest klasa, jesteś szef po prostu!`)}</strong>&quot;
                 </p>
               </div>
