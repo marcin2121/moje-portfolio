@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowRight, Check } from 'lucide-react';
 import { pushGTMEvent } from '@/app/page';
 import { fixOrphans } from '@/utils/typography';
@@ -49,16 +50,26 @@ export default function Hero({ onNavigate }: HeroProps) {
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              pushGTMEvent('strona_glowna_wycena_klikniecie');
-              onNavigate(15);
-            }}
-            className="w-full sm:w-auto px-5 py-3 sm:px-7 sm:py-3.5 xl:px-9 xl:py-4.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs sm:text-sm xl:text-sm rounded-2xl shadow-[0_10px_30px_rgba(234,88,12,0.35)] hover:shadow-[0_15px_40px_rgba(234,88,12,0.45)] hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2.5 cursor-pointer group"
-          >
-            Odbierz bezpłatną wycenę na e-mail
-            <ArrowRight size={16} className="shrink-0 xl:w-5 xl:h-5" />
-          </button>
+          <div className="flex flex-col items-start gap-2">
+            <button
+              onClick={() => {
+                pushGTMEvent('strona_glowna_wycena_klikniecie');
+                onNavigate(15);
+              }}
+              className="w-full sm:w-auto px-5 py-3 sm:px-7 sm:py-3.5 xl:px-8 xl:py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-[0_10px_30px_rgba(234,88,12,0.35)] hover:shadow-[0_15px_40px_rgba(234,88,12,0.45)] hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2.5 cursor-pointer group whitespace-nowrap"
+            >
+              Odbierz bezpłatną wycenę na e-mail
+              <ArrowRight size={16} className="shrink-0 xl:w-5 xl:h-5 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </button>
+
+            <Link
+              href="/narzedzia/audyt"
+              className="px-1 py-0.5 text-slate-500 hover:text-slate-900 font-medium text-[11px] sm:text-xs flex items-center gap-1.5 transition-colors group"
+            >
+              <span>lub przetestuj stronę darmowym audytem</span>
+              <span className="text-slate-400 group-hover:text-orange-500 transition-colors">→</span>
+            </Link>
+          </div>
         </div>
 
         {/* Right Column Portrait (1:1 Square) */}
