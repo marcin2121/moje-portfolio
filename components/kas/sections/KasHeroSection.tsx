@@ -36,7 +36,7 @@ export default function KasHeroSection() {
           <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-transparent blur-3xl rounded-full"></div>
           <div className="relative bg-slate-100 rounded-3xl overflow-hidden border border-slate-200 shadow-2xl aspect-[4/5] lg:aspect-square">
             <Image 
-              src="/Marcin_Molenda_Development.png" 
+              src="/Marcin_Molenda_Development.webp" 
               alt="Marcin Molenda - Niezależny Inżynier Oprogramowania" 
               fill 
               sizes="(max-width: 768px) 100vw, 50vw"

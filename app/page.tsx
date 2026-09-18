@@ -152,7 +152,7 @@ export default function PortfolioHome() {
       
       const h2Dur = h2.end - h2.start;
       for (let i = 0; i < 6; i++) {
-        pts[7 + i] = (h2.start + h2Dur * i / 5) / maxScr;
+        pts[7 + i] = (h2.start + h2Dur * (i === 5 ? 0.985 : i / 5)) / maxScr;
       }
 
       pts[13] = getDomRatio('cennik', (h2.end + 10) / maxScr);
@@ -320,7 +320,7 @@ export default function PortfolioHome() {
         </nav>
 
         {/* ─── Floating Desktop Nav: Section Name + Socials + CTA ─── */}
-        <div className="hidden lg:flex fixed bottom-10 left-1/2 -translate-x-1/2 z-50 items-center">
+        <div className="hidden lg:flex fixed bottom-4 xl:bottom-5 2xl:bottom-8 left-1/2 -translate-x-1/2 z-50 items-center">
 
           {/* Main pill: section name + Socials + CTA */}
           <div className="flex items-center bg-white/90 backdrop-blur-xl border border-slate-200/50 rounded-full px-2 py-1.5 shadow-premium">

@@ -8,61 +8,64 @@ import { fixOrphans } from '@/utils/typography';
 
 export function SolutionsSection() {
   return (
-    <section id="rozwiazania" className="w-full lg:w-1/4 h-auto lg:h-full flex items-center justify-center px-6 sm:px-10 lg:px-12 py-20 lg:py-0 relative overflow-hidden bg-transparent shrink-0">
-      <div className="flex flex-col gap-8 lg:gap-10 max-w-5xl w-full relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 w-full">
+    <section id="rozwiazania" className="w-full lg:w-1/4 h-auto lg:h-full flex items-center justify-center px-4 sm:px-8 lg:px-8 xl:px-12 pt-20 lg:pt-24 xl:pt-28 pb-14 lg:pb-14 xl:pb-20 relative overflow-hidden bg-transparent shrink-0">
+      <div 
+        className="flex flex-col gap-3 lg:gap-4 xl:gap-6 max-w-5xl w-full relative z-10 max-h-[min(78vh,760px)] overflow-y-auto custom-scrollbar pr-1"
+        data-lenis-prevent="true"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4 xl:gap-6 w-full">
           <MagicBento className="md:col-span-2 bg-white border border-slate-200 hover:border-orange-300 transition-all group shadow-premium-soft">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-3 lg:mb-4 xl:mb-6">
               <Zap className="text-orange-500 w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="font-mono text-[10px] text-slate-500">Rozwiązanie 01</span>
             </div>
-            <h3 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 mb-2 flex items-center">
+            <h3 className="text-lg lg:text-xl xl:text-2xl font-bold tracking-tight text-slate-900 mb-1.5 lg:mb-2 flex items-center">
               <span className="text-orange-500 mr-2">&gt;</span>Sprzedaż bez przestojów 24/7
             </h3>
             <p 
-              className="text-slate-600 font-normal text-sm md:text-base leading-relaxed"
+              className="text-slate-600 font-normal text-xs sm:text-sm md:text-base leading-relaxed"
               dangerouslySetInnerHTML={{ __html: fixOrphans("Łączę wygodny, znany panel WordPressa (lub dedykowany CMS) z najnowszą technologią Next.js – otrzymujesz ultraszybki sklep, w którym klienci kupują bez błędów czy zawieszeń, nawet w nocy.") }}
             />
           </MagicBento>
 
           <MagicBento className="md:col-span-1 bg-white border border-slate-200 hover:border-orange-300 transition-all group shadow-premium-soft">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-3 lg:mb-4 xl:mb-6">
               <Smartphone className="text-orange-500 w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="font-mono text-[10px] text-slate-500">Rozwiązanie 02</span>
             </div>
-            <h3 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 mb-2 flex items-center">
+            <h3 className="text-lg lg:text-xl xl:text-2xl font-bold tracking-tight text-slate-900 mb-1.5 lg:mb-2 flex items-center">
               <span className="text-orange-500 mr-2">&gt;</span>Koniec z papierologią
             </h3>
             <p 
-              className="text-slate-600 font-normal text-sm md:text-base leading-relaxed"
+              className="text-slate-600 font-normal text-xs sm:text-sm md:text-base leading-relaxed"
               dangerouslySetInnerHTML={{ __html: fixOrphans("Własne systemy rezerwacji i panele klienta, które same robią za Ciebie najgorszą papierkową robotę.") }}
             />
           </MagicBento>
 
           <MagicBento className="md:col-span-1 bg-white border border-slate-200 hover:border-orange-300 transition-all group shadow-premium-soft">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-3 lg:mb-4 xl:mb-6">
               <Gauge className="text-orange-500 w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="font-mono text-[10px] text-slate-500">Rozwiązanie 03</span>
             </div>
-            <h3 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 mb-2 flex items-center">
+            <h3 className="text-lg lg:text-xl xl:text-2xl font-bold tracking-tight text-slate-900 mb-1.5 lg:mb-2 flex items-center">
               <span className="text-orange-500 mr-2">&gt;</span>Zero straconych klientów
             </h3>
             <p 
-              className="text-slate-600 font-normal text-sm md:text-base leading-relaxed"
+              className="text-slate-600 font-normal text-xs sm:text-sm md:text-base leading-relaxed"
               dangerouslySetInnerHTML={{ __html: fixOrphans('Twoja oferta ładuje się w ułamek sekundy, zanim klient zdąży pójść do konkurencji.') }}
             />
           </MagicBento>
 
           <MagicBento className="md:col-span-2 bg-white border border-slate-200 hover:border-orange-300 transition-all group shadow-premium-soft">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-3 lg:mb-4 xl:mb-6">
               <Code2 className="text-orange-500 w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="font-mono text-[10px] text-slate-500">Rozwiązanie 04</span>
             </div>
-            <h3 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 mb-2 flex items-center">
+            <h3 className="text-lg lg:text-xl xl:text-2xl font-bold tracking-tight text-slate-900 mb-1.5 lg:mb-2 flex items-center">
               <span className="text-orange-500 mr-2">&gt;</span>Inteligentna Automatyzacja
             </h3>
             <p 
-              className="text-slate-600 font-normal text-sm md:text-base leading-relaxed"
+              className="text-slate-600 font-normal text-xs sm:text-sm md:text-base leading-relaxed"
               dangerouslySetInnerHTML={{ __html: fixOrphans("System sam wystawia faktury, wysyła maile do klientów i powiadomienia do księgowości, odzyskując Twoje wolne wieczory.") }}
             />
           </MagicBento>
@@ -72,7 +75,7 @@ export function SolutionsSection() {
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center gap-6 shadow-sm"
+          className="w-full p-4 lg:p-5 xl:p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center gap-4 lg:gap-6 shadow-sm"
         >
           <div className="flex items-center gap-3 shrink-0">
             <div className="w-8 h-8 rounded-lg bg-orange-50 border border-orange-200 flex items-center justify-center">

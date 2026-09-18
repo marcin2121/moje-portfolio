@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 
-export default function MagicBento({ children, className = '' }: { children: React.ReactNode, className?: string }) {
+export default function MagicBento({ children, className = '', contentClassName = '' }: { children: React.ReactNode, className?: string, contentClassName?: string }) {
   const divRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
@@ -20,7 +20,7 @@ export default function MagicBento({ children, className = '' }: { children: Rea
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setOpacity(1)}
       onMouseLeave={() => setOpacity(0)}
-      className={`relative overflow-hidden rounded-4xl bg-white border border-slate-200 shadow-premium-soft transition-all duration-500 ${className}`}
+      className={`relative overflow-hidden rounded-3xl lg:rounded-4xl bg-white border border-slate-200 shadow-premium-soft transition-all duration-500 ${className}`}
     >
       {/* Poświata śledząca kursor */}
       <div
@@ -31,7 +31,7 @@ export default function MagicBento({ children, className = '' }: { children: Rea
         }}
       />
       {/* Zawartość właściwa */}
-      <div className="relative z-10 p-10 h-full flex flex-col">
+      <div className={`relative z-10 p-5 sm:p-6 lg:p-5 xl:p-8 2xl:p-10 h-full flex flex-col ${contentClassName}`}>
         {children}
       </div>
     </div>

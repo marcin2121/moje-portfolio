@@ -17,7 +17,7 @@ const PROJECTS = [
     challenge: 'Organizacja pilnie potrzebowała bezpiecznego czatu wsparcia i kalendarza wizyt. Próba wdrożenia tak zaawansowanych modułów na tradycyjnym WordPressie kosztowałaby fortunę, a osiągnięcie na nim prawdziwej dostępności cyfrowej graniczyło z cudem.',
     solution: 'Zbudowałem dedykowaną, błyskawiczną platformę z anonimowym czatem na żywo, automatycznym systemem rezerwacji i certyfikowaną dostępnością dla osób z niepełnosprawnościami – zachowując przy tym bajecznie prosty panel do edycji treści.',
     result: 'Ogromna oszczędność budżetu i zero comiesięcznych opłat za wtyczki. Organizacja zyskała pancerne narzędzie do niesienia pomocy bez ryzyka kar prawnych, a strona działa bezawaryjnie na każdym telefonie.',
-    img: '/kas-hero.png',
+    img: '/kas-hero.webp',
     link: 'https://stowarzyszeniekas.pl'
   },
   {
