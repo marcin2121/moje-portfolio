@@ -26,9 +26,9 @@ export default function NarzedziaHub() {
     <main className="min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-        <span className="text-xs font-mono uppercase tracking-widest text-orange-600 bg-orange-50 border border-orange-200/60 px-3 py-1 rounded-md">
+        <p className="font-mono text-xs sm:text-[13px] font-bold uppercase tracking-[0.25em] text-orange-600">
           Diagnostyka Architektoniczna & ROI
-        </span>
+        </p>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900">
           Bezpłatne Narzędzia <span className="text-orange-500">Inżynieryjne</span>
         </h1>

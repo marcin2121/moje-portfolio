@@ -43,9 +43,9 @@ export default function RltPolskaCaseStudyPage() {
       <GEOSchemaInjector schema={caseStudyData} />
       
       <div className="space-y-6 pt-12">
-        <div className="inline-block px-4 py-1.5 rounded-full bg-orange-500/10 text-orange-500 border border-orange-500/20 font-medium text-sm">
+        <p className="font-mono text-xs sm:text-[13px] font-bold uppercase tracking-[0.25em] text-orange-500">
           Engineering Case Study
-        </div>
+        </p>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
           {caseStudyData.headline}
         </h1>

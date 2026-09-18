@@ -50,9 +50,9 @@ export default function WdrozeniaPage() {
       
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <span className="text-xs font-mono uppercase tracking-widest text-orange-600 bg-orange-50 border border-orange-200/60 px-3 py-1 rounded-md">
+        <p className="font-mono text-xs sm:text-[13px] font-bold uppercase tracking-[0.25em] text-orange-600">
           Sprawdzone Rezultaty Architektoniczne
-        </span>
+        </p>
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-slate-900">
           Twarde dowody. <span className="text-orange-500">Nie obietnice.</span>
         </h1>
@@ -150,9 +150,9 @@ export default function WdrozeniaPage() {
       {/* Engineering Methodology Section (Eliminating Thin Content) */}
       <div className="bg-white/70 backdrop-blur-xl border border-slate-200/70 rounded-3xl p-8 sm:p-12 shadow-sm space-y-8">
         <div className="max-w-3xl space-y-3">
-          <span className="text-xs font-mono uppercase tracking-widest text-orange-600 bg-orange-50 border border-orange-200/60 px-2.5 py-0.5 rounded-md">
+          <p className="font-mono text-xs sm:text-[13px] font-bold uppercase tracking-[0.25em] text-orange-600">
             Metodologia & Architektura
-          </span>
+          </p>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
             Dlaczego migrujemy monolit do architektury Headless Next.js?
           </h2>
