@@ -29,8 +29,9 @@ export async function sendContactEmail(formData: FormData) {
     }
 
     const { error } = await resend.emails.send({
-      from: 'Kontakt <onboarding@resend.dev>', // You should verify your own domain in Resend later
-      to: ['kontakt@molendadevelopment.pl'], // Put your receiving email here
+      from: 'Kontakt Molenda Dev <kontakt@panel.molendadevelopment.pl>',
+      to: ['kontakt@molendadevelopment.pl'],
+      replyTo: email,
       subject: `Nowe zapytanie B2B: ${blocker}`,
       text: `
 Otrzymałeś nowe zapytanie z mini-quizu kontaktowego:

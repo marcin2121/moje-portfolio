@@ -70,8 +70,9 @@ const postHandler = async (data: z.infer<typeof ReportSchema>, req: Request) => 
     try {
       // 1. Alert dla Ciebie (Marcin)
       await resend.emails.send({
-        from: 'System Raportowy <kontakt@molendadevelopment.pl>', // Zmieniono nadawcę na firmowego
+        from: 'System Raportowy <kontakt@panel.molendadevelopment.pl>',
         to: ['kontakt@molendadevelopment.pl'],
+        replyTo: data.email,
         subject: `🔥 Nowy lead z kalkulatora (Strata: ${data.projectedRevenueLost} PLN)`,
         html: `
           <h2>🔥 Nowy lead z kalkulatora wycieku gotówki</h2>
@@ -97,8 +98,9 @@ const postHandler = async (data: z.infer<typeof ReportSchema>, req: Request) => 
 
       // 2. Raport Premium dla Klienta
       const { error } = await resend.emails.send({
-        from: 'Marcin Molenda <kontakt@molendadevelopment.pl>',
+        from: 'Marcin Molenda <kontakt@panel.molendadevelopment.pl>',
         to: [data.email],
+        replyTo: 'kontakt@molendadevelopment.pl',
         subject: 'Twój Raport: Wyciek gotówki z powodu wolnego ładowania',
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0B0B0C; color: #E4E4E7; padding: 40px; border-radius: 12px; border: 1px solid #27272A;">

@@ -47,7 +47,7 @@ const postHandler = async (data: z.infer<typeof OfferSchema>, req: Request) => {
   const safePackageName = escapeHtml(data.packageName);
   const safePrice = escapeHtml(String(data.price));
   const { data: resendData, error } = await resend.emails.send({
-    from: 'System Ofertowy <onboarding@resend.dev>',
+    from: 'System Ofertowy <kontakt@panel.molendadevelopment.pl>',
     to: ['kontakt@molendadevelopment.pl'],
     subject: `🔥 Nowa akceptacja oferty: ${safeCompanyName}`,
     html: `

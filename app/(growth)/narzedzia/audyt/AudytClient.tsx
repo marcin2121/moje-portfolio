@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Loader2, Building2, ShoppingCart, Swords } from 'lucide-react';
 import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
 import { SiteType } from '@/app/api/audit-master/types';
+import { pushGTMEvent } from '@/app/page';
 
 export function AudytClient() {
   const searchParams = useSearchParams();
@@ -72,6 +73,15 @@ export function AudytClient() {
 
       const data: AuditResult = await res.json();
       setResult(data);
+
+      if (data.token && typeof window !== 'undefined') {
+        window.history.replaceState(null, '', `/narzedzia/audyt?token=${encodeURIComponent(data.token)}`);
+      }
+
+      pushGTMEvent('audyt_wygenerowany', {
+        domena: data.domain || targetUrl,
+        wynik: data.overallScore
+      });
     } catch (err: unknown) {
       clearInterval(stepInterval);
       const msg = err instanceof Error ? err.message : 'Wystąpił błąd podczas komunikacji z serwerem.';

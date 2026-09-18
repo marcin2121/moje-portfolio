@@ -33,8 +33,9 @@ export async function POST(req: Request) {
       try {
         const resend = new Resend(resendApiKey);
         await resend.emails.send({
-          from: 'Audyt Molenda Dev <powiadomienia@molendadevelopment.pl>',
+          from: 'Audyt Molenda Dev <powiadomienia@panel.molendadevelopment.pl>',
           to: 'kontakt@molendadevelopment.pl',
+          replyTo: email.trim(),
           subject: `🔥 Nowy lead z Audytu: ${cleanDomain} (${email})`,
           html: `
             <div style="font-family: sans-serif; line-height: 1.6; color: #1e293b;">

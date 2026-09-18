@@ -7,6 +7,7 @@ import { calculateNextJsMigrationROI, MigrationCalculatorState, CalculatorSchema
 import { GEOSchemaInjector } from '@/components/ui/GEOSchemaInjector';
 import { motion } from 'framer-motion';
 import { useFrictionTelemetry } from '@/hooks/useFrictionTelemetry';
+import { pushGTMEvent } from '@/app/page';
 
 const formatPLN = (val: number) => 
   new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' })
@@ -211,12 +212,14 @@ function InputField({ label, value, onChange, step = 1, min = 0, max = 100000, s
 function LeadCaptureBanner({ projectedRevenueLost, inputs, outputs }: { projectedRevenueLost: number, inputs: MigrationCalculatorState, outputs: ReturnType<typeof calculateNextJsMigrationROI> }) {
   const [email, setEmail] = useState("");
   const [url, setUrl] = useState("");
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setStatus('loading');
+    setErrorMessage("");
     
     try {
       const res = await fetch('/api/send-report', {
@@ -224,10 +227,20 @@ function LeadCaptureBanner({ projectedRevenueLost, inputs, outputs }: { projecte
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, url, projectedRevenueLost, inputs, outputs })
       });
-      if (res.ok) setStatus('success');
-      else setStatus('idle');
+      if (res.ok) {
+        setStatus('success');
+        pushGTMEvent('kalkulator_raport_wyslano', { 
+          strata: projectedRevenueLost,
+          sklep: url || 'nie_podano'
+        });
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        setErrorMessage(errData.error || 'Wystąpił błąd podczas wysyłania raportu.');
+        setStatus('error');
+      }
     } catch {
-      setStatus('idle');
+      setErrorMessage('Nie udało się połączyć z serwerem. Spróbuj ponownie później.');
+      setStatus('error');
     }
   };
 
@@ -269,11 +282,16 @@ function LeadCaptureBanner({ projectedRevenueLost, inputs, outputs }: { projecte
             <button 
               type="submit" 
               disabled={status === 'loading'}
-              className="bg-orange-500 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-orange-600 transition-all disabled:opacity-50 whitespace-nowrap shadow-[0_8px_20px_rgba(249,115,22,0.25)] hover:scale-105 active:scale-95 text-xs sm:text-sm"
+              className="bg-orange-500 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-orange-600 transition-all disabled:opacity-50 whitespace-nowrap shadow-[0_8px_20px_rgba(249,115,22,0.25)] hover:scale-105 active:scale-95 text-xs sm:text-sm cursor-pointer"
             >
               {status === 'loading' ? 'Wysyłanie raportu...' : 'Odbierz Raport PDF'}
             </button>
           </form>
+          {status === 'error' && errorMessage && (
+            <p className="text-xs text-rose-600 font-mono bg-rose-50 border border-rose-200 p-2.5 rounded-lg">
+              {errorMessage}
+            </p>
+          )}
           <p className="text-xs text-slate-500 font-mono mt-1">Gwarancja prywatności: Wysyłamy wyłącznie estymację ROI. Zero spamu.</p>
         </div>
       )}

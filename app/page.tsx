@@ -59,9 +59,16 @@ const NAV_DOTS = [
 
 export const pushGTMEvent = (eventName: string, params: Record<string, unknown> = {}) => {
   if (typeof window !== 'undefined') {
-    const w = window as unknown as { dataLayer: Record<string, unknown>[] };
+    const w = window as unknown as {
+      dataLayer?: Record<string, unknown>[];
+      umami?: { track: (event: string, data?: Record<string, unknown>) => void };
+    };
     w.dataLayer = w.dataLayer || [];
     w.dataLayer.push({ event: eventName, ...params });
+
+    if (w.umami?.track) {
+      w.umami.track(eventName, params);
+    }
   }
 };
 
