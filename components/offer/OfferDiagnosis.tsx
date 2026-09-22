@@ -13,7 +13,11 @@ interface OfferDiagnosisProps {
 
 export default function OfferDiagnosis({ painPoints, competitorAnalysis, solutionSteps }: OfferDiagnosisProps) {
   return (
-    <section className="py-24 px-4 bg-zinc-950">
+    <section 
+      id="diagnosis" 
+      data-section="diagnosis" 
+      className="py-24 px-4 bg-zinc-950"
+    >
       <div className="max-w-5xl mx-auto space-y-24">
         
         {/* Pain Points */}

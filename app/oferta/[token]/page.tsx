@@ -5,6 +5,7 @@ import OfferHero from '@/components/offer/OfferHero';
 import OfferVideo from '@/components/offer/OfferVideo';
 import OfferDiagnosis from '@/components/offer/OfferDiagnosis';
 import OfferPricing from '@/components/offer/OfferPricing';
+import OfferTelemetryTracker from '@/components/offer/OfferTelemetryTracker';
 
 interface OfferPageProps {
   params: Promise<{
@@ -43,6 +44,13 @@ export default async function OfferPage({ params }: OfferPageProps) {
 
   return (
     <main className="min-h-screen bg-[#0B0B0C] text-zinc-200">
+      {/* Niewidoczny tracker uwagi i otwarcia oferty (Traferto style) */}
+      <OfferTelemetryTracker 
+        slug={resolvedParams.token}
+        companyName={offer.companyName}
+        clientName={offer.clientName}
+      />
+
       <OfferHero 
         clientName={offer.clientName} 
         companyName={offer.companyName} 
@@ -61,7 +69,9 @@ export default async function OfferPage({ params }: OfferPageProps) {
       <OfferPricing 
         packages={offer.packages} 
         companyName={offer.companyName}
+        slug={resolvedParams.token}
       />
     </main>
   );
 }
+

@@ -11,6 +11,7 @@ import KasGuaranteesSection from '@/components/kas/sections/KasGuaranteesSection
 import KasWallOfLoveSection from '@/components/kas/sections/KasWallOfLoveSection';
 import KasFaqSection from '@/components/kas/sections/KasFaqSection';
 import KasContactSection from '@/components/kas/sections/KasContactSection';
+import OfferTelemetryTracker from '@/components/offer/OfferTelemetryTracker';
 
 export const metadata: Metadata = {
   title: 'Dedykowana Oferta - Stowarzyszenie KAS | Marcin Molenda',
@@ -21,6 +22,13 @@ export const metadata: Metadata = {
 export default function KasOfferPage() {
   return (
     <div className="relative min-h-screen bg-white text-slate-900 selection:bg-orange-500 selection:text-white transition-all duration-300 wcag-container">
+      {/* Niewidoczny tracker uwagi i otwarcia oferty (Traferto style) */}
+      <OfferTelemetryTracker 
+        slug="stowarzyszenie-kas-radom"
+        companyName="Stowarzyszenie KAS"
+        clientName="Zarząd KAS"
+      />
+
       <WcagPanel />
       <PerformanceBadge />
 
