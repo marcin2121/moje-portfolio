@@ -228,12 +228,13 @@ export const offers: Record<string, ClientOffer> = {
         target: "Dla stowarzyszenia potrzebującego szybkiej, estetycznej witryny spełniającej w 100% wymogi formalne WCAG 2.1 AA pod dotacje i granty.",
         features: [
           "Dedykowany, bezszablonowy projekt graficzny dostosowany do identyfikacji Stowarzyszenia Aktywacja",
-          "Pełna zgodność z Ustawą o Dostępności Cyfrowej (WCAG 2.1 AA ze sporządzoną Deklaracją Dostępności)",
-          "Podstawowy zestaw sekcji: O nas, Cele statutowe, Aktualności, Projekty, Dokumenty do pobrania, Kontakt",
-          "Optymalizacja Technicznego SEO: kompletne meta tagi (title, description), mapa witryny (sitemap.xml), robots.txt oraz estetyczne znaczniki Open Graph",
-          "Czas ładowania poniżej 1 sekundy i pełna responsywność (Mobile / Tablet / Desktop)",
-          "Zabezpieczony certyfikat SSL i bezpieczny formularz kontaktowy",
-          "12 miesięcy gwarancji technicznej"
+          "Pełna zgodność z Ustawą o Dostępności Cyfrowej (standard WCAG 2.1 AA z Deklaracją Dostępności)",
+          "Podstawowy zestaw sekcji: O nas, Cele statutowe, Aktualności, Projekty, Dokumenty, Kontakt",
+          "Optymalizacja Technicznego SEO (meta tagi, sitemap.xml, robots.txt, Open Graph)",
+          "Podpięcie pod obecną domenę www.stowarzyszenieaktywacja.pl oraz certyfikat SSL",
+          "Termin realizacji: gwarancja uruchomienia do 15.11.2026 r.",
+          "Gwarancja: praca do pełnego zadowolenia klienta (dopracowanie projektu do pełnej akceptacji)",
+          "12 miesięcy pełnej gwarancji technicznej"
         ],
         ctaText: "Wybieram Pakiet Podstawowy",
         highlighted: false
@@ -245,16 +246,11 @@ export const offers: Record<string, ClientOffer> = {
         discountBadge: "100% ZAPYTANIA OFERTOWEGO",
         target: "Dokładne pokrycie wszystkich 10 punktów zapytania ofertowego: pełna struktura 11 sekcji, intuicyjny CMS, instrukcja PDF i uruchomienie do 15.11.2026 r.",
         features: [
-          "Wszystkie elementy z pakietu podstawowego (w tym pełne SEO i WCAG 2.1 AA) +",
-          "Pełna struktura z zapytania: Strona główna, O Stowarzyszeniu, Aktualności, Projekty, Działania/Oferta, Wolontariat, Baza wiedzy dla NGO, Wydarzenia, Dokumenty do pobrania, Galeria zdjęć, Kontakt",
-          "Wybór technologii: bezpieczny, zoptymalizowany WordPress LUB nowoczesny Next.js z dedykowanym panelem (zależnie od preferencji zespołu)",
-          "Gwarancja: praca do pełnego zadowolenia klienta (dopracowanie projektu do pełnej akceptacji)",
-          "Intuicyjny system CMS po polsku: samodzielne dodawanie artykułów, projektów, galerii zdjęć, plików PDF i tworzenie nowych podstron bez pomocy programisty",
-          "Dostępność cyfrowa WCAG 2.1 AA (kontrasty, klawiatura, opisy ALT, semantyka, formularze)",
-          "Kompletna, czytelna instrukcja obsługi w formacie PDF oraz przekazanie 100% praw i dostępów",
-          "Podpięcie pod obecną domenę www.stowarzyszenieaktywacja.pl",
-          "Termin realizacji: gwarancja uruchomienia do 15.11.2026 r.",
-          "Cena brutto: 9 900 zł (zwolnienie z VAT na podstawie art. 113 ust. 1 ustawy o VAT - kwota brutto = netto)"
+          "Wszystkie elementy i gwarancje z pakietu podstawowego +",
+          "Pełna struktura z zapytania (11 sekcji m.in. Baza wiedzy dla NGO, Wolontariat, Projekty, Wydarzenia, Galeria)",
+          "Wybór technologii: zoptymalizowany WordPress LUB nowoczesny Next.js z dedykowanym panelem",
+          "Intuicyjny system CMS po polsku: samodzielne zarządzanie treściami, artykułami, projektami i podstronami",
+          "Kompletna instrukcja obsługi w formacie PDF oraz przekazanie 100% praw autorskich i kodów"
         ],
         ctaText: "Akceptuję ofertę z zapytania",
         highlighted: true,
@@ -271,8 +267,8 @@ export const offers: Record<string, ClientOffer> = {
           "Integracja z bramką szybkich darowizn online (wpłaty BLIK, 1.5% podatku)",
           "Zaawansowany moduł naboru wolontariuszy z automatyczną ankietą aplikacyjną",
           "System newslettera dla darczyńców i sympatyków stowarzyszenia",
-          "Możliwość wdrożenia drugiej wersji językowej (np. angielskiej pod projekty unijne)",
-          "Elastyczność i negocjacja: możliwość odliczenia modułów, których nie potrzebujecie lub wymiany na inne",
+          "Druga wersja językowa (np. angielska pod projekty unijne)",
+          "Elastyczność i negocjacja: możliwość odliczenia modułów lub wymiany",
           "Priorytetowa opieka techniczna i powdrożeniowa przez 12 miesięcy"
         ],
         ctaText: "Wybieram Wariant PRO",
