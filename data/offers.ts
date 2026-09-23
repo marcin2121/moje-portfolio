@@ -187,90 +187,93 @@ export const offers: Record<string, ClientOffer> = {
     ]
   },
   "stowarzyszenie-aktywacja": {
-    clientName: "Zespół Stowarzyszenia",
+    clientName: "Panie Jarosławie",
     companyName: "Stowarzyszenie Aktywacja",
     videoUrl: "",
     painPoints: [
-      "Brak własnej strony internetowej ogranicza możliwość pozyskiwania dotacji i grantów publicznych (wymóg formalny w wielu konkursach FIO, NIW, programach unijnych i samorządowych).",
-      "Konieczność spełnienia Ustawy o Dostępności Cyfrowej (WCAG 2.1 / 2.2 AA), której brak naraża organizacje pozarządowe na ryzyko odrzucenia wniosków grantowych i kary administracyjne.",
-      "Brak bezpiecznego narzędzia do zbierania darowizn online (szybkie wpłaty BLIK, 1.5% podatku) oraz prezentacji sprawozdań i zespołu budującego zaufanie darczyńców."
+      "Konieczność spełnienia Ustawy o Dostępności Cyfrowej (standard WCAG 2.1 AA) w celu zabezpieczenia stowarzyszenia przed karami administracyjnymi oraz odrzuceniem wniosków grantowych (FIO, NIW, programy UE).",
+      "Potrzeba intuicyjnego, bezpiecznego systemu CMS po polsku, który pozwoli członkom zespołu samodzielnie publikować aktualności, projekty, bazę wiedzy i galerie bez wiedzy programistycznej.",
+      "Konieczność uruchomienia nowoczesnego, w pełni responsywnego portalu w Radomiu z dedykowanymi modułami dla NGO (baza wiedzy, dokumenty do pobrania, wolontariat) w terminie do 15 listopada 2026 r."
     ],
     competitorAnalysis: [
       {
-        competitorName: "Tradycyjne strony NGO oparte o przestarzałe szablony",
+        competitorName: "Tradycyjne strony NGO oparte o przestarzałe, powolne szablony WordPress",
         whatTheyDoBetter: [
-          "Często mają niską prędkość ładowania, zawieszające się wtyczki po aktualizacjach oraz brak dostosowania do czytników ekranu osób ze szczególnymi potrzebami.",
-          "Wymagają ciągłych, płatnych poprawek programistycznych przy każdej zmianie treści lub dodaniu nowego projektu."
+          "Często cierpią na niski czas ładowania (5-8 sekund), podatności bezpieczeństwa wtyczek oraz brak realnego dostosowania do czytników ekranu osób ze szczególnymi potrzebami.",
+          "Wymagają ciągłego wsparcia zewnętrznych informatyków nawet przy prostych zmianach tekstów czy dodawaniu nowych projektów."
         ]
       },
       {
-        competitorName: "Nowoczesne portale NGO (np. wdrożenie dla Stowarzyszenia KAS: stowarzyszeniekas.pl)",
+        competitorName: "Nowoczesne portale NGO (np. wdrożenie dla Stowarzyszenia KAS Radom: stowarzyszeniekas.pl)",
         whatTheyDoBetter: [
-          "Błyskawiczny czas ładowania (4x100 Google PageSpeed, FCP 0.3s) i bezbłędne działanie na smartfonach.",
-          "100% zgodności prawnej z WCAG 2.2 AA (tryb wysokiego kontrastu, pełna obsługa klawiaturą, czytniki mowy).",
-          "Wygodny, intuicyjny panel edycji treści po polsku, pozwalający pracownikom dodawać projekty, zdjęcia i sprawozdania bez wiedzy technicznej."
+          "Błyskawiczny czas ładowania (4x100 Google PageSpeed, FCP poniżej 0.5s) i bezbłędne działanie na smartfonach, tabletach i komputerach.",
+          "100% certyfikowanej zgodności prawnej ze standardem WCAG 2.1 AA (pełna obsługa klawiaturą, czytniki mowy, poprawna semantyka HTML5, Deklaracja Dostępności).",
+          "Wygodny, przejrzysty panel CMS po polsku z dedykowanym szkoleniem wideo i instrukcją obsługi dla pracowników stowarzyszenia."
         ]
       }
     ],
     solutionSteps: [
-      "Opracowanie nowoczesnej, budzącej zaufanie identyfikacji i architektury informacji dopasowanej do statutu i celów Stowarzyszenia Aktywacja.",
-      "Wdrożenie ultrabieżącej, bezpiecznej platformy w architekturze Next.js z certyfikowaną dostępnością WCAG 2.2 AA (gwarancja bezpieczeństwa wniosków dotacyjnych).",
-      "Uruchomienie modułów kluczowych dla NGO: prezentacja projektów i zespołu, repozytorium sprawozdań finansowych i merytorycznych, formularz kontaktu oraz zintegrowane darowizny online (BLIK / szybkie przelewy)."
+      "Projekt i wdrożenie nowoczesnego, przejrzystego portalu opartego o architekturę Next.js z pełną strukturą z zapytania (O nas, Aktualności, Projekty, Działania, Wolontariat, Baza wiedzy dla NGO, Wydarzenia, Dokumenty, Galeria, Kontakt).",
+      "Pełna certyfikacja dostępności cyfrowej WCAG 2.1 AA: audyt kodowy, wdrożenie nawigacji klawiaturą, etykiet ARIA, trybów kontrastu oraz sporządzenie urzędowej Deklaracji Dostępności.",
+      "Wdrożenie intuicyjnego panelu CMS, przeprowadzenie instruktażu dla zespołu Stowarzyszenia Aktywacja, przekazanie pełnych dostępów i uruchomienie na domenie stowarzyszenieaktywacja.pl do 15.11.2026 r."
     ],
     packages: [
       {
-        name: "WIZYTÓWKA STATUTOWA & WCAG",
-        price: "7 900",
-        originalPrice: "9 900",
-        discountBadge: "PAKIET STARTOWY",
-        target: "Dla stowarzyszenia, które potrzebuje natychmiast profesjonalnej, zgodnej z prawem obecności w sieci pod najbliższe wnioski o dotacje i granty.",
+        name: "PORTAL STATUTOWY WCAG",
+        price: "6 900",
+        originalPrice: "8 500",
+        discountBadge: "PAKIET PODSTAWOWY",
+        target: "Dla stowarzyszenia potrzebującego szybkiej, estetycznej witryny spełniającej w 100% wymogi formalne WCAG 2.1 AA pod dotacje i granty.",
         features: [
-          "Dedykowany, bezszablonowy projekt graficzny budujący wiarygodność organizacji",
-          "Pełna zgodność z Ustawą o Dostępności Cyfrowej (WCAG 2.2 AA z Deklaracją Dostępności)",
-          "Sekcje: O nas, Cele statutowe, Zespół, Kontakt oraz Dokumenty i Sprawozdania",
-          "Czas ładowania poniżej 1s (Next.js 16) i pełna responsywność pod smartfony",
-          "Zabezpieczony formularz kontaktowy z natychmiastowym powiadomieniem na e-mail",
-          "12 miesięcy gwarancji technicznej i opieki powdrożeniowej"
+          "Dedykowany, bezszablonowy projekt graficzny dostosowany do identyfikacji Stowarzyszenia Aktywacja",
+          "Pełna zgodność z Ustawą o Dostępności Cyfrowej (WCAG 2.1 AA ze sporządzoną Deklaracją Dostępności)",
+          "Podstawowy zestaw sekcji: O nas, Cele statutowe, Aktualności, Projekty, Dokumenty do pobrania, Kontakt",
+          "Czas ładowania poniżej 1 sekundy i pełna responsywność (Mobile / Tablet / Desktop)",
+          "Zabezpieczony certyfikat SSL i bezpieczny formularz kontaktowy",
+          "12 miesięcy gwarancji technicznej"
         ],
-        ctaText: "Wybieram Pakiet Startowy",
+        ctaText: "Wybieram Pakiet Podstawowy",
         highlighted: false
       },
       {
-        name: "KOMPLETNY PORTAL STOWARZYSZENIA",
-        price: "12 500",
-        originalPrice: "15 000",
-        discountBadge: "NAJCZĘŚCIEJ WYBIERANY",
-        target: "Dla aktywnej organizacji, która chce regularnie publikować aktualności, zarządzać projektami i samodzielnie edytować treści bez pomocy programisty.",
+        name: "KOMPLETNY PORTAL Z CMS (ZAKRES ZAPYTANIA)",
+        price: "9 900",
+        originalPrice: "12 500",
+        discountBadge: "100% ZAPYTANIA OFERTOWEGO",
+        target: "Dokładne pokrycie wszystkich 10 punktów zapytania ofertowego: pełna struktura 11 sekcji, intuicyjny CMS, szkolenie zespołu i uruchomienie do 15.11.2026 r.",
         features: [
-          "Wszystkie elementy z pakietu WIZYTÓWKA STATUTOWA +",
-          "Wygodny, intuicyjny panel CMS po polsku do samodzielnego dodawania artykułów, projektów i galerii",
-          "Interaktywny moduł zrealizowanych i trwających projektów z filtrowaniem",
-          "Dział sprawozdań finansowych i merytorycznych (kluczowy wymóg transparentności NGO)",
-          "Integracja z szybkimi darowiznami online (bramka płatności BLIK / szybkie przelewy)",
-          "Dedykowane szkolenie wideo dla zespołu z obsługi panelu administracyjnego",
-          "Konfiguracja domeny, certyfikatów SSL i bezpiecznej poczty stowarzyszenia"
+          "Wszystkie elementy z pakietu podstawowego +",
+          "Pełna struktura z zapytania: Strona główna, O Stowarzyszeniu, Aktualności, Projekty, Działania/Oferta, Wolontariat, Baza wiedzy dla NGO, Wydarzenia, Dokumenty do pobrania, Galeria zdjęć, Kontakt",
+          "Intuicyjny system CMS po polsku: samodzielne dodawanie artykułów, projektów, galerii zdjęć, plików PDF i tworzenie nowych podstron bez programisty",
+          "Dostępność cyfrowa WCAG 2.1 AA (kontrasty, klawiatura, opisy ALT, semantyka, formularze)",
+          "Integracja z mediami społecznościowymi (Facebook, Instagram, LinkedIn)",
+          "Indywidualne szkolenie / instruktaż dla zespołu Stowarzyszenia Aktywacja z obsługi panelu",
+          "Kompletna instrukcja obsługi w formacie PDF oraz przekazanie 100% praw i dostępów",
+          "Podpięcie pod obecną domenę www.stowarzyszenieaktywacja.pl",
+          "Termin realizacji: gwarancja uruchomienia do 15.11.2026 r.",
+          "Cena brutto: 9 900 zł (zwolnienie z VAT na podstawie art. 113 ust. 1 ustawy o VAT - kwota brutto = netto)"
         ],
-        ctaText: "Wybieram Kompletny Portal",
+        ctaText: "Akceptuję ofertę z zapytania",
         highlighted: true,
-        badge: "REKOMENDOWANY DLA NGO"
+        badge: "DEDYKOWANY POD ZAPYTANIE"
       },
       {
         name: "EKOSYSTEM CYFROWY NGO PRO",
-        price: "18 500",
-        originalPrice: "22 000",
+        price: "14 900",
+        originalPrice: "18 000",
         discountBadge: "MAKSYMALNY ZASIĘG",
-        target: "Dla organizacji prowadzącej szerokie działania społeczne, rekrutację wolontariuszy, konsultacje lub projekty międzynarodowe (np. Erasmus+).",
+        target: "Dla stowarzyszenia, które oprócz standardowego portalu chce zbierać darowizny online (BLIK), prowadzić rekrutację wolontariuszy z ankietami i newsletter.",
         features: [
-          "Wszystkie funkcjonalności z pakietu KOMPLETNY PORTAL +",
-          "Druga wersja językowa (angielska) pod projekty międzynarodowe i unijne",
-          "Dedykowany moduł naboru wolontariuszy z ankietą aplikacyjną",
-          "System anonimowych zgłoszeń / formularz rezerwacji konsultacji lub warsztatów",
-          "Zautomatyzowane zbieranie bazy newslettera dla darczyńców i sympatyków",
-          "Wsparcie techniczne VIP z priorytetowym czasem reakcji do 4h"
+          "Wszystkie funkcjonalności z pakietu KOMPLETNY PORTAL Z CMS +",
+          "Integracja z bramką szybkich darowizn online (wpłaty BLIK, 1.5% podatku)",
+          "Zaawansowany moduł naboru wolontariuszy z automatyczną ankietą aplikacyjną",
+          "System newslettera dla darczyńców i sympatyków stowarzyszenia",
+          "Możliwość wdrożenia drugiej wersji językowej (np. angielskiej pod projekty unijne)",
+          "Priorytetowa opieka techniczna i powdrożeniowa przez 12 miesięcy"
         ],
-        ctaText: "Wybieram Wariant NGO PRO",
+        ctaText: "Wybieram Wariant PRO",
         highlighted: false
       }
     ]
-  }
+  },
 };
