@@ -205,7 +205,7 @@ export const offers: Record<string, ClientOffer> = {
         ]
       },
       {
-        competitorName: "Nowoczesne portale NGO (np. wdrożenie dla Stowarzyszenia KAS Radom: stowarzyszeniekas.pl)",
+        competitorName: "Nowoczesne portale NGO (np. wdrożenie dla Stowarzyszenia Kombinat Aktywności Społecznej z Radomia: stowarzyszeniekas.pl)",
         whatTheyDoBetter: [
           "Błyskawiczny czas ładowania (4x100 Google PageSpeed, FCP poniżej 0.5s) i bezbłędne działanie na smartfonach, tabletach i komputerach.",
           "100% zgodności ze standardem WCAG 2.1 AA zgodnie z Ustawą o Dostępności Cyfrowej (pełna obsługa klawiaturą, czytniki mowy, poprawna semantyka HTML5, Deklaracja Dostępności).",
