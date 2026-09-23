@@ -250,7 +250,7 @@ export const offers: Record<string, ClientOffer> = {
           "Gwarancja: praca do pełnego zadowolenia klienta (dopracowanie projektu do pełnej akceptacji)",
           "Intuicyjny system CMS po polsku: samodzielne dodawanie artykułów, projektów, galerii zdjęć, plików PDF i tworzenie nowych podstron bez pomocy programisty",
           "Dostępność cyfrowa WCAG 2.1 AA (kontrasty, klawiatura, opisy ALT, semantyka, formularze)",
-          "Podpięcie mediów społecznościowych (Facebook, Instagram) w nagłówku i stopce, przyciski udostępniania oraz miniaturki wpisów (Open Graph)",
+          "Optymalizacja Technicznego SEO: kompletne meta tagi (title, description), mapa witryny (sitemap.xml), robots.txt oraz estetyczne znaczniki Open Graph",
           "Kompletna, czytelna instrukcja obsługi w formacie PDF oraz przekazanie 100% praw i dostępów",
           "Podpięcie pod obecną domenę www.stowarzyszenieaktywacja.pl",
           "Termin realizacji: gwarancja uruchomienia do 15.11.2026 r.",
