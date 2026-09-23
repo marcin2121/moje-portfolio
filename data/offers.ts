@@ -250,7 +250,7 @@ export const offers: Record<string, ClientOffer> = {
           "Pełna struktura z zapytania (11 sekcji m.in. Baza wiedzy dla NGO, Wolontariat, Projekty, Wydarzenia, Galeria)",
           "Wybór technologii: zoptymalizowany WordPress LUB nowoczesny Next.js z dedykowanym panelem",
           "Intuicyjny system CMS po polsku: samodzielne zarządzanie treściami, artykułami, projektami i podstronami",
-          "Kompletna instrukcja obsługi w formacie PDF oraz przekazanie 100% praw autorskich i kodów"
+          "Instruktaż z obsługi (online / stacjonarnie w Radomiu), instrukcja PDF oraz 100% praw autorskich i kodów"
         ],
         ctaText: "Akceptuję ofertę z zapytania",
         highlighted: true,
