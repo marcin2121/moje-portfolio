@@ -201,22 +201,23 @@ export const offers: Record<string, ClientOffer> = {
         competitorName: "Tradycyjne strony NGO oparte o przestarzałe, powolne szablony WordPress",
         whatTheyDoBetter: [
           "Często cierpią na niski czas ładowania (5-8 sekund), podatności bezpieczeństwa wtyczek oraz brak realnego dostosowania do czytników ekranu osób ze szczególnymi potrzebami.",
-          "Wymagają ciągłego wsparcia zewnętrznych informatyków nawet przy prostych zmianach tekstów czy dodawaniu nowych projektów."
+          "Częste konflikty wtyczek po aktualizacjach oraz ryzyko utraty dostępności cyfrowej i rozsypania się układu strony przy edycji treści."
         ]
       },
       {
         competitorName: "Nowoczesne portale NGO (np. wdrożenie dla Stowarzyszenia KAS Radom: stowarzyszeniekas.pl)",
         whatTheyDoBetter: [
           "Błyskawiczny czas ładowania (4x100 Google PageSpeed, FCP poniżej 0.5s) i bezbłędne działanie na smartfonach, tabletach i komputerach.",
-          "100% certyfikowanej zgodności prawnej ze standardem WCAG 2.1 AA (pełna obsługa klawiaturą, czytniki mowy, poprawna semantyka HTML5, Deklaracja Dostępności).",
-          "Wygodny, przejrzysty panel CMS po polsku z dedykowanym szkoleniem wideo i instrukcją obsługi dla pracowników stowarzyszenia."
+          "100% zgodności ze standardem WCAG 2.1 AA zgodnie z Ustawą o Dostępności Cyfrowej (pełna obsługa klawiaturą, czytniki mowy, poprawna semantyka HTML5, Deklaracja Dostępności).",
+          "Wygodny, przejrzysty panel CMS po polsku z dedykowaną instrukcją obsługi PDF dla pracowników stowarzyszenia."
         ]
       }
     ],
     solutionSteps: [
-      "Projekt i wdrożenie nowoczesnego, przejrzystego portalu opartego o architekturę Next.js z pełną strukturą z zapytania (O nas, Aktualności, Projekty, Działania, Wolontariat, Baza wiedzy dla NGO, Wydarzenia, Dokumenty, Galeria, Kontakt).",
-      "Pełna certyfikacja dostępności cyfrowej WCAG 2.1 AA: audyt kodowy, wdrożenie nawigacji klawiaturą, etykiet ARIA, trybów kontrastu oraz sporządzenie urzędowej Deklaracji Dostępności.",
-      "Wdrożenie intuicyjnego panelu CMS, przeprowadzenie instruktażu dla zespołu Stowarzyszenia Aktywacja, przekazanie pełnych dostępów i uruchomienie na domenie stowarzyszenieaktywacja.pl do 15.11.2026 r."
+      "Projekt i wdrożenie nowoczesnego, przejrzystego portalu z pełną strukturą z zapytania (O nas, Aktualności, Projekty, Działania, Wolontariat, Baza wiedzy dla NGO, Wydarzenia, Dokumenty, Galeria, Kontakt).",
+      "Wdrożenie standardu dostępności cyfrowej WCAG 2.1 AA: audyt kodowy, nawigacja klawiaturą, etykiety ARIA, tryby kontrastu oraz sporządzenie oficjalnej Deklaracji Dostępności.",
+      "Elastyczność wyboru technologii: możliwość wdrożenia na bezpiecznym WordPressie lub nowoczesnym Next.js z dedykowanym panelem. Praca do pełnego zadowolenia klienta bez ukrytych opłat za poprawki.",
+      "Przekazanie kompletnej instrukcji obsługi w formacie PDF, 100% praw i dostępów oraz uruchomienie na domenie stowarzyszenieaktywacja.pl do 15.11.2026 r."
     ],
     packages: [
       {
@@ -241,15 +242,16 @@ export const offers: Record<string, ClientOffer> = {
         price: "9 900",
         originalPrice: "12 500",
         discountBadge: "100% ZAPYTANIA OFERTOWEGO",
-        target: "Dokładne pokrycie wszystkich 10 punktów zapytania ofertowego: pełna struktura 11 sekcji, intuicyjny CMS, szkolenie zespołu i uruchomienie do 15.11.2026 r.",
+        target: "Dokładne pokrycie wszystkich 10 punktów zapytania ofertowego: pełna struktura 11 sekcji, intuicyjny CMS, instrukcja PDF i uruchomienie do 15.11.2026 r.",
         features: [
           "Wszystkie elementy z pakietu podstawowego +",
           "Pełna struktura z zapytania: Strona główna, O Stowarzyszeniu, Aktualności, Projekty, Działania/Oferta, Wolontariat, Baza wiedzy dla NGO, Wydarzenia, Dokumenty do pobrania, Galeria zdjęć, Kontakt",
-          "Intuicyjny system CMS po polsku: samodzielne dodawanie artykułów, projektów, galerii zdjęć, plików PDF i tworzenie nowych podstron bez programisty",
+          "Wybór technologii: bezpieczny, zoptymalizowany WordPress LUB nowoczesny Next.js z lekkim CMS (zależnie od preferencji zespołu)",
+          "Gwarancja: praca do pełnego zadowolenia klienta (dopracowanie projektu do pełnej akceptacji)",
+          "Intuicyjny system CMS po polsku: samodzielne dodawanie artykułów, projektów, galerii zdjęć, plików PDF i tworzenie nowych podstron bez pomocy programisty",
           "Dostępność cyfrowa WCAG 2.1 AA (kontrasty, klawiatura, opisy ALT, semantyka, formularze)",
-          "Integracja z mediami społecznościowymi (Facebook, Instagram, LinkedIn)",
-          "Indywidualne szkolenie / instruktaż dla zespołu Stowarzyszenia Aktywacja z obsługi panelu",
-          "Kompletna instrukcja obsługi w formacie PDF oraz przekazanie 100% praw i dostępów",
+          "Podpięcie mediów społecznościowych (Facebook, Instagram) w nagłówku i stopce, przyciski udostępniania oraz miniaturki wpisów (Open Graph)",
+          "Kompletna, czytelna instrukcja obsługi w formacie PDF oraz przekazanie 100% praw i dostępów",
           "Podpięcie pod obecną domenę www.stowarzyszenieaktywacja.pl",
           "Termin realizacji: gwarancja uruchomienia do 15.11.2026 r.",
           "Cena brutto: 9 900 zł (zwolnienie z VAT na podstawie art. 113 ust. 1 ustawy o VAT - kwota brutto = netto)"
@@ -262,14 +264,15 @@ export const offers: Record<string, ClientOffer> = {
         name: "EKOSYSTEM CYFROWY NGO PRO",
         price: "14 900",
         originalPrice: "18 000",
-        discountBadge: "MAKSYMALNY ZASIĘG",
-        target: "Dla stowarzyszenia, które oprócz standardowego portalu chce zbierać darowizny online (BLIK), prowadzić rekrutację wolontariuszy z ankietami i newsletter.",
+        discountBadge: "MODUŁOWY / DO NEGOCJACJI",
+        target: "Dla stowarzyszenia, które oprócz standardowego portalu chce zbierać darowizny online (BLIK) lub newsletter. Pakiet w pełni modułowy z możliwością negocjacji i rezygnacji ze zbędnych modułów.",
         features: [
           "Wszystkie funkcjonalności z pakietu KOMPLETNY PORTAL Z CMS +",
           "Integracja z bramką szybkich darowizn online (wpłaty BLIK, 1.5% podatku)",
           "Zaawansowany moduł naboru wolontariuszy z automatyczną ankietą aplikacyjną",
           "System newslettera dla darczyńców i sympatyków stowarzyszenia",
           "Możliwość wdrożenia drugiej wersji językowej (np. angielskiej pod projekty unijne)",
+          "Elastyczność i negocjacja: możliwość odliczenia modułów, których nie potrzebujecie lub wymiany na inne",
           "Priorytetowa opieka techniczna i powdrożeniowa przez 12 miesięcy"
         ],
         ctaText: "Wybieram Wariant PRO",
