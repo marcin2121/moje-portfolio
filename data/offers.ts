@@ -230,6 +230,7 @@ export const offers: Record<string, ClientOffer> = {
           "Dedykowany, bezszablonowy projekt graficzny dostosowany do identyfikacji Stowarzyszenia Aktywacja",
           "Pełna zgodność z Ustawą o Dostępności Cyfrowej (WCAG 2.1 AA ze sporządzoną Deklaracją Dostępności)",
           "Podstawowy zestaw sekcji: O nas, Cele statutowe, Aktualności, Projekty, Dokumenty do pobrania, Kontakt",
+          "Optymalizacja Technicznego SEO: kompletne meta tagi (title, description), mapa witryny (sitemap.xml), robots.txt oraz estetyczne znaczniki Open Graph",
           "Czas ładowania poniżej 1 sekundy i pełna responsywność (Mobile / Tablet / Desktop)",
           "Zabezpieczony certyfikat SSL i bezpieczny formularz kontaktowy",
           "12 miesięcy gwarancji technicznej"
@@ -244,13 +245,12 @@ export const offers: Record<string, ClientOffer> = {
         discountBadge: "100% ZAPYTANIA OFERTOWEGO",
         target: "Dokładne pokrycie wszystkich 10 punktów zapytania ofertowego: pełna struktura 11 sekcji, intuicyjny CMS, instrukcja PDF i uruchomienie do 15.11.2026 r.",
         features: [
-          "Wszystkie elementy z pakietu podstawowego +",
+          "Wszystkie elementy z pakietu podstawowego (w tym pełne SEO i WCAG 2.1 AA) +",
           "Pełna struktura z zapytania: Strona główna, O Stowarzyszeniu, Aktualności, Projekty, Działania/Oferta, Wolontariat, Baza wiedzy dla NGO, Wydarzenia, Dokumenty do pobrania, Galeria zdjęć, Kontakt",
-          "Wybór technologii: bezpieczny, zoptymalizowany WordPress LUB nowoczesny Next.js z lekkim CMS (zależnie od preferencji zespołu)",
+          "Wybór technologii: bezpieczny, zoptymalizowany WordPress LUB nowoczesny Next.js z dedykowanym panelem (zależnie od preferencji zespołu)",
           "Gwarancja: praca do pełnego zadowolenia klienta (dopracowanie projektu do pełnej akceptacji)",
           "Intuicyjny system CMS po polsku: samodzielne dodawanie artykułów, projektów, galerii zdjęć, plików PDF i tworzenie nowych podstron bez pomocy programisty",
           "Dostępność cyfrowa WCAG 2.1 AA (kontrasty, klawiatura, opisy ALT, semantyka, formularze)",
-          "Optymalizacja Technicznego SEO: kompletne meta tagi (title, description), mapa witryny (sitemap.xml), robots.txt oraz estetyczne znaczniki Open Graph",
           "Kompletna, czytelna instrukcja obsługi w formacie PDF oraz przekazanie 100% praw i dostępów",
           "Podpięcie pod obecną domenę www.stowarzyszenieaktywacja.pl",
           "Termin realizacji: gwarancja uruchomienia do 15.11.2026 r.",
