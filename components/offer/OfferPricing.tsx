@@ -117,7 +117,7 @@ export default function OfferPricing({ packages, companyName, slug = 'oferta' }:
               Dedykowana Wycena
             </h2>
             <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
-              {fixOrphans('Wybierz wariant współpracy, który najlepiej odpowiada Twojemu obecnemu budżetowi i apetytowi na rozwój.')}
+              {fixOrphans('Wybierz wariant wdrożenia, który najlepiej odpowiada Państwa celom i budżetowi.')}
             </p>
           </div>
 
@@ -164,7 +164,7 @@ export default function OfferPricing({ packages, companyName, slug = 'oferta' }:
                     )}
                     <div className="flex items-baseline gap-2">
                       <span className="text-5xl font-bold text-white tracking-tight">{pkg.price}</span>
-                      <span className="text-zinc-500">zł netto</span>
+                      <span className="text-zinc-500 text-sm">{pkg.priceSuffix || 'zł (zw. z VAT)'}</span>
                     </div>
                   </div>
 

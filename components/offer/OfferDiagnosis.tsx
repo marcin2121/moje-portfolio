@@ -32,7 +32,7 @@ export default function OfferDiagnosis({ painPoints, competitorAnalysis, solutio
               <AlertTriangle size={24} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Główne Wyzwania</h2>
-            <p className="text-zinc-400">{fixOrphans(`Podsumowanie tego, co obecnie powstrzymuje Twój biznes przed skalowaniem, na podstawie naszej diagnozy.`)}</p>
+            <p className="text-zinc-400">{fixOrphans(`Podsumowanie kluczowych obszarów technologicznych i formalnych wymagających rozwiązania.`)}</p>
           </div>
           <div className="space-y-4">
             {painPoints.map((point, idx) => (
@@ -55,8 +55,8 @@ export default function OfferDiagnosis({ painPoints, competitorAnalysis, solutio
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-orange-500/10 text-orange-500 mb-6 border border-orange-500/20">
               <Target size={24} />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Analiza Konkurencji</h2>
-            <p className="text-zinc-400">{fixOrphans(`Sprawdziłem, gdzie dokładnie Twoja konkurencja buduje przewagę technologiczną w internecie.`)}</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Standardy Rynkowe</h2>
+            <p className="text-zinc-400">{fixOrphans(`Porównanie tradycyjnych, powolnych rozwiązań z nowoczesnym standardem architektury webowej.`)}</p>
           </div>
           <div className="space-y-6">
             {competitorAnalysis.map((comp, idx) => (
@@ -90,7 +90,7 @@ export default function OfferDiagnosis({ painPoints, competitorAnalysis, solutio
               <CheckCircle2 size={24} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Rozwiązanie</h2>
-            <p className="text-zinc-400">{fixOrphans(`Oto dokładny plan działania, który wdrożę, aby zdominować rynek i odzyskać Twój czas.`)}</p>
+            <p className="text-zinc-400">{fixOrphans(`Oto sprawdzony, inżynieryjny plan działania gwarantujący terminowe i bezbłędne wdrożenie serwisu.`)}</p>
           </div>
           <div className="space-y-4">
             {solutionSteps.map((step, idx) => (

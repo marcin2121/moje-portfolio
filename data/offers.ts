@@ -2,6 +2,7 @@ export interface PricingTier {
   name: string;
   price: string;
   originalPrice?: string;
+  priceSuffix?: string;
   target: string;
   features: string[];
   ctaText: string;

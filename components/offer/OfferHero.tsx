@@ -40,7 +40,7 @@ export default function OfferHero({ clientName, companyName }: OfferHeroProps) {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-lg md:text-2xl text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed"
         >
-          Cześć {clientName}. Przygotowałem ten dedykowany dokument, aby pokazać Ci, jak dokładnie mogę rozwiązać Twoje obecne wyzwania i zostawić konkurencję daleko w tyle.
+          {clientName.startsWith('Pan') ? `${clientName}, przygotowałem` : `Dzień dobry. Przygotowałem`} ten dedykowany dokument dla {companyName}, aby przedstawić szczegółowy plan wdrożenia nowoczesnego serwisu oraz warunki realizacji.
         </motion.p>
       </div>
     </section>
