@@ -19,7 +19,7 @@ export default function OfferVideo({ videoUrl }: OfferVideoProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="aspect-video w-full rounded-2xl md:rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative"
+          className="aspect-video w-full rounded-2xl md:rounded-[32px] overflow-hidden bg-slate-100 border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] relative"
         >
           <iframe
             src={videoUrl}
