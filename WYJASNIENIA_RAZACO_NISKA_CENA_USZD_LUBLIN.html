@@ -2,422 +2,440 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Wyjaśnienia rażąco niskiej ceny - ZP.381.70.2026 - USZD Lublin</title>
+  <title>Wyjaśnienia rażąco niskiej ceny - USZD Lublin - ZP.381.70.2026</title>
   <style>
     @page {
       size: A4;
-      margin: 14mm 15mm 14mm 15mm;
+      margin: 14mm 14mm 14mm 14mm;
     }
     *, *:before, *:after {
       box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
     body {
-      font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
-      font-size: 9.5pt;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 8.8pt;
       line-height: 1.38;
-      color: #0f172a;
+      color: #1e293b;
+      background: #ffffff;
       margin: 0;
       padding: 0;
-      background: #fff;
     }
-    .header-table {
-      width: 100%;
+    .header-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
       margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid #cbd5e1;
+    }
+    .sender-box {
+      font-size: 8.5pt;
+      line-height: 1.3;
+    }
+    .sender-box strong {
+      font-size: 9.5pt;
+      color: #0f172a;
+    }
+    .recipient-box {
+      text-align: right;
+      font-size: 8.5pt;
+      line-height: 1.3;
+    }
+    .date-badge {
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+    .case-banner {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 3.5px solid #0284c7;
+      padding: 7px 10px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+    }
+    .case-banner table {
+      width: 100%;
       border-collapse: collapse;
     }
-    .header-table td {
-      vertical-align: top;
-      width: 50%;
-      font-size: 9pt;
-    }
-    .date-place {
-      text-align: right;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #334155;
-      font-size: 9.5pt;
-    }
-    .box-wykonawca {
-      background: #f8fafc;
-      border-left: 3px solid #0284c7;
-      padding: 8px 12px;
-      border-radius: 4px;
+    .case-banner td {
+      padding: 1.5px 4px;
       font-size: 8.5pt;
-      line-height: 1.35;
+      border: none;
     }
-    .box-zamawiajacy {
-      padding: 8px 12px;
-      font-size: 8.5pt;
-      line-height: 1.35;
+    .doc-title {
+      text-align: center;
+      margin: 10px 0 10px 0;
     }
-    .subject-box {
-      background: #f1f5f9;
-      padding: 8px 12px;
-      border-radius: 6px;
-      margin-bottom: 12px;
-      font-size: 9pt;
-      border: 1px solid #e2e8f0;
-      line-height: 1.35;
-    }
-    h1 {
+    .doc-title h1 {
       font-size: 11pt;
-      text-align: center;
+      font-weight: 800;
       text-transform: uppercase;
-      margin: 8px 0 3px 0;
-      letter-spacing: 0.5px;
       color: #0f172a;
+      margin: 0 0 3px 0;
+      letter-spacing: -0.2px;
     }
-    .sub-h1 {
-      font-size: 8pt;
-      text-align: center;
-      margin-bottom: 10px;
-      color: #475569;
+    .doc-title h2 {
+      font-size: 8.5pt;
       font-weight: 600;
-      line-height: 1.25;
+      color: #475569;
+      margin: 0;
     }
-    h2 {
-      font-size: 9.5pt;
-      color: #0369a1;
-      border-bottom: 1px solid #cbd5e1;
-      padding-bottom: 2px;
-      margin-top: 10px;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      page-break-after: avoid;
-    }
-    h3 {
-      font-size: 9pt;
+    .section-title {
+      font-size: 9.3pt;
+      font-weight: 700;
       color: #0f172a;
-      margin-top: 6px;
-      margin-bottom: 3px;
+      background: #f1f5f9;
+      padding: 4px 8px;
+      border-radius: 3px;
+      margin: 10px 0 6px 0;
+      border-left: 3px solid #0f172a;
       page-break-after: avoid;
     }
-    p, li {
+    .subsection-title {
+      font-size: 8.8pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 6px 0 2px 0;
+      page-break-after: avoid;
+    }
+    p {
+      margin: 0 0 5px 0;
       text-align: justify;
-      margin-top: 0;
-      margin-bottom: 3px;
     }
     ul, ol {
-      margin-top: 2px;
-      margin-bottom: 4px;
+      margin: 0 0 6px 0;
       padding-left: 18px;
     }
     li {
-      margin-bottom: 2px;
+      margin-bottom: 2.5px;
+      text-align: justify;
     }
-    table.data-table {
+    .table-custom {
       width: 100%;
       border-collapse: collapse;
-      margin: 6px 0;
-      font-size: 8pt;
+      margin: 6px 0 8px 0;
+      font-size: 8.2pt;
       page-break-inside: avoid;
     }
-    table.data-table th, table.data-table td {
+    .table-custom th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 5px 6px;
+      font-weight: 600;
+      text-align: left;
+      border: 1px solid #0f172a;
+    }
+    .table-custom td {
+      padding: 4px 6px;
       border: 1px solid #cbd5e1;
-      padding: 3px 5px;
-      line-height: 1.2;
+      vertical-align: middle;
     }
-    table.data-table th {
-      background: #f1f5f9;
-      color: #0f172a;
-      font-weight: 700;
-      text-align: center;
-    }
-    table.data-table tr.total-row {
+    .table-custom tr:nth-child(even) td {
       background: #f8fafc;
+    }
+    .table-custom .col-num {
+      width: 58px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .table-custom .col-hours {
+      width: 48px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .table-custom .col-rate {
+      width: 60px;
+      text-align: right;
+    }
+    .table-custom .col-val {
+      width: 78px;
+      text-align: right;
       font-weight: 700;
     }
-    table.data-table tr.final-row {
-      background: #e0f2fe;
-      font-weight: 800;
+    .table-summary th, .table-summary td {
+      padding: 4px 6px;
+      font-size: 8.2pt;
+    }
+    .highlight-row td {
+      background: #e0f2fe !important;
+      font-weight: 700;
       color: #0369a1;
-      font-size: 8.5pt;
+      border-top: 1.5px solid #0284c7;
+      border-bottom: 1.5px solid #0284c7;
     }
-    .signature-block {
-      margin-top: 18px;
-      text-align: right;
-      page-break-inside: avoid;
-    }
-    .signature-line {
-      display: inline-block;
-      text-align: center;
-      width: 280px;
-      border-top: 1px dashed #94a3b8;
-      padding-top: 5px;
-      font-size: 8pt;
-      color: #475569;
+    .final-row td {
+      background: #0f172a !important;
+      color: #ffffff !important;
+      font-weight: 800;
+      font-size: 8.8pt;
+      border: 1px solid #0f172a;
     }
     .page-break {
       page-break-before: always;
     }
-    .avoid-break {
+    .signature-container {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
       page-break-inside: avoid;
+    }
+    .signature-box {
+      width: 250px;
+      text-align: center;
+      border-top: 1px dotted #94a3b8;
+      padding-top: 6px;
+      font-size: 8.2pt;
+      color: #334155;
+    }
+    .signature-box strong {
+      display: block;
+      color: #0f172a;
+      font-size: 8.8pt;
+    }
+    .signature-box .note {
+      font-size: 7.2pt;
+      color: #64748b;
+      margin-top: 2px;
+      font-style: italic;
     }
   </style>
 </head>
 <body>
 
-  <div class="date-place">
-    Zduńska Wola / Białobrzegi, dnia 25 września 2026 r.
+  <!-- PAGE 1 -->
+  <div class="header-grid">
+    <div class="sender-box">
+      <strong>Marcin Molenda - Molenda Development</strong><br>
+      Siedziba: ul. Jodłowa 28, 98-220 Zduńska Wola<br>
+      Adres korespondencyjny: ul. Polna 4C/4, 26-800 Białobrzegi<br>
+      NIP: 7981489581 | REGON: 545325616 | Wpis do CEIDG<br>
+      Tel.: 665 430 469 | E-mail: kontakt@molendadevelopment.pl
+    </div>
+    <div class="recipient-box">
+      <div class="date-badge">Zduńska Wola / Białobrzegi, dnia 25.09.2026 r.</div>
+      <strong>Zamawiający:</strong><br>
+      Uniwersytecki Szpital Dziecięcy w Lublinie<br>
+      ul. prof. Antoniego Gębali 6, 20-093 Lublin<br>
+      E-mail: zp@uszd.lublin.pl
+    </div>
   </div>
 
-  <table class="header-table">
-    <tr>
-      <td>
-        <div class="box-wykonawca">
-          <strong>WYKONAWCA:</strong><br>
-          <strong>Marcin Molenda - Molenda Development</strong><br>
-          ul. Jodłowa 28, 98-220 Zduńska Wola<br>
-          Adres do korespondencji: ul. Polna 4C/4, 26-800 Białobrzegi<br>
-          NIP: 7981489581 | REGON: 545325616<br>
-          Tel.: 665 430 469 | E-mail: kontakt@molendadevelopment.pl
-        </div>
-      </td>
-      <td>
-        <div class="box-zamawiajacy">
-          <strong>ZAMAWIAJĄCY:</strong><br>
-          <strong>Uniwersytecki Szpital Dziecięcy w Lublinie</strong><br>
-          ul. prof. Antoniego Gębali 6<br>
-          20-093 Lublin<br>
-          E-mail: zp@uszd.lublin.pl
-        </div>
-      </td>
-    </tr>
-  </table>
-
-  <div class="subject-box">
-    <strong>Dotyczy postępowania:</strong> ZP.381.70.2026<br>
-    <strong>Tryb:</strong> Podstawowy (ustawa z dnia 11 września 2019 r. Prawo zamówień publicznych)<br>
-    <strong>Przedmiot zamówienia:</strong> Utworzenie strony internetowej szpitala w ramach projektu „Dostępność Plus dla AOS”
+  <div class="case-banner">
+    <table>
+      <tr>
+        <td style="width: 18%;"><strong>Znak sprawy:</strong></td>
+        <td style="width: 35%;">ZP.381.70.2026</td>
+        <td style="width: 14%;"><strong>Tryb:</strong></td>
+        <td>Podstawowy (ustawa Pzp)</td>
+      </tr>
+      <tr>
+        <td><strong>Przedmiot:</strong></td>
+        <td colspan="3">Utworzenie strony internetowej szpitala w ramach projektu „Dostępność Plus dla AOS”</td>
+      </tr>
+    </table>
   </div>
 
-  <h1>Wyjaśnienia Wykonawcy</h1>
-  <div class="sub-h1">
-    W ZAKRESIE ELEMENTÓW OFERTY MAJĄCYCH WPŁYW NA WYSOKOŚĆ ZAOFEROWANEJ CENY<br>
-    (składane w trybie art. 224 ust. 1 w zw. z art. 224 ust. 2 pkt 1 ustawy Prawo zamówień publicznych)
+  <div class="doc-title">
+    <h1>WYJAŚNIENIA W ZAKRESIE ELEMENTÓW OFERTY MAJĄCYCH WPŁYW NA CENĘ</h1>
+    <h2>(w trybie art. 224 ust. 1 w zw. z art. 224 ust. 2 pkt 1 ustawy Prawo zamówień publicznych)</h2>
   </div>
 
-  <p>
-    Działając w imieniu firmy <strong>Molenda Development Marcin Molenda</strong>, w odpowiedzi na wezwanie Zamawiającego z dnia 21 września 2026 r. (nr sprawy ZP.381.70.2026) dotyczące złożenia wyjaśnień, w tym złożenia dowodów dotyczących wyliczenia ceny, niniejszym oświadczam, że:
-  </p>
+  <p>Działając w imieniu firmy Molenda Development Marcin Molenda, w odpowiedzi na wezwanie Zamawiającego z dnia 21 września 2026 r. (nr sprawy ZP.381.70.2026) dotyczące złożenia wyjaśnień, w tym dowodów dotyczących wyliczenia ceny, niniejszym oświadczam, że:</p>
 
   <ol>
-    <li>Zaoferowana przez Wykonawcę cena ofertowa w wysokości <strong>27 000,00 zł brutto</strong> (słownie: dwadzieścia siedem tysięcy złotych 00/100), stanowiąca równocześnie kwotę <strong>27 000,00 zł netto</strong> ze względu na zwolnienie podmiotowe z podatku VAT (art. 113 ust. 1 ustawy o VAT, kwota podatku VAT: 0,00 zł), <strong>nie jest ceną rażąco niską</strong>.</li>
-    <li>Zaoferowana cena jest ceną w pełni rynkową, realną i kompletną, skalkulowaną z zachowaniem najwyższej staranności zawodowej, uwzględniającą pełen zakres świadczeń opisanych w Specyfikacji Warunków Zamówienia (SWZ) oraz Opisie Przedmiotu Zamówienia (OPZ).</li>
-    <li>Cena pokrywa wszystkie koszty bezpośrednie i pośrednie związane z realizacją zamówienia w oferowanym terminie <strong>30 dni</strong>, uwzględnia wszelkie wymagane opłaty publicznoprawne oraz zapewnia Wykonawcy godziwy zysk na poziomie <strong>4 400,00 zł netto (marża 16,3% wartości kontraktu)</strong> przy zaoferowanym 36-miesięcznym okresie gwarancji.</li>
+    <li>Zaoferowana przez Wykonawcę cena ofertowa w wysokości <strong>27 000,00 zł brutto = 27 000,00 zł netto</strong> (ze względu na zwolnienie podmiotowe z VAT na podstawie art. 113 ust. 1 ustawy o VAT, kwota podatku VAT: 0,00 zł) <strong>nie jest ceną rażąco niską</strong>.</li>
+    <li>Zaoferowana cena jest ceną w pełni rynkową i rzetelną, uwzględniającą pełen zakres świadczeń opisanych w SWZ i OPZ, w tym realizację wszystkich 8 etapów zamówienia, osobiste wizyty i czynności stacjonarne w siedzibie Szpitala w Lublinie oraz wsparcie wizualne (ujęcia fotograficzne z ziemi i z powietrza dronem).</li>
+    <li>Cena pokrywa wszystkie koszty bezpośrednie (robocizna 170 h x 110 zł/h), dojazdy i pobyt w Lublinie (3 wyjazdy), sesję foto i ujęcia z drona, infrastrukturę i narzędzia oraz zapewnia Wykonawcy godziwy zysk na poziomie <strong>4 700,00 zł netto (marża 17,4% kontraktu)</strong> przy 36-miesięcznej gwarancji.</li>
   </ol>
 
-  <h2>I. Obiektywne czynniki umożliwiające obniżenie kosztów realizacji</h2>
-  <p>
-    Zgodnie z ugruntowaną linią orzeczniczą Krajowej Izby Odwoławczej (m.in. wyroki KIO 1965/21, KIO 2411/20), wykonawca ma pełne prawo optymalizować koszty, o ile wynikają one z legalnych i obiektywnych uwarunkowań organizacyjnych, technologicznych oraz ekonomicznych. Zaoferowana cena wynika bezpośrednio z następujących przewag konkurencyjnych:
-  </p>
+  <div class="section-title">I. OBIEKTYWNE CZYNNIKI UMOŻLIWIAJĄCE OBNIŻENIE KOSZTÓW REALIZACJI</div>
 
-  <h3>1. Model jednoosobowej działalności gospodarczej (JDG) i brak narzutów korporacyjnych</h3>
-  <ul>
-    <li><strong>Brak kosztów podwykonawców:</strong> Całość prac projektowych, programistycznych, wdrożeniowych i audytowych realizowana jest osobiście przez Wykonawcę pełniącego rolę Głównego Programisty / Architekta IT oraz Projektanta UI (wskazanego w Załączniku nr 2 do SWZ). Wykonawca złożył oświadczenie o samodzielnej realizacji bez podwykonawców, co eliminuje marże pośredników.</li>
-    <li><strong>Zerowy narzut kosztów zarządu i administracji ogólnej:</strong> Wykonawca nie utrzymuje rozbudowanych działów sprzedaży, kadr, controllingu ani struktur menedżerskich, które w dużych agencjach generują narzut rzędu 35-50% na każdą roboczogodzinę.</li>
-    <li><strong>Brak kosztów wynajmu komercyjnych biur:</strong> Praca prowadzona jest w formule zdalnej z wykorzystaniem własnego zaplecza lokalowego (home office), co eliminuje stałe koszty najmu.</li>
-  </ul>
+  <p>Zgodnie z ugruntowaną linią orzeczniczą KIO (np. KIO 1965/21, KIO 2411/20), wykonawca ma pełne prawo optymalizować koszty, o ile wynikają one z legalnych, obiektywnych uwarunkowań organizacyjnych i technologicznych:</p>
 
-  <h3>2. Posiadane gotowe biblioteki komponentów oraz moduły dostępności cyfrowej (WCAG 2.1 AA)</h3>
-  <p>
-    Przedmiot zamówienia realizowany jest w ramach projektu „Dostępność Plus dla AOS”, gdzie kluczowym wymaganiem jest pełna zgodność ze standardem <strong>WCAG 2.1 na poziomie AA</strong> zgodnie z ustawą z dnia 4 kwietnia 2019 r. o dostępności cyfrowej stron internetowych i aplikacji mobilnych podmiotów publicznych:
-  </p>
-  <ul>
-    <li>Wykonawca dysponuje przetestowaną i wdrożoną bazą gotowych, autorskich komponentów dostępności (m.in. wdrożenie dla Stowarzyszenia Kombinat Aktywności Społecznej: portal stowarzyszeniekas.pl ze standardem WCAG 2.1 oraz serwis medyczny rltpolska.pl).</li>
-    <li>Gotowa baza komponentów obejmuje: zaawansowaną obsługę nawigacji klawiaturą, etykietowanie ARIA dla czytników ekranu (NVDA, JAWS, VoiceOver), mechanizmy wysokiego kontrastu, responsywne skalowanie fontów bez utraty czytelności oraz walidację formularzy dla osób ze szczególnymi potrzebami.</li>
-    <li>Dzięki zastosowaniu gotowych modułów, czas wdrożenia warstwy frontendowej oraz audytu dostępności został zredukowany o ok. 35-40% w porównaniu do podmiotów tworzących kod od podstaw. Oszczędność czasu przekłada się bezpośrednio na korzyść cenową dla Zamawiającego.</li>
-  </ul>
+  <div class="subsection-title">1. Model jednoosobowej działalności gospodarczej (JDG) i brak narzutów korporacyjnych</div>
+  <p>Wykonawca jest wykwalifikowanym inżynierem oprogramowania i projektantem UI/UX (Główny Programista i Architekt IT wskazany w Załączniku nr 2 do SWZ). Kluczowe prace wykonuje osobiście bez udziału pośredników, co eliminuje marże agencyjne oraz koszty zarządu i biur komercyjnych (stanowiące w agencjach 35-50% narzutu na roboczogodzinę).</p>
 
+  <div class="subsection-title">2. Optymalizacja logistyczna dojazdów do Lublina (Etapy I, VI, VII i VIII)</div>
+  <p>Zgodnie z OPZ realizacja wymaga obecności w siedzibie Szpitala w Lublinie (warsztat mind-map, instalacja on-premise w sieci lokalnej, testy UAT, 20h szkoleń stacjonarnych). Wykonawca operuje z bazy korespondencyjnej w Białobrzegach, oddalonej od Lublina o zaledwie ok. 140 km (ok. 1,5 - 2 h trasy ekspresowej S12/DK48). Wizyty stacjonarne zaplanowano w 3 optymalnych blokach 2-dniowych (Wyjazd 1: warsztat mind-map i sesja foto/dron; Wyjazd 2: wdrożenie on-premise FTP i sesje UAT; Wyjazd 3: 20h szkoleń stacjonarnych i odbiór). Koszt podróży, paliwa i pobytu został precyzyjnie wyliczony na <strong>1 200,00 zł</strong>.</p>
 
+  <div class="subsection-title">3. Zabezpieczenie wsparcia wizualnego: sesja fotograficzna i zdjęcia z powietrza (dron)</div>
+  <p>W ramach Etapu V OPZ wymagane jest przygotowanie profesjonalnych zdjęć obiektu wraz ze zdjęciami z powietrza (łącznie min. 60 zdjęć) oraz biblioteki 150-200 mediów z SEO alt/title. W kalkulacji zabezpieczono dedykowaną kwotę <strong>1 200,00 zł</strong>, w całości pokrywającą realizację profesjonalnej sesji fotograficznej szpitala (aparatem i bezzałogowym statkiem powietrznym / dronem z uprawnieniami pilota BSP), postprodukcję barwną oraz przeniesienie pełnych praw autorskich na Szpital.</p>
 
-  <h3>3. Własne zaplecze sprzętowe i w pełni zamortyzowana infrastruktura techniczna</h3>
-  <p>
-    Wykonawca posiada w pełni wyposażone środowisko robocze (stacje robocze, laptopy testowe, urządzenia mobilne z systemami iOS oraz Android do weryfikacji responsywności i działania asystentów mowy VoiceOver i TalkBack). Sprzęt został sfinansowany ze środków własnych i jest w 100% zamortyzowany. Wykonawca nie ponosi żadnych opłat leasingowych ani rat kredytowych.
-  </p>
+  <div class="page-break"></div>
+  <!-- PAGE 2 -->
 
-  <h3>4. Oparcie architektury o oprogramowanie Open Source (brak opłat licencyjnych)</h3>
-  <p>
-    Rozwiązanie zostanie wdrożone przy użyciu sprawdzonych, bezpiecznych technologii Open Source (Next.js / Headless CMS lub zoptymalizowany CMS o otwartym kodzie źródłowym na licencjach MIT/GPL). Eliminuje to konieczność zakupu płatnych licencji serwerowych i subskrypcyjnych, obniżając koszt realizacji bez kompromisów jakościowych.
-  </p>
+  <div class="subsection-title">4. Gotowe biblioteki komponentów oraz moduły dostępności cyfrowej (WCAG 2.1 / 2.2 AA)</div>
+  <p>Wykonawca dysponuje przetestowaną i wdrożoną bazą komponentów dostępności (m.in. wdrożenie serwisu <em>stowarzyszeniekas.pl</em> ze standardem WCAG 2.1 dla Stowarzyszenia Kombinat Aktywności Społecznej oraz serwis medyczny <em>rltpolska.pl</em>). Baza obejmuje mechanizmy: pełnej obsługi klawiaturą, focus-visible, semantyki ARIA dla czytników (NVDA, JAWS, VoiceOver), trybu wysokiego kontrastu oraz skalowania fontów. Skraca to czas kodowania front-endu i audytu o ok. 35-40%, dając bezpośrednią oszczędność kosztową.</p>
 
-  <h3>5. Zautomatyzowany proces testów i audytu jakości</h3>
-  <p>
-    Wykonawca korzysta ze zintegrowanych narzędzi automatyzujących testy jakościowe, syntaktyczne oraz testy dostępności (axe-core, Pa11y, Lighthouse, skrypty walidujące Core Web Vitals). Dzięki temu testy regresyjne i weryfikacja zgodności z wymogami projektu „Dostępność Plus dla AOS” zajmują ułamek czasu wymaganego przy weryfikacji wyłącznie manualnej.
-  </p>
+  <div class="subsection-title">5. Własne zaplecze sprzętowe i technologie Open Source (brak opłat licencyjnych)</div>
+  <p>Wykonawca dysponuje własnym, w 100% zamortyzowanym sprzętem roboczym i testowym (stacje robocze, urządzenia mobilne iOS/Android). Architektura serwisu oparta zostanie o sprawdzone, stabilne technologie Open Source (Next.js / Headless CMS lub relacyjny CMS na bezpiecznych licencjach MIT/GPL), co całkowicie eliminuje konieczność ponoszenia cyklicznych opłat za komercyjne licencje serwerowe.</p>
 
-  <h2>II. Zgodność z przepisami dotyczącymi kosztów pracy (art. 224 ust. 4 Pzp)</h2>
-  <ol>
-    <li>
-      <strong>Zgodność z przepisami o minimalnym wynagrodzeniu za pracę:</strong>
-      Wykonawca realizuje zamówienie osobiście w ramach jednoosobowej działalności gospodarczej. Do kalkulacji przyjęto stawkę roboczogodziny (r-g) w wysokości <strong>110,00 zł/h</strong>. Stawka ta <strong>ponad 3-krotnie przewyższa</strong> minimalną stawkę godzinową wynikającą z ustawy z dnia 10 października 2002 r. o minimalnym wynagrodzeniu za pracę w 2026 r. Zaoferowana cena w pełni spełnia wymóg art. 224 ust. 4 pkt 1 ustawy Pzp.
-    </li>
-    <li>
-      <strong>Zgodność z przepisami prawa pracy i ubezpieczeń społecznych:</strong>
-      Wykonawca na bieżąco reguluje wszelkie zobowiązania wobec Zakładu Ubezpieczeń Społecznych oraz Urzędu Skarbowego i nie posiada żadnych zaległości składkowych ani podatkowych.
-    </li>
-  </ol>
+  <div class="section-title">II. ZGODNOŚĆ Z PRZEPISAMI DOTYCZĄCYMI KOSZTÓW PRACY (ART. 224 UST. 4 PZP)</div>
+  <p>Wykonawca oświadcza, że do wyliczenia ceny przyjęto stawkę roboczogodziny na poziomie <strong>110,00 zł netto/h</strong>. Stawka ta <strong>ponad 3-krotnie przewyższa</strong> minimalną stawkę godzinową określoną w przepisach o minimalnym wynagrodzeniu za pracę w 2026 r., co spełnia wymóg art. 224 ust. 4 pkt 1 ustawy Pzp. Wykonawca terminowo reguluje zobowiązania wobec ZUS i US, nie posiada żadnych zaległości publicznoprawnych.</p>
 
-  <h2>III. Status podatkowy (zwolnienie z podatku VAT)</h2>
-  <p>
-    W Formularzu Ofertowym wskazano stawkę VAT jako: <em>zwolniony z podatku VAT na podstawie art. 113 ust. 1 ustawy o podatku od towarów i usług (kwota VAT: 0,00 zł)</em>. Cena ofertowa netto (27 000,00 zł) jest równa cenie brutto. Zamawiający, będący publicznym szpitalem, nie ponosi dodatkowego ciężaru 23% podatku od towarów i usług, co stanowi legalny i obiektywny czynnik obniżający cenę brutto przy zachowaniu pełnej rentowności po stronie Wykonawcy.
-  </p>
+  <div class="section-title">III. STATUS PODATKOWY (ZWOLNIENIE PODMIOTOWE Z PODATKU VAT)</div>
+  <p>Zgodnie z art. 113 ust. 1 ustawy o podatku od towarów i usług Wykonawca korzysta ze zwolnienia podmiotowego z VAT (kwota VAT: 0,00 zł). Dzięki temu cena netto (27 000,00 zł) jest równa cenie brutto (27 000,00 zł), a Zamawiający jako podmiot publiczny nie ponosi dodatkowego kosztu 23% podatku VAT.</p>
 
-  <h2>IV. Pozostałe wymogi z art. 224 ust. 3 ustawy Pzp</h2>
-  <ul>
-    <li><strong>Zarządzanie procesem usług:</strong> Projekt realizowany będzie w zoptymalizowanym, zwinnym procesie deweloperskim z podziałem na etapy (analiza, makiety UX, wdrożenie front-end i CMS, implementacja WCAG 2.1 AA, audyt, szkolenie, wdrożenie). Gwarantuje to realizację w oferowanym terminie 30 dni.</li>
-    <li><strong>Ochrona środowiska:</strong> Proces wytwórczy realizowany jest w 100% bez użycia papieru (elektroniczny obieg dokumentacji, komunikacja cyfrowa). Architektura strony minimalizuje zużycie zasobów serwerowych i energii elektrycznej.</li>
-    <li><strong>Pomoc publiczna:</strong> Zaoferowana cena nie wynika z otrzymania jakiejkolwiek pomocy publicznej.</li>
-  </ul>
+  <div class="section-title">IV. SZCZEGÓŁOWA KALKULACJA CENOWA W UKŁADZIE ETAPÓW OPZ</div>
+  <p>Poniższa tabela przedstawia szczegółowy nakład pracy przypisany bezpośrednio do poszczególnych Etapów realizacji określonych w Opisie Przedmiotu Zamówienia (OPZ):</p>
 
-  <h2>V. Szczegółowa kalkulacja cenowa (kosztorys zadaniowy)</h2>
-  <p>
-    Poniższe zestawienie przedstawia szczegółową kalkulację planowanego nakładu pracy, kosztów bezpośrednich, kosztów stałych oraz zysku Wykonawcy dla kwoty ofertowej 27 000,00 zł:
-  </p>
-
-  <table class="data-table">
+  <table class="table-custom">
     <thead>
       <tr>
-        <th style="width: 5%;">Lp.</th>
-        <th style="width: 55%;">Zakres prac / Etap realizacji</th>
-        <th style="width: 12%;">Szacowany nakład</th>
-        <th style="width: 14%;">Stawka za r-g</th>
-        <th style="width: 14%;">Wartość</th>
+        <th class="col-num">Etap OPZ</th>
+        <th>Zakres czynności merytorycznych i wdrożeniowych</th>
+        <th class="col-hours">Nakład</th>
+        <th class="col-rate">Stawka</th>
+        <th class="col-val">Wartość</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td style="text-align: center;">1.</td>
-        <td><strong>Analiza przedwdrożeniowa i architektura informacji (IA):</strong> Analiza struktury szpitala, oddziałów i poradni AOS, architektura informacji, makiety funkcjonalne UX/UI placówki medycznej</td>
-        <td style="text-align: center;">24 h</td>
-        <td style="text-align: right;">110,00 zł</td>
-        <td style="text-align: right;">2 640,00 zł</td>
+        <td class="col-num">Etap I</td>
+        <td><strong>Analiza, badania i przygotowanie:</strong> Audyt obecnej strony, ankiety personelu, analiza benchmark 5 serwisów, 4 persony i ścieżki pacjenta, stacjonarny warsztat mind-map w Lublinie</td>
+        <td class="col-hours">18 h</td>
+        <td class="col-rate">110,00 zł</td>
+        <td class="col-val">1 980,00 zł</td>
       </tr>
       <tr>
-        <td style="text-align: center;">2.</td>
-        <td><strong>Projekt graficzny (UI Design):</strong> Opracowanie nowoczesnej szaty graficznej, responsywnej (Desktop, Tablet, Mobile), z uwzględnieniem identyfikacji wizualnej szpitala</td>
-        <td style="text-align: center;">22 h</td>
-        <td style="text-align: right;">110,00 zł</td>
-        <td style="text-align: right;">2 420,00 zł</td>
+        <td class="col-num">Etap II</td>
+        <td><strong>Architektura informacji i UX:</strong> Opracowanie sitemap nowej strony, makiety funkcjonalne UX, hierarchia treści, eliminacja duplikatów i głębokich zagnieżdżeń</td>
+        <td class="col-hours">16 h</td>
+        <td class="col-rate">110,00 zł</td>
+        <td class="col-val">1 760,00 zł</td>
       </tr>
       <tr>
-        <td style="text-align: center;">3.</td>
-        <td><strong>Wdrożenie programistyczne (Front-end & Back-end / CMS):</strong> Kodowanie szablonów, panel CMS, moduł aktualności, grafiki lekarzy AOS, e-formularze kontaktowe</td>
-        <td style="text-align: center;">52 h</td>
-        <td style="text-align: right;">110,00 zł</td>
-        <td style="text-align: right;">5 720,00 zł</td>
+        <td class="col-num">Etap III</td>
+        <td><strong>Koncepcja wizualna serwisu:</strong> UI Design strony głównej i 5 podstron wzorcowych (oddział, poradnia, kontakt, poradnik, mapa), system komponentów (design system), interaktywna mapa</td>
+        <td class="col-hours">20 h</td>
+        <td class="col-rate">110,00 zł</td>
+        <td class="col-val">2 200,00 zł</td>
       </tr>
       <tr>
-        <td style="text-align: center;">4.</td>
-        <td><strong>Implementacja standardów WCAG 2.1 AA (Dostępność Plus dla AOS):</strong> Nawigacja klawiaturą, semantyka pod czytniki (NVDA/VoiceOver), wysoki kontrast, etykiety ARIA</td>
-        <td style="text-align: center;">30 h</td>
-        <td style="text-align: right;">110,00 zł</td>
-        <td style="text-align: right;">3 300,00 zł</td>
+        <td class="col-num">Etap IV</td>
+        <td><strong>Implementacja techniczna:</strong> Konfiguracja CMS, programowanie szablonów, system ról, wyszukiwarka personelu i struktur, formularze kontaktowe z RODO, mechanizmy WCAG</td>
+        <td class="col-hours">40 h</td>
+        <td class="col-rate">110,00 zł</td>
+        <td class="col-val">4 400,00 zł</td>
       </tr>
       <tr>
-        <td style="text-align: center;">5.</td>
-        <td><strong>Migracja danych i struktury poradni AOS:</strong> Przeniesienie kluczowych informacji ze starego serwisu, uporządkowanie danych teleadresowych, przygotowanie kart poradni</td>
-        <td style="text-align: center;">16 h</td>
-        <td style="text-align: right;">110,00 zł</td>
-        <td style="text-align: right;">1 760,00 zł</td>
+        <td class="col-num">Etap V</td>
+        <td><strong>Treści, SEO i baza mediów:</strong> Migracja danych roboczych, szablony jednostek, wsparcie redakcyjne (30h konsultacji redaktorskich), katalogowanie biblioteki 150-200 mediów z SEO alt/title</td>
+        <td class="col-hours">32 h</td>
+        <td class="col-rate">110,00 zł</td>
+        <td class="col-val">3 520,00 zł</td>
       </tr>
       <tr>
-        <td style="text-align: center;">6.</td>
-        <td><strong>Testy, audyt dostępności cyfrowej i bezpieczeństwo:</strong> Testy czytnikami, optymalizacja Core Web Vitals, testy podatności SSL/OWASP, sporządzenie Deklaracji Dostępności</td>
-        <td style="text-align: center;">18 h</td>
-        <td style="text-align: right;">110,00 zł</td>
-        <td style="text-align: right;">1 980,00 zł</td>
+        <td class="col-num">Etap VI</td>
+        <td><strong>Testy, audyt WCAG 2.2 AA i sesje UAT:</strong> Testy funkcjonalne, responsywność (5 rozdzielczości, 4 przeglądarki), wydajność, bezpieczeństwo, audyt WCAG, 2 stacjonarne sesje UAT (2 x 4h) w Lublinie z protokołami</td>
+        <td class="col-hours">18 h</td>
+        <td class="col-rate">110,00 zł</td>
+        <td class="col-val">1 980,00 zł</td>
       </tr>
       <tr>
-        <td style="text-align: center;">7.</td>
-        <td><strong>Wdrożenie produkcyjne, szkolenie i dokumentacja:</strong> Konfiguracja środowiska produkcyjnego szpitala, migracja DNS, szkolenie dla administratorów, instrukcja PDF</td>
-        <td style="text-align: center;">14 h</td>
-        <td style="text-align: right;">110,00 zł</td>
-        <td style="text-align: right;">1 540,00 zł</td>
+        <td class="col-num">Etap VII</td>
+        <td><strong>Wdrożenie produkcyjne on-premise i asysta:</strong> Wdrożenie na serwerach szpitala w Lublinie (FTP w sieci lokalnej), SSL, kopie BCP/DRP (retencja 30 dni), przekierowania 301, analityka RODO, 14 dni asysty</td>
+        <td class="col-hours">12 h</td>
+        <td class="col-rate">110,00 zł</td>
+        <td class="col-val">1 320,00 zł</td>
       </tr>
       <tr>
-        <td style="text-align: center;">8.</td>
-        <td><strong>Wsparcie powdrożeniowe i gwarancja:</strong> Czuwanie nad bezawaryjnym działaniem systemu w oferowanym okresie gwarancyjnym (36 miesięcy)</td>
-        <td style="text-align: center;">14 h</td>
-        <td style="text-align: right;">110,00 zł</td>
-        <td style="text-align: right;">1 540,00 zł</td>
+        <td class="col-num">Etap VIII</td>
+        <td><strong>Szkolenia stacjonarne i materiały:</strong> Przeprowadzenie w Lublinie 20h dydaktycznych szkoleń stacjonarnych (administratorzy 8h, redaktorzy 6h, WCAG 6h), szablony DOCX, instrukcja PDF, checklista (20 pkt), nagrania</td>
+        <td class="col-hours">14 h</td>
+        <td class="col-rate">110,00 zł</td>
+        <td class="col-val">1 540,00 zł</td>
       </tr>
-      <tr class="total-row">
-        <td colspan="2" style="text-align: right;">A. RAZEM KOSZTY PRACY WŁASNEJ (Robocizna bezpośrednia):</td>
-        <td style="text-align: center;">190 h</td>
-        <td style="text-align: right;">110,00 zł</td>
-        <td style="text-align: right;">20 900,00 zł</td>
+      <tr class="highlight-row">
+        <td class="col-num">A.</td>
+        <td colspan="2"><strong>RAZEM KOSZTY PRACY WŁASNEJ (Robocizna bezpośrednia):</strong></td>
+        <td class="col-rate"><strong>170 h</strong></td>
+        <td class="col-val"><strong>18 700,00 zł</strong></td>
       </tr>
     </tbody>
   </table>
 
-  <table class="data-table">
+  <div class="page-break"></div>
+  <!-- PAGE 3 -->
+
+  <div class="subsection-title">Zestawienie kosztów logistycznych, rzeczowych i zysku Wykonawcy:</div>
+
+  <table class="table-custom table-summary">
     <thead>
       <tr>
-        <th style="width: 5%;">Lp.</th>
-        <th style="width: 67%;">Zestawienie kosztów dodatkowych, narzutów i zysku</th>
-        <th style="width: 28%;">Wartość</th>
+        <th style="width: 58px; text-align: center;">Poz.</th>
+        <th>Wyszczególnienie pozycji kosztowej / marży</th>
+        <th style="width: 100px; text-align: right;">Wartość (zł)</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td style="text-align: center;">B.</td>
-        <td><strong>Koszty infrastruktury i narzędzi deweloperskich:</strong> środowisko testowe staging, domena testowa, licencje narzędzi audytowych, certyfikaty SSL</td>
-        <td style="text-align: right;">800,00 zł</td>
+        <td style="text-align: center; font-weight: 700;">B.</td>
+        <td><strong>Koszty podróży, dojazdów i pobytu w Lublinie:</strong> Koszty paliwa, eksploatacji pojazdu i zakwaterowania związane z realizacją czynności stacjonarnych w Lublinie w ramach 3 zoptymalizowanych wyjazdów 2-dniowych (warsztat mind-map, sesja foto/dron, wdrożenie on-premise w sieci wewnętrznej, testy UAT, cykl 20h szkoleń stacjonarnych)</td>
+        <td style="text-align: right; font-weight: 700;">1 200,00 zł</td>
       </tr>
       <tr>
-        <td style="text-align: center;">C.</td>
-        <td><strong>Koszty administracyjne i operacyjne:</strong> łączność internetowa, amortyzacja sprzętu komputerowego, obsługa księgowa w proporcji do zlecenia</td>
-        <td style="text-align: right;">900,00 zł</td>
-      </tr>
-      <tr class="total-row">
-        <td style="text-align: center;">D.</td>
-        <td><strong>KOSZTY OGÓŁEM (A + B + C):</strong></td>
-        <td style="text-align: right;">22 600,00 zł</td>
+        <td style="text-align: center; font-weight: 700;">C.</td>
+        <td><strong>Koszty wsparcia wizualnego (fotograf i zdjęcia z powietrza - dron):</strong> Realizacja kompleksowej sesji fotograficznej bryły i infrastruktury szpitala oraz zdjęć z powietrza bezzałogowym statkiem powietrznym (łącznie min. 60 obrobionych zdjęć w wysokiej rozdzielczości) wraz z licencją i pełnymi prawami autorskimi</td>
+        <td style="text-align: right; font-weight: 700;">1 200,00 zł</td>
       </tr>
       <tr>
-        <td style="text-align: center;">E.</td>
-        <td><strong>Założony zysk Wykonawcy (marża ok. 16,3% wartości kontraktu):</strong></td>
-        <td style="text-align: right;">4 400,00 zł</td>
+        <td style="text-align: center; font-weight: 700;">D.</td>
+        <td><strong>Koszty infrastruktury i narzędzi deweloperskich:</strong> Zewnętrzne środowisko staging, domena deweloperska, licencje narzędzi audytowych WCAG i SEO, certyfikaty SSL</td>
+        <td style="text-align: right; font-weight: 700;">600,00 zł</td>
       </tr>
-      <tr class="total-row">
+      <tr>
+        <td style="text-align: center; font-weight: 700;">E.</td>
+        <td><strong>Koszty administracyjne i materiały szkoleniowe:</strong> Łączność, przygotowanie i wydruk materiałów szkoleniowych DOCX/PDF, obsługa księgowa proporcjonalnie do zlecenia</td>
+        <td style="text-align: right; font-weight: 700;">600,00 zł</td>
+      </tr>
+      <tr class="highlight-row">
         <td style="text-align: center;">F.</td>
-        <td><strong>ŁĄCZNA CENA OFERTOWA NETTO:</strong></td>
-        <td style="text-align: right;">27 000,00 zł</td>
+        <td><strong>KOSZTY OGÓŁEM (A + B + C + D + E):</strong></td>
+        <td style="text-align: right;"><strong>22 300,00 zł</strong></td>
       </tr>
       <tr>
-        <td style="text-align: center;">G.</td>
-        <td><strong>Podatek VAT (zwolnienie na podstawie art. 113 ust. 1 ustawy o VAT):</strong></td>
-        <td style="text-align: right;">0,00 zł</td>
+        <td style="text-align: center; font-weight: 700; color: #0284c7;">G.</td>
+        <td style="color: #0284c7;"><strong>Założony zysk Wykonawcy (marża ok. 17,4% wartości kontraktu):</strong></td>
+        <td style="text-align: right; font-weight: 700; color: #0284c7;">4 700,00 zł</td>
       </tr>
       <tr class="final-row">
         <td style="text-align: center;">H.</td>
-        <td><strong>ŁĄCZNA CENA OFERTOWA BRUTTO:</strong></td>
+        <td>ŁĄCZNA CENA OFERTOWA NETTO:</td>
+        <td style="text-align: right;">27 000,00 zł</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: 600;">I.</td>
+        <td>Podatek VAT (zwolnienie podmiotowe na podstawie art. 113 ust. 1 ustawy o VAT):</td>
+        <td style="text-align: right; font-weight: 600;">0,00 zł</td>
+      </tr>
+      <tr class="final-row">
+        <td style="text-align: center;">J.</td>
+        <td>ŁĄCZNA CENA OFERTOWA BRUTTO:</td>
         <td style="text-align: right;">27 000,00 zł</td>
       </tr>
     </tbody>
   </table>
 
-  <h2>VI. Podsumowanie i wnioski</h2>
-  <p>
-    Przedstawione powyżej wyjaśnienia oraz szczegółowy kosztorys dowodzą w sposób jednoznaczny i niebudzący wątpliwości, że:
-  </p>
+  <div class="section-title">V. PODSUMOWANIE I WNIOSKI</div>
+  <p>Przedstawione wyjaśnienia oraz szczegółowy kosztorys dowodzą w sposób jednoznaczny i niebudzący wątpliwości, że:</p>
   <ol>
     <li>Zaoferowana przez Wykonawcę cena nie jest ceną rażąco niską w rozumieniu art. 224 ustawy Pzp.</li>
-    <li>Kwota oferty uwzględnia wszystkie niezbędne elementy cenotwórcze, koszty pracy, podatki oraz zapewnia bezpieczny i godziwy zysk przedsiębiorstwa (4 400,00 zł).</li>
-    <li>Obniżenie ceny wynika z obiektywnych i legalnych przewag konkurencyjnych nowoczesnej, wysoce wyspecjalizowanej jednoosobowej pracowni programistycznej (brak kosztów korporacyjnych, brak marż podwykonawców, wysoka automatyzacja procesów, posiadanie gotowych komponentów WCAG oraz zwolnienie podmiotowe z VAT).</li>
-    <li>Wykonawca dysponuje wiedzą, doświadczeniem (zgodnie ze złożonym wykazem usług w Załączniku nr 2 do SWZ) oraz zapleczem technologicznym gwarantującym należyte, terminowe (30 dni) i bezbłędne wykonanie zamówienia na rzecz Uniwersyteckiego Szpitala Dziecięcego w Lublinie wraz z 36-miesięczną gwarancją.</li>
+    <li>Kwota oferty w całości zabezpiecza pełen zakres OPZ: 8 etapów prac, 30h wsparcia redaktorskiego, min. 60 zdjęć fotograficznych i z powietrza (dron), dojazdy i obecność w Lublinie na warsztatach, wdrożeniu on-premise, testach UAT i 20h szkoleń stacjonarnych, a także 36-miesięczną gwarancję oraz bezpieczny zysk Wykonawcy w kwocie <strong>4 700,00 zł</strong>.</li>
+    <li>Różnica cenowa względem innych ofert wynika z modelu JDG (brak marż korporacyjnych), posiadania gotowej bazy komponentów WCAG oraz podmiotowego zwolnienia z podatku VAT.</li>
   </ol>
-  <p>
-    Mając na uwadze powyższe, wnoszę o przyjęcie niniejszych wyjaśnień i uznanie oferty Wykonawcy za w pełni rzetelną, prawidłową i niepodlegającą odrzuceniu.
-  </p>
 
-  <div class="signature-block">
-    <div class="signature-line">
-      <strong>Marcin Molenda</strong><br>
-      Molenda Development<br>
-      <span style="font-size: 8pt; color: #64748b;">(dokument opatrzony kwalifikowanym podpisem elektronicznym lub podpisem zaufanym)</span>
+  <p>Mając na uwadze powyższe, wnoszę o przyjęcie niniejszych wyjaśnień i uznanie oferty Wykonawcy za prawidłową i niepodlegającą odrzuceniu.</p>
+
+  <div class="signature-container">
+    <div class="signature-box">
+      Z poważaniem,<br><br>
+      <strong>Marcin Molenda</strong>
+      Molenda Development
+      <div class="note">(dokument opatrzony kwalifikowanym podpisem elektronicznym lub podpisem zaufanym)</div>
     </div>
   </div>
 

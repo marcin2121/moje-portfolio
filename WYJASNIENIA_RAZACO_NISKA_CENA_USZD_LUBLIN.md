@@ -29,10 +29,10 @@ Przedmiot zamówienia: **Utworzenie strony internetowej szpitala w ramach projek
 Działając w imieniu firmy Molenda Development Marcin Molenda, w odpowiedzi na wezwanie Zamawiającego z dnia 21 września 2026 r. (nr sprawy ZP.381.70.2026) dotyczące złożenia wyjaśnień, w tym złożenia dowodów dotyczących wyliczenia ceny, niniejszym oświadczam, że:
 
 1. Zaoferowana przez Wykonawcę cena ofertowa w wysokości **27 000,00 zł brutto** (słownie: dwadzieścia siedem tysięcy złotych 00/100), będąca równocześnie kwotą **27 000,00 zł netto** (ze względu na zwolnienie podmiotowe z podatku VAT na podstawie art. 113 ust. 1 ustawy z dnia 11 marca 2004 r. o podatku od towarów i usług, kwota VAT: 0,00 zł), **nie jest ceną rażąco niską**.
-2. Zaoferowana cena jest ceną w pełni rynkową, realną, skalkulowaną z zachowaniem najwyższej staranności zawodowej, uwzględniającą pełen zakres świadczeń opisanych w Specyfikacji Warunków Zamówienia (SWZ) oraz Opisie Przedmiotu Zamówienia (OPZ).
-3. Cena pokrywa wszystkie koszty bezpośrednie i pośrednie związane z realizacją zamówienia w oferowanym terminie 30 dni, uwzględnia wszelkie wymagane opłaty publicznoprawne, podatki oraz zapewnia Wykonawcy godziwy zysk na poziomie **4 400,00 zł netto (marża 16,3% wartości kontraktu)** przy 36-miesięcznym okresie gwarancji.
+2. Zaoferowana cena jest ceną w pełni rynkową, realną, skalkulowaną z zachowaniem najwyższej staranności zawodowej, uwzględniającą pełen i drobiazgowy zakres świadczeń opisanych w Specyfikacji Warunków Zamówienia (SWZ) oraz Opisie Przedmiotu Zamówienia (OPZ), w tym wszystkie wymagane czynności stacjonarne w siedzibie Szpitala w Lublinie oraz wsparcie wizualne (ujęcia fotograficzne z ziemi i z powietrza dronem).
+3. Cena pokrywa wszystkie koszty bezpośrednie, koszty logistyczne i dojazdy, realizację sesji fotograficznej i zdjęć z drona, infrastrukturę oraz koszty stałe, uwzględnia wszelkie wymagane opłaty publicznoprawne i podatki oraz zapewnia Wykonawcy godziwy zysk na poziomie **4 700,00 zł netto (marża 17,4% wartości kontraktu)** przy 36-miesięcznym okresie gwarancji.
 
-Poniżej przedstawiam wyczerpujące uzasadnienie faktyczne i prawne wraz ze szczegółową kalkulacją kosztorysową oraz wykazem obiektywnych czynników, które umożliwiły zaoferowanie korzystnej ceny bez uszczerbku dla jakości, terminowości i bezpieczeństwa realizacji projektu.
+Poniżej przedstawiam wyczerpujące uzasadnienie faktyczne i prawne wraz ze szczegółową kalkulacją kosztorysową przypisaną bezpośrednio do Etapów I-VIII z OPZ oraz wykazem obiektywnych czynników umożliwiających realizację zamówienia w zaoferowanej cenie.
 
 ---
 
@@ -42,26 +42,30 @@ Zgodnie z ugruntowanym orzecznictwem Krajowej Izby Odwoławczej (m.in. wyrok KIO
 
 #### 1. Model organizacyjny jednoosobowej działalności gospodarczej (JDG) i brak narzutów korporacyjnych
 Wykonawca prowadzi działalność gospodarczą osobiście, będąc inżynierem oprogramowania oraz projektantem UI/UX pełniącym funkcję Głównego Programisty i Architekta IT wskazanego w Załączniku nr 2 do SWZ.
-- **Brak kosztów podwykonawców:** Całość prac projektowych, programistycznych, wdrożeniowych oraz audytowych realizowana jest osobiście przez Wykonawcę (zgodnie z pkt 8 Formularza Ofertowego: realizacja samodzielna bez udziału podwykonawców). Eliminuje to konieczność opłacania marż agencji pośredniczących, prowizji menedżerów kontraktu czy zewnętrznych podwykonawców.
-- **Zerowy narzut kosztów zarządu i administracji ogólnej:** Wykonawca nie utrzymuje rozbudowanych działów sprzedaży, kadr, księgowości zarządczej ani struktur korporacyjnych, których koszty w dużych software house'ach stanowią często 35-50% narzutu na każdą roboczogodzinę.
-- **Brak kosztów wynajmu komercyjnych biur:** Praca prowadzona jest w formule zdalnej z wykorzystaniem własnego zaplecza lokalowego (home office), co ogranicza stałe koszty utrzymania powierzchni biurowej do zera.
+- **Brak marż agencji i pośredników:** Kluczowe prace analityczne, programistyczne, wdrożeniowe, audytowe oraz szkoleniowe realizowane są bezpośrednio przez Wykonawcę. Eliminuje to konieczność opłacania marż agencji pośredniczących, prowizji menedżerów kontraktu czy wielopoziomowych struktur zarządzania.
+- **Zerowy narzut kosztów zarządu i biur:** Wykonawca nie ponosi kosztów utrzymania korporacyjnych biur handlowych, działów sprzedaży czy rozbudowanej administracji, które w dużych software house'ach stanowią od 35% do 50% narzutu na każdą roboczogodzinę.
 
-#### 2. Posiadane gotowe biblioteki komponentów oraz moduły dostępności cyfrowej (WCAG 2.1 AA)
-Przedmiot zamówienia realizowany jest w ramach projektu „Dostępność Plus dla AOS”, gdzie kluczowym wymaganiem jest pełna zgodność ze standardem WCAG 2.1 na poziomie AA (zgodnie z ustawą z dnia 4 kwietnia 2019 r. o dostępności cyfrowej stron internetowych i aplikacji mobilnych podmiotów publicznych).
-- Wykonawca dysponuje przetestowaną i wdrożoną bazą gotowych, autorskich komponentów dostępności (m.in. wdrożenie dla Stowarzyszenia Kombinat Aktywności Społecznej: serwis stowarzyszeniekas.pl ze standardem WCAG 2.1, a także serwis rltpolska.pl z sektora oświetlenia medycznego).
-- Gotowa baza komponentów obejmuje: zaawansowaną obsługę nawigacji klawiaturą, poprawne etykietowanie ARIA dla czytników ekranu (NVDA, JAWS, VoiceOver), mechanizmy wysokiego kontrastu, responsywne skalowanie fontów bez utraty czytelności oraz walidację formularzy dla osób ze szczególnymi potrzebami.
-- Dzięki zastosowaniu gotowej bazy komponentów, czas wdrożenia warstwy frontendowej oraz audytu dostępności został zredukowany o ok. 35-40% w porównaniu do podmiotów tworzących rozwiązania od zera. Oszczędność czasu przekłada się bezpośrednio na niższą cenę dla Zamawiającego.
+#### 2. Optymalizacja logistyczna dojazdów do Lublina (Etapy I, VI, VII i VIII)
+Zgodnie z wymaganiami OPZ realizacja zamówienia wiąże się z koniecznością osobistej obecności w siedzibie Zamawiającego w Lublinie (warsztat mind-map, sesja zdjęciowa obiektu, wdrożenie on-premise w sieci wewnętrznej szpitala, sesje testowe UAT oraz stacjonarne szkolenia dla personelu):
+- **Korzystne położenie bazy Wykonawcy:** Wykonawca prowadzi bieżące operacje z lokalizacji korespondencyjnej w Białobrzegach, skąd odległość do Lublina wynosi ok. 140 km drogą ekspresową S12/DK48 (ok. 1,5 - 2 godziny dojazdu).
+- **Zgrupowanie zadań stacjonarnych w zoptymalizowane bloki:** Wszystkie wymagane wizyty stacjonarne zostały zaplanowane w ramach 3 zoptymalizowanych, 2-dniowych wyjazdów:
+  1. *Wyjazd 1:* Stacjonarny warsztat mind-map z personelem (Etap I) połączony z realizacją sesji fotograficznej obiektu i zdjęć z powietrza dronem (Etap V).
+  2. *Wyjazd 2:* Wdrożenie strony w sieci wewnętrznej szpitala (on-premise, dostęp FTP wyłącznie lokalnie, Etap VII) oraz przeprowadzenie stacjonarnych sesji testowych UAT (Etap VI).
+  3. *Wyjazd 3:* Przeprowadzenie pełnego cyklu stacjonarnych szkoleń dla administratorów CMS (8h), redaktorów treści (6h) oraz z dostępności cyfrowej WCAG 2.2 AA (6h) - łącznie 20h dydaktycznych (Etap VIII) wraz z procedurą odbioru końcowego.
+- Całkowity budżet logistyczny (paliwo, eksploatacja pojazdu, zakwaterowanie w Lublinie) został precyzyjnie wkalkulowany w kosztorys w kwocie **1 200,00 zł**.
 
-#### 3. Własne zaplecze sprzętowe i w pełni zamortyzowana infrastruktura techniczna
-- Wykonawca posiada w pełni wyposażone, nowoczesne środowisko robocze (stacje robocze, laptopy testowe, urządzenia mobilne z systemami iOS oraz Android do weryfikacji responsywności i działania asystentów mowy VoiceOver/TalkBack).
-- Całość sprzętu została w 100% sfinansowana ze środków własnych w latach ubiegłych i jest w pełni zamortyzowana. Wykonawca nie ponosi z tytułu realizacji umowy żadnych opłat leasingowych, kredytowych ani rat amortyzacyjnych.
+#### 3. Zabezpieczenie wsparcia wizualnego: sesja fotograficzna i zdjęcia z powietrza (dron)
+W punkcie „Wsparcie wizualne” Etapu V OPZ Zamawiający wymaga przygotowania profesjonalnych zdjęć obiektu wraz ze zdjęciami z powietrza (łącznie min. 60 zdjęć w wysokiej rozdzielczości) oraz przygotowania biblioteki mediów z opisami SEO (alt, tytuł, opis) dla 150-200 plików:
+- W kalkulacji Wykonawca zabezpieczył dedykowany budżet w wysokości **1 200,00 zł** na wykonanie kompleksowej sesji fotograficznej bryły i infrastruktury szpitala wraz z ujęciami z bezzałogowego statku powietrznego (dron) z zachowaniem obowiązujących przepisów prawa lotniczego (kategoria otwarta / uprawnienia pilota BSP) oraz profesjonalną postprodukcją barwną i przekazaniem pełnych majątkowych praw autorskich do zdjęć na rzecz Szpitala.
 
-#### 4. Oparcie architektury o oprogramowanie Open Source (brak opłat licencyjnych)
-- Rozwiązanie zostanie wdrożone przy użyciu sprawdzonych, bezpiecznych technologii Open Source (Next.js / Headless CMS lub zoptymalizowany CMS o otwartym kodzie źródłowym na bezpiecznych licencjach MIT/GPL).
-- Zastosowanie takiego stosu technologicznego oznacza brak konieczności ponoszenia kosztów komercyjnych licencji serwerowych lub subskrypcyjnych (co w przypadku systemów komercyjnych kosztuje od kilku do kilkunastu tysięcy złotych rocznie). Oszczędność ta w całości obniża koszt oferty bez kompromisów jakościowych.
+#### 4. Posiadane gotowe biblioteki komponentów oraz moduły dostępności cyfrowej (WCAG 2.1 / 2.2 AA)
+- Wykonawca dysponuje przetestowaną i wdrożoną bazą gotowych, autorskich komponentów dostępności (m.in. wdrożenie serwisu stowarzyszeniekas.pl ze standardem WCAG 2.1 dla Stowarzyszenia Kombinat Aktywności Społecznej oraz serwis oświetlenia medycznego rltpolska.pl).
+- Gotowa baza obejmuje: pełną obsługę klawiaturą, focus-visible, semantykę ARIA dla czytników ekranu (NVDA, JAWS, VoiceOver), mechanizm wysokiego kontrastu, responsywne skalowanie tekstu oraz czytelne komunikaty błędów w formularzach.
+- Wykorzystanie sprawdzonych modułów skraca czas programowania frontendowego i testów audytowych o ok. 35-40%, co stanowi bezpośrednią, rzetelną oszczędność przeniesioną na korzyść Zamawiającego.
 
-#### 5. Zautomatyzowany proces testów i audytu jakości
-Wykonawca w bieżącej pracy korzysta ze zintegrowanych narzędzi automatyzujących testy jakościowe, syntaktyczne oraz testy dostępności (narzędzia testowe axe-core, Pa11y, Lighthouse, skrypty walidujące kod pod kątem Core Web Vitals). Dzięki temu testy regresyjne i weryfikacja zgodności z wymogami projektu „Dostępność Plus dla AOS” zajmują ułamek czasu wymaganego przy weryfikacji w 100% manualnej.
+#### 5. Własne zaplecze sprzętowe i technologie Open Source (brak opłat licencyjnych)
+- Wykonawca posiada w pełni wyposażone środowisko dewelopersko-testowe (stacje robocze, urządzenia mobilne iOS/Android do weryfikacji responsywności i asystentów mowy), które jest w 100% sfinansowane i zamortyzowane.
+- Wdrożenie opiera się o sprawdzone, nowoczesne technologie Open Source (Next.js / Headless CMS lub zoptymalizowany relacyjny CMS na bezpiecznych licencjach MIT/GPL), co eliminuje cykliczne komercyjne opłaty licencyjne za oprogramowanie serwerowe.
 
 ---
 
@@ -70,14 +74,13 @@ Wykonawca w bieżącej pracy korzysta ze zintegrowanych narzędzi automatyzując
 Zgodnie z dyspozycją art. 224 ust. 4 ustawy Pzp Wykonawca oświadcza, co następuje:
 
 1. **Zgodność z przepisami o minimalnym wynagrodzeniu za pracę:**
-   - Wykonawca prowadzi działalność w formie jednoosobowej działalności gospodarczej i nie zatrudnia pracowników na podstawie umowy o pracę ani umów cywilnoprawnych do realizacji niniejszego zamówienia (realizacja własna).
-   - Pomimo powyższego, do kalkulacji ceny przyjęto stawkę za roboczogodzinę (r-g) w wysokości **110,00 zł netto/h**.
+   - Wykonawca prowadzi działalność w formie jednoosobowej działalności gospodarczej i wykonuje zadania merytoryczne osobiście.
+   - Do kalkulacji przyjęto stawkę za roboczogodzinę (r-g) w wysokości **110,00 zł netto/h**.
    - Przyjęta stawka **ponad 3-krotnie przewyższa** minimalną stawkę godzinową wynikającą z przepisów ustawy z dnia 10 października 2002 r. o minimalnym wynagrodzeniu za pracę obowiązujących w 2026 roku.
    - W związku z tym zaoferowana cena z naddatkiem spełnia wymóg art. 224 ust. 4 pkt 1 ustawy Pzp.
 
 2. **Zgodność z przepisami prawa pracy i ubezpieczeń społecznych:**
-   - Wykonawca na bieżąco i terminowo reguluje wszelkie zobowiązania wobec Zakładu Ubezpieczeń Społecznych (składki na ubezpieczenia społeczne i zdrowotne) oraz Urzędu Skarbowego.
-   - Wykonawca nie posiada żadnych zaległości podatkowych ani składkowych.
+   - Wykonawca na bieżąco i terminowo reguluje wszelkie zobowiązania wobec Zakładu Ubezpieczeń Społecznych oraz Urzędu Skarbowego i nie posiada jakichkolwiek zaległości podatkowych ani składkowych.
 
 ---
 
@@ -85,58 +88,48 @@ Zgodnie z dyspozycją art. 224 ust. 4 ustawy Pzp Wykonawca oświadcza, co nastę
 
 W Formularzu Ofertowym wskazano stawkę VAT jako: *zwolniony z podatku VAT na podstawie art. 113 ust. 1 ustawy o podatku od towarów i usług, kwota VAT: 0,00 zł*. 
 
-Oznacza to, że cena ofertowa netto (27 000,00 zł) jest równa cenie ofertowej brutto (27 000,00 zł). Zamawiający, będący publicznym zakładem opieki zdrowotnej, nie ponosi dodatkowego ciężaru 23% podatku VAT, co stanowi kolejny obiektywny i w pełni legalny czynnik sprawiający, że cena brutto oferty jest wysoce konkurencyjna przy zachowaniu pełnej rentowności po stronie Wykonawcy.
+Oznacza to, że cena ofertowa netto (**27 000,00 zł**) jest równa cenie ofertowej brutto (**27 000,00 zł**). Zamawiający, będący publicznym szpitalem, nie ponosi dodatkowego ciężaru 23% podatku VAT, co stanowi kolejny obiektywny i legalny czynnik sprawiający, że cena oferty jest wysoce konkurencyjna przy zachowaniu pełnej rentowności.
 
 ---
 
-### IV. POZOSTAŁE WYMOGI Z ART. 224 UST. 3 USTAWY PZP
+### IV. SZCZEGÓŁOWA KALKULACJA CENOWA W UKŁADZIE ETAPÓW OPZ
 
-1. **Zarządzanie procesem świadczonych usług:**
-   Projekt realizowany będzie w zoptymalizowanym, zwinnym procesie deweloperskim z podziałem na przejrzyste etapy (analiza, makiety UX, wdrożenie front-end i CMS, implementacja standardów WCAG 2.1 AA, audyt dostępności, szkolenie pracowników szpitala, wdrożenie produkcyjne). Gwarantuje to terminowe wykonanie w zaoferowanym terminie 30 dni.
-2. **Ochrona środowiska:**
-   Proces wytwórczy realizowany jest w 100% bez użycia papieru (elektroniczny obieg dokumentacji, komunikacja cyfrowa, cyfrowe makiety i prototypy). Nowoczesna architektura strony (optymalizacja kodu, kompresja zasobów graficznych, technologia statycznego generowania stron) minimalizuje zużycie zasobów serwerowych oraz energii elektrycznej.
-3. **Pomoc publiczna:**
-   Zaoferowana cena nie wynika z otrzymania jakiejkolwiek pomocy publicznej podlegającej przepisom o postępowaniu w sprawach dotyczących pomocy publicznej.
+Poniższa tabela przedstawia szczegółowe rozbicie nakładu pracy przypisane wprost do poszczególnych Etapów realizacji zamówienia określonych w Opisie Przedmiotu Zamówienia (OPZ):
 
----
-
-### V. SZCZEGÓŁOWA KALKULACJA CENOWA (KOSZTORYS ZADANIOWY)
-
-Poniższa tabela przedstawia szczegółowe zestawienie planowanego nakładu pracy, kosztów bezpośrednich, kosztów stałych oraz założonego zysku Wykonawcy dla kwoty ofertowej 27 000,00 zł:
-
-| Lp. | Zakres prac / Etap realizacji | Szacowany nakład (r-g) | Stawka za r-g (zł) | Wartość (zł) |
+| Lp. / Etap OPZ | Zakres prac i czynności merytorycznych | Nakład (r-g) | Stawka (zł) | Wartość (zł) |
 |---|---|:---:|:---:|:---:|
-| 1. | **Analiza przedwdrożeniowa i architektura informacji (IA):** Analiza struktury szpitala, oddziałów, poradni AOS, przygotowanie architektury informacji, makiety funkcjonalne UX/UI zgodne ze standardami dla placówek medycznych | 24 h | 110,00 zł | 2 640,00 zł |
-| 2. | **Dedykowany projekt graficzny (UI Design):** Opracowanie nowoczesnej, estetycznej szaty graficznej, responsywnej (Desktop, Tablet, Mobile), z uwzględnieniem identyfikacji wizualnej szpitala | 22 h | 110,00 zł | 2 420,00 zł |
-| 3. | **Wdrożenie warstwy programistycznej (Front-end & Back-end / CMS):** Kodowanie szablonów, wdrożenie panelu CMS, moduł aktualności, grafików lekarzy AOS, e-formularzy kontaktowych | 52 h | 110,00 zł | 5 720,00 zł |
-| 4. | **Implementacja standardów WCAG 2.1 AA (Dostępność Plus dla AOS):** Wdrożenie mechanizmów dostępności cyfrowej, nawigacji klawiaturą, poprawnego parsowania semantycznego, wysokiego kontrastu, integracja z czytnikami | 30 h | 110,00 zł | 3 300,00 zł |
-| 5. | **Migracja danych i struktury poradni AOS:** Przeniesienie kluczowych informacji ze starego serwisu, uporządkowanie danych teleadresowych, przygotowanie kart poradni | 16 h | 110,00 zł | 1 760,00 zł |
-| 6. | **Testy, audyt dostępności cyfrowej i bezpieczeństwo:** Testy manualne i automatyczne, testy czytnikami (NVDA/VoiceOver), optymalizacja prędkości (Core Web Vitals), testy podatności SSL/OWASP, sporządzenie Deklaracji Dostępności | 18 h | 110,00 zł | 1 980,00 zł |
-| 7. | **Wdrożenie na serwerze Zamawiającego, szkolenie i dokumentacja:** Konfiguracja środowiska produkcyjnego, migracja DNS, przeprowadzenie szkolenia dla administratorów szpitala, przygotowanie instrukcji w formacie PDF | 14 h | 110,00 zł | 1 540,00 zł |
-| 8. | **Wsparcie powdrożeniowe i gwarancja:** Czuwanie nad bezawaryjnym działaniem systemu w okresie gwarancyjnym (36 miesięcy) zgodnie z SWZ | 14 h | 110,00 zł | 1 540,00 zł |
-| **A.** | **RAZEM KOSZTY PRACY WŁASNEJ (Robocizna bezpośrednia):** | **190 h** | **110,00 zł** | **20 900,00 zł** |
+| **Etap I** | **Analiza, badania i przygotowanie:** Audyt obecnego serwisu, ankiety wśród personelu szpitala, analiza benchmark min. 5 serwisów, opracowanie 4 person i ścieżek pacjenta, przeprowadzenie stacjonarnego warsztatu mind-map w Lublinie | 18 h | 110,00 zł | 1 980,00 zł |
+| **Etap II** | **Architektura informacji i UX:** Opracowanie struktury sitemap nowej strony, makiety UX, hierarchia treści, eliminacja duplikatów i głębokich zagnieżdżeń | 16 h | 110,00 zł | 1 760,00 zł |
+| **Etap III** | **Koncepcja wizualna serwisu:** Opracowanie projektu graficznego UI dla strony głównej oraz 5 podstron wzorcowych (oddział, poradnia, kontakt, poradnik pacjenta, mapa), design system komponentów, interaktywna mapa szpitala | 20 h | 110,00 zł | 2 200,00 zł |
+| **Etap IV** | **Implementacja techniczna:** Konfiguracja CMS, programowanie szablonów i komponentów, system ról i uprawnień, wyszukiwarka personelu i struktur, formularze RODO ze skierowaniem na maile sekretariatów, wdrożenie mechanizmów WCAG | 40 h | 110,00 zł | 4 400,00 zł |
+| **Etap V** | **Treści, SEO i baza mediów:** Migracja danych, szablony treściowe dla jednostek, wsparcie redakcyjne (30h konsultacji redaktorskich), katalogowanie biblioteki 150-200 mediów z opisami SEO alt/title | 32 h | 110,00 zł | 3 520,00 zł |
+| **Etap VI** | **Testy, audyt WCAG 2.2 AA i sesje UAT:** Testy funkcjonalne, responsywności (5 rozdzielczości, 4 przeglądarki), wydajnościowe (Core Web Vitals), bezpieczeństwa, audyt WCAG 2.2 AA, przeprowadzenie 2 stacjonarnych sesji UAT (2 x 4h) w Lublinie ze sporządzeniem protokołów | 18 h | 110,00 zł | 1 980,00 zł |
+| **Etap VII** | **Wdrożenie produkcyjne on-premise i asysta:** Wdrożenie na serwerach szpitala w Lublinie (dostęp FTP wyłącznie w sieci lokalnej), konfiguracja SSL/TLS, procedury kopii zapasowych BCP/DRP (retencja 30 dni), przekierowania 301, analityka zgodna z RODO, asysta powdrożeniowa 14 dni | 12 h | 110,00 zł | 1 320,00 zł |
+| **Etap VIII** | **Szkolenia stacjonarne i dokumentacja:** Przeprowadzenie w siedzibie Szpitala 20h dydaktycznych szkoleń stacjonarnych (administratorzy CMS - 8h, redaktorzy treści - 6h, dostępność cyfrowa WCAG 2.2 AA - 6h), opracowanie szablonu DOCX, instrukcji PDF, checklisty redaktora (20 pkt) oraz nagrań e-learning | 14 h | 110,00 zł | 1 540,00 zł |
+| **A.** | **RAZEM KOSZTY PRACY WŁASNEJ (Robocizna bezpośrednia):** | **170 h** | **110,00 zł** | **18 700,00 zł** |
 
-#### Zestawienie kosztów dodatkowych, narzutów i zysku:
+#### Zestawienie kosztów logistycznych, rzeczowych i zysku Wykonawcy:
 
 | Lp. | Pozycja kosztowa / Marża | Wartość (zł) |
 |---|---|:---:|
-| B. | **Koszty infrastruktury i narzędzi deweloperskich** (środowiska testowe staging, domena testowa, licencje narzędzi audytowych, certyfikaty SSL) | 800,00 zł |
-| C. | **Koszty administracyjne i telekomunikacyjne** (łączność internetowa, amortyzacja sprzętu, obsługa księgowa w proporcji do zlecenia) | 900,00 zł |
-| D. | **Koszty ogółem (A + B + C):** | **22 600,00 zł** |
-| E. | **Założony zysk Wykonawcy (marża ok. 16,3% wartości kontraktu):** | **4 400,00 zł** |
-| **F.** | **ŁĄCZNA CENA OFERTOWA NETTO:** | **27 000,00 zł** |
-| G. | **Podatek VAT (zwolnienie na podst. art. 113 ust. 1 ustawy o VAT):** | **0,00 zł** |
-| **H.** | **ŁĄCZNA CENA OFERTOWA BRUTTO:** | **27 000,00 zł** |
+| **B.** | **Koszty podróży, dojazdów i pobytu w Lublinie:** Koszty paliwa, eksploatacji pojazdu i zakwaterowania związane z realizacją czynności stacjonarnych w Lublinie w ramach 3 zoptymalizowanych 2-dniowych wyjazdów (warsztat mind-map, sesja foto/dron, wdrożenie FTP w sieci wewnętrznej, testy UAT, cykl 20h szkoleń stacjonarnych) | 1 200,00 zł |
+| **C.** | **Koszty wsparcia wizualnego (fotograf i zdjęcia z powietrza - dron):** Realizacja profesjonalnej sesji fotograficznej bryły i infrastruktury szpitala oraz zdjęć z powietrza bezzałogowym statkiem powietrznym (łącznie min. 60 obrobionych zdjęć w wysokiej rozdzielczości) wraz z licencją i pełnymi prawami autorskimi | 1 200,00 zł |
+| **D.** | **Koszty infrastruktury i narzędzi deweloperskich:** Zewnętrzne środowisko staging, domena deweloperska, licencje narzędzi audytowych WCAG i SEO, certyfikaty SSL | 600,00 zł |
+| **E.** | **Koszty administracyjne i materiały:** Telekomunikacja, wydruk materiałów szkoleniowych DOCX/PDF, obsługa księgowa proporcjonalnie do zlecenia | 600,00 zł |
+| **F.** | **KOSZTY OGÓŁEM (A + B + C + D + E):** | **22 300,00 zł** |
+| **G.** | **Założony zysk Wykonawcy (marża 17,4% wartości kontraktu):** | **4 700,00 zł** |
+| **H.** | **ŁĄCZNA CENA OFERTOWA NETTO:** | **27 000,00 zł** |
+| **I.** | **Podatek VAT (zwolnienie na podstawie art. 113 ust. 1 ustawy o VAT):** | **0,00 zł** |
+| **J.** | **ŁĄCZNA CENA OFERTOWA BRUTTO:** | **27 000,00 zł** |
 
 ---
 
-### VI. PODSUMOWANIE I WNIOSKI
+### V. PODSUMOWANIE I WNIOSKI
 
 Przedstawione powyżej wyjaśnienia oraz szczegółowy kosztorys dowodzą w sposób jednoznaczny i niebudzący wątpliwości, że:
 1. Zaoferowana przez Wykonawcę cena nie jest ceną rażąco niską w rozumieniu art. 224 ustawy Pzp.
-2. Kwota oferty uwzględnia wszystkie niezbędne elementy cenotwórcze, koszty pracy, podatki oraz zapewnia bezpieczny i godziwy zysk przedsiębiorstwa (4 400,00 zł).
-3. Obniżenie ceny w stosunku do szacunków Zamawiającego lub średniej arytmetycznej ofert wynika z naturalnych i legalnych przewag konkurencyjnych nowoczesnej, wysoce wyspecjalizowanej jednoosobowej pracowni programistycznej (brak kosztów pośrednich, brak marż podwykonawców, wysoka automatyzacja procesów, posiadanie gotowych komponentów WCAG oraz zwolnienie podmiotowe z VAT).
-4. Wykonawca dysponuje wiedzą, doświadczeniem (zgodnie ze złożonym wykazem usług w Załączniku nr 2 do SWZ) oraz zapleczem technologicznym gwarantującym należyte, terminowe (30 dni) i bezbłędne wykonanie zamówienia na rzecz Uniwersyteckiego Szpitala Dziecięcego w Lublinie wraz z 36-miesięczną gwarancją.
+2. Kwota oferty uwzględnia wszystkie elementy OPZ: 8 etapów realizacji, 30h wsparcia redaktorskiego, min. 60 zdjęć z ziemi i z drona, dojazdy i obecność stacjonarną w Lublinie na warsztatach, wdrożeniu on-premise, testach UAT i 20h szkoleń, a także 36-miesięczną gwarancję oraz bezpieczny zysk Wykonawcy w kwocie **4 700,00 zł**.
+3. Różnica cenowa względem innych ofert wynika z modelu JDG (brak marż korporacyjnych), posiadania gotowej bazy komponentów WCAG oraz podmiotowego zwolnienia z podatku VAT.
 
 Mając na uwadze powyższe, wnoszę o przyjęcie niniejszych wyjaśnień i uznanie oferty Wykonawcy za w pełni rzetelną, prawidłową i niepodlegającą odrzuceniu.
 
