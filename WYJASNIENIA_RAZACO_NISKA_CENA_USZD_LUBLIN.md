@@ -1,6 +1,6 @@
 # PISMO PRZEWODNIE / WYJAŚNIENIA WYKONAWCY
 
-Miejscowość: Zduńska Wola / Białobrzegi, dnia 25 września 2026 r.
+Miejscowość: Białobrzegi, dnia 24 września 2026 r.
 
 **Wykonawca:**
 Marcin Molenda
