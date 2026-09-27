@@ -292,7 +292,7 @@ export async function saveLead(leadData: {
   auditToken?: string;
   domain: string;
   email: string;
-  phone: string;
+  phone?: string;
   notes?: string;
 }): Promise<boolean> {
   const cleanDomain = leadData.domain.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('/')[0];
@@ -304,7 +304,7 @@ export async function saveLead(leadData: {
         audit_token: leadData.auditToken || null,
         domain: cleanDomain,
         email: leadData.email.trim(),
-        phone: leadData.phone.trim(),
+        phone: leadData.phone?.trim() || null,
         notes: leadData.notes?.trim() || null
       });
       if (!error) return true;
@@ -327,6 +327,7 @@ export async function saveLead(leadData: {
     }
     leads.push({
       ...leadData,
+      phone: leadData.phone?.trim() || null,
       domain: cleanDomain,
       created_at: new Date().toISOString()
     });

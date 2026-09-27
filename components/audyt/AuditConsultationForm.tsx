@@ -49,8 +49,8 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
       return;
     }
 
-    if (!phone || phone.trim().length < 7) {
-      setErrorMessage('Podaj poprawny numer telefonu (min. 7 cyfr)');
+    if (phone && phone.trim().length > 0 && phone.trim().length < 6) {
+      setErrorMessage('Podaj poprawny numer telefonu (min. 6 cyfr) lub pozostaw to pole puste');
       return;
     }
 
@@ -64,7 +64,7 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
           domain,
           token,
           email,
-          phone,
+          phone: phone ? phone.trim() : undefined,
           notes
         })
       });
@@ -90,19 +90,19 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
 
       <div className="max-w-2xl relative z-10">
         <span className="text-orange-400 font-mono text-xs uppercase tracking-widest font-semibold block mb-3">
-          Konsultacja Inżynieryjna 1-na-1 {SITE_TYPE_LABELS[siteType] ? `· ${SITE_TYPE_LABELS[siteType]}` : (isEcommerce ? '· Sklep E-commerce' : '· Serwis B2B')}
+          Konsultacja techniczna i wdrożenie {SITE_TYPE_LABELS[siteType] ? `· ${SITE_TYPE_LABELS[siteType]}` : (isEcommerce ? '· Sklep E-commerce' : '· Usługi / B2B')}
         </span>
         <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">
-          Chcesz omówić wyniki audytu dla {domain}?
+          Chcesz wdrożyć poprawki z audytu dla {domain}?
         </h3>
         <p className="text-slate-400 text-sm leading-relaxed mb-8">
           {siteType === 'gov_public' || siteType === 'education'
-            ? 'Przejdźmy wspólnie przez kwestie techniczne serwisu. Podczas 15-minutowej rozmowy inżynieryjnej wskażę, jak spełnić wymagania prawne WCAG 2.1 AA (Deklaracja Dostępności), zabezpieczyć formularze przed botami i wdrożyć kluczowe poprawki w architekturze bez konieczności kosztownej przebudowy.'
+            ? 'Napisz do mnie. Przeanalizuję usterki z raportu i wskażę, jak spełnić wymagania prawne WCAG 2.1 AA (Deklaracja Dostępności), zabezpieczyć formularze przed botami i wdrożyć kluczowe poprawki w architekturze bez konieczności kosztownej przebudowy.'
             : siteType === 'ngo_foundation'
-            ? 'Przejdźmy wspólnie przez kwestie techniczne serwisu. Podczas 15-minutowej rozmowy inżynieryjnej wskażę, jak zabezpieczyć formularze przed spamem, ułatwić darczyńcom wpłaty i poprawić widoczność w Google.'
+            ? 'Napisz do mnie. Przeanalizuję usterki z raportu i wskażę, jak zabezpieczyć formularze przed spamem, ułatwić darczyńcom wpłaty i poprawić widoczność w Google.'
             : isEcommerce
-            ? 'Przejdźmy wspólnie przez kwestie techniczne sklepu. Podczas 15-minutowej rozmowy inżynieryjnej omówimy usterki wykryte w kodzie, poprawność telemetryki zdarzeń oraz plan optymalizacji wydajności bez burzenia obecnej witryny.'
-            : 'Przejdźmy wspólnie przez kwestie techniczne serwisu. Podczas 15-minutowej rozmowy inżynieryjnej omówimy usterki z raportu, potencjał optymalizacji kodu oraz plan wdrożenia kluczowych poprawek bez burzenia obecnej witryny.'}
+            ? 'Napisz do mnie. Przeanalizuję usterki wykryte w kodzie sklepu, poprawność telemetryki zdarzeń oraz przygotuję mailowo plan optymalizacji wydajności i konwersji bez burzenia obecnej witryny.'
+            : 'Napisz do mnie. Przeanalizuję usterki z raportu, potencjał optymalizacji kodu oraz przygotuję dla Ciebie mailowo konkretny plan wdrożenia kluczowych poprawek bez burzenia obecnej witryny.'}
         </p>
 
         {isSuccess ? (
@@ -110,10 +110,10 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
             <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
             <div>
               <h4 className="font-bold text-white text-base mb-1">
-                Zgłoszenie przyjęte pomyślnie!
+                Zapytanie wysłane pomyślnie!
               </h4>
               <p className="text-slate-300 text-xs leading-relaxed">
-                Dziękuję! Skontaktuję się z Tobą telefonicznie lub mailowo w ciągu 24 godzin, aby ustalić dogodny termin 15-minutowej konsultacji technicznej.
+                Dziękuję za kontakt. Przeanalizuję usterki z raportu i odpowiem na Twój adres e-mail z konkretnymi wskazówkami technicznymi oraz planem wdrożenia poprawek.
               </p>
             </div>
           </div>
@@ -146,14 +146,13 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
 
               <div>
                 <label className="block text-xs font-mono text-slate-400 mb-1.5">
-                  Numer telefonu <span className="text-orange-400">*</span>
+                  Numer telefonu (opcjonalnie)
                 </label>
                 <div className="relative">
                   <Phone className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     id="consultation-phone"
                     type="tel"
-                    required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="np. +48 501 234 567"
@@ -187,17 +186,17 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Wysyłanie zgłoszenia...
+                  Wysyłanie zapytania...
                 </>
               ) : (
                 <>
-                  <span>Umów 15-minutową konsultację z Marcinem</span>
+                  <span>Skonsultuj audyt mailowo</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
             <p className="text-[11px] text-slate-500 font-mono">
-              Bez zobowiązań. Rozmawiasz bezpośrednio z Senior Full-Stack Architectem, a nie z agencją marketingową.
+              Bez zobowiązań. Odpisuję osobiście z konkretnymi wskazówkami inżynieryjnymi - bez handlowców i spamu.
             </p>
           </form>
         )}
