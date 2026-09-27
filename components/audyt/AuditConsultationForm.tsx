@@ -76,12 +76,12 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
         </h3>
         <p className="text-slate-400 text-sm leading-relaxed mb-8">
           {siteType === 'gov_public' || siteType === 'education'
-            ? 'Przejdźmy wspólnie przez wąskie gardła serwisu. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej wskażę czarno na białym, jak spełnić wymagania prawne WCAG 2.1 AA (Deklaracja Dostępności), zabezpieczyć formularze przed botami i wdrożyć kluczowe poprawki w architekturze bez konieczności kosztownej przebudowy.'
+            ? 'Przejdźmy wspólnie przez kwestie techniczne serwisu. Podczas 15-minutowej rozmowy inżynieryjnej wskażę, jak spełnić wymagania prawne WCAG 2.1 AA (Deklaracja Dostępności), zabezpieczyć formularze przed botami i wdrożyć kluczowe poprawki w architekturze bez konieczności kosztownej przebudowy.'
             : siteType === 'ngo_foundation'
-            ? 'Przejdźmy wspólnie przez wąskie gardła serwisu. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej wskażę czarno na białym, jak zabezpieczyć formularze przed spamem, ułatwić darczyńcom wpłaty i poprawić widoczność apeli w Google.'
+            ? 'Przejdźmy wspólnie przez kwestie techniczne serwisu. Podczas 15-minutowej rozmowy inżynieryjnej wskażę, jak zabezpieczyć formularze przed spamem, ułatwić darczyńcom wpłaty i poprawić widoczność w Google.'
             : isEcommerce
-            ? 'Przejdźmy wspólnie przez wąskie gardła w kodzie sklepu. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej pokażę Ci czarno na białym, jak zabezpieczyć budżet reklamowy e-commerce przed przepalaniem, odblokować telemetrykę koszyka (add_to_cart) i wdrożyć kluczowe poprawki w architekturze sklepu.'
-            : 'Przejdźmy wspólnie przez wąskie gardła w kodzie. Na bezpłatnej 15-minutowej rozmowie inżynieryjnej pokażę Ci czarno na białym, jak zabezpieczyć budżet reklamowy przed przepalaniem, odblokować telemetrykę zdarzeń i wdrożyć 3 kluczowe poprawki w kodzie bez burzenia obecnej strony.'}
+            ? 'Przejdźmy wspólnie przez kwestie techniczne sklepu. Podczas 15-minutowej rozmowy inżynieryjnej omówimy usterki wykryte w kodzie, poprawność telemetryki zdarzeń oraz plan optymalizacji wydajności bez burzenia obecnej witryny.'
+            : 'Przejdźmy wspólnie przez kwestie techniczne serwisu. Podczas 15-minutowej rozmowy inżynieryjnej omówimy usterki z raportu, potencjał optymalizacji kodu oraz plan wdrożenia kluczowych poprawek bez burzenia obecnej witryny.'}
         </p>
 
         {isSuccess ? (

@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import UxLogger from "@/components/UxLogger";
+import ClarityAnalytics from "@/components/analytics/ClarityAnalytics";
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
       url: 'https://molendadevelopment.pl/og-image.jpg',
       width: 1200,
       height: 630,
-      alt: 'Marcin Molenda – Precyzyjne systemy webowe',
+      alt: 'Marcin Molenda - Precyzyjne systemy webowe',
     }],
   },
   twitter: {
@@ -89,6 +90,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             data-website-id="0e03a10c-fb02-4e95-b03b-008e9e5f6a2f"
             strategy="afterInteractive"
           />
+
+         {/* Microsoft Clarity (Cookieless Mode, zero cookies, GDPR-compliant) */}
+         <ClarityAnalytics />
         
         {/* Advanced JSON-LD structured data for E-E-A-T and GEO */}
         <script

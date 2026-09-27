@@ -26,14 +26,14 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
         <div className="flex items-center gap-2 mb-2">
           <AlertOctagon className="w-5 h-5 text-rose-600" />
           <span className="font-mono text-xs font-bold text-rose-600 uppercase tracking-widest">
-            Szybka diagnoza krytyczna
+            Priorytety Inżynieryjne
           </span>
         </div>
         <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-          Co natychmiast blokuje Twój zysk i pozycje?
+          Kluczowe kwestie techniczne do rozwiązania
         </h3>
         <p className="text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-          Oto {issues.length} najważniejsze techniczne bariery wyekstrahowane z kodu i analityki. Zamiast czekać miesiącami na agencyjne raporty, te elementy możesz wyeliminować od ręki.
+          Zidentyfikowano {issues.length} priorytetowe obszary w strukturze i kodzie serwisu. Ich uporządkowanie bezpośrednio przekłada się na poprawną indeksację i komfort użytkowników.
         </p>
       </div>
 
@@ -79,7 +79,7 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
                       ? 'bg-rose-100 text-rose-800 border border-rose-200'
                       : 'bg-amber-100 text-amber-800 border border-amber-200'
                   }`}>
-                    {issue.severity === 'critical' ? 'Krytyczny wyciek / błąd' : 'Wąskie gardło'}
+                    {issue.severity === 'critical' ? 'Kwestia priorytetowa' : 'Zalecana optymalizacja'}
                   </span>
                   {issue.affectedCount !== undefined && (
                     <span className="font-mono text-xs text-slate-500">
@@ -101,7 +101,7 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
                   <div className="flex items-center gap-2 mb-1.5">
                     <TrendingDown className="w-4 h-4 text-rose-600 shrink-0" />
                     <span className="font-mono text-xs font-bold text-rose-900 uppercase tracking-wider">
-                      Co tracisz (Wpływ biznesowy):
+                      Wpływ techniczny i biznesowy:
                     </span>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed">
@@ -113,7 +113,7 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
                   <div className="flex items-center gap-2 mb-1.5">
                     <Wrench className="w-4 h-4 text-slate-900 shrink-0" />
                     <span className="font-mono text-xs font-bold text-slate-900 uppercase tracking-wider">
-                      Co dla Ciebie wdrożę:
+                      Proponowane rozwiązanie inżynieryjne:
                     </span>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed">

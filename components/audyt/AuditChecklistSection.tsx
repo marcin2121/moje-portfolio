@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   AlertTriangle,
   XCircle,
-  TrendingUp,
   TrendingDown,
   Wrench,
   Search,
@@ -52,9 +51,9 @@ export default function AuditChecklistSection({
   domain,
   siteType = 'services'
 }: AuditChecklistSectionProps) {
-  // Synchronizacja filtrów w URL za pomocą nuqs (łatwe udostępnianie klientom precyzyjnych widoków)
+  // Synchronizacja filtrów w URL za pomocą nuqs (domyślnie pokazujemy tylko kwestie wymagające uwagi)
   const [selectedStatus, setSelectedStatus] = useQueryState('status', {
-    defaultValue: 'all',
+    defaultValue: 'issues',
     shallow: true
   });
   const [selectedCategory, setSelectedCategory] = useQueryState('cat', {
@@ -140,13 +139,21 @@ export default function AuditChecklistSection({
     return { total, failed, warning, passed, criticalLeaksCount };
   }, [mergedCheckpoints, stats]);
 
+  const issuesCount = computedStats.failed + computedStats.warning;
+
   // Filtrowanie listy
   const filteredCheckpoints = useMemo(() => {
     return mergedCheckpoints.filter(cp => {
-      // Filtr statusu
-      if (selectedStatus === 'failed' && cp.status !== 'failed') return false;
-      if (selectedStatus === 'warning' && cp.status !== 'warning') return false;
-      if (selectedStatus === 'passed' && cp.status !== 'passed') return false;
+      // Filtr statusu: 'issues' filtruje failed i warning
+      if (selectedStatus === 'issues') {
+        if (cp.status !== 'failed' && cp.status !== 'warning') return false;
+      } else if (selectedStatus === 'failed') {
+        if (cp.status !== 'failed') return false;
+      } else if (selectedStatus === 'warning') {
+        if (cp.status !== 'warning') return false;
+      } else if (selectedStatus === 'passed') {
+        if (cp.status !== 'passed') return false;
+      }
 
       // Filtr kategorii
       if (selectedCategory !== 'all' && cp.category !== selectedCategory) return false;
@@ -170,11 +177,10 @@ export default function AuditChecklistSection({
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
-    // Jeśli w formularzu jest pole tematu, można je opcjonalnie uzupełnić
     if (issueTitle) {
       const subjectInput = document.querySelector<HTMLInputElement>('input[name="subject"], input[name="topic"]');
       if (subjectInput) {
-        subjectInput.value = `Zlecenie naprawy błędu: ${issueTitle}`;
+        subjectInput.value = `Konsultacja techniczna: ${issueTitle}`;
       }
     }
   };
@@ -191,7 +197,7 @@ export default function AuditChecklistSection({
           <div className="flex items-center gap-2">
             <Layers className="w-5 h-5 text-indigo-600" />
             <span className="font-mono text-xs font-bold text-indigo-600 uppercase tracking-widest">
-              Rejestr Kontrolny & Korzyści Biznesowe
+              Rejestr Kontrolny Architektury i Kodu
             </span>
           </div>
           <span className="font-mono text-[11px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80">
@@ -202,8 +208,8 @@ export default function AuditChecklistSection({
           Kompleksowa inspekcja {computedStats.total} punktów kontrolnych
         </h3>
         <p className="text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
-          Pełny rejestr technicznych i biznesowych obszarów badanych w domenie <strong className="text-slate-900 font-semibold">{domain}</strong>.
-          Każdy punkt zawiera twardą diagnozę w kodzie, ocenę strat, <strong className="text-indigo-700 font-semibold">bezpośrednią korzyść z naprawy (Twój zysk & ROI)</strong> oraz konkretny plan wdrożenia inżynieryjnego.
+          Szczegółowy przegląd badanych obszarów technicznych w domenie <strong className="text-slate-900 font-semibold">{domain}</strong>.
+          Poniżej wyodrębniono obszary wymagające optymalizacji oraz zweryfikowano spełnione standardy jakości.
         </p>
       </div>
 
@@ -211,21 +217,24 @@ export default function AuditChecklistSection({
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <button
           type="button"
-          onClick={() => setSelectedStatus('all')}
+          onClick={() => setSelectedStatus('issues')}
           className={`text-left p-4 md:p-5 rounded-2xl border transition-all cursor-pointer ${
-            selectedStatus === 'all'
+            selectedStatus === 'issues'
               ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
               : 'bg-slate-50/60 border-slate-200/80 hover:bg-slate-50 text-slate-900'
           }`}
         >
-          <span className={`font-mono text-xs uppercase tracking-wider block mb-1 ${selectedStatus === 'all' ? 'text-slate-300' : 'text-slate-500'}`}>
-            Wszystkie testy
+          <span className="flex items-center justify-between mb-1">
+            <span className={`font-mono text-xs uppercase tracking-wider ${selectedStatus === 'issues' ? 'text-slate-300' : 'text-slate-500'}`}>
+              Wymagające uwagi
+            </span>
+            <AlertTriangle className={`w-4 h-4 ${selectedStatus === 'issues' ? 'text-amber-400' : 'text-slate-500'}`} />
           </span>
           <span className="text-2xl md:text-3xl font-black font-mono">
-            {computedStats.total}
+            {issuesCount}
           </span>
-          <span className={`text-[11px] block mt-1 ${selectedStatus === 'all' ? 'text-slate-300' : 'text-slate-500'}`}>
-            Inspekcja 360°
+          <span className={`text-[11px] block mt-1 ${selectedStatus === 'issues' ? 'text-slate-300' : 'text-slate-500'}`}>
+            Błędy i zalecenia
           </span>
         </button>
 
@@ -240,7 +249,7 @@ export default function AuditChecklistSection({
         >
           <span className="flex items-center justify-between mb-1">
             <span className={`font-mono text-xs uppercase tracking-wider ${selectedStatus === 'failed' ? 'text-rose-200' : 'text-rose-700'}`}>
-              Krytyczne błędy
+              Błędy w kodzie
             </span>
             <XCircle className={`w-4 h-4 ${selectedStatus === 'failed' ? 'text-rose-300' : 'text-rose-600'}`} />
           </span>
@@ -248,7 +257,7 @@ export default function AuditChecklistSection({
             {computedStats.failed}
           </span>
           <span className={`text-[11px] block mt-1 ${selectedStatus === 'failed' ? 'text-rose-200' : 'text-rose-600'}`}>
-            Do natychmiastowej naprawy
+            Wymaga poprawy
           </span>
         </button>
 
@@ -263,7 +272,7 @@ export default function AuditChecklistSection({
         >
           <span className="flex items-center justify-between mb-1">
             <span className={`font-mono text-xs uppercase tracking-wider ${selectedStatus === 'warning' ? 'text-amber-200' : 'text-amber-700'}`}>
-              Wąskie gardła
+              Optymalizacje
             </span>
             <AlertTriangle className={`w-4 h-4 ${selectedStatus === 'warning' ? 'text-amber-300' : 'text-amber-600'}`} />
           </span>
@@ -271,7 +280,7 @@ export default function AuditChecklistSection({
             {computedStats.warning}
           </span>
           <span className={`text-[11px] block mt-1 ${selectedStatus === 'warning' ? 'text-amber-200' : 'text-amber-700'}`}>
-            Ostrzeżenia i straty
+            Zalecana uwaga
           </span>
         </button>
 
@@ -294,7 +303,7 @@ export default function AuditChecklistSection({
             {computedStats.passed}
           </span>
           <span className={`text-[11px] block mt-1 ${selectedStatus === 'passed' ? 'text-emerald-200' : 'text-emerald-700'}`}>
-            Wzorowy standard
+            Zgodne ze standardem
           </span>
         </button>
       </div>
@@ -312,7 +321,7 @@ export default function AuditChecklistSection({
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
             }`}
           >
-            Wszystkie ({mergedCheckpoints.length})
+            Wszystkie obszary ({mergedCheckpoints.length})
           </button>
           {(Object.keys(CATEGORY_LABELS) as CheckpointCategory[])
             .filter(catKey => {
@@ -352,7 +361,7 @@ export default function AuditChecklistSection({
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Szukaj błędu, korzyści, ROI..."
+            placeholder="Szukaj parametru lub diagnozy..."
             className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400 text-slate-900 placeholder:text-slate-400 transition-all font-sans"
           />
           {searchQuery && (
@@ -370,21 +379,32 @@ export default function AuditChecklistSection({
       {/* Licznik aktywnych wyników */}
       <div className="flex items-center justify-between text-xs text-slate-500 font-mono mb-4">
         <span>
-          Wyświetlanie: <strong className="text-slate-800">{filteredCheckpoints.length}</strong> z {computedStats.total} punktów kontrolnych
+          Wyświetlanie: <strong className="text-slate-800">{filteredCheckpoints.length}</strong> {selectedStatus === 'issues' ? 'kwestii wymagających uwagi' : `z ${computedStats.total} punktów kontrolnych`}
         </span>
-        {(selectedStatus !== 'all' || selectedCategory !== 'all' || searchQuery) && (
-          <button
-            type="button"
-            onClick={() => {
-              setSelectedStatus('all');
-              setSelectedCategory('all');
-              setSearchQuery('');
-            }}
-            className="text-xs text-indigo-600 hover:underline font-semibold cursor-pointer"
-          >
-            Resetuj filtry
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {selectedStatus !== 'all' && (
+            <button
+              type="button"
+              onClick={() => setSelectedStatus('all')}
+              className="text-xs text-slate-600 hover:text-slate-900 font-semibold cursor-pointer underline"
+            >
+              Pokaż wszystkie ({computedStats.total})
+            </button>
+          )}
+          {(selectedStatus !== 'issues' || selectedCategory !== 'all' || searchQuery) && (
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedStatus('issues');
+                setSelectedCategory('all');
+                setSearchQuery('');
+              }}
+              className="text-xs text-indigo-600 hover:underline font-semibold cursor-pointer"
+            >
+              Resetuj filtry
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Lista Punktów Kontrolnych */}
@@ -399,19 +419,52 @@ export default function AuditChecklistSection({
           filteredCheckpoints.map(cp => {
             const isExpanded = expandedId === cp.id;
             const isFailed = cp.status === 'failed';
-            const isWarning = cp.status === 'warning';
+            const isPassed = cp.status === 'passed';
 
+            // Zwięzły, kompaktowy widok dla zaliczonych testów
+            if (isPassed) {
+              return (
+                <div
+                  key={cp.id}
+                  className="p-4 md:p-5 rounded-2xl border border-emerald-200/60 bg-emerald-50/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-colors"
+                >
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <span className="font-mono text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                          {CATEGORY_LABELS[cp.category]?.label || cp.category}
+                        </span>
+                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded-md tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                          Zgodne ze standardem
+                        </span>
+                      </div>
+                      <h4 className="text-sm md:text-base font-bold text-slate-900 tracking-tight">
+                        {cp.name}
+                      </h4>
+                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                        {cp.diagnosis}
+                      </p>
+                    </div>
+                  </div>
+
+                  {cp.metric && (
+                    <span className="font-mono text-xs text-emerald-800 bg-white/80 border border-emerald-200/80 px-2.5 py-1 rounded-md shrink-0">
+                      {cp.metric}
+                    </span>
+                  )}
+                </div>
+              );
+            }
+
+            // Karta dla błędów i ostrzeżeń
             const statusBadgeBg = isFailed
               ? 'bg-rose-50 text-rose-800 border border-rose-200'
-              : isWarning
-                ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                : 'bg-emerald-50 text-emerald-800 border border-emerald-200';
+              : 'bg-amber-50 text-amber-800 border border-amber-200';
 
             const statusText = isFailed
-              ? 'Do natychmiastowej naprawy'
-              : isWarning
-                ? 'Wąskie gardło / Ostrzeżenie'
-                : 'Standard spełniony';
+              ? 'Wymaga poprawy'
+              : 'Zalecana uwaga';
 
             return (
               <div
@@ -419,9 +472,7 @@ export default function AuditChecklistSection({
                 className={`rounded-2xl border transition-all p-5 md:p-6 ${
                   isFailed
                     ? 'bg-rose-50/20 border-rose-200/70 hover:border-rose-300'
-                    : isWarning
-                      ? 'bg-amber-50/20 border-amber-200/70 hover:border-amber-300'
-                      : 'bg-slate-50/30 border-slate-200/70 hover:border-slate-300'
+                    : 'bg-amber-50/20 border-amber-200/70 hover:border-amber-300'
                 }`}
               >
                 {/* Górny Pasek: Kategoria + Status + Metryka */}
@@ -450,43 +501,30 @@ export default function AuditChecklistSection({
                   {cp.diagnosis}
                 </p>
 
-                {/* Kluczowe Panele: Wpływ Biznesowy vs Korzyść z Naprawy (Twój zysk / ROI) */}
+                {/* Panele: Wpływ na serwis vs Rekomendacja inżynieryjna */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                  {/* Panel 1: Wpływ Błędu / Strata */}
                   <div className="bg-white/80 border border-slate-200/80 rounded-xl p-3.5 border-l-2 border-l-rose-500">
                     <div className="flex items-center gap-1.5 mb-1 text-rose-700 font-mono text-xs font-bold uppercase tracking-wider">
                       <TrendingDown className="w-3.5 h-3.5 shrink-0" />
-                      <span>Co ryzykujesz / tracisz:</span>
+                      <span>Wpływ na działanie witryny:</span>
                     </div>
                     <p className="text-xs text-slate-700 leading-relaxed">
                       {cp.businessImpact}
                     </p>
                   </div>
 
-                  {/* Panel 2 (GŁÓWNY PUNKT): Bezpośrednia korzyść z naprawy (ROI & ZYSK) */}
-                  <div className="bg-emerald-50/60 border border-emerald-200/70 rounded-xl p-3.5 border-l-2 border-l-emerald-600">
-                    <div className="flex items-center gap-1.5 mb-1 text-emerald-800 font-mono text-xs font-bold uppercase tracking-wider">
-                      <TrendingUp className="w-3.5 h-3.5 shrink-0 text-emerald-600" />
-                      <span>Korzyść z naprawy (Twój zysk & ROI):</span>
+                  <div className="bg-slate-50/80 border border-slate-200/80 rounded-xl p-3.5 border-l-2 border-l-slate-800">
+                    <div className="flex items-center gap-1.5 mb-1 text-slate-800 font-mono text-xs font-bold uppercase tracking-wider">
+                      <Wrench className="w-3.5 h-3.5 shrink-0 text-slate-900" />
+                      <span>Rekomendacja inżynieryjna:</span>
                     </div>
-                    <p className="text-xs text-slate-800 leading-relaxed font-medium">
-                      {cp.businessBenefit}
+                    <p className="text-xs text-slate-700 leading-relaxed">
+                      {cp.developerSolution}
                     </p>
                   </div>
                 </div>
 
-                {/* Panel 3: Plan inżynieryjny w 24–48h */}
-                <div className="bg-slate-100/70 border border-slate-200/70 rounded-xl p-3.5 mb-3">
-                  <div className="flex items-center gap-1.5 mb-1 text-slate-800 font-mono text-xs font-bold uppercase tracking-wider">
-                    <Wrench className="w-3.5 h-3.5 shrink-0 text-slate-900" />
-                    <span>Plan inżynieryjny w 24–48h:</span>
-                  </div>
-                  <p className="text-xs text-slate-700 leading-relaxed">
-                    {cp.developerSolution}
-                  </p>
-                </div>
-
-                {/* Dolny pasek: Akcja naprawy & Rozwijane dowody */}
+                {/* Dolny pasek: Rozwijane dowody & Konsultacja */}
                 <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                   <div>
                     {cp.evidence && cp.evidence.length > 0 && (
@@ -495,22 +533,19 @@ export default function AuditChecklistSection({
                         onClick={() => toggleExpand(cp.id)}
                         className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 transition-colors cursor-pointer"
                       >
-                        <span>{isExpanded ? 'Ukryj dowody' : `Pokaż powiązane adresy URL (${cp.evidence.length})`}</span>
+                        <span>{isExpanded ? 'Ukryj powiązane adresy' : `Pokaż powiązane adresy URL (${cp.evidence.length})`}</span>
                       </button>
                     )}
                   </div>
 
-                  {/* Przycisk Zlecenia Naprawy jeśli błąd lub ostrzeżenie */}
-                  {(isFailed || isWarning) && (
-                    <button
-                      type="button"
-                      onClick={() => scrollToConsultation(cp.name)}
-                      className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer ml-auto"
-                    >
-                      <span>Zleć naprawę tego punktu</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-slate-300" />
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => scrollToConsultation(cp.name)}
+                    className="text-xs font-semibold text-slate-700 hover:text-slate-900 inline-flex items-center gap-1.5 transition-colors cursor-pointer py-1.5 px-3 rounded-lg border border-slate-200/90 bg-white hover:bg-slate-50 shadow-xs ml-auto"
+                  >
+                    <span>Skonsultuj rozwiązanie</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-slate-400" />
+                  </button>
                 </div>
 
                 {/* Rozwijana lista dowodów URL */}
@@ -549,6 +584,30 @@ export default function AuditChecklistSection({
           })
         )}
       </div>
+
+      {/* Elegancki pasek przejścia do zaliczonych testów, gdy aktywny jest filtr zagadnień do poprawy */}
+      {selectedStatus === 'issues' && computedStats.passed > 0 && (
+        <div className="mt-8 pt-6 border-t border-slate-200/70 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-50/50 p-6 rounded-2xl border border-slate-200/60">
+          <div className="flex items-center gap-3 text-left">
+            <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+            <div>
+              <p className="text-sm font-bold text-slate-900">
+                Pozostałe {computedStats.passed} testów zakończone sukcesem
+              </p>
+              <p className="text-xs text-slate-500">
+                Fundamenty bezpieczeństwa, SSL, responsywności i podstawowego SEO są zgodne ze standardem inżynieryjnym.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSelectedStatus('passed')}
+            className="shrink-0 px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors shadow-sm cursor-pointer"
+          >
+            Pokaż zaliczone testy ({computedStats.passed})
+          </button>
+        </div>
+      )}
     </section>
   );
 }
