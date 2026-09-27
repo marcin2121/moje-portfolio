@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, CheckCircle2, Loader2, Phone, Mail } from 'lucide-react';
 import { SiteType, SITE_TYPE_LABELS } from '@/app/api/audit-master/types';
 
@@ -18,6 +18,27 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Reakcja na kliknięcie przycisków "Skonsultuj rozwiązanie" w rejestrze kontrolnym
+  useEffect(() => {
+    const handleSelectTopic = (event: Event) => {
+      const customEvent = event as CustomEvent<{ topic?: string }>;
+      if (customEvent.detail?.topic) {
+        setNotes(`Konsultacja punktu: ${customEvent.detail.topic}`);
+        setTimeout(() => {
+          const emailInput = document.getElementById('consultation-email');
+          if (emailInput) {
+            emailInput.focus();
+          }
+        }, 300);
+      }
+    };
+
+    window.addEventListener('select-consultation-topic', handleSelectTopic);
+    return () => {
+      window.removeEventListener('select-consultation-topic', handleSelectTopic);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +84,7 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
   };
 
   return (
-    <div className="mt-16 bg-slate-900 border border-slate-800 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
+    <div id="consultation-form" className="mt-16 scroll-mt-28 bg-slate-900 border border-slate-800 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
       {/* Subtelny ambient glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 blur-[120px] rounded-full pointer-events-none" />
 
@@ -112,6 +133,7 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
                 <div className="relative">
                   <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
+                    id="consultation-email"
                     type="email"
                     required
                     value={email}
@@ -129,6 +151,7 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
                 <div className="relative">
                   <Phone className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
+                    id="consultation-phone"
                     type="tel"
                     required
                     value={phone}
@@ -145,6 +168,7 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
                 Komentarz / cel biznesowy (opcjonalnie)
               </label>
               <input
+                id="consultation-notes"
                 type="text"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}

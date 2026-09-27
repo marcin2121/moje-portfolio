@@ -24,8 +24,8 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisPassed: 'Zdarzenie add_to_cart jest prawidłowo emitowane do dataLayer i pikseli reklamowych.',
     defaultDiagnosisFailed: 'Wykryto kody reklam, ale mechanizm koszyka nie wysyła zdarzenia add_to_cart do silników reklamowych.',
     businessImpact: 'Algorytmy Google Ads (Smart Bidding) i Meta Advantage+ nie wiedzą, kto realnie dodaje produkty do koszyka. Koszt pozyskania klienta (CAC) rośnie o 40-60%.',
-    businessBenefit: 'Natychmiastowe zasilenie algorytmów AI w najcenniejszy sygnał intencji zakupowej. Spadek kosztu konwersji (CPA) o 25–40% i dynamiczny wzrost sprzedaży z remarketingu.',
-    developerSolution: 'Wdrożę precyzyjne wywołanie dataLayer.push({ event: "add_to_cart", ecommerce: { ... } }) podpięte pod koszyk w kodzie w 24h.'
+    businessBenefit: 'Natychmiastowe zasilenie algorytmów AI w najcenniejszy sygnał intencji zakupowej. Spadek kosztu konwersji (CPA) o 25-40% i dynamiczny wzrost sprzedaży z remarketingu.',
+    developerSolution: 'Wdrożenie precyzyjnego wywołania dataLayer.push({ event: "add_to_cart", ecommerce: { ... } }) podpiętego pod mechanizm koszyka w kodzie witryny.'
   },
   'track-purchase': {
     id: 'track-purchase',
@@ -36,7 +36,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak precyzyjnego zdarzenia purchase po finalizacji zakupu lub brak przekazywania kwoty przychodu.',
     businessImpact: 'Całkowity brak możliwości optymalizacji kampanii pod kątem ROAS (zwrotu z nakładów na reklamę). Wydajesz budżet na ślepo.',
     businessBenefit: 'Pełna kontrola nad rentownością każdej wydanej złotówki w Google i Meta Ads. Uruchomienie strategii tROAS gwarantującej maksymalizację zysku.',
-    developerSolution: 'Zaimplementuję zdarzenie purchase z walidacją deduplikacji (transaction_id) na stronie podziękowania w 24h.'
+    developerSolution: 'Implementacja zdarzenia purchase z walidacją deduplikacji (transaction_id) na stronie podziękowania.'
   },
   'track-view-item': {
     id: 'track-view-item',
@@ -47,7 +47,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Karty produktów nie wysyłają zdarzenia view_item (GA4) ani ViewContent (Meta Pixel) z ID i ceną produktu.',
     businessImpact: 'Zamiast spersonalizowanego produktu, porzucający użytkownicy widzą losowe reklamy ogólne. Utrata 35-50% szans na domknięcie koszyka.',
     businessBenefit: 'Automatyczne wyświetlanie klientom dokładnie tego towaru, który przed chwilą oglądali. Wzrost współczynnika powrotów i konwersji remarketingu o ponad 45%.',
-    developerSolution: 'Wdrożę automatyczny dispatch zdarzeń view_item i ViewContent z poprawnym ID katalogu w szablonie produktu w 24h.'
+    developerSolution: 'Wdrożenie automatycznego wywoływania zdarzeń view_item i ViewContent z poprawnym identyfikatorem katalogu w szablonie produktu.'
   },
   'track-consent-mode-v2': {
     id: 'track-consent-mode-v2',
@@ -58,7 +58,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak parametrów Consent Mode v2 wymaganych od marca 2024 przez Google dla reklamodawców w UE.',
     businessImpact: 'Google Ads blokuje odświeżanie list remarketingowych, a kampanie Performance Max i Search tracą do 30% raportowanych konwersji.',
     businessBenefit: 'Pełna zgodność z rygorystycznymi wymogami Google i UE oraz odzyskanie utraconych danych dzięki zaawansowanemu modelowaniu AI w GA4.',
-    developerSolution: 'Skonfiguruję certyfikowaną integrację Consent Mode v2 z GTM i banerem cookies zgodnie z IAB TCF 2.2 w 24h.'
+    developerSolution: 'Konfiguracja certyfikowanej integracji Consent Mode v2 z GTM i banerem cookies zgodnie ze standardem IAB TCF 2.2.'
   },
   'track-gtm-installed': {
     id: 'track-gtm-installed',
@@ -69,7 +69,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak centralnego kontenera Google Tag Manager w architekturze witryny.',
     businessImpact: 'Konieczność ręcznego wstrzykiwania każdego skryptu w kod strony, co wydłuża wdrożenia i stwarza ryzyko błędów krytycznych.',
     businessBenefit: 'Błyskawiczne uruchamianie nowych kampanii, pikseli i narzędzi analitycznych bez angażowania programisty i bez ryzyka awarii serwisu.',
-    developerSolution: 'Wdrożę zoptymalizowany asynchroniczny kontener Google Tag Manager w nagłówku i sekcji body w 24h.'
+    developerSolution: 'Wdrożenie zoptymalizowanego asynchronicznego kontenera Google Tag Manager w nagłówku i sekcji body.'
   },
   'track-datalayer-standard': {
     id: 'track-datalayer-standard',
@@ -80,7 +80,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Zainstalowano GTM, ale brak standaryzowanej warstwy danych dataLayer.',
     businessImpact: 'Tagi opierają się na niestabilnych selektorach HTML w DOM, które psują się przy najmniejszej zmianie wizualnej na stronie.',
     businessBenefit: 'Pancerna odporność analityki na zmiany wyglądu i aktualizacje szablonu. 100% pewności, że dane finansowe w raportach są precyzyjne.',
-    developerSolution: 'Zaimplementuję ustandaryzowaną warstwę window.dataLayer z modelem obiektowym dopasowanym do specyfiki biznesu w 24h.'
+    developerSolution: 'Implementacja ustandaryzowanej warstwy window.dataLayer z modelem obiektowym dopasowanym do specyfiki biznesu.'
   },
   'track-ga4-installed': {
     id: 'track-ga4-installed',
@@ -91,7 +91,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak aktywnego identyfikatora Google Analytics 4 (strumienia G- lub GT-).',
     businessImpact: 'Brak danych o zachowaniu użytkowników, źródłach ruchu i ścieżkach konwersji. Podejmowanie decyzji biznesowych po omacku.',
     businessBenefit: 'Zaawansowany wgląd w zachowania użytkowników, predykcje AI dotyczące prawdopodobieństwa zakupu i pełna integracja z Google Ads.',
-    developerSolution: 'Podepnę i skonfiguruję najnowszy strumień danych GA4 z wykluczeniem ruchu wewnętrznego i pomiarem zaangażowania w 24h.'
+    developerSolution: 'Podpięcie i konfiguracja strumienia danych GA4 z wykluczeniem ruchu wewnętrznego i pomiarem zaangażowania.'
   },
   'track-meta-pixel': {
     id: 'track-meta-pixel',
@@ -102,7 +102,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak piksela reklamowego Meta (Facebook/Instagram).',
     businessImpact: 'Brak możliwości budowania grup odbiorców na Facebooku i Instagramie oraz brak optymalizacji kampanii social media.',
     businessBenefit: 'Precyzyjne docieranie do klientów w ekosystemie Meta, budowanie grup Lookalike (klonów najlepszych klientów) i tani remarketing.',
-    developerSolution: 'Zaimplementuję skrypt Meta Pixel zintegrowany z GTM lub natywnym kodem z deduplikacją zdarzeń w 24h.'
+    developerSolution: 'Implementacja skryptu Meta Pixel zintegrowanego z GTM lub kodem szablonu z deduplikacją zdarzeń.'
   },
   'track-tiktok-pixel': {
     id: 'track-tiktok-pixel',
@@ -113,7 +113,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak piksela reklamowego TikTok.',
     businessImpact: 'Brak możliwości bezpośredniego śledzenia zwrotu z najszybciej rosnącego kanału social commerce.',
     businessBenefit: 'Dostęp do taniego ruchu i zakupów impulsowych wśród młodszych grup konsumentów z precyzyjnym pomiarem ROAS.',
-    developerSolution: 'Skonfiguruję TikTok Pixel z obsługą zdarzeń e-commerce i parametrów dopasowania zaawansowanego w 24h.'
+    developerSolution: 'Konfiguracja TikTok Pixela z obsługą zdarzeń e-commerce i parametrów dopasowania zaawansowanego.'
   },
   'track-lead-form': {
     id: 'track-lead-form',
@@ -124,7 +124,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto formularze kontaktowe, ale brak dedykowanego zdarzenia konwersji leada (generate_lead).',
     businessImpact: 'Kampanie reklamowe optymalizują się pod przypadkowe kliknięcia w stronę zamiast pod realnie wysłane zapytania ofertowe B2B.',
     businessBenefit: 'Google i Meta Ads kierują ruch wyłącznie do osób o najwyższym prawdopodobieństwie wypełnienia formularza. Drastyczny wzrost liczby wartościowych leadów B2B.',
-    developerSolution: 'Podepnę wywołanie zdarzenia generate_lead bezpośrednio pod zdarzenie sukcesu formularza (Promise/AJAX) w 24h.'
+    developerSolution: 'Podpięcie wywołania zdarzenia generate_lead bezpośrednio pod zdarzenie sukcesu formularza (Promise/AJAX).'
   },
   'track-click-to-call': {
     id: 'track-click-to-call',
@@ -135,7 +135,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Kliknięcia w numer telefonu na smartfonach nie są zliczane jako mikrokonwersje w Google Ads/GA4.',
     businessImpact: 'Nawet 50% klientów dzwoni bezpośrednio ze smartfona. Jeśli tego nie mierzysz, algorytm uważa te kampanie za bezskuteczne i je wygasza.',
     businessBenefit: 'Wykazanie pełnej, realnej skuteczności kampanii i umożliwienie algorytmom licytacji stawek pod użytkowników preferujących kontakt telefoniczny.',
-    developerSolution: 'Wdrożę listener zdarzeń tel: przesyłający mikrokonwersję contact_call do GA4 i Google Ads w 24h.'
+    developerSolution: 'Wdrożenie listenera zdarzeń tel: przesyłającego mikrokonwersję contact_call do GA4 i Google Ads.'
   },
   'track-click-to-email': {
     id: 'track-click-to-email',
@@ -146,7 +146,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Kliknięcia w linki mailto: nie są śledzone jako cel biznesowy.',
     businessImpact: 'Utrata danych o kontaktach inicjowanych przez klientów biznesowych preferujących bezpośredni kontakt mailowy.',
     businessBenefit: 'Precyzyjny atrybut źródeł leadów mailowych i możliwość optymalizacji stron lądowania pod kątem kontaktu B2B.',
-    developerSolution: 'Zaimplementuję automatyczny tracker kliknięć w adresy poczty elektronicznej zintegrowany z dataLayer w 24h.'
+    developerSolution: 'Implementacja automatycznego trackera kliknięć w adresy mailto: zintegrowanego z warstwą danych dataLayer.'
   },
   'track-session-recording': {
     id: 'track-session-recording',
@@ -157,18 +157,18 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak narzędzi analizy behawioralnej użytkowników (Microsoft Clarity lub Hotjar).',
     businessImpact: 'Brak wiedzy, w których miejscach użytkownicy gubią się na stronie, gdzie klikają na próżno (rage clicks) i dlaczego porzucają koszyk.',
     businessBenefit: 'Darmowy, bezpośredni wgląd w nagrania wideo z wizyt klientów. Natychmiastowa identyfikacja barier zakupowych i podniesienie konwersji.',
-    developerSolution: 'Wdrożę darmowy, w 100% zgodny z RODO skrypt Microsoft Clarity bez spowalniania strony w 24h.'
+    developerSolution: 'Wdrożenie darmowego, w 100% zgodnego z RODO skryptu Microsoft Clarity (brak wpływu na czas ładowania i Core Web Vitals).'
   },
   'track-ad-leak-risk': {
     id: 'track-ad-leak-risk',
     name: 'Ogólne ryzyko wycieku budżetu marketingowego',
     category: 'tracking_ads',
     severity: 'critical',
-    defaultDiagnosisPassed: 'Warstwa telemetryczna i analityczna jest kompletna – budżet reklamowy pracuje z maksymalną efektywnością.',
+    defaultDiagnosisPassed: 'Warstwa telemetryczna i analityczna jest kompletna - budżet reklamowy pracuje z maksymalną efektywnością.',
     defaultDiagnosisFailed: 'Zdiagnozowano krytyczne luki telemetryczne powodujące bezpośredni wyciek środków reklamowych.',
     businessImpact: 'Od 20% do nawet 60% comiesięcznego budżetu na płatny ruch jest przepalane przez brak sprzężenia zwrotnego z algorytmami AI.',
     businessBenefit: 'Uszczelnienie lejków, spadek kosztu pozyskania zamówienia o minimum 30% i natychmiastowe zwiększenie zysku netto ze sprzedaży.',
-    developerSolution: 'Przeprowadzę kompleksową naprawę całej warstwy telemetrycznej dataLayer + CAPI w 24–48h.'
+    developerSolution: 'Kompleksowa naprawa warstwy telemetrycznej dataLayer oraz integracji API konwersji (CAPI).'
   },
 
   // ==========================================
@@ -183,7 +183,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto podstrony wariantów zwracające błędy 504 Gateway Timeout lub ładujące się powyżej 2.5 sekundy.',
     businessImpact: 'Gdy klient klika reklamę konkretnego koloru/rozmiaru z Google Shopping, widzi biały ekran błędu. 100% kosztu kliknięcia idzie w błoto.',
     businessBenefit: 'Błyskawiczne ładowanie każdego wariantu produktu. Odzyskanie natychmiastowej sprzedaży z Google Shopping i Meta Catalog Ads.',
-    developerSolution: 'Zoptymalizuję zapytania SQL w bazie, wyeliminuję obciążające hooki wariacji i wdrożę object caching w 24–48h.'
+    developerSolution: 'Optymalizacja zapytań SQL w bazie danych, wyłączenie obciążających hooków wariacji oraz wdrożenie object cachingu.'
   },
   'ecom-omnibus-compliance': {
     id: 'ecom-omnibus-compliance',
@@ -194,7 +194,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto przekreślone ceny promocyjne bez obowiązkowej informacji o najniższej cenie z ostatnich 30 dni.',
     businessImpact: 'Realne ryzyko kontroli i dotkliwych kar od UOKiK (do 10% rocznego obrotu) oraz utrata zaufania klientów podejrzewających sztuczne rabaty.',
     businessBenefit: '100% spokoju prawnego, pełna transparentność budująca autorytet marki i wyższy współczynnik konwersji promocji.',
-    developerSolution: 'Wdrożę automatyczny, lekki moduł dyrektywy Omnibus z pełną historią cenową bezpośrednio przy kwocie w 24h.'
+    developerSolution: 'Wdrożenie zoptymalizowanego modułu dyrektywy Omnibus z pełną historią cenową bezpośrednio przy kwocie produktu.'
   },
   'ecom-express-payments': {
     id: 'ecom-express-payments',
@@ -204,8 +204,8 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisPassed: 'Sklep oferuje szybkie płatności mobilne 1-click.',
     defaultDiagnosisFailed: 'Brak bezpośrednich portfeli ekspresowych (BLIK, Apple Pay, Google Pay) na ścieżce zakupu.',
     businessImpact: 'Konieczność ręcznego wpisywania numerów kart lub logowania do banku powoduje porzucenie do 35% koszyków na smartfonach.',
-    businessBenefit: 'Zakupy sfinalizowane w 5 sekund jednym dotknięciem kciuka. Wzrost konwersji mobilnej o minimum 20–30%.',
-    developerSolution: 'Zintegruję bramkę płatności z natywnym Apple Pay, Google Pay i BLIK One-Click w koszyku w 24h.'
+    businessBenefit: 'Zakupy sfinalizowane w 5 sekund jednym dotknięciem kciuka. Wzrost konwersji mobilnej o minimum 20-30%.',
+    developerSolution: 'Integracja bramki płatności z natywnym Apple Pay, Google Pay oraz BLIK One-Click w koszyku.'
   },
   'ecom-schema-product': {
     id: 'ecom-schema-product',
@@ -214,9 +214,9 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     severity: 'warning',
     defaultDiagnosisPassed: 'Karty produktów posiadają zwalidowane mikrodane Schema.org Product w JSON-LD.',
     defaultDiagnosisFailed: 'Brak danych strukturalnych Schema.org Product w kodzie podstron produktów.',
-    businessImpact: 'Produkty w wyszukiwarce Google wyglądają szaro i nijako na tle konkurencji z gwiazdkami i cenami. CTR niższy o 25–40%.',
+    businessImpact: 'Produkty w wyszukiwarce Google wyglądają szaro i nijako na tle konkurencji z gwiazdkami i cenami. CTR niższy o 25-40%.',
     businessBenefit: 'Wyróżniające się wyniki wyszukiwania (gwiazdki, opinie, cena, dostępność), wyższy CTR organiczny i darmowy wzrost wejść z Google.',
-    developerSolution: 'Wdrożę poprawny kod JSON-LD Schema Product generowany w locie z bazy towarowej w 24h.'
+    developerSolution: 'Wdrożenie poprawnego kodu JSON-LD Schema.org Product generowanego automatycznie ze struktury katalogowej.'
   },
   'ecom-schema-offers': {
     id: 'ecom-schema-offers',
@@ -227,7 +227,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak struktury Offer w mikrodanych produktów.',
     businessImpact: 'Google Merchant Center i roboty wyszukiwarki nie potrafią automatycznie zweryfikować aktualności cen w sklepie.',
     businessBenefit: 'Bezbłędna synchronizacja cen z bezpłatnymi wynikami Google Zakupy i natychmiastowe aktualizacje promocji.',
-    developerSolution: 'Rozszerzę schemat JSON-LD o precyzyjne właściwości Offer wraz z terminem ważności promocji w 24h.'
+    developerSolution: 'Rozszerzenie schematu JSON-LD o precyzyjne właściwości Offer wraz z terminem ważności oferty.'
   },
   'ecom-schema-stock': {
     id: 'ecom-schema-stock',
@@ -238,7 +238,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak deklaracji dostępności produktu (InStock / OutOfStock) w danych strukturalnych.',
     businessImpact: 'Klienci w Google nie wiedzą, czy towar jest dostępny od ręki, przez co wybierają oferty konkurencji z jasnym oznaczeniem.',
     businessBenefit: 'Etykieta "W magazynie" w wynikach wyszukiwania, która diametralnie zwiększa klikalność użytkowników gotowych do zakupu tu i teraz.',
-    developerSolution: 'Dodam automatyczną flagę itemAvailability w kodzie szablonu zsynchronizowaną ze stanem magazynowym w 24h.'
+    developerSolution: 'Dodanie automatycznej flagi itemAvailability w kodzie szablonu zsynchronizowanej ze stanem magazynowym.'
   },
   'ecom-cart-buttons': {
     id: 'ecom-cart-buttons',
@@ -249,7 +249,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto brak jednoznacznych, dostępnych semantycznie przycisków dodawania do koszyka na kartach produktów.',
     businessImpact: 'Klienci na niektórych urządzeniach lub z czytnikami ekranu nie mogą kliknąć w przycisk zakupu. Całkowita blokada transakcji.',
     businessBenefit: '100% niezawodności mechanizmu zakupu na każdym urządzeniu i eliminacja technicznych barier finalizacji koszyka.',
-    developerSolution: 'Przebuduję przyciski akcji na semantyczne elementy button z czytelnym feedbackiem wizualnym i telemetrią w 24h.'
+    developerSolution: 'Przebudowa przycisków akcji na semantyczne elementy button z czytelnym feedbackiem wizualnym i telemetrią.'
   },
   'ecom-cart-visibility': {
     id: 'ecom-cart-visibility',
@@ -260,7 +260,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak wyraźnej ikony koszyka w nagłówku lub brak dynamicznego licznika dodanych sztuk.',
     businessImpact: 'Użytkownik nie ma pewności, czy kliknięcie zadziałało i gubi drogę do finalizacji zamówienia, porzucając witrynę.',
     businessBenefit: 'Płynna ścieżka do kasy, wyższa pewność użytkownika i redukcja porzuceń koszyka na wczesnym etapie o 15%.',
-    developerSolution: 'Wdrożę interaktywny widżet koszyka w nagłówku z mikro-animacją potwierdzenia dodania produktu w 24h.'
+    developerSolution: 'Wdrożenie interaktywnego widżetu koszyka w nagłówku z mikro-animacją potwierdzenia dodania produktu.'
   },
   'ecom-trust-signals': {
     id: 'ecom-trust-signals',
@@ -270,8 +270,8 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisPassed: 'Sklep eksponuje sygnały zaufania (bezpieczne płatności, gwarancja zwrotu, opinie).',
     defaultDiagnosisFailed: 'Brak wyraźnych sygnałów zaufania w rejonie przycisków zakupu i w koszyku.',
     businessImpact: 'Nowi klienci obawiają się oszustwa lub problemów ze zwrotem, przez co rezygnują z pierwszego zakupu.',
-    businessBenefit: 'Przełamanie oporów psychologicznych kupującego. Wzrost konwersji wśród nowych użytkowników o 18–25%.',
-    developerSolution: 'Zaprojektuję elegancki, minimalistyczny moduł gwarancji bezpieczeństwa (SSL, 14 dni zwrotu, szybka wysyłka) w 24h.'
+    businessBenefit: 'Przełamanie oporów psychologicznych kupującego. Wzrost konwersji wśród nowych użytkowników o 18-25%.',
+    developerSolution: 'Wdrożenie minimalistycznego modułu gwarancji bezpieczeństwa (SSL, 14 dni zwrotu, szybka wysyłka) przy CTA.'
   },
   'ecom-consumer-rights': {
     id: 'ecom-consumer-rights',
@@ -282,7 +282,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak bezpośredniego odnośnika do zasad zwrotu i odstąpienia od umowy na ścieżce zakupu.',
     businessImpact: 'Niezgodność z ustawą o prawach konsumenta, wydłużenie okresu na zwrot do 12 miesięcy i ryzyko kar prawnych.',
     businessBenefit: 'Pełna zgodność z prawem e-commerce w UE i budowanie wizerunku profesjonalnego, bezpiecznego sprzedawcy.',
-    developerSolution: 'Wdrożę przejrzystą sekcję informacyjną o prostych zwrotach w stopce i na karcie produktu w 24h.'
+    developerSolution: 'Wdrożenie przejrzystej sekcji informacyjnej o zwrotach i odstąpieniu od umowy w stopce i na karcie produktu.'
   },
   'ecom-cross-sell': {
     id: 'ecom-cross-sell',
@@ -292,8 +292,8 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisPassed: 'Karty produktów zawierają moduły polecanych lub uzupełniających produktów.',
     defaultDiagnosisFailed: 'Brak sekcji rekomendacji ("Kup razem", "Produkty powiązane") na kartach produktów.',
     businessImpact: 'Sklep marnuje szansę na zwiększenie średniej wartości koszyka (AOV) przy tym samym koszcie pozyskania ruchu.',
-    businessBenefit: 'Wzrost średniej wartości zamówienia (AOV) o 15–30% dzięki trafnej sprzedaży wiązanej i akcesoriom.',
-    developerSolution: 'Zaimplementuję szybki komponent rekomendacji produktów z opcją 1-click zestawu w 24h.'
+    businessBenefit: 'Wzrost średniej wartości zamówienia (AOV) o 15-30% dzięki trafnej sprzedaży wiązanej i akcesoriom.',
+    developerSolution: 'Implementacja komponentu rekomendacji produktów z opcją szybkiego zestawu.'
   },
   'ecom-free-shipping': {
     id: 'ecom-free-shipping',
@@ -304,7 +304,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak dynamicznego paska brakującej kwoty do darmowej dostawy w koszyku.',
     businessImpact: 'Klienci porzucają koszyk na ostatnim kroku zaskoczeni kosztem wysyłki, zamiast dobrać produkt uzupełniający.',
     businessBenefit: 'Klienci sami dobierają dodatkowe towary, aby uniknąć kosztu dostawy. Natychmiastowy wzrost AOV i spadek porzuceń kasy.',
-    developerSolution: 'Zaimplementuję dynamiczny pasek postępu "Brakuje Ci tylko X zł do darmowej dostawy" w koszyku w 24h.'
+    developerSolution: 'Implementacja dynamicznego paska postępu darmowej dostawy w koszyku zakupowym.'
   },
   'ecom-product-images': {
     id: 'ecom-product-images',
@@ -315,7 +315,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto produkty bez zdjęć lub z uszkodzonymi miniaturami.',
     businessImpact: 'Klient w internecie kupuje wzrokiem. Produkt bez zdjęcia sprzedaje się 10x gorzej i niszczy zaufanie do marki.',
     businessBenefit: 'Profesjonalna prezentacja oferty budząca pożądanie zakupowe i maksymalizująca konwersję.',
-    developerSolution: 'Wdrożę automatyczny fallback dla brakujących zdjęć oraz galerię zoom zoptymalizowaną pod smartfony w 24h.'
+    developerSolution: 'Wdrożenie automatycznego fallbacku dla brakujących zdjęć oraz galerii zoom zoptymalizowanej pod smartfony.'
   },
 
   // ==========================================
@@ -330,7 +330,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto podstrony zwracające kody błędów klienta (404) lub serwera (500/502/504).',
     businessImpact: 'Roboty wyszukiwarek wyrzucają niedostępne strony z indeksu, a użytkownicy trafiający na błąd 404 natychmiast uciekają.',
     businessBenefit: '100% dostępności witryny, zachowanie pełnej mocy PageRank i brak strat budżetu indeksowania (Crawl Budget).',
-    developerSolution: 'Skonfiguruję mapę przekierowań 301 dla martwych adresów i usunę błędy serwerowe w 24h.'
+    developerSolution: 'Konfiguracja mapy przekierowań 301 dla uszkodzonych lub nieistniejących adresów oraz usunięcie błędów serwerowych.'
   },
   'seo-redirect-hygiene': {
     id: 'seo-redirect-hygiene',
@@ -339,9 +339,9 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     severity: 'warning',
     defaultDiagnosisPassed: 'Struktura adresów URL nie wykazuje niepotrzebnych wielokrotnych przekierowań.',
     defaultDiagnosisFailed: 'Wykryto dużą liczbę przekierowań 3xx opóźniających ładowanie stron.',
-    businessImpact: 'Każde dodatkowe przekierowanie dodaje 200–500ms opóźnienia i osłabia przekazywanie mocy SEO.',
+    businessImpact: 'Każde dodatkowe przekierowanie dodaje 200-500ms opóźnienia i osłabia przekazywanie mocy SEO.',
     businessBenefit: 'Błyskawiczne przejścia między podstronami i bezpośrednie kierowanie robotów do docelowych zasobów.',
-    developerSolution: 'Zaktualizuję wewnętrzną strukturę linków do bezpośrednich adresów docelowych w 24h.'
+    developerSolution: 'Aktualizacja wewnętrznej struktury linków do bezpośrednich adresów docelowych z pominięciem łańcuchów przekierowań.'
   },
   'seo-title-presence': {
     id: 'seo-title-presence',
@@ -352,29 +352,29 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto podstrony bez nagłówka <title>.',
     businessImpact: 'Strona bez tytułu nie ma szans na wysokie pozycje w Google na żadne słowa kluczowe.',
     businessBenefit: 'Zagwarantowanie obecności podstron w indeksie wyszukiwarki i stworzenie fundamentu pod pozycjonowanie.',
-    developerSolution: 'Wdrożę dynamiczny generator tagów Title w szablonie widoków w 24h.'
+    developerSolution: 'Wdrożenie dynamicznego generatora unikalnych tagów Title w szablonie widoków.'
   },
   'seo-title-cannibalization': {
     id: 'seo-title-cannibalization',
     name: 'Eliminacja auto-kanibalizacji tytułów (Duplicate Titles)',
     category: 'seo_indexing',
     severity: 'critical',
-    defaultDiagnosisPassed: 'Tagi Title są w 100% unikalne – brak auto-kanibalizacji fraz kluczowych.',
+    defaultDiagnosisPassed: 'Tagi Title są w 100% unikalne - brak auto-kanibalizacji fraz kluczowych.',
     defaultDiagnosisFailed: 'Wykryto grupy podstron z identycznymi tagami Title konkurującymi ze sobą w Google.',
     businessImpact: 'Zamiast jednej silnej pozycji w TOP 3, Twoje strony rotują i zbijają się nawzajem na dalsze strony wyników.',
     businessBenefit: 'Skupienie całej mocy rankingowej i natychmiastowy awans najważniejszych podstron ofertowych do TOP wyników.',
-    developerSolution: 'Zaimplementuję automatyczne reguły unikalizacji tytułów z parametrami wyróżniającymi w kodzie w 24h.'
+    developerSolution: 'Implementacja automatycznych reguł unikalizacji tytułów z parametrami wyróżniającymi w kodzie szablonu.'
   },
   'seo-title-optimal-length': {
     id: 'seo-title-optimal-length',
-    name: 'Optymalna długość tytułu (35–65 znaków)',
+    name: 'Optymalna długość tytułu (35-65 znaków)',
     category: 'seo_indexing',
     severity: 'warning',
     defaultDiagnosisPassed: 'Długość tytułów mieści się w rekomendowanym przedziale pikselowym Google.',
     defaultDiagnosisFailed: 'Tytuły są zbyt krótkie (niewykorzystany potencjał) lub zbyt długie (ucięte przez Google trzykropkiem).',
     businessImpact: 'Ucięte tytuły wyglądają nieprofesjonalnie i zniechęcają do kliknięcia, a zbyt krótkie nie wykorzystują fraz kluczowych.',
     businessBenefit: 'Maksymalny CTR w wynikach wyszukiwania i pełne wyeksponowanie kluczowych przewag oferty.',
-    developerSolution: 'Dostosuję formułę generowania tytułów do optymalnego limitu 580px (ok. 55-60 znaków) w 24h.'
+    developerSolution: 'Dostosowanie formuły generowania tytułów do optymalnego limitu pikselowego Google (ok. 55-60 znaków).'
   },
   'seo-meta-description-presence': {
     id: 'seo-meta-description-presence',
@@ -384,19 +384,19 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisPassed: 'Wszystkie podstrony posiadają zdefiniowany opis meta description.',
     defaultDiagnosisFailed: 'Wykryto brak tagów meta description na podstronach witryny.',
     businessImpact: 'Google wyświetla losowe fragmenty tekstu ze strony, często zawierające elementy menu czy komunikaty o cookies.',
-    businessBenefit: 'Kontrola nad wizytówką serwisu w wyszukiwarce. Wzrost współczynnika klikalności (CTR) o 20–35%.',
-    developerSolution: 'Wdrożę automatyczne generowanie angażujących opisów meta z treści strony w 24h.'
+    businessBenefit: 'Kontrola nad wizytówką serwisu w wyszukiwarce. Wzrost współczynnika klikalności (CTR) o 20-35%.',
+    developerSolution: 'Wdrożenie automatycznego generowania angażujących opisów meta description z treści strony.'
   },
   'seo-meta-description-length': {
     id: 'seo-meta-description-length',
-    name: 'Prawidłowa długość meta description (120–160 znaków)',
+    name: 'Prawidłowa długość meta description (120-160 znaków)',
     category: 'seo_indexing',
     severity: 'warning',
     defaultDiagnosisPassed: 'Długość opisów meta description mieści się w optymalnym przedziale.',
     defaultDiagnosisFailed: 'Opisy meta są za krótkie lub ucięte przez limity wyświetlania Google.',
     businessImpact: 'Niedokończone zdania w wynikach Google obniżają zaufanie użytkowników szukających rzetelnych firm.',
     businessBenefit: 'Kompletny, perswazyjny przekaz sprzedażowy z wyraźnym Call to Action bezpośrednio w Google.',
-    developerSolution: 'Skalibruję długość opisów meta w CMS/kodzie do optymalnego przedziału w 24h.'
+    developerSolution: 'Kalibracja długości opisów meta description w CMS i kodzie szablonu do optymalnego przedziału.'
   },
   'seo-h1-presence': {
     id: 'seo-h1-presence',
@@ -407,18 +407,18 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Zdiagnozowano podstrony bez nagłówka <h1>.',
     businessImpact: 'Roboty Google oraz modele AI (SearchGPT, Gemini) gubią kontekst semantyczny strony i nie wiedzą, czego dotyczy oferta.',
     businessBenefit: 'Jednoznaczny sygnał dla algorytmów indeksujących, wyższa widoczność na frazy główne i lepsze pozycjonowanie w AI Search.',
-    developerSolution: 'Wprowadzę automatyczny nagłówek <h1> w szablonie widoków bez ingerencji w obecny design w 24h.'
+    developerSolution: 'Wprowadzenie automatycznego nagłówka <h1> w szablonie widoków z zachowaniem spójności wizualnej.'
   },
   'seo-h1-uniqueness': {
     id: 'seo-h1-uniqueness',
     name: 'Dokładnie jeden nagłówek <h1> na stronę',
     category: 'seo_indexing',
     severity: 'warning',
-    defaultDiagnosisPassed: 'Struktura dokumentu zachowuje wzorową hierarchię – dokładnie jeden tag H1.',
+    defaultDiagnosisPassed: 'Struktura dokumentu zachowuje wzorową hierarchię - dokładnie jeden tag H1.',
     defaultDiagnosisFailed: 'Wykryto podstrony z wieloma nagłówkami H1 (np. logo lub widżety w H1).',
     businessImpact: 'Zaburzona hierarchia dokumentu rozmywa wagę słów kluczowych i utrudnia interpretację struktury treści.',
     businessBenefit: 'Czysta, poprawna semantyka HTML5, która ułatwia robotom analizę i podnosi ocenę jakości strony.',
-    developerSolution: 'Przekształcę nadmiarowe tagi H1 na odpowiednie nagłówki H2/H3 lub elementy stylizowane w 24h.'
+    developerSolution: 'Przekształcenie nadmiarowych tagów H1 na odpowiednie nagłówki podrzędne H2/H3 lub semantyczne elementy stylizowane.'
   },
   'seo-canonical-presence': {
     id: 'seo-canonical-presence',
@@ -429,7 +429,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto podstrony bez linku kanonicznego zapobiegającego duplikatom.',
     businessImpact: 'Tworzenie się zduplikowanych wersji podstron (np. z parametrami UTM, filtrami, wersjami HTTP/HTTPS) rozpraszających PageRank.',
     businessBenefit: 'Skupienie całej mocy rankingowej na oficjalnym adresie URL i pełna ochrona przed karami za duplicate content.',
-    developerSolution: 'Zaimplementuję dynamiczny znacznik kanoniczny w nagłówku strony generowany z czystego adresu w 24h.'
+    developerSolution: 'Implementacja dynamicznego znacznika kanonicznego (rel="canonical") generowanego z czystego adresu URL.'
   },
   'seo-self-canonical': {
     id: 'seo-self-canonical',
@@ -440,7 +440,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Tag canonical wskazuje na inny adres lub jest niespójny z protokołem i końcowym ukośnikiem (slash).',
     businessImpact: 'Konflikt sygnałów indeksacyjnych prowadzi do deindeksacji ważnych podstron przez roboty Google.',
     businessBenefit: 'Spójna architektura indeksacji, oszczędność budżetu indeksowania i natychmiastowe zatwierdzenie w Google Search Console.',
-    developerSolution: 'Uporządkuję logikę samoodnoszących canonicali z uwzględnieniem trailing-slash w kodzie w 24h.'
+    developerSolution: 'Uporządkowanie logiki samoodnoszących tagów canonical z uwzględnieniem spójności protokołu i końcowego ukośnika.'
   },
   'seo-noindex-safety': {
     id: 'seo-noindex-safety',
@@ -449,9 +449,9 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     severity: 'critical',
     defaultDiagnosisPassed: 'Ważne strony ofertowe są otwarte na indeksowanie (brak noindex).',
     defaultDiagnosisFailed: 'Wykryto znacznik noindex na podstronach, które powinny generować bezpłatny ruch z Google.',
-    businessImpact: 'Katastrofalny błąd – Twoja strona jest całkowicie niewidoczna w Google, a Ty tracisz 100% bezpłatnych klientów.',
+    businessImpact: 'Katastrofalny błąd - Twoja strona jest całkowicie niewidoczna w Google, a Ty tracisz 100% bezpłatnych klientów.',
     businessBenefit: 'Błyskawiczny powrót podstron do indeksu wyszukiwarki i odzyskanie utraconego ruchu organicznego.',
-    developerSolution: 'Usunę blokady noindex i wyślę natychmiastowe żądanie ponownego zaindeksowania w Google Search Console w 24h.'
+    developerSolution: 'Usunięcie błędnych dyrektyw noindex i wysłanie żądania ponownego zaindeksowania w Google Search Console.'
   },
   'seo-thin-content': {
     id: 'seo-thin-content',
@@ -462,7 +462,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Zdiagnozowano podstrony o znikomej objętości tekstu (poniżej 200 słów).',
     businessImpact: 'Google klasyfikuje podstrony znikomą treścią jako "Low Quality Pages", co obniża ocenę całej domeny w algorytmie Helpful Content.',
     businessBenefit: 'Wzmocnienie tematycznego autorytetu domeny (Topic Authority) i wzrost widoczności na frazy z długiego ogona (long-tail).',
-    developerSolution: 'Rozbuduję strukturę szablonu o moduły pytań FAQ, sekcje korzyści i opisy wspierające pozycjonowanie w 24h.'
+    developerSolution: 'Rozbudowa struktury szablonu o moduły pytań FAQ, sekcje korzyści oraz opisy merytoryczne.'
   },
   'seo-robots-txt': {
     id: 'seo-robots-txt',
@@ -473,7 +473,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak pliku robots.txt lub błędna konfiguracja blokująca zasoby CSS/JS.',
     businessImpact: 'Roboty wyszukiwarek nie mogą poprawnie wyrenderować strony lub marnują Crawl Budget na skanowanie nieistotnych skryptów.',
     businessBenefit: 'Optymalizacja indeksowania najważniejszych podstron i odciążenie serwera od niepotrzebnego ruchu botów.',
-    developerSolution: 'Skonfiguruję wzorcowy plik robots.txt z odnośnikiem do mapy witryny sitemap.xml w 24h.'
+    developerSolution: 'Konfiguracja wzorcowego pliku robots.txt ze wskazaniem mapy witryny sitemap.xml.'
   },
   'seo-sitemap-xml': {
     id: 'seo-sitemap-xml',
@@ -484,7 +484,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak mapy witryny sitemap.xml ułatwiającej robotom odkrywanie nowych podstron.',
     businessImpact: 'Nowe artykuły blogowe i nowo dodane produkty indeksują się tygodniami zamiast godzinami.',
     businessBenefit: 'Ekspresowa indeksacja nowości i aktualizacji cenowych przez roboty Google w czasie rzeczywistym.',
-    developerSolution: 'Wdrożę automatyczny generator mapy sitemap.xml z podziałem na produkty, kategorie i wpisy w 24h.'
+    developerSolution: 'Wdrożenie automatycznego generatora mapy sitemap.xml z podziałem na produkty, kategorie i artykuły.'
   },
   'seo-internal-linking': {
     id: 'seo-internal-linking',
@@ -495,7 +495,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto podstrony osierocone (orphan pages) z bardzo małą liczbą linków przychodzących.',
     businessImpact: 'Dobre produkty i oferty nie zyskują pozycji, ponieważ roboty i użytkownicy rzadko na nie trafiają.',
     businessBenefit: 'Sprawne rozprowadzanie autorytetu domeny i płynna nawigacja dla klientów, wydłużająca czas spędzony na stronie.',
-    developerSolution: 'Wdrożę zautomatyzowane moduły linkowania wewnętrznego (kategorie, powiązane wpisy) w 24h.'
+    developerSolution: 'Wdrożenie modułów linkowania wewnętrznego (kategorie powiązane, polecane artykuły, okruszki chleba breadcrumbs).'
   },
   'seo-schema-article': {
     id: 'seo-schema-article',
@@ -506,7 +506,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wpisy blogowe i poradniki nie posiadają danych strukturalnych Schema Article.',
     businessImpact: 'Nowoczesne wyszukiwarki AI (SearchGPT, Google AI Overviews, Perplexity) nie potrafią zacytować Twojej strony jako eksperta.',
     businessBenefit: 'Obecność w podsumowaniach sztucznej inteligencji (AI Overviews) i dominacja na rynku zapytań głosowych i semantycznych.',
-    developerSolution: 'Wdrożę pełne mikrodane Article z autorem, datą publikacji i grafiką zgodnie ze standardem Schema.org w 24h.'
+    developerSolution: 'Wdrożenie pełnych mikrodanych Article/BlogPosting z autorem, datą publikacji i grafiką zgodnie ze standardem Schema.org.'
   },
   'seo-anchor-text-quality': {
     id: 'seo-anchor-text-quality',
@@ -517,7 +517,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Linki wewnętrzne używają generycznych zwrotów typu "kliknij tutaj" lub "więcej".',
     businessImpact: 'Marnowanie potencjału rankingowego linków wewnętrznych na puste frazy bez znaczenia SEO.',
     businessBenefit: 'Wzmocnienie pozycji na konkretne słowa kluczowe wplecione naturalnie w linkowanie.',
-    developerSolution: 'Zastąpię generyczne etykiety linków semantycznymi frazami opisującymi cel w 24h.'
+    developerSolution: 'Zastąpienie generycznych etykiet linków semantycznymi frazami precyzyjnie opisującymi cel odnośnika.'
   },
 
   // ==========================================
@@ -528,11 +528,11 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     name: 'Czas odpowiedzi serwera (Time To First Byte < 800ms)',
     category: 'performance_vitals',
     severity: 'critical',
-    defaultDiagnosisPassed: 'Serwer odpowiada płynnie – średni TTFB poniżej 800ms (zgodnie ze standardem Google Core Web Vitals).',
+    defaultDiagnosisPassed: 'Serwer odpowiada płynnie - średni TTFB poniżej 800ms (zgodnie ze standardem Google Core Web Vitals).',
     defaultDiagnosisFailed: 'Czas odpowiedzi serwera (TTFB) przekracza 1.8s, powodując odczuwalne opóźnienie w starcie renderowania.',
     businessImpact: 'Opóźnienia serwera powyżej 1.8s obniżają współczynnik konwersji i pogarszają pozycje w Google (Core Web Vitals).',
     businessBenefit: 'Natychmiastowe ładowanie witryny od pierwszej milisekundy. Wyższe oceny w Google Core Web Vitals i niższy współczynnik odrzuceń.',
-    developerSolution: 'Wdrożę edge caching, optymalizację zapytań do bazy danych oraz kompresję na poziomie serwera w 24h.'
+    developerSolution: 'Wdrożenie edge cachingu, optymalizacja zapytań do bazy danych oraz kompresja na poziomie serwera.'
   },
   'perf-render-blocking-scripts': {
     id: 'perf-render-blocking-scripts',
@@ -543,7 +543,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto skrypty JavaScript w sekcji <head> blokujące renderowanie zawartości strony.',
     businessImpact: 'Przeglądarka musi zatrzymać rysowanie strony do czasu pobrania i wykonania kodu JS, co powoduje zacinanie ekranu na smartfonach.',
     businessBenefit: 'Błyskawiczne pojawienie się treści przed oczami użytkownika (FCP < 1.0s) i płynne pierwsze wrażenie.',
-    developerSolution: 'Dodam atrybuty defer/async do skryptów zewnętrznych i przeniosę niekrytyczny kod na koniec dokumentu w 24h.'
+    developerSolution: 'Dodanie atrybutów defer/async do skryptów zewnętrznych i przesunięcie kodu niekrytycznego.'
   },
   'perf-dom-size': {
     id: 'perf-dom-size',
@@ -554,18 +554,18 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Rozdmuchane drzewo DOM (znacznie powyżej 1200 elementów) obciąża pamięć procesora urządzeń mobilnych.',
     businessImpact: 'Przeglądarka na telefonie zużywa mnóstwo energii na przeliczanie stylów, co wywołuje przycięcia podczas przewijania (INP).',
     businessBenefit: 'Aksamitnie płynne przewijanie strony (60 FPS) na każdym smartfonie bez spowolnień i przegrzewania baterii.',
-    developerSolution: 'Odchudzę strukturę HTML, usunę zbędne zagnieżdżone kontenery div i zoptymalizuję widoki w 24–48h.'
+    developerSolution: 'Odchudzenie struktury HTML, eliminacja zbędnych zagnieżdżeń kontenerów oraz uproszczenie szablonu.'
   },
   'perf-pagebuilder-bloat': {
     id: 'perf-pagebuilder-bloat',
     name: 'Brak narzutu ciężkich builderów (Elementor / Divi / WPBakery)',
     category: 'performance_vitals',
     severity: 'warning',
-    defaultDiagnosisPassed: 'Kod jest czysty i zoptymalizowany – brak śladów po ciężkich kreatorach wizualnych.',
+    defaultDiagnosisPassed: 'Kod jest czysty i zoptymalizowany - brak śladów po ciężkich kreatorach wizualnych.',
     defaultDiagnosisFailed: 'Wykryto narzut kodu z ciężkich builderów generujących kilkaset kilobajtów zbędnego CSS/JS.',
-    businessImpact: 'Nawet 80% kodu generowanego przez buildery to nieużywane style i skrypty, które spowalniają ładowanie o 2–4 sekundy.',
+    businessImpact: 'Nawet 80% kodu generowanego przez buildery to nieużywane style i skrypty, które spowalniają ładowanie o 2-4 sekundy.',
     businessBenefit: 'Radykalne przyspieszenie strony, czysty kod inżynieryjny i przejście testów Google PageSpeed na zielono.',
-    developerSolution: 'Przeprowadzę refaktoryzację komponentów krytycznych, wyłączając nieużywane moduły buildera w 24–48h.'
+    developerSolution: 'Refaktoryzacja komponentów krytycznych oraz wyłączenie nieużywanych modułów i stylów kreatora wizualnego.'
   },
   'perf-modern-stack': {
     id: 'perf-modern-stack',
@@ -576,7 +576,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Aplikacja oparta na przestarzałej architekturze monolitycznej podatnej na awarie pod obciążeniem.',
     businessImpact: 'Trudności w skalowaniu ruchu podczas akcji promocyjnych, powolne działanie bazy i wysokie koszty utrzymania serwerów.',
     businessBenefit: 'Pancerna stabilność pod ruchem z kampanii telewizyjnych i Black Friday oraz zerowe koszty skalowania.',
-    developerSolution: 'Oferuję stopniową migrację kluczowych lejków do architektury Next.js z czasem ładowania poniżej 500ms.'
+    developerSolution: 'Stopniowa migracja kluczowych ścieżek konwersji do nowoczesnej architektury Next.js z czasem renderowania poniżej 500ms.'
   },
   'perf-jquery-free': {
     id: 'perf-jquery-free',
@@ -587,7 +587,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto leciwe wersje jQuery (1.x / 2.x) obciążające wątek główny i stwarzające ryzyko bezpieczeństwa.',
     businessImpact: 'Zbędny narzut pamięciowy i opóźnienia interakcji (INP), a także znane luki bezpieczeństwa (XSS).',
     businessBenefit: 'Nowoczesny kod zgodny z aktualnymi standardami ECMAScript, szybsze przetwarzanie zdarzeń i wyższe bezpieczeństwo.',
-    developerSolution: 'Zastąpię leciwe skrypty jQuery nowoczesnym, natywnym kodem JavaScript Vanilla bez zewnętrznych zależności w 24h.'
+    developerSolution: 'Zastąpienie bibliotek jQuery nowoczesnym, natywnym kodem JavaScript bez zewnętrznych zależności.'
   },
   'perf-inline-styles': {
     id: 'perf-inline-styles',
@@ -597,8 +597,8 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisPassed: 'Strona stosuje uporządkowane arkusze stylów zamiast setek stylów liniowych style="".',
     defaultDiagnosisFailed: 'Wykryto setki zaśmiecających stylów inline uniemożliwiających ich buforowanie przez przeglądarkę.',
     businessImpact: 'Rozmiar pliku HTML rośnie niepotrzebnie kilkukrotnie, zmuszając użytkownika do pobierania tych samych stylów przy każdej podstronie.',
-    businessBenefit: 'Redukcja wagi transferu HTML o 40–60% i natychmiastowe otwieranie kolejnych podstron dzięki cache CSS.',
-    developerSolution: 'Wyekstrahuję powtarzalne style inline do scentralizowanego arkusza stylów lub klas Tailwind CSS w 24h.'
+    businessBenefit: 'Redukcja wagi transferu HTML o 40-60% i natychmiastowe otwieranie kolejnych podstron dzięki cache CSS.',
+    developerSolution: 'Ekstrakcja powtarzalnych stylów inline do zewnętrznego arkusza CSS lub klas narzędziowych Tailwind CSS.'
   },
   'perf-image-lazy-loading': {
     id: 'perf-image-lazy-loading',
@@ -609,7 +609,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto obrazy pobierane od razu przy starcie strony, blokujące transfer łącza mobilnego.',
     businessImpact: 'Użytkownik na słabszym łączu mobilnym czeka kilkanaście sekund na pobranie zdjęć ze stopki, nim zobaczy ofertę na górze.',
     businessBenefit: 'Oszczędność pakietu danych klienta i błyskawiczne załadowanie widocznej części ekranu (Above the Fold).',
-    developerSolution: 'Wdrożę natywny atrybut loading="lazy" oraz dekodowanie decoding="async" dla wszystkich grafik poza ekranem w 24h.'
+    developerSolution: 'Wdrożenie natywnego atrybutu loading="lazy" oraz dekodowania decoding="async" dla grafik poza pierwszym ekranem.'
   },
   'perf-image-modern-formats': {
     id: 'perf-image-modern-formats',
@@ -619,8 +619,8 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisPassed: 'Grafiki serwowane są w nowoczesnych, wysoce skompresowanych formatach WebP / AVIF.',
     defaultDiagnosisFailed: 'Strona serwuje ciężkie, nieskompresowane pliki PNG i JPEG ważące po kilka megabajtów.',
     businessImpact: 'Marnowanie transferu serwera i powolne renderowanie galerii produktowych, zniechęcające do przeglądania oferty.',
-    businessBenefit: 'Redukcja wagi zdjęć o 65–80% przy zachowaniu bezbłędnej ostrości i jakości detali.',
-    developerSolution: 'Wdrożę automatyczną konwersję i serwowanie grafik w formacie WebP/AVIF w locie w 24h.'
+    businessBenefit: 'Redukcja wagi zdjęć o 65-80% przy zachowaniu bezbłędnej ostrości i jakości detali.',
+    developerSolution: 'Wdrożenie automatycznej kompresji i serwowania nowoczesnych formatów grafik WebP i AVIF.'
   },
   'perf-image-dimensions': {
     id: 'perf-image-dimensions',
@@ -631,7 +631,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak jawnych atrybutów width/height na zdjęciach wywołujący skoki treści podczas ładowania.',
     businessImpact: 'Tekst ucieka sprzed oczu czytelnika, a klient przypadkowo klika w niechciany element (fatalny wynik CLS w Google).',
     businessBenefit: 'Stabilny, profesjonalny interfejs bez irytującego skakania elementów i zaliczony wskaźnik Core Web Vitals CLS.',
-    developerSolution: 'Uzupełnię wymiary width/height i proporcje aspect-ratio w regułach CSS w szablonie w 24h.'
+    developerSolution: 'Uzupełnienie wymiarów width/height oraz proporcji aspect-ratio w regułach CSS w celu eliminacji przesunięć CLS.'
   },
   'perf-lcp-metric': {
     id: 'perf-lcp-metric',
@@ -642,7 +642,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wskaźnik LCP przekracza rekomendowany próg 2.5 sekundy, wpadając w strefę ostrzegawczą.',
     businessImpact: 'Google bezpośrednio obniża pozycje w wynikach mobilnych serwisom, które nie spełniają progu LCP.',
     businessBenefit: 'Wyższa widoczność w wyszukiwarce mobilnej i większy odsetek użytkowników docierających do treści oferty.',
-    developerSolution: 'Wdrożę preload zasobu krytycznego LCP oraz zoptymalizuję ścieżkę krytyczną renderowania w 24h.'
+    developerSolution: 'Wdrożenie preloadu dla zasobu krytycznego LCP oraz optymalizacja ścieżki krytycznej renderowania.'
   },
   'perf-fcp-metric': {
     id: 'perf-fcp-metric',
@@ -653,7 +653,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Czas pierwszego wyrenderowania treści przekracza rekomendowany limit.',
     businessImpact: 'Zbyt długie oczekiwanie na jakąkolwiek reakcję ekranu wywołuje u klienta wrażenie, że strona uległa awarii.',
     businessBenefit: 'Błyskawiczne potwierdzenie dla klienta, że witryna działa sprawnie i profesjonalnie.',
-    developerSolution: 'Skonfiguruję inline critical CSS i wyeliminuję zasoby blokujące w sekcji nagłówkowej w 24h.'
+    developerSolution: 'Konfiguracja krytycznego CSS w sekcji head i wyeliminowanie zasobów blokujących pierwsze wyrenderowanie (FCP).'
   },
   'perf-waf-protection': {
     id: 'perf-waf-protection',
@@ -664,7 +664,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Serwis odpowiada bezpośrednio z pojedynczego serwera bez buforowania brzegowego CDN.',
     businessImpact: 'Podatność serwera na przeciążenia ruchem botów oraz wolniejsze ładowanie dla użytkowników z innych lokalizacji.',
     businessBenefit: 'Maksymalne bezpieczeństwo przed atakami DDoS, buforowanie zasobów w ponad 300 miastach świata i zerowy koszt łącza.',
-    developerSolution: 'Wdrożę i skonfiguruję darmową warstwę Cloudflare z optymalizacją proxy i regułami bezpieczeństwa w 24h.'
+    developerSolution: 'Wdrożenie i konfiguracja warstwy Cloudflare z optymalizacją proxy CDN i regułami bezpieczeństwa.'
   },
 
   // ==========================================
@@ -679,7 +679,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto numer telefonu zapisany jako zwykły tekst uniemożliwiający 1-click połączenie.',
     businessImpact: 'Klient na telefonie musi przepisywać numer na kartkę lub kopiować go między aplikacjami. Tracisz 40-50% połączeń od klientów!',
     businessBenefit: 'Możliwość natychmiastowego wybrania numeru jednym dotknięciem kciuka. Drastyczny wzrost liczby bezpośrednich rozmów sprzedażowych.',
-    developerSolution: 'Przekształcę wszystkie numery telefonów w klikalne przyciski tel: z mikro-animacją w 24h.'
+    developerSolution: 'Konwersja wszystkich numerów telefonów w klikalne przyciski z protokołem tel: i natywną obsługą połączenia.'
   },
   'ux-clickable-email': {
     id: 'ux-clickable-email',
@@ -690,7 +690,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Adres e-mail jest zwykłym tekstem bez aktywnego linku mailto:.',
     businessImpact: 'Utrudnienie kontaktu dla partnerów biznesowych i osób korzystających z aplikacji pocztowych na smartfonach.',
     businessBenefit: 'Wygodne rozpoczęcie korespondencji jednym kliknięciem bez ryzyka literówki w adresie odbiorcy.',
-    developerSolution: 'Podepnę aktywne linki mailto: ze zdefiniowanym tematem wiadomości w 24h.'
+    developerSolution: 'Podpięcie aktywnych odnośników mailto: ze zdefiniowanym domyślnym tematem wiadomości.'
   },
   'ux-image-alt-tags': {
     id: 'ux-image-alt-tags',
@@ -701,7 +701,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto zdjęcia bez atrybutu alt, niewidoczne dla robotów Google i osób niedowidzących.',
     businessImpact: 'Utrata ruchu z wyszukiwarki Google Grafika oraz ryzyko zarzutu braku dostępności cyfrowej dla osób z niepełnosprawnościami.',
     businessBenefit: 'Dodatkowe źródło darmowego ruchu z Google Images oraz pełna zgodność ze standardami dostępności WCAG 2.1.',
-    developerSolution: 'Wdrożę automatyczny generator semantycznych tagów alt dla grafik w szablonie i produktach w 24h.'
+    developerSolution: 'Wdrożenie generatora semantycznych tagów alt dla grafik w szablonie i elementach dynamicznych.'
   },
   'ux-viewport-configuration': {
     id: 'ux-viewport-configuration',
@@ -712,7 +712,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak lub błędna deklaracja meta viewport uniemożliwiająca responsywne skalowanie.',
     businessImpact: 'Strona na smartfonie wyświetla się w wersji miniaturowego pulpitu, uniemożliwiając czytanie i klikanie.',
     businessBenefit: 'Idealne dopasowanie interfejsu do każdego modelu smartfona i tabletu.',
-    developerSolution: 'Dodam zoptymalizowany tag viewport z blokadą niepożądanych powiększeń formularzy w 24h.'
+    developerSolution: 'Dodanie zoptymalizowanego tagu meta viewport z blokadą niepożądanych powiększeń na urządzeniach mobilnych.'
   },
   'ux-favicon-presence': {
     id: 'ux-favicon-presence',
@@ -723,7 +723,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak ikony favicon lub używanie generycznej domyślnej ikony serwera.',
     businessImpact: 'Strona w mobilnych wynikach wyszukiwania Google wyświetla szarą kulę ziemską, wyglądając na porzuconą.',
     businessBenefit: 'Wzrost rozpoznawalności marki w wynikach wyszukiwania i zakładkach przeglądarki, podnoszący CTR.',
-    developerSolution: 'Przygotuję pakiet ikon wektorowych SVG oraz Apple Touch Icon w pełnej rozdzielczości w 24h.'
+    developerSolution: 'Wdrożenie kompletnego pakietu ikon wektorowych SVG oraz Apple Touch Icon w wysokiej rozdzielczości.'
   },
   'ux-touch-target-size': {
     id: 'ux-touch-target-size',
@@ -734,7 +734,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Elementy klikalne są zbyt małe lub ułożone zbyt blisko siebie, powodując błędne kliknięcia.',
     businessImpact: 'Frustracja użytkowników smartfonów, którzy przypadkowo klikają w sąsiednie linki i opuszczają serwis.',
     businessBenefit: 'Wygodna obsługa jedną ręką, płynna ścieżka zakupowa i wyższy współczynnik zadowolenia klientów.',
-    developerSolution: 'Skalibruję minimalne strefy dotyku (hit targets) do minimum 44x44px zgodnie z wytycznymi Apple w 24h.'
+    developerSolution: 'Kalibracja minimalnych stref dotyku (hit targets) do minimum 44x44px zgodnie z wytycznymi WCAG i Apple HIG.'
   },
   'ux-font-readability': {
     id: 'ux-font-readability',
@@ -745,7 +745,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Zbyt mały font (poniżej 14px) lub niski kontrast tekstu utrudniający lekturę na zewnątrz w słońcu.',
     businessImpact: 'Klienci męczą wzrok i natychmiast porzucają czytanie oferty, przenosząc się do konkurencji.',
     businessBenefit: 'Klarowny, elegancki odbiór treści i maksymalne skupienie uwagi czytelnika na argumentach sprzedażowych.',
-    developerSolution: 'Dostosuję skalę typograficzną i współczynniki kontrastu do normy WCAG AA w 24h.'
+    developerSolution: 'Dostosowanie skali typograficznej oraz współczynników kontrastu tekstu do normy WCAG 2.1 AA.'
   },
   'ux-form-usability': {
     id: 'ux-form-usability',
@@ -756,7 +756,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Pola telefonu i e-maila nie wywołują dedykowanej klawiatury numerycznej/pocztowej w telefonie.',
     businessImpact: 'Wypełnianie formularza na telefonie jest uciążliwe, co powoduje rezygnację z wysłania zapytania u nawet 30% chętnych.',
     businessBenefit: 'Błyskawiczne autouzupełnianie danych przez smartfon i bezwysiłkowe wysłanie leada w kilkanaście sekund.',
-    developerSolution: 'Dodam atrybuty autocomplete, type="email", type="tel" oraz inputmode do wszystkich pól w 24h.'
+    developerSolution: 'Wdrożenie natywnych atrybutów autocomplete, type="email", type="tel" oraz inputmode w polach formularzy.'
   },
   'ux-navigation-accessibility': {
     id: 'ux-navigation-accessibility',
@@ -767,7 +767,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Skomplikowane menu wielopoziomowe zasłaniające treść lub trudne do zamknięcia na telefonie.',
     businessImpact: 'Klient nie może znaleźć poszukiwanej usługi lub kategorii produktu i opuszcza sklep.',
     businessBenefit: 'Szybkie dotarcie do pożądanych podstron w maksymalnie 2 kliknięciach i wyższa sprzedaż.',
-    developerSolution: 'Wdrożę nowoczesne, lekkie menu zoptymalizowane pod urządzenia mobilne z płynną animacją w 24h.'
+    developerSolution: 'Wdrożenie lekkiego menu nawigacyjnego zoptymalizowanego pod obsługę jedną ręką na smartfonach.'
   },
   'ux-lead-cta-prominence': {
     id: 'ux-lead-cta-prominence',
@@ -778,7 +778,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Przycisk kontaktu lub zakupu zlewa się z tłem i nie wyróżnia się w hierarchii wizualnej.',
     businessImpact: 'Użytkownik przegląda stronę, ale nie podejmuje akcji, ponieważ brakuje jednoznacznego impulsu do działania.',
     businessBenefit: 'Wyraźne skierowanie uwagi klienta na kolejny krok sprzedażowy i natychmiastowy wzrost konwersji.',
-    developerSolution: 'Wdrożę kontrastowy, elegancki przycisk CTA z subtelnym mikro-efektem hover w 24h.'
+    developerSolution: 'Wdrożenie kontrastowego przycisku Call to Action (CTA) wyeksponowanego w widoku mobilnym.'
   },
 
   // ==========================================
@@ -793,7 +793,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto brak automatycznego przekierowania z HTTP na HTTPS lub problemy z certyfikatem SSL.',
     businessImpact: 'Przeglądarka wyświetla czerwony alarm "Strona niebezpieczna", natychmiast odstraszając 99% potencjalnych klientów.',
     businessBenefit: 'Pełne zaufanie odwiedzających, bezpieczny transfer haseł i danych osobowych oraz zaliczenie kluczowego wymogu Google.',
-    developerSolution: 'Wymuszę automatyczne przekierowanie 301 na HTTPS oraz skonfiguruję odnawialny certyfikat TLS w 24h.'
+    developerSolution: 'Wymuszenie automatycznego przekierowania 301 na protokół HTTPS oraz konfiguracja odnawialnego certyfikatu TLS.'
   },
   'sec-hsts-header': {
     id: 'sec-hsts-header',
@@ -804,7 +804,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak nagłówka Strict-Transport-Security (HSTS) w odpowiedziach serwera.',
     businessImpact: 'Ryzyko ataków typu Man-in-the-Middle (MitM) polegających na podsłuchaniu nieszyfrowanego pierwszego zapytania użytkownika.',
     businessBenefit: 'Maksymalny poziom bezpieczeństwa bankowego połączenia i dodatkowe punkty w audytach bezpieczeństwa.',
-    developerSolution: 'Wdrożę nagłówek Strict-Transport-Security z parametrem includeSubDomains i długim czasem max-age w 24h.'
+    developerSolution: 'Wdrożenie nagłówka Strict-Transport-Security z parametrem includeSubDomains i długim czasem max-age.'
   },
   'sec-xframe-options': {
     id: 'sec-xframe-options',
@@ -815,7 +815,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak nagłówka X-Frame-Options umożliwiającego osadzenie Twojego serwisu w przezroczystej ramce iframe.',
     businessImpact: 'Oszuści mogą osadzić Twój serwis na fałszywej domenie i wyłudzać kliknięcia lub dane logowania Twoich klientów.',
     businessBenefit: 'Całkowita ochrona marki przed podszywaniem się i atakami typu Clickjacking.',
-    developerSolution: 'Skonfiguruję nagłówek X-Frame-Options: SAMEORIGIN na poziomie serwera w 24h.'
+    developerSolution: 'Konfiguracja nagłówka X-Frame-Options: SAMEORIGIN na poziomie serwera lub aplikacji.'
   },
   'sec-content-type-options': {
     id: 'sec-content-type-options',
@@ -826,7 +826,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak nagłówka zabraniającego przeglądarce zgadywania typu zawartości plików.',
     businessImpact: 'Ryzyko wykonania złośliwych skryptów przemyconych w plikach graficznych przez złośliwe boty.',
     businessBenefit: 'Wzmocnienie integralności serwisu i ochrona przed nieautoryzowanym wykonaniem kodu w przeglądarce.',
-    developerSolution: 'Dodam nagłówek X-Content-Type-Options: nosniff w regułach serwera w 24h.'
+    developerSolution: 'Dodanie nagłówka X-Content-Type-Options: nosniff w konfiguracji serwera HTTP.'
   },
   'sec-content-security-policy': {
     id: 'sec-content-security-policy',
@@ -837,7 +837,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak nagłówka Content-Security-Policy chroniącego przed atakami Cross-Site Scripting (XSS).',
     businessImpact: 'W przypadku podatności wtyczek zewnętrznych serwis jest narażony na wstrzyknięcie złośliwych skryptów wykradających dane.',
     businessBenefit: 'Maksymalny standard cyberbezpieczeństwa chroniący dane osobowe Twoich klientów przed wyciekiem.',
-    developerSolution: 'Skonfiguruję skalibrowaną politykę CSP dopuszczającą wyłącznie zaufane domeny analityczne w 24h.'
+    developerSolution: 'Konfiguracja skalibrowanej polityki Content-Security-Policy (CSP) dopuszczającej wyłącznie zaufane domeny.'
   },
   'sec-form-spam-protection': {
     id: 'sec-form-spam-protection',
@@ -848,7 +848,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto formularze bez ochrony antyspamowej (brak Turnstile, Honeypota czy reCAPTCHA).',
     businessImpact: 'Zalana skrzynka spamem botów oraz fałszywe konwersje zanieczyszczające algorytmy reklamowe Google i Meta Ads.',
     businessBenefit: '100% czystych, wartościowych zapytań od realnych klientów bez denerwowania użytkowników uciążliwymi puzzlami captcha.',
-    developerSolution: 'Zintegruję niewidoczną dla ludzi ochronę Cloudflare Turnstile lub inteligentny honeypot w 24h.'
+    developerSolution: 'Integracja niewidocznej dla użytkowników ochrony Cloudflare Turnstile lub mechanizmu Honeypot w formularzach.'
   },
   'sec-waf-protection': {
     id: 'sec-waf-protection',
@@ -859,7 +859,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak zapory sieciowej WAF filtrującej automatyczne ataki brute-force i skanery luk.',
     businessImpact: 'Ciągłe obciążenie procesora serwera przez automatyczne skanery szukające starych wtyczek i haseł logowania.',
     businessBenefit: 'Odcięcie 99.9% złośliwych botów nim dotrą do Twojego serwera, co drastycznie obniża awaryjność strony.',
-    developerSolution: 'Wdrożę reguły WAF blokujące znane boty i niepożądany ruch ze złośliwych podsieci w 24h.'
+    developerSolution: 'Wdrożenie reguł WAF blokujących zautomatyzowane boty i niepożądany ruch ze złośliwych podsieci.'
   },
   'sec-cms-version-leak': {
     id: 'sec-cms-version-leak',
@@ -870,7 +870,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'W kodzie HTML widoczny jest publiczny tag <meta name="generator"> zdradzający wersję oprogramowania.',
     businessImpact: 'Zautomatyzowane boty hakerskie wyszukują strony z konkretnymi wersjami oprogramowania, aby wykorzystać znane luki.',
     businessBenefit: 'Niewidzialność dla zautomatyzowanych skanerów podatności i eliminacja ryzyka łatwego włamania.',
-    developerSolution: 'Usunę tag generator oraz nagłówki zdradzające wersję CMS w kodzie źródłowym w 24h.'
+    developerSolution: 'Usunięcie tagu generator oraz nagłówków zdradzających wersję CMS w kodzie źródłowym.'
   },
   'sec-opengraph-tags': {
     id: 'sec-opengraph-tags',
@@ -881,7 +881,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak tagów Open Graph (og:image, og:title) do generowania podglądu linków w mediach społecznościowych.',
     businessImpact: 'Gdy ktoś udostępnia link do Twojej oferty na Facebooku, LinkedInie lub WhatsAppie, pojawia się pusty szary prostokąt. Spadek CTR o 60%!',
     businessBenefit: 'Atrakcyjna, profesjonalna karta podglądu z dużą grafiką 1200x630px, która przyciąga wzrok i generuje darmowe wejścia z poleceń.',
-    developerSolution: 'Wdrożę dynamiczny generator kart Open Graph ze skalibrowaną miniaturą dla każdej podstrony w 24h.'
+    developerSolution: 'Wdrożenie dynamicznego generatora kart Open Graph ze zoptymalizowaną miniaturą dla każdej podstrony.'
   },
   'sec-privacy-policy': {
     id: 'sec-privacy-policy',
@@ -892,7 +892,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak wyraźnego odnośnika do Polityki Prywatności spełniającej obowiązek informacyjny RODO.',
     businessImpact: 'Naruszenie przepisów RODO grożące kontrolą UODO oraz automatyczne odrzucenie konta reklamowego Google i Meta Ads.',
     businessBenefit: 'Pełne bezpieczeństwo prawne, bezproblemowa weryfikacja kont reklamowych i transparentność budująca szacunek klientów.',
-    developerSolution: 'Wdrożę zgodną z prawem podstronę Polityki Prywatności z wykazem stosowanych ciasteczek w 24h.'
+    developerSolution: 'Wdrożenie zgodnej z prawem podstrony Polityki Prywatności z wykazem stosowanych narzędzi i ciasteczek.'
   },
   'sec-terms-of-service': {
     id: 'sec-terms-of-service',
@@ -903,7 +903,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Brak odnośnika do Regulaminu określającego warunki realizacji zamówień i odpowiedzialność.',
     businessImpact: 'Brak regulaminu w e-commerce uniemożliwia legalne prowadzenie sprzedaży i skutkuje odrzuceniem płatności przez banki.',
     businessBenefit: 'Prawna ochrona transakcji, jasne zasady reklamacji i szybka akceptacja bramek płatniczych (PayU, Stripe, Przelewy24).',
-    developerSolution: 'Dodam bezpośrednie odnośniki do Regulaminu na ścieżce zakupowej i w stopce serwisu w 24h.'
+    developerSolution: 'Dodanie bezpośrednich odnośników do Regulaminu na ścieżce konwersji i w stopce serwisu.'
   },
   'sec-company-details': {
     id: 'sec-company-details',
@@ -914,8 +914,8 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
     defaultDiagnosisFailed: 'Wykryto brak numeru NIP lub danych rejestrowych firmy w stopce witryny.',
     businessImpact: 'Klienci obawiają się anonimowych stron internetowych, a algorytmy Google obniżają ocenę E-E-A-T (doświadczenie i zaufanie).',
     businessBenefit: 'Budowa wizerunku legalnie działającej, rzetelnej firmy i wyższa ocena zaufania w algorytmach Google.',
-    developerSolution: 'Uzupełnię stopkę o ustrukturyzowane mikrodane organizacji z numerami rejestrowymi i adresem w 24h.'
-  }
+    developerSolution: 'Uzupełnienie stopki o ustrukturyzowane mikrodane organizacji z numerami rejestrowymi i danymi teleadresowymi.'
+  },
 };
 
 /**
@@ -1286,7 +1286,7 @@ export function evaluateAllCheckpoints(
   if (evidence.avgResponseTimeMs > 1800) {
     addEval('perf-ttfb-server', 'failed', `Średni TTFB: ${evidence.avgResponseTimeMs}ms (> 1.8s)`);
   } else if (evidence.avgResponseTimeMs > 800) {
-    addEval('perf-ttfb-server', 'warning', `Średni TTFB: ${evidence.avgResponseTimeMs}ms (800–1800ms)`);
+    addEval('perf-ttfb-server', 'warning', `Średni TTFB: ${evidence.avgResponseTimeMs}ms (800-1800ms)`);
   } else {
     addEval('perf-ttfb-server', 'passed', `${evidence.avgResponseTimeMs}ms (Optymalny < 800ms)`);
   }

@@ -51,6 +51,28 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
   const hasProducts = evidence?.categoriesSummary?.products && evidence.categoriesSummary.products.count > 0;
   const hasBlog = evidence?.categoriesSummary?.blog && evidence.categoriesSummary.blog.count > 0;
 
+  // Lista podstron z kodami innymi niż 200 OK (błędy 4xx/5xx i przekierowania 3xx)
+  const httpIssues = React.useMemo(() => {
+    if (!result.pages) return [];
+    return result.pages
+      .filter(p => p.statusCode !== 200)
+      .map(p => {
+        let label = `Status HTTP ${p.statusCode}`;
+        if (p.statusCode === 404) label = 'Błąd HTTP 404 (Nie znaleziono)';
+        else if (p.statusCode >= 500) label = `Błąd serwera HTTP ${p.statusCode}`;
+        else if (p.statusCode >= 400) label = `Błąd klienta HTTP ${p.statusCode}`;
+        else if (p.statusCode === 301) label = 'Przekierowanie stałe HTTP 301';
+        else if (p.statusCode === 302) label = 'Przekierowanie tymczasowe HTTP 302';
+        else if (p.statusCode >= 300) label = `Przekierowanie HTTP ${p.statusCode}`;
+
+        return {
+          url: p.url,
+          label: p.url,
+          sublabel: label
+        };
+      });
+  }, [result.pages]);
+
   // Automatyczna normalizacja raportu (zapobiega udawaniu człowieka w 1. osobie i naprawia błędy w zbuforowanych audytach)
   const cleanAiReport = React.useMemo(() => {
     if (!result.aiReport) return '';
@@ -393,9 +415,11 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           <AuditEvidenceCard
             title="Dostępność stron (status HTTP)"
             description={`${evidence?.status200Count}/${evidence?.totalPages} stron zwraca poprawny kod 200 OK. Błędy: ${evidence?.errorsCount}, przekierowania: ${evidence?.redirectsCount}.`}
-            status={evidence?.errorsCount === 0 ? 'ok' : 'bad'}
+            status={evidence?.errorsCount === 0 ? (evidence?.redirectsCount && evidence.redirectsCount > 0 ? 'warn' : 'ok') : 'bad'}
             percentage={((evidence?.status200Count || 0) / (evidence?.totalPages || 1)) * 100}
             metaText={`${evidence?.status200Count}/${evidence?.totalPages}`}
+            detailsLabel="Strony z błędami lub przekierowaniami HTTP:"
+            details={httpIssues}
           />
 
           <AuditEvidenceCard

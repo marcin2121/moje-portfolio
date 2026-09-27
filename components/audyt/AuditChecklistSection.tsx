@@ -45,6 +45,146 @@ const CATEGORY_LABELS: Record<CheckpointCategory, { label: string; icon: React.C
   security_compliance: { label: 'Bezpieczeństwo & Prawo', icon: ShieldCheck }
 };
 
+/**
+ * Formatowanie rekomendacji inżynieryjnych:
+ * Konwersja czasowników 1. osoby na rzeczowniki odczasownikowe (styl architektoniczny),
+ * usunięcie obietnic czasowych "w 24h" i normalizacja znaków interpunkcyjnych.
+ */
+export function formatEngineeringRecommendation(text?: string): string {
+  if (!text) return '';
+  let clean = text
+    .replace(/\s*(?:w|w ciągu)\s*24[-–—]?48h\.?/gi, '.')
+    .replace(/\s*(?:w|w ciągu)\s*24h\.?/gi, '.')
+    .replace(/\s*(?:w|w ciągu)\s*48h\.?/gi, '.')
+    .replace(/^Wdrożę darmowy, w 100% zgodny z RODO skrypt Microsoft Clarity/i, 'Wdrożenie darmowego, w 100% zgodnego z RODO skryptu Microsoft Clarity')
+    .replace(/^Wdrożę precyzyjne wywołanie/i, 'Wdrożenie precyzyjnego wywołania')
+    .replace(/^Wdrożę automatyczny dispatch/i, 'Wdrożenie automatycznego dispatchu')
+    .replace(/^Wdrożę zoptymalizowany asynchroniczny/i, 'Wdrożenie zoptymalizowanego asynchronicznego')
+    .replace(/^Wdrożę automatyczny, lekki moduł/i, 'Wdrożenie automatycznego, lekkiego modułu')
+    .replace(/^Wdrożę poprawny kod/i, 'Wdrożenie poprawnego kodu')
+    .replace(/^Wdrożę interaktywny widżet/i, 'Wdrożenie interaktywnego widżetu')
+    .replace(/^Wdrożę przejrzystą sekcję/i, 'Wdrożenie przejrzystej sekcji')
+    .replace(/^Wdrożę automatyczny fallback/i, 'Wdrożenie automatycznego fallbacku')
+    .replace(/^Wdrożę dynamiczny generator/i, 'Wdrożenie dynamicznego generatora')
+    .replace(/^Wdrożę automatyczne generowanie/i, 'Wdrożenie automatycznego generowania')
+    .replace(/^Wdrożę zautomatyzowane moduły/i, 'Wdrożenie zautomatyzowanych modułów')
+    .replace(/^Wdrożę pełne mikrodane/i, 'Wdrożenie pełnych mikrodanych')
+    .replace(/^Wdrożę edge caching/i, 'Wdrożenie edge cachingu')
+    .replace(/^Wdrożę natywny atrybut/i, 'Wdrożenie natywnego atrybutu')
+    .replace(/^Wdrożę automatyczną konwersję/i, 'Wdrożenie automatycznej konwersji')
+    .replace(/^Wdrożę preload/i, 'Wdrożenie preloadu')
+    .replace(/^Wdrożę i skonfiguruję/i, 'Wdrożenie i konfiguracja')
+    .replace(/^Wdrożę listener/i, 'Wdrożenie listenera')
+    .replace(/^Wdrożę nowoczesne, lekkie menu/i, 'Wdrożenie nowoczesnego, lekkiego menu')
+    .replace(/^Wdrożę kontrastowy, elegancki/i, 'Wdrożenie kontrastowego, eleganckiego')
+    .replace(/^Wdrożę nagłówek/i, 'Wdrożenie nagłówka')
+    .replace(/^Wdrożę reguły/i, 'Wdrożenie reguł')
+    .replace(/^Wdrożę zgodną/i, 'Wdrożenie zgodnej')
+    .replace(/^Wdrożę\s+/i, 'Wdrożenie ')
+    .replace(/^Zaimplementuję zdarzenie/i, 'Implementacja zdarzenia')
+    .replace(/^Zaimplementuję ustandaryzowaną/i, 'Implementacja ustandaryzowanej')
+    .replace(/^Zaimplementuję skrypt/i, 'Implementacja skryptu')
+    .replace(/^Zaimplementuję automatyczny tracker/i, 'Implementacja automatycznego trackera')
+    .replace(/^Zaimplementuję szybki komponent/i, 'Implementacja szybkiego komponentu')
+    .replace(/^Zaimplementuję dynamiczny pasek/i, 'Implementacja dynamicznego paska')
+    .replace(/^Zaimplementuję dynamiczny znacznik/i, 'Implementacja dynamicznego znacznika')
+    .replace(/^Zaimplementuję automatyczne reguły/i, 'Implementacja automatycznych reguł')
+    .replace(/^Zaimplementuję\s+/i, 'Implementacja ')
+    .replace(/^Skonfiguruję certyfikowaną/i, 'Konfiguracja certyfikowanej')
+    .replace(/^Skonfiguruję TikTok Pixel/i, 'Konfiguracja TikTok Pixela')
+    .replace(/^Skonfiguruję mapę przekierowań/i, 'Konfiguracja mapy przekierowań')
+    .replace(/^Skonfiguruję wzorcowy plik/i, 'Konfiguracja wzorcowego pliku')
+    .replace(/^Skonfiguruję inline critical CSS/i, 'Konfiguracja inline critical CSS')
+    .replace(/^Skonfiguruję nagłówek/i, 'Konfiguracja nagłówka')
+    .replace(/^Skonfiguruję skalibrowaną/i, 'Konfiguracja skalibrowanej')
+    .replace(/^Skonfiguruję\s+/i, 'Konfiguracja ')
+    .replace(/^Zoptymalizuję zapytania SQL/i, 'Optymalizacja zapytań SQL')
+    .replace(/^Zoptymalizuję\s+/i, 'Optymalizacja ')
+    .replace(/^Podepnę i skonfiguruję/i, 'Podpięcie i konfiguracja')
+    .replace(/^Podepnę wywołanie/i, 'Podpięcie wywołania')
+    .replace(/^Podepnę aktywne linki/i, 'Podpięcie aktywnych linków')
+    .replace(/^Podepnę\s+/i, 'Podpięcie ')
+    .replace(/^Przeprowadzę kompleksową naprawę/i, 'Kompleksowa naprawa')
+    .replace(/^Przeprowadzę refaktoryzację/i, 'Refaktoryzacja')
+    .replace(/^Przeprowadzę\s+/i, 'Przeprowadzenie ')
+    .replace(/^Zintegruję bramkę/i, 'Integracja bramki')
+    .replace(/^Zintegruję niewidoczną/i, 'Integracja niewidocznej')
+    .replace(/^Zintegruję\s+/i, 'Integracja ')
+    .replace(/^Rozszerzę schemat/i, 'Rozszerzenie schematu')
+    .replace(/^Rozszerzę\s+/i, 'Rozszerzenie ')
+    .replace(/^Dodam automatyczną flagę/i, 'Dodanie automatycznej flagi')
+    .replace(/^Dodam atrybuty/i, 'Dodanie atrybutów')
+    .replace(/^Dodam zoptymalizowany tag/i, 'Dodanie zoptymalizowanego tagu')
+    .replace(/^Dodam nagłówek/i, 'Dodanie nagłówka')
+    .replace(/^Dodam bezpośrednie odnośniki/i, 'Dodanie bezpośrednich odnośników')
+    .replace(/^Dodam\s+/i, 'Dodanie ')
+    .replace(/^Przebuduję przyciski/i, 'Przebudowa przycisków')
+    .replace(/^Przebuduję\s+/i, 'Przebudowa ')
+    .replace(/^Zaprojektuję elegancki/i, 'Wdrożenie eleganckiego')
+    .replace(/^Zaprojektuję\s+/i, 'Wdrożenie ')
+    .replace(/^Zaktualizuję wewnętrzną strukturę/i, 'Aktualizacja wewnętrznej struktury')
+    .replace(/^Zaktualizuję\s+/i, 'Aktualizacja ')
+    .replace(/^Dostosuję formułę/i, 'Dostosowanie formuły')
+    .replace(/^Dostosuję skalę/i, 'Dostosowanie skali')
+    .replace(/^Dostosuję\s+/i, 'Dostosowanie ')
+    .replace(/^Skalibruję długość/i, 'Kalibracja długości')
+    .replace(/^Skalibruję minimalne strefy/i, 'Kalibracja minimalnych stref')
+    .replace(/^Skalibruję\s+/i, 'Kalibracja ')
+    .replace(/^Wprowadzę automatyczny nagłówek/i, 'Wprowadzenie automatycznego nagłówka')
+    .replace(/^Wprowadzę\s+/i, 'Wprowadzenie ')
+    .replace(/^Przekształcę nadmiarowe tagi/i, 'Przekształcenie nadmiarowych tagów')
+    .replace(/^Przekształcę wszystkie numery/i, 'Przekształcenie numerów')
+    .replace(/^Przekształcę\s+/i, 'Przekształcenie ')
+    .replace(/^Uporządkuję logikę/i, 'Uporządkowanie logiki')
+    .replace(/^Uporządkuję\s+/i, 'Uporządkowanie ')
+    .replace(/^Usunę blokady noindex/i, 'Usunięcie blokad noindex')
+    .replace(/^Usunę tag generator/i, 'Usunięcie tagu generator')
+    .replace(/^Usunę\s+/i, 'Usunięcie ')
+    .replace(/^Rozbuduję strukturę/i, 'Rozbudowa struktury')
+    .replace(/^Rozbuduję\s+/i, 'Rozbudowa ')
+    .replace(/^Zastąpię generyczne etykiety/i, 'Zastąpienie generycznych etykiet')
+    .replace(/^Zastąpię leciwe skrypty/i, 'Zastąpienie biblioteki')
+    .replace(/^Zastąpię\s+/i, 'Zastąpienie ')
+    .replace(/^Odchudzę strukturę HTML/i, 'Odchudzenie struktury HTML')
+    .replace(/^Odchudzę\s+/i, 'Optymalizacja ')
+    .replace(/^Oferuję stopniową migrację/i, 'Stopniowa migracja')
+    .replace(/^Wyekstrahuję powtarzalne style/i, 'Ekstrakcja powtarzalnych stylów')
+    .replace(/^Wyekstrahuję\s+/i, 'Ekstrakcja ')
+    .replace(/^Uzupełnię wymiary/i, 'Uzupełnienie wymiarów')
+    .replace(/^Uzupełnię stopkę/i, 'Uzupełnienie stopki')
+    .replace(/^Uzupełnię\s+/i, 'Uzupełnienie ')
+    .replace(/^Przygotuję pakiet ikon/i, 'Wdrożenie pakietu ikon')
+    .replace(/^Przygotuję\s+/i, 'Przygotowanie ')
+    .replace(/^Wymuszę automatyczne przekierowanie/i, 'Wymuszenie automatycznego przekierowania')
+    .replace(/^Wymuszę\s+/i, 'Wymuszenie ')
+    .replace(/–/g, '-')
+    .replace(/—/g, '-');
+
+  clean = clean.trim();
+  if (!clean.endsWith('.')) {
+    clean += '.';
+  }
+  return clean;
+}
+
+/**
+ * Waga priorytetu sortowania punktów kontrolnych:
+ * 1. Błędy krytyczne (failed + critical) - waga 500
+ * 2. Pozostałe błędy (failed) - waga 400
+ * 3. Ostrzeżenia krytyczne (warning + critical) - waga 300
+ * 4. Pozostałe ostrzeżenia (warning) - waga 200
+ * 5. Zaliczone testy (passed) - waga 100
+ */
+function getCheckpointRank(cp: MergedCheckpoint): number {
+  if (cp.status === 'failed') {
+    return cp.severity === 'critical' ? 500 : 400;
+  }
+  if (cp.status === 'warning') {
+    return cp.severity === 'critical' ? 300 : 200;
+  }
+  return 100;
+}
+
 export default function AuditChecklistSection({
   evaluations = [],
   stats,
@@ -141,46 +281,55 @@ export default function AuditChecklistSection({
 
   const issuesCount = computedStats.failed + computedStats.warning;
 
-  // Filtrowanie listy
+  // Filtrowanie listy z priorytetyzacją wag i hierarchią ważności (błędy krytyczne zawsze na początku)
   const filteredCheckpoints = useMemo(() => {
-    return mergedCheckpoints.filter(cp => {
-      // Filtr statusu: 'issues' filtruje failed i warning
-      if (selectedStatus === 'issues') {
-        if (cp.status !== 'failed' && cp.status !== 'warning') return false;
-      } else if (selectedStatus === 'failed') {
-        if (cp.status !== 'failed') return false;
-      } else if (selectedStatus === 'warning') {
-        if (cp.status !== 'warning') return false;
-      } else if (selectedStatus === 'passed') {
-        if (cp.status !== 'passed') return false;
-      }
+    return mergedCheckpoints
+      .filter(cp => {
+        // Filtr statusu: 'issues' filtruje failed i warning
+        if (selectedStatus === 'issues') {
+          if (cp.status !== 'failed' && cp.status !== 'warning') return false;
+        } else if (selectedStatus === 'failed') {
+          if (cp.status !== 'failed') return false;
+        } else if (selectedStatus === 'warning') {
+          if (cp.status !== 'warning') return false;
+        } else if (selectedStatus === 'passed') {
+          if (cp.status !== 'passed') return false;
+        }
 
-      // Filtr kategorii
-      if (selectedCategory !== 'all' && cp.category !== selectedCategory) return false;
+        // Filtr kategorii
+        if (selectedCategory !== 'all' && cp.category !== selectedCategory) return false;
 
-      // Szukajka tekstowa
-      if (searchQuery.trim().length > 0) {
-        const query = searchQuery.toLowerCase().trim();
-        const matchesName = cp.name.toLowerCase().includes(query);
-        const matchesDiagnosis = cp.diagnosis.toLowerCase().includes(query);
-        const matchesBenefit = cp.businessBenefit.toLowerCase().includes(query);
-        const matchesImpact = cp.businessImpact.toLowerCase().includes(query);
-        if (!matchesName && !matchesDiagnosis && !matchesBenefit && !matchesImpact) return false;
-      }
+        // Szukajka tekstowa
+        if (searchQuery.trim().length > 0) {
+          const query = searchQuery.toLowerCase().trim();
+          const matchesName = cp.name.toLowerCase().includes(query);
+          const matchesDiagnosis = cp.diagnosis.toLowerCase().includes(query);
+          const matchesBenefit = cp.businessBenefit.toLowerCase().includes(query);
+          const matchesImpact = cp.businessImpact.toLowerCase().includes(query);
+          if (!matchesName && !matchesDiagnosis && !matchesBenefit && !matchesImpact) return false;
+        }
 
-      return true;
-    });
+        return true;
+      })
+      .sort((a, b) => {
+        const rankDiff = getCheckpointRank(b) - getCheckpointRank(a);
+        if (rankDiff !== 0) return rankDiff;
+        return a.name.localeCompare(b.name, 'pl');
+      });
   }, [mergedCheckpoints, selectedStatus, selectedCategory, searchQuery]);
 
   const scrollToConsultation = (issueTitle?: string) => {
-    const el = document.getElementById('consultation-form');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-    if (issueTitle) {
-      const subjectInput = document.querySelector<HTMLInputElement>('input[name="subject"], input[name="topic"]');
-      if (subjectInput) {
-        subjectInput.value = `Konsultacja techniczna: ${issueTitle}`;
+    if (typeof window !== 'undefined') {
+      if (issueTitle) {
+        window.dispatchEvent(
+          new CustomEvent('select-consultation-topic', {
+            detail: { topic: issueTitle }
+          })
+        );
+      }
+      const el = document.getElementById('consultation-form');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
       }
     }
   };
@@ -519,7 +668,7 @@ export default function AuditChecklistSection({
                       <span>Rekomendacja inżynieryjna:</span>
                     </div>
                     <p className="text-xs text-slate-700 leading-relaxed">
-                      {cp.developerSolution}
+                      {formatEngineeringRecommendation(cp.developerSolution)}
                     </p>
                   </div>
                 </div>
