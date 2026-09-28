@@ -98,7 +98,9 @@ export function AudytClient() {
       setErrorMessage('');
       fetch(`/api/audit-master?token=${encodeURIComponent(tokenParam)}`)
         .then(async (res) => {
-          if (!res.ok) throw new Error('Nie znaleziono zapisanego raportu.');
+          if (!res.ok) {
+            throw new Error('Raport o podanym identyfikatorze wygasł lub nie został odnaleziony. Wpisz adres strony powyżej, aby wygenerować nową analizę.');
+          }
           return res.json();
         })
         .then((data: AuditResult) => {
@@ -108,6 +110,9 @@ export function AudytClient() {
         })
         .catch((err: Error) => {
           setErrorMessage(err.message);
+          if (typeof window !== 'undefined') {
+            window.history.replaceState(null, '', '/narzedzia/audyt');
+          }
         })
         .finally(() => {
           setIsScanning(false);
