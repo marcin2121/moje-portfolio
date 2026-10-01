@@ -196,7 +196,7 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
     expect(report).not.toContain('uporządkuję strukturę nagłówków i canonicali');
     expect(report).not.toContain('add_to_cart');
     // Powinien podkreślić czystą strukturę lub skupić się na telemetrii i renderowaniu DOM
-    expect(report).toContain('struktura semantyczna i indeksacja są w 100% czyste');
+    expect(report).toContain('struktura semantyczna i indeksacja są czyste');
   });
 
   it('generuje poprawną gramatycznie deklinację polską dla wykrytych uchybień (np. 2 podstrony bez H1, 1 grupa)', () => {

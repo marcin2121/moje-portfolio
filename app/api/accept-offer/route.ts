@@ -57,17 +57,21 @@ const postHandler = async (data: z.infer<typeof OfferSchema>, req: Request) => {
   const safePhone = escapeHtml(data.phone || 'Brak telefonu');
   const safeComment = escapeHtml(data.comment || '');
 
-  // 🔔 1. Powiadomienie Discord (Fire-and-Forget)
-  notifyOfferAccepted({
-    slug: data.slug || 'oferta',
-    companyName: data.companyName,
-    packageName: data.packageName,
-    price: data.price,
-    clientName: data.clientName || 'Klient',
-    email: data.email || 'brak@podano.pl',
-    phone: data.phone,
-    comment: data.comment
-  }).catch(err => console.error('[Discord Accept Error]', err));
+  // 🔔 1. Powiadomienie Discord
+  try {
+    await notifyOfferAccepted({
+      slug: data.slug || 'oferta',
+      companyName: data.companyName,
+      packageName: data.packageName,
+      price: data.price,
+      clientName: data.clientName || 'Klient',
+      email: data.email || 'brak@podano.pl',
+      phone: data.phone,
+      comment: data.comment
+    });
+  } catch (err) {
+    console.error('[Discord Accept Error]', err);
+  }
 
   // 📧 2. Wysłanie e-maila przez Resend
   const { data: resendData, error } = await resend.emails.send({

@@ -67,59 +67,75 @@ export async function POST(req: Request) {
     const data = parseResult.data;
 
     if (data.action === 'opened') {
-      notifyOfferOpened({
-        slug: data.slug,
-        companyName: data.companyName,
-        clientName: data.clientName,
-        referrer: data.referrer,
-        deviceType: data.deviceType
-      }).catch(err => console.error('[Telemetry] Błąd notifyOfferOpened:', err));
+      try {
+        await notifyOfferOpened({
+          slug: data.slug,
+          companyName: data.companyName,
+          clientName: data.clientName,
+          referrer: data.referrer,
+          deviceType: data.deviceType
+        });
+      } catch (err) {
+        console.error('[Telemetry] Błąd notifyOfferOpened:', err);
+      }
 
       return NextResponse.json({ success: true, event: 'opened' });
     }
 
     if (data.action === 'attention') {
-      notifyOfferAttention({
-        slug: data.slug,
-        companyName: data.companyName,
-        totalSeconds: data.totalSeconds,
-        sectionTimes: data.sectionTimes
-      }).catch(err => console.error('[Telemetry] Błąd notifyOfferAttention:', err));
+      try {
+        await notifyOfferAttention({
+          slug: data.slug,
+          companyName: data.companyName,
+          totalSeconds: data.totalSeconds,
+          sectionTimes: data.sectionTimes
+        });
+      } catch (err) {
+        console.error('[Telemetry] Błąd notifyOfferAttention:', err);
+      }
 
       return NextResponse.json({ success: true, event: 'attention' });
     }
 
     if (data.action === 'question') {
-      notifyOfferQuestion({
-        slug: data.slug,
-        companyName: data.companyName,
-        clientName: data.clientName,
-        email: data.email,
-        phone: data.phone,
-        section: data.section,
-        question: data.question
-      }).catch(err => console.error('[Telemetry] Błąd notifyOfferQuestion:', err));
+      try {
+        await notifyOfferQuestion({
+          slug: data.slug,
+          companyName: data.companyName,
+          clientName: data.clientName,
+          email: data.email,
+          phone: data.phone,
+          section: data.section,
+          question: data.question
+        });
+      } catch (err) {
+        console.error('[Telemetry] Błąd notifyOfferQuestion:', err);
+      }
 
       // Opcjonalna wysyłka e-maila z kopią pytania do Marcina
       if (resend) {
-        resend.emails.send({
-          from: 'System Ofertowy <kontakt@panel.molendadevelopment.pl>',
-          to: ['kontakt@molendadevelopment.pl'],
-          replyTo: data.email,
-          subject: `💬 Pytanie do oferty od: ${data.companyName} (${data.clientName})`,
-          html: `
-            <h2>Nowe pytanie do oferty ${data.companyName}</h2>
-            <p><strong>Od:</strong> ${data.clientName} (&lt;${data.email}&gt;)</p>
-            <p><strong>Telefon:</strong> ${data.phone || 'Brak'}</p>
-            <p><strong>Sekcja:</strong> ${data.section || 'Ogólne'}</p>
-            <hr/>
-            <p><strong>Treść pytania:</strong></p>
-            <blockquote style="background:#f4f4f5;padding:12px;border-left:4px solid #6366f1;">
-              ${data.question.replace(/\n/g, '<br/>')}
-            </blockquote>
-            <p><a href="https://molendadevelopment.pl/oferta/${data.slug}">Zobacz ofertę online</a></p>
-          `
-        }).catch(err => console.error('[Telemetry Resend Error]', err));
+        try {
+          await resend.emails.send({
+            from: 'System Ofertowy <kontakt@panel.molendadevelopment.pl>',
+            to: ['kontakt@molendadevelopment.pl'],
+            replyTo: data.email,
+            subject: `💬 Pytanie do oferty od: ${data.companyName} (${data.clientName})`,
+            html: `
+              <h2>Nowe pytanie do oferty ${data.companyName}</h2>
+              <p><strong>Od:</strong> ${data.clientName} (&lt;${data.email}&gt;)</p>
+              <p><strong>Telefon:</strong> ${data.phone || 'Brak'}</p>
+              <p><strong>Sekcja:</strong> ${data.section || 'Ogólne'}</p>
+              <hr/>
+              <p><strong>Treść pytania:</strong></p>
+              <blockquote style="background:#f4f4f5;padding:12px;border-left:4px solid #6366f1;">
+                ${data.question.replace(/\n/g, '<br/>')}
+              </blockquote>
+              <p><a href="https://molendadevelopment.pl/oferta/${data.slug}">Zobacz ofertę online</a></p>
+            `
+          });
+        } catch (err) {
+          console.error('[Telemetry Resend Error]', err);
+        }
       }
 
       return NextResponse.json({ success: true, event: 'question' });
