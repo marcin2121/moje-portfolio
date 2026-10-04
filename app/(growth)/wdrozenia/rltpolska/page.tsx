@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { ExternalLink } from 'lucide-react';
 
 export default function RLTPolskaCaseStudy() {
   return (
@@ -15,8 +16,21 @@ export default function RLTPolskaCaseStudy() {
         ← Powrót do wdrożeń
       </Link>
 
-      <h1 className="text-4xl font-bold text-slate-900 mb-6">Jak RLT Polska wyeliminowało błędy 508 podczas pików sprzedażowych w Beauty E-commerce</h1>
+      <h1 className="text-4xl font-bold text-slate-900 mb-4">Jak RLT Polska wyeliminowało błędy 508 podczas pików sprzedażowych w Beauty E-commerce</h1>
       
+      {/* Live Link Button */}
+      <div className="flex flex-wrap items-center gap-4 mb-8">
+        <a
+          href="https://rltpolska.pl"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-orange-600 text-white text-sm font-semibold rounded-xl transition-all shadow-sm hover:shadow-md"
+        >
+          Zobacz działający sklep (rltpolska.pl)
+          <ExternalLink className="w-4 h-4" />
+        </a>
+      </div>
+
       <div className="prose max-w-none">
         <p className="text-xl text-slate-500 mb-12">
           Pojedynek inżynieryjny: Współdzielony Hosting kontra Elastyczny Serverless Edge.

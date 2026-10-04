@@ -67,13 +67,12 @@ export default function Navbar() {
               : 'bg-transparent border-transparent py-4 px-2'
           }`}
         >
-          {/* Logo */}
-          <Link href="/" className="group inline-flex items-center gap-1.5 font-mono tracking-tight select-none">
-            <span className="text-base font-bold tracking-wider text-slate-900 group-hover:text-black transition-colors">
+          {/* Logo - czysta typografia inżynierska */}
+          <Link href="/" className="group inline-flex items-center gap-2 select-none" aria-label="Strona główna Molenda Development">
+            <span className="text-base font-extrabold tracking-tight text-slate-900 group-hover:text-black transition-colors font-sans">
               MOLENDA
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
-            <span className="text-xs md:text-sm font-medium tracking-normal text-slate-500 group-hover:text-slate-700 transition-colors uppercase">
+            <span className="text-xs font-semibold tracking-[0.22em] text-slate-400 group-hover:text-slate-600 transition-colors uppercase font-sans">
               DEVELOPMENT
             </span>
           </Link>

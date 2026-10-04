@@ -49,7 +49,7 @@ export async function POST(req: Request) {
                 ${token ? `<li><strong>Link do audytu:</strong> <a href="https://molendadevelopment.pl/narzedzia/audyt?token=${token}">Zobacz raport audytu klienta</a></li>` : ''}
                 ${notes ? `<li><strong>Treść wiadomości / cel:</strong> ${notes}</li>` : ''}
               </ul>
-              <p style="font-size: 12px; color: #64748b;">Wysłano z silnika Audytu Odporności Cyfrowej 2.0</p>
+              <p style="font-size: 12px; color: #64748b;">Wysłano z silnika Audytu Strony Internetowej</p>
             </div>
           `
         });

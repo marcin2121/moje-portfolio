@@ -329,10 +329,9 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
     lowerHtml.includes('bip.gov.pl') ||
     /uchwa[łl]a\s+rady|zarz[ąa]dzenie\s+(?:burmistrza|prezydenta|w[óo]jta)|dziennik\s+ustaw/i.test(rawHtml);
 
-  const hasDeklaracjaDostepnosci = cheerioInstance('a[href*="deklaracja-dostepnosci"], a[href*="deklaracjadostepnosci"], a[href*="dostepnosc"]').length > 0 ||
+  const hasDeklaracjaDostepnosci = cheerioInstance('a[href*="deklaracja-dostepnosci"], a[href*="deklaracjadostepnosci"], a[href*="deklaracja_dostepnosci"], a[href*="/dostepnosc-cyfrowa"]').length > 0 ||
     lowerHtml.includes('deklaracja dostępności') || lowerHtml.includes('deklaracja dostepnosci') ||
-    lowerHtml.includes('dostępność cyfrowa') || lowerHtml.includes('dostepnosc cyfrowa') ||
-    lowerHtml.includes('wcag 2.1') || lowerHtml.includes('wcag 2.0');
+    lowerHtml.includes('dostępność cyfrowa') || lowerHtml.includes('dostepnosc cyfrowa');
 
   // 19. Sygnały profilu: Szkoła / Edukacja (Librus, Vulcan, e-dziennik)
   const hasEdziennik = cheerioInstance('a[href*="vulcan.net.pl"], a[href*="librus.pl"], a[href*="mobidziennik"], a[href*="uonetplus"]').length > 0 ||
@@ -708,13 +707,18 @@ export function detectAccurateSiteType(
   else if (userHint === 'local_services') localScore += 40;
   else if (userHint === 'b2b_services') b2bScore += 40;
 
+  // Twarde zabezpieczenie: instytucje publiczne (gov_public) muszą mieć potwierdzenie w domenie lub oficjalnym rejestrze
+  const isRealPublicEntity = lowerOrigin.includes('.gov.pl') || lowerOrigin.includes('.bip.') ||
+    /\b(?:urzad|gmina|powiat|starostwo|ug-|um-)\b/i.test(lowerOrigin) ||
+    (hasBipLink && govScore >= 60);
+
   const scores: { profile: SiteType; score: number }[] = [
-    { profile: 'gov_public', score: govScore },
-    { profile: 'education', score: eduScore },
-    { profile: 'ngo_foundation', score: ngoScore },
+    { profile: 'b2b_services', score: b2bScore },
     { profile: 'ecommerce', score: ecomScore },
     { profile: 'local_services', score: localScore },
-    { profile: 'b2b_services', score: b2bScore }
+    { profile: 'ngo_foundation', score: ngoScore },
+    { profile: 'education', score: eduScore },
+    { profile: 'gov_public', score: isRealPublicEntity ? govScore : 0 }
   ];
 
   scores.sort((a, b) => b.score - a.score);

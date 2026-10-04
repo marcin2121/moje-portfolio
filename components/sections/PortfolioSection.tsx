@@ -22,15 +22,15 @@ const PROJECTS = [
   },
   {
     category: 'e-commerce',
-    title: 'DzikiStyl.com',
+    title: 'DzikiStyl',
     tags: ['Zaawansowana personalizacja', 'Migracja Next.js'],
     devTags: ['Headless Commerce', 'React Three Fiber', 'Direct-Upload R2'],
-    desc: 'Drukarnia Online & Studio Graficzne',
+    desc: 'Drukarnia Online & Studio Graficzne (Next.js)',
     challenge: 'Klient potrzebował szybkiej platformy B2B. Problemem była obsługa wielkich plików graficznych zapychających serwery oraz brak elastyczności konfiguratora.',
     solution: 'Zaprojektowaliśmy system "Headless Commerce" w Next.js. Wdrożyliśmy płynny kreator zamówień B2B i architekturę zrzucającą ciężar plików graficznych bezpośrednio do chmury (Cloudflare R2).',
     result: 'Skrócenie czasu ładowania do ułamków sekund, odciążenie serwerów oraz drastyczna poprawa wyników pozycjonowania SEO.',
     img: '/dzikistyl.jpg',
-    link: 'https://dzikistyldemo.vercel.app/'
+    link: 'https://dzikistyl.vercel.app'
   },
   {
     category: 'pwa',
@@ -112,9 +112,15 @@ function PortfolioFilters() {
                   <AnimatedWebP src={project.img} alt={project.title} className="opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
                   <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-                    <h3 className="text-3xl font-black text-white tracking-tight">{project.title}</h3>
+                    {project.link !== '#' ? (
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="hover:text-orange-400 transition-colors">
+                        <h3 className="text-3xl font-black text-white tracking-tight hover:underline underline-offset-4">{project.title}</h3>
+                      </a>
+                    ) : (
+                      <h3 className="text-3xl font-black text-white tracking-tight">{project.title}</h3>
+                    )}
                     {project.link !== '#' && (
-                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#FF6900] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-sm">
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Odwiedź ${project.title}`} className="w-12 h-12 rounded-full bg-[#FF6900] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-sm">
                         <ExternalLink size={20} />
                       </a>
                     )}

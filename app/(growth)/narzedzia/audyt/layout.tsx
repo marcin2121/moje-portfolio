@@ -2,21 +2,21 @@ import type { Metadata } from 'next';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'Audyt Odporności Cyfrowej i Wydajności WWW',
-  description: 'Kompleksowy audyt techniczny witryny: detekcja wycieków budżetu reklamowego, Core Web Vitals, błędy tagów canonical, meta i architektury DOM.',
+  title: 'Darmowy Audyt Strony Internetowej i Sklepu WWW | Marcin Molenda',
+  description: 'Błyskawiczny audyt techniczny witryny: prędkość na telefonach, widoczność w Google, błędy w kodzie oraz poprawne śledzenie konwersji z reklam.',
   alternates: {
     canonical: '/narzedzia/audyt',
   },
   openGraph: {
-    title: 'Audyt Odporności Cyfrowej i Wydajności WWW | Marcin Molenda',
-    description: 'Bezpłatny inżynieryjny skaner architektury WWW i kampanii reklamowych.',
+    title: 'Darmowy Audyt Strony Internetowej i Sklepu WWW | Marcin Molenda',
+    description: 'Bezpłatny skaner Twojej witryny WWW i kampanii reklamowych.',
     url: 'https://molendadevelopment.pl/narzedzia/audyt',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Audyt Odporności Cyfrowej i Wydajności WWW | Marcin Molenda',
-    description: 'Sprawdź kondycję techniczną witryny i wyeliminuj wycieki budżetów reklamowych.',
+    title: 'Darmowy Audyt Strony Internetowej i Sklepu WWW | Marcin Molenda',
+    description: 'Sprawdź kondycję techniczną witryny i wyeliminuj błędy blokujące sprzedaż.',
   },
 };
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Zap, AlertTriangle, ShieldCheck, TrendingUp, Layers, Activity, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Zap, AlertTriangle, ShieldCheck, TrendingUp, Layers, Activity, CheckCircle2, ExternalLink } from 'lucide-react';
 
 const caseStudies = [
   {
@@ -16,10 +16,12 @@ const caseStudies = [
     },
     insight: 'Przebudowaliśmy serwis organizacji pożytku publicznego na architekturę Headless Next.js 16 + React 19 zintegrowaną z WordPress REST API. Pełna certyfikacja dostępności cyfrowej WCAG 2.2 AA z audytem czytników ekranowych.',
     link: '/wdrozenia/stowarzyszeniekas',
+    liveUrl: 'https://stowarzyszeniekas.pl',
+    liveLabel: 'stowarzyszeniekas.pl',
     featured: true,
   },
   {
-    title: 'DzikiStyl.com',
+    title: 'DzikiStyl',
     category: 'E-commerce B2B',
     duel: {
       before: { value: '~24.0 MB', label: 'Waga Strony (Oryginał)', icon: <AlertTriangle className="w-4 h-4 text-rose-500" /> },
@@ -28,6 +30,9 @@ const caseStudies = [
     },
     insight: 'Zburzyliśmy powolny monolit na rzecz architektury Headless (Next.js). Odcięliśmy ciężki backend od warstwy prezentacji, uwalniając urządzenia mobilne klientów od gigantycznych pakietów JS i blokad renderowania.',
     link: '/wdrozenia/dziki-styl',
+    liveUrl: 'https://dzikistyl.vercel.app',
+    liveLabel: 'dzikistyl.vercel.app',
+    liveNote: 'Next.js Staging Demo',
     featured: false,
   },
   {
@@ -40,6 +45,8 @@ const caseStudies = [
     },
     insight: 'Zaimplementowaliśmy rendering brzegowy (Edge Runtime). Serwujemy kluczowe zasoby medyczne bez uderzania w główny serwer bazy danych, całkowicie eliminując błędy przeciążenia serwera typu Resource Limit Is Reached.',
     link: '/wdrozenia/rltpolska',
+    liveUrl: 'https://rltpolska.pl',
+    liveLabel: 'rltpolska.pl',
     featured: false,
   }
 ];
@@ -78,9 +85,35 @@ export default function WdrozeniaPage() {
               study.featured ? 'bg-orange-500/15' : 'bg-orange-500/10'
             }`} />
 
-            {/* Nagłówek bez pastylek rounded-full */}
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4 mb-8 relative z-10">
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{study.title}</h2>
+            {/* Nagłówek z klikalnym tytułem i linkiem live */}
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4 mb-6 relative z-10">
+              <div>
+                <Link 
+                  href={study.link}
+                  className="group/title inline-flex items-center gap-2 text-slate-900 hover:text-orange-600 transition-colors"
+                >
+                  <h2 className="text-2xl sm:text-3xl font-bold tracking-tight group-hover/title:text-orange-600 transition-colors">
+                    {study.title}
+                  </h2>
+                  <ArrowRight className="w-5 h-5 text-orange-500 opacity-0 group-hover/title:opacity-100 group-hover/title:translate-x-1 transition-all shrink-0" />
+                </Link>
+                {study.liveUrl && (
+                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                    <a
+                      href={study.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-mono text-slate-500 hover:text-orange-600 transition-colors underline decoration-slate-300 hover:decoration-orange-500"
+                    >
+                      <span>Live: {study.liveLabel}</span>
+                      <ExternalLink className="w-3 h-3 text-slate-400" />
+                    </a>
+                    {study.liveNote && (
+                      <span className="text-[10px] text-slate-400 font-mono">({study.liveNote})</span>
+                    )}
+                  </div>
+                )}
+              </div>
               <span className="px-2.5 py-1 bg-slate-100/90 border border-slate-200 text-[11px] font-mono text-slate-600 rounded-md tracking-wider uppercase shrink-0">
                 {study.category}
               </span>
@@ -133,15 +166,27 @@ export default function WdrozeniaPage() {
               </p>
             </div>
 
-            {/* CTA */}
-            <div className="relative z-10 mt-auto">
+            {/* Wyraźne przyciski CTA */}
+            <div className="relative z-10 mt-auto pt-6 border-t border-slate-100 flex flex-wrap items-center gap-3">
               <Link 
                 href={study.link} 
-                className="inline-flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-orange-600 transition-colors group/link"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 hover:bg-orange-600 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-95 group/btn"
               >
-                Zobacz pełne case study 
-                <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                <span>Zobacz wdrożenie i kod</span> 
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
+              {study.liveUrl && (
+                <a
+                  href={study.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 font-mono text-xs rounded-xl transition-all border border-slate-200 hover:scale-[1.02] active:scale-95"
+                  title={`Otwórz stronę na żywo: ${study.liveLabel}`}
+                >
+                  <span>Otwórz live</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+                </a>
+              )}
             </div>
           </motion.div>
         ))}

@@ -319,3 +319,62 @@ Dobra wiadomość: nie ma potrzeby budowy ${entity} od nowa - ${solutionText}
 
 **💡 Rekomendowany krok optymalizacyjny:** ${quickStepText}`;
 }
+
+/**
+ * Automatyczna klasyfikacja profilu witryny za pomocą Gemini AI
+ */
+export async function classifySiteTypeWithAI(
+  domain: string,
+  homepageTitle: string,
+  homepageDescription: string,
+  homepageH1: string | undefined,
+  geminiKey: string
+): Promise<SiteType | null> {
+  if (!geminiKey) return null;
+
+  try {
+    const ai = new GoogleGenAI({ apiKey: geminiKey });
+    const prompt = `
+Przeanalizuj poniższe dane witryny internetowej i zaklasyfikuj ją do DOKŁADNIE JEDNEJ z kategorii:
+- ecommerce (sklep internetowy, koszyk, bezpośrednia sprzedaż produktów online do klienta)
+- b2b_services (usługi B2B, dystrybutor hurtowy, produkcja, OZE dla instalatorów, doradztwo biznesowe, hurtownia, agencja, software house)
+- local_services (usługi lokalne dla klientów indywidualnych B2C: gabinet medyczny, stomatolog, kosmetyczka, fryzjer, warsztat samochodowy, restauracja)
+- gov_public (WYŁĄCZNIE oficjalne instytucje publiczne, urzędy gmin, urzędy miast, starostwa powiatowe, ministerstwa, BIP. Kategoryczny zakaz przypisywania prywatnych firm do tej kategorii!)
+- education (szkoły podstawowe, średnie, przedszkola, uczelnie wyższe)
+- ngo_foundation (fundacje, stowarzyszenia, organizacje pożytku publicznego OPP, zbiórki charytatywne)
+
+Dane witryny:
+Domena: ${domain}
+Tytuł strony: ${homepageTitle}
+Opis meta: ${homepageDescription}
+Nagłówek H1: ${homepageH1 || 'brak'}
+
+Zwróć TYLKO jedno słowo będące identyfikatorem kategorii (bez formatowania, bez cudzysłowów):
+ecommerce LUB b2b_services LUB local_services LUB gov_public LUB education LUB ngo_foundation
+`.trim();
+
+    const response = await ai.models.generateContent({
+      model: process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
+      contents: prompt,
+      config: { temperature: 0.1 }
+    });
+
+    const raw = response.text ? response.text.trim().toLowerCase().replace(/[^a-z0-9_]/g, '') : '';
+    const validTypes: SiteType[] = [
+      'ecommerce',
+      'b2b_services',
+      'local_services',
+      'gov_public',
+      'education',
+      'ngo_foundation'
+    ];
+
+    if (validTypes.includes(raw as SiteType)) {
+      return raw as SiteType;
+    }
+  } catch (err) {
+    console.warn('[Gemini AI] Classification error, falling back to heuristic:', err);
+  }
+
+  return null;
+}

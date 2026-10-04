@@ -46,7 +46,21 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">NGO • Dostępność Cyfrowa & E-usługi</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">Stowarzyszenie KAS</h2>
+              <h2 
+                onClick={() => {
+                  pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'Stowarzyszenie KAS' });
+                  handleOpenDemo({ 
+                    url: 'https://stowarzyszeniekas.pl', 
+                    title: 'stowarzyszeniekas.pl', 
+                    colorClass: 'text-emerald-500', 
+                    bgClass: 'bg-emerald-500' 
+                  });
+                }}
+                className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter cursor-pointer hover:text-emerald-600 transition-colors"
+                title="Kliknij, aby otworzyć podgląd na żywo"
+              >
+                Stowarzyszenie KAS
+              </h2>
               
               <div className="space-y-3 xl:space-y-4 text-xs sm:text-sm xl:text-base font-normal leading-relaxed">
                 <p className="text-slate-600">
@@ -116,7 +130,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
           </div>
         </section>
 
-        {/* Sekcja 3: DzikiStyl.com */}
+        {/* Sekcja 3: DzikiStyl */}
         <section id="dzikistyl" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-12 xl:px-20 py-16 lg:py-0 border-t lg:border-none pt-16 lg:pt-14 xl:pt-20 pb-16 lg:pb-16 xl:pb-24">
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-10 xl:gap-16 items-center w-full">
             <div className="space-y-4 xl:space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
@@ -124,7 +138,21 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
                 <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">E-commerce B2B</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">DzikiStyl.com</h2>
+              <h2 
+                onClick={() => {
+                  pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'DzikiStyl' });
+                  handleOpenDemo({ 
+                    url: 'https://dzikistyl.vercel.app', 
+                    title: 'dzikistyl.vercel.app (Next.js)', 
+                    colorClass: 'text-orange-500', 
+                    bgClass: 'bg-orange-500' 
+                  });
+                }}
+                className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter cursor-pointer hover:text-orange-600 transition-colors"
+                title="Kliknij, aby otworzyć podgląd na żywo"
+              >
+                DzikiStyl
+              </h2>
               <div className="space-y-3 xl:space-y-4 text-xs sm:text-sm xl:text-base font-normal leading-relaxed">
                 <p className="text-slate-600"><strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Przestarzała platforma (Shoper/Wix) nie radziła sobie z tysiącami wariantów produktów dla klientów B2B i "zapychała się" przy gigabajtowych plikach od agencji reklamowych.`)}</p>
                 
@@ -138,7 +166,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
                 <MagneticWrapper>
                   <button onClick={() => {
                     pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'DzikiStyl' });
-                    handleOpenDemo({ url: 'https://dzikistyldemo.vercel.app/', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
+                    handleOpenDemo({ url: 'https://dzikistyl.vercel.app', title: 'dzikistyl.vercel.app (Next.js)', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
                   }} className="px-8 py-4 bg-orange-500 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-colors flex items-center gap-3">
                     <Terminal size={14} />
                     <span>Zobacz system na żywo</span>
@@ -148,7 +176,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
             </div>
             <div onClick={() => {
               pushGTMEvent('portfolio_obraz_uruchomiono_demo', { projekt: 'DzikiStyl' });
-              handleOpenDemo({ url: 'https://dzikistyldemo.vercel.app/', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
+              handleOpenDemo({ url: 'https://dzikistyl.vercel.app', title: 'dzikistyl.vercel.app (Next.js)', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
             }} className="aspect-4/3 w-full bg-slate-100 rounded-2xl border border-slate-200 overflow-hidden relative group shadow-premium cursor-pointer order-1 lg:order-2">
               <Image src="/dzikistyl.jpg" alt="DzikiStyl" fill quality={80} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
               <div className="absolute inset-0 bg-white/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -166,7 +194,16 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
                 <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">Grywalizacja / PWA</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">Sklep Urwis</h2>
+              <h2 
+                onClick={() => {
+                  pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'Sklep Urwis' });
+                  handleOpenDemo({ url: 'https://www.sklep-urwis.pl', title: 'sklep-urwis.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
+                }}
+                className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter cursor-pointer hover:text-orange-600 transition-colors"
+                title="Kliknij, aby otworzyć podgląd na żywo"
+              >
+                Sklep Urwis
+              </h2>
               <div className="space-y-3 xl:space-y-4 text-xs sm:text-sm xl:text-base font-normal leading-relaxed">
                 <p className="text-slate-600"><strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Sklep stacjonarny potrzebował nowoczesnego kanału dotarcia do klientów, angażując dzieci i rodziców bez wymuszania instalacji ciężkich aplikacji z Google Play/App Store.`)}</p>
                 <p className="text-slate-600"><strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Stworzyłem angażującą aplikację przeglądarkową niewymagającą instalacji, wyposażoną w interaktywne gry, moduł rozszerzonej rzeczywistości i wirtualnego doradcę wspieranego sztuczną inteligencją.`)}</p>
@@ -209,7 +246,16 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">Wizerunek / SEO</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">Kajaki u Maćka</h2>
+              <h2 
+                onClick={() => {
+                  pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'Kajaki u Maćka' });
+                  handleOpenDemo({ url: 'https://kajaki-u-macka.pl', title: 'kajaki-u-macka.pl', colorClass: 'text-emerald-500', bgClass: 'bg-orange-500' });
+                }}
+                className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter cursor-pointer hover:text-orange-600 transition-colors"
+                title="Kliknij, aby otworzyć podgląd na żywo"
+              >
+                Kajaki u Maćka
+              </h2>
               <div className="space-y-3 xl:space-y-4 text-xs sm:text-sm xl:text-base font-normal leading-relaxed">
                 <p className="text-slate-600"><strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Lokalny biznes turystyczny potrzebował nowoczesnego wizerunku w sieci oraz konfiguracji Social Mediów i map Google, by wyróżnić się na tle ogromnej konkurencji.`)}</p>
                 <p className="text-slate-600"><strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Zbudowałem błyskawiczny landing page z automatycznym systemem pozyskiwania opinii. Skonfigurowałem fanpage i Wizytówkę Google z pełną spójnością wizualną i techniczną.`)}</p>

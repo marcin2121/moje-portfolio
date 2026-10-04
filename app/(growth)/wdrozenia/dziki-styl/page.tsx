@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ZoomIn } from 'lucide-react';
+import { ZoomIn, ExternalLink } from 'lucide-react';
 
 export default function DzikiStylCaseStudy() {
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
@@ -23,8 +23,24 @@ export default function DzikiStylCaseStudy() {
         </Link>
       </div>
 
-      <h1 className="text-4xl font-bold text-slate-900 mb-6">Jak odchudziliśmy DzikiStyl.com o 23MB?</h1>
+      <h1 className="text-4xl font-bold text-slate-900 mb-4">Jak odchudziliśmy DzikiStyl o 23MB?</h1>
       
+      {/* Live Link Button */}
+      <div className="flex flex-wrap items-center gap-4 mb-8">
+        <a
+          href="https://dzikistyl.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-orange-600 text-white text-sm font-semibold rounded-xl transition-all shadow-sm hover:shadow-md"
+        >
+          Zobacz działające demo Next.js (dzikistyl.vercel.app)
+          <ExternalLink className="w-4 h-4" />
+        </a>
+        <span className="text-xs text-slate-500 font-mono">
+          Wersja stagingowa Next.js przed przełączeniem domeny głównej
+        </span>
+      </div>
+
       <div className="prose max-w-none">
         <p className="text-xl text-slate-500 mb-12">
           Pojedynek inżynieryjny: Stara platforma kontra architektura Edge-first.
