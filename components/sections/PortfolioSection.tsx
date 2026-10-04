@@ -15,22 +15,22 @@ const PROJECTS = [
     devTags: ['Next.js 16', 'React 19', 'Supabase Realtime', 'PayU'],
     desc: 'Portal Dostępności Cyfrowej & E-usługi',
     challenge: 'Organizacja pilnie potrzebowała bezpiecznego czatu wsparcia i kalendarza wizyt. Próba wdrożenia tak zaawansowanych modułów na tradycyjnym WordPressie kosztowałaby fortunę, a osiągnięcie na nim prawdziwej dostępności cyfrowej graniczyło z cudem.',
-    solution: 'Zbudowałem dedykowaną, błyskawiczną platformę z anonimowym czatem na żywo, automatycznym systemem rezerwacji i certyfikowaną dostępnością dla osób z niepełnosprawnościami – zachowując przy tym bajecznie prosty panel do edycji treści.',
+    solution: 'Zbudowałem dedykowaną, błyskawiczną platformę z anonimowym czatem na żywo, automatycznym systemem rezerwacji i certyfikowaną dostępnością dla osób z niepełnosprawnościami - zachowując przy tym bajecznie prosty panel do edycji treści.',
     result: 'Ogromna oszczędność budżetu i zero comiesięcznych opłat za wtyczki. Organizacja zyskała pancerne narzędzie do niesienia pomocy bez ryzyka kar prawnych, a strona działa bezawaryjnie na każdym telefonie.',
     img: '/kas-hero.webp',
     link: 'https://stowarzyszeniekas.pl'
   },
   {
     category: 'e-commerce',
-    title: 'DzikiStyl.com',
+    title: 'DzikiStyl',
     tags: ['Zaawansowana personalizacja', 'Migracja Next.js'],
     devTags: ['Headless Commerce', 'React Three Fiber', 'Direct-Upload R2'],
-    desc: 'Drukarnia Online & Studio Graficzne',
+    desc: 'Drukarnia Online & Studio Graficzne (Next.js)',
     challenge: 'Klient potrzebował szybkiej platformy B2B. Problemem była obsługa wielkich plików graficznych zapychających serwery oraz brak elastyczności konfiguratora.',
     solution: 'Zaprojektowaliśmy system "Headless Commerce" w Next.js. Wdrożyliśmy płynny kreator zamówień B2B i architekturę zrzucającą ciężar plików graficznych bezpośrednio do chmury (Cloudflare R2).',
     result: 'Skrócenie czasu ładowania do ułamków sekund, odciążenie serwerów oraz drastyczna poprawa wyników pozycjonowania SEO.',
     img: '/dzikistyl.jpg',
-    link: 'https://dzikistyldemo.vercel.app/'
+    link: 'https://dzikistyl.vercel.app'
   },
   {
     category: 'pwa',
@@ -112,9 +112,15 @@ function PortfolioFilters() {
                   <AnimatedWebP src={project.img} alt={project.title} className="opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
                   <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-                    <h3 className="text-3xl font-black text-white tracking-tight">{project.title}</h3>
+                    {project.link !== '#' ? (
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="hover:text-orange-400 transition-colors">
+                        <h3 className="text-3xl font-black text-white tracking-tight hover:underline underline-offset-4">{project.title}</h3>
+                      </a>
+                    ) : (
+                      <h3 className="text-3xl font-black text-white tracking-tight">{project.title}</h3>
+                    )}
                     {project.link !== '#' && (
-                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#FF6900] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-sm">
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Odwiedź ${project.title}`} className="w-12 h-12 rounded-full bg-[#FF6900] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-sm">
                         <ExternalLink size={20} />
                       </a>
                     )}
@@ -179,7 +185,7 @@ export function PortfolioSection() {
           </span>
         </h2>
         <p className="text-slate-600 text-lg max-w-2xl mx-auto font-light leading-relaxed mb-20">
-          {fixOrphans('Nie obiecuję niemożliwego – dowożę mierzalne rezultaty. Przeczytaj, jak moje realizacje zmieniły operacje w firmach klientów.')}
+          {fixOrphans('Nie obiecuję niemożliwego - dowożę mierzalne rezultaty. Przeczytaj, jak moje realizacje zmieniły operacje w firmach klientów.')}
         </p>
 
         <Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400">Ładowanie projektów...</div>}>
@@ -198,7 +204,7 @@ export function PortfolioSection() {
           <div className="text-6xl text-[#FF6900] font-serif absolute top-8 left-8 opacity-20">&quot;</div>
           
           <p className="text-xl md:text-3xl font-light text-slate-700 leading-relaxed relative z-10 max-w-4xl mx-auto italic mb-10">
-            {fixOrphans(`Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług. To, co Marcin robi w pojedynkę, po prostu przekracza ludzkie pojęcie i `)}<span className="text-[#FF6900] font-bold">{fixOrphans(`technologicznie wyprzedza nasze czasy o 5 lat do przodu!`)}</span>{fixOrphans(` Z całego serca polecam usługi każdemu, kto marzy o bezkompromisowej aplikacji. Wielkie dzięki – zrobiłeś absolutny kosmos!`)}
+            {fixOrphans(`Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból - żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji usług. To, co Marcin robi w pojedynkę, po prostu przekracza ludzkie pojęcie i `)}<span className="text-[#FF6900] font-bold">{fixOrphans(`technologicznie wyprzedza nasze czasy o 5 lat do przodu!`)}</span>{fixOrphans(` Z całego serca polecam usługi każdemu, kto marzy o bezkompromisowej aplikacji. Wielkie dzięki - zrobiłeś absolutny kosmos!`)}
           </p>
           
           <div className="flex flex-col items-center justify-center gap-2 relative z-10">

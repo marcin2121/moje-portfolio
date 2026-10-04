@@ -1,0 +1,16 @@
+{
+  "rltpolska.pl": {
+    "token": "4d710498de75927b4de157e07f647e20",
+    "timestamp": 1788859075584
+  },
+  "molendadevelopment.pl": {
+    "token": "098af3d234a237c05b49218235b1a09b",
+    "timestamp": 1788862939654,
+    "siteType": "services"
+  },
+  "molendadevelopment.pl:services": {
+    "token": "098af3d234a237c05b49218235b1a09b",
+    "timestamp": 1788862939654,
+    "siteType": "services"
+  }
+}

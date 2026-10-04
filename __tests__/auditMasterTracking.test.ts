@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildEvidenceSummary, generateQuickCriticalIssues, extractTrackingSignals, PageTrackingSignals } from '../app/api/audit-master/utils/crawler';
+import { buildEvidenceSummary, generateQuickCriticalIssues, extractTrackingSignals, detectAccurateSiteType, PageTrackingSignals } from '../app/api/audit-master/utils/crawler';
 import { PageAuditResult } from '../app/api/audit-master/types';
 import { generateDeterministicReport } from '../app/api/audit-master/utils/geminiAI';
 
@@ -196,7 +196,7 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
     expect(report).not.toContain('uporządkuję strukturę nagłówków i canonicali');
     expect(report).not.toContain('add_to_cart');
     // Powinien podkreślić czystą strukturę lub skupić się na telemetrii i renderowaniu DOM
-    expect(report).toContain('struktura semantyczna i indeksacja są w 100% czyste');
+    expect(report).toContain('struktura semantyczna i indeksacja są czyste');
   });
 
   it('generuje poprawną gramatycznie deklinację polską dla wykrytych uchybień (np. 2 podstrony bez H1, 1 grupa)', () => {
@@ -482,6 +482,98 @@ describe('Audit Master: Telemetria Reklamowa i Wykrywanie Wycieków Budżetu', (
       const evidence = buildEvidenceSummary([calculatorPage], [emptySignals], 'b2b_services');
       expect(evidence.thinContentCount).toBe(0);
       expect(evidence.thinContentUrls.length).toBe(0);
+    });
+
+    it('nie klasyfikuje komercyjnej witryny OZE / B2B (np. calma.pl) jako urzad/BIP (gov_public)', () => {
+      const calmaPage: PageAuditResult = {
+        url: 'https://calma.pl',
+        category: 'home',
+        statusCode: 200,
+        responseTimeMs: 85,
+        title: 'Calma - Dostawca Urządzeń OZE i Komponentów PV',
+        titleLength: 46,
+        metaDescription: 'Dystrybutor i dostawca OZE na terenie całej Polski.',
+        metaLength: 52,
+        h1Count: 1,
+        h1Text: 'Dystrybutor OZE i paneli fotowoltaicznych',
+        canonical: 'https://calma.pl/',
+        hasSelfCanonical: true,
+        wordCount: 420,
+        isThinContent: false,
+        imagesCount: 5,
+        missingAltCount: 0,
+        schemas: ['Organization'],
+        hasNoIndex: false,
+        internalLinksCount: 15,
+        externalLinksCount: 1
+      };
+
+      const signals: PageTrackingSignals = {
+        hasGoogleAds: false,
+        hasGtm: true,
+        gtmId: 'GTM-TEST',
+        hasGa4: true,
+        ga4Id: 'G-TEST',
+        hasMetaPixel: false,
+        hasTikTokPixel: false,
+        hasConsentModeV2: true,
+        hasDataLayer: true,
+        hasAddToCartTracking: false,
+        hasPurchaseTracking: false,
+        hasCartButtons: false,
+        hasLeadForms: true,
+        hasDeklaracjaDostepnosci: false,
+        hasBipLink: false,
+        hasB2bSignals: true
+      };
+
+      const detected = detectAccurateSiteType([calmaPage], [signals], 'https://calma.pl', 'services');
+      expect(detected.profile).not.toBe('gov_public');
+      expect(['b2b_services', 'local_services']).toContain(detected.profile);
+    });
+
+    it('poprawnie klasyfikuje oficjalny urzad lub BIP jako gov_public', () => {
+      const govPage: PageAuditResult = {
+        url: 'https://bip.bialobrzegi.pl',
+        category: 'home',
+        statusCode: 200,
+        responseTimeMs: 90,
+        title: 'Biuletyn Informacji Publicznej - Urząd Miasta i Gminy Białobrzegi',
+        titleLength: 66,
+        metaDescription: 'Oficjalny BIP Urzędu Miasta i Gminy Białobrzegi',
+        metaLength: 46,
+        h1Count: 1,
+        h1Text: 'Biuletyn Informacji Publicznej',
+        canonical: 'https://bip.bialobrzegi.pl/',
+        hasSelfCanonical: true,
+        wordCount: 500,
+        isThinContent: false,
+        imagesCount: 2,
+        missingAltCount: 0,
+        schemas: ['GovernmentOrganization'],
+        hasNoIndex: false,
+        internalLinksCount: 25,
+        externalLinksCount: 0
+      };
+
+      const signals: PageTrackingSignals = {
+        hasGoogleAds: false,
+        hasGtm: false,
+        hasGa4: false,
+        hasMetaPixel: false,
+        hasTikTokPixel: false,
+        hasConsentModeV2: false,
+        hasDataLayer: false,
+        hasAddToCartTracking: false,
+        hasPurchaseTracking: false,
+        hasCartButtons: false,
+        hasLeadForms: false,
+        hasBipLink: true,
+        hasDeklaracjaDostepnosci: true
+      };
+
+      const detected = detectAccurateSiteType([govPage], [signals], 'https://bip.bialobrzegi.pl', 'services');
+      expect(detected.profile).toBe('gov_public');
     });
   });
 });

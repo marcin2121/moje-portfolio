@@ -1,0 +1,323 @@
+{
+  "token": "098af3d234a237c05b49218235b1a09b",
+  "url": "https://molendadevelopment.pl",
+  "domain": "molendadevelopment.pl",
+  "siteType": "services",
+  "overallScore": 74,
+  "lossPercentage": 17,
+  "aiReport": "Twoja strona https://molendadevelopment.pl traci ~17% potencjalnych zapytań ofertowych i leadów B2B rocznie, ponieważ 1 grupa 4 podstron kanibalizuje się w Google przez identyczne tytuły, a brak tagów Canonical na wszystkich 7 podstronach generuje niekontrolowane duplikaty, skutecznie obniżając widoczność i ranking. Dodatkowo, 1 blokujący skrypt i 75 brudnych stylów inline spowalniają ładowanie, a 3 podstrony z ubogą treścią osłabiają Twoją pozycję eksperta, co przekłada się na niższy wynik 74/100 i mniejsze zaufanie użytkowników. W ciągu 24-48h wdrożę brakujące tagi Canonical, uporządkuję duplikujące się tytuły, zoptymalizuję krytyczny skrypt blokujący renderowanie oraz usunę bloat CSS, co natychmiastowo poprawi widoczność SEO i wydajność strony bez burzenia jej struktury, odzyskując utracone zapytania.",
+  "detectedPlatform": "Next.js / React (Serverless Edge)",
+  "wafDetected": false,
+  "codeSmells": {
+    "jquery": false,
+    "badScripts": 1,
+    "domElements": 1057,
+    "inlineStyles": 75,
+    "pageBuilders": [],
+    "trackers": [],
+    "missingAltCount": 0,
+    "unoptimizedImagesCount": 0
+  },
+  "evidence": {
+    "totalPages": 7,
+    "avgResponseTimeMs": 76,
+    "status200Count": 7,
+    "redirectsCount": 0,
+    "errorsCount": 0,
+    "noIndexCount": 0,
+    "missingTitleCount": 0,
+    "duplicateTitleGroups": [
+      {
+        "title": "Marcin Molenda | Precyzyjne Systemy, Web & Mobile",
+        "count": 4,
+        "urls": [
+          "https://molendadevelopment.pl/",
+          "https://molendadevelopment.pl",
+          "https://molendadevelopment.pl/wdrozenia",
+          "https://molendadevelopment.pl/polityka-prywatnosci"
+        ]
+      }
+    ],
+    "missingMetaCount": 0,
+    "avgMetaLength": 139,
+    "missingH1Count": 0,
+    "missingH1Urls": [],
+    "thinContentCount": 3,
+    "thinContentUrls": [
+      {
+        "url": "https://molendadevelopment.pl/narzedzia",
+        "wordCount": 77
+      },
+      {
+        "url": "https://molendadevelopment.pl/wdrozenia",
+        "wordCount": 147
+      },
+      {
+        "url": "https://molendadevelopment.pl/polityka-prywatnosci",
+        "wordCount": 173
+      }
+    ],
+    "missingCanonicalCount": 7,
+    "missingCanonicalUrls": [
+      "https://molendadevelopment.pl/",
+      "https://molendadevelopment.pl",
+      "https://molendadevelopment.pl/narzedzia",
+      "https://molendadevelopment.pl/wdrozenia",
+      "https://molendadevelopment.pl/wdrozenia/dziki-styl",
+      "https://molendadevelopment.pl/wdrozenia/rltpolska",
+      "https://molendadevelopment.pl/polityka-prywatnosci"
+    ],
+    "missingAltTotal": 0,
+    "adsAndTracking": {
+      "hasGoogleAds": false,
+      "hasGoogleTagManager": false,
+      "hasGA4": false,
+      "hasMetaPixel": false,
+      "hasTikTokPixel": false,
+      "hasConsentModeV2": false,
+      "hasDataLayer": false,
+      "hasAddToCartTracking": false,
+      "hasPurchaseTracking": false,
+      "hasCartButtons": false,
+      "hasLeadForms": false,
+      "adBudgetLeakRisk": "none",
+      "issues": []
+    },
+    "categoriesSummary": {
+      "overall": {
+        "goodCount": 5,
+        "warnCount": 2,
+        "badCount": 1
+      }
+    }
+  },
+  "quickIssues": [
+    {
+      "id": "quick-duplicate-titles",
+      "title": "Auto-kanibalizacja w Google: 1 grupa identycznych tagów Title",
+      "type": "seo",
+      "severity": "critical",
+      "shortDesc": "Aż 4 podstrony posiadają identyczne tytuły, przez co konkurują ze sobą na te same frazy w wynikach wyszukiwania.",
+      "affectedCount": 4,
+      "businessImpact": "Zamiast jednej silnej pozycji w TOP 3, Twoje podstrony rotują i zbijają się nawzajem, marnując bezpłatne zapytania ofertowe z Google.",
+      "developerAction": "Zaimplementuję dynamiczny szablon unikalnych tagów Title w warstwie CMS/kodu z automatycznym sufiksem wyróżniającym w 24h.",
+      "details": [
+        {
+          "label": "« Marcin Molenda | Precyzyjne Systemy, Web & Mobile » (4 stron)",
+          "sublabel": "https://molendadevelopment.pl/, https://molendadevelopment.pl i 2 więcej..."
+        }
+      ]
+    },
+    {
+      "id": "quick-missing-canonical",
+      "title": "Brak tagów Canonical na 7 podstronach",
+      "type": "seo",
+      "severity": "warning",
+      "shortDesc": "Strony nie informują wyszukiwarki o oficjalnym adresie kanonicznym, co grozi tworzeniem niekontrolowanych duplikatów.",
+      "affectedCount": 7,
+      "businessImpact": "Rozpraszanie autorytetu domeny PageRank i marnowanie budżetu indeksowania (Crawl Budget) Google.",
+      "developerAction": "Zaimplementuję samoodnoszący się tag <link rel=\"canonical\"> w nagłówku witryny wyliczany na bieżąco z czystego URL.",
+      "details": [
+        {
+          "url": "https://molendadevelopment.pl/"
+        },
+        {
+          "url": "https://molendadevelopment.pl"
+        },
+        {
+          "url": "https://molendadevelopment.pl/narzedzia"
+        },
+        {
+          "url": "https://molendadevelopment.pl/wdrozenia"
+        },
+        {
+          "url": "https://molendadevelopment.pl/wdrozenia/dziki-styl"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://molendadevelopment.pl/",
+      "category": "home",
+      "statusCode": 200,
+      "responseTimeMs": 49,
+      "title": "Marcin Molenda | Precyzyjne Systemy, Web & Mobile",
+      "titleLength": 49,
+      "metaDescription": "Dedykowane systemy i aplikacje webowe oparte o Next.js 16 i Supabase. Architektura bez kompromisów, od JDG po duże firmy. Szybkość ładowania < 1s.",
+      "metaLength": 146,
+      "h1Count": 1,
+      "h1Text": "Zbuduję stronę, która przyspieszy Twoją sprzedaż.",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 1946,
+      "isThinContent": false,
+      "imagesCount": 14,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 1,
+      "externalLinksCount": 10
+    },
+    {
+      "url": "https://molendadevelopment.pl",
+      "category": "home",
+      "statusCode": 200,
+      "responseTimeMs": 56,
+      "title": "Marcin Molenda | Precyzyjne Systemy, Web & Mobile",
+      "titleLength": 49,
+      "metaDescription": "Dedykowane systemy i aplikacje webowe oparte o Next.js 16 i Supabase. Architektura bez kompromisów, od JDG po duże firmy. Szybkość ładowania < 1s.",
+      "metaLength": 146,
+      "h1Count": 1,
+      "h1Text": "Zbuduję stronę, która przyspieszy Twoją sprzedaż.",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 1946,
+      "isThinContent": false,
+      "imagesCount": 14,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 1,
+      "externalLinksCount": 10
+    },
+    {
+      "url": "https://molendadevelopment.pl/narzedzia",
+      "category": "info",
+      "statusCode": 200,
+      "responseTimeMs": 139,
+      "title": "Bezpłatne Narzędzia i Kalkulatory | Marcin Molenda",
+      "titleLength": 50,
+      "metaDescription": "Zbiór darmowych narzędzi dla e-commerce i B2B. Oblicz koszty migracji, sprawdź audyty i inne kalkulatory.",
+      "metaLength": 105,
+      "h1Count": 1,
+      "h1Text": "Bezpłatne Narzędzia",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 77,
+      "isThinContent": true,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 4,
+      "externalLinksCount": 0
+    },
+    {
+      "url": "https://molendadevelopment.pl/wdrozenia",
+      "category": "info",
+      "statusCode": 200,
+      "responseTimeMs": 139,
+      "title": "Marcin Molenda | Precyzyjne Systemy, Web & Mobile",
+      "titleLength": 49,
+      "metaDescription": "Dedykowane systemy i aplikacje webowe oparte o Next.js 16 i Supabase. Architektura bez kompromisów, od JDG po duże firmy. Szybkość ładowania < 1s.",
+      "metaLength": 146,
+      "h1Count": 1,
+      "h1Text": "Twarde dowody. Nie obietnice.",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 147,
+      "isThinContent": true,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 4,
+      "externalLinksCount": 0
+    },
+    {
+      "url": "https://molendadevelopment.pl/wdrozenia/dziki-styl",
+      "category": "info",
+      "statusCode": 200,
+      "responseTimeMs": 55,
+      "title": "Jak odchudziliśmy sklep DzikiStyl.com o 23MB? | Case Study",
+      "titleLength": 58,
+      "metaDescription": "Zobacz w jaki sposób zmiana architektury na Edge-first pozwoliła drastycznie zmniejszyć wagę sklepu Dziki Styl, poprawiając czas ładowania i konwersję.",
+      "metaLength": 151,
+      "h1Count": 1,
+      "h1Text": "Jak odchudziliśmy DzikiStyl.com o 23MB?",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 303,
+      "isThinContent": false,
+      "imagesCount": 2,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 3,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://molendadevelopment.pl/wdrozenia/rltpolska",
+      "category": "info",
+      "statusCode": 200,
+      "responseTimeMs": 40,
+      "title": "Jak RLT Polska wyeliminowało błędy 508 w E-commerce | Case Study",
+      "titleLength": 64,
+      "metaDescription": "Zobacz w jaki sposób nowa architektura Serverless Edge rozwiązała problem awarii sklepu podczas pików sprzedażowych w branży Beauty.",
+      "metaLength": 132,
+      "h1Count": 1,
+      "h1Text": "Jak RLT Polska wyeliminowało błędy 508 podczas pików sprzedażowych w Beauty E-commerce",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 271,
+      "isThinContent": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 3,
+      "externalLinksCount": 0
+    },
+    {
+      "url": "https://molendadevelopment.pl/polityka-prywatnosci",
+      "category": "info",
+      "statusCode": 200,
+      "responseTimeMs": 53,
+      "title": "Marcin Molenda | Precyzyjne Systemy, Web & Mobile",
+      "titleLength": 49,
+      "metaDescription": "Dedykowane systemy i aplikacje webowe oparte o Next.js 16 i Supabase. Architektura bez kompromisów, od JDG po duże firmy. Szybkość ładowania < 1s.",
+      "metaLength": 146,
+      "h1Count": 1,
+      "h1Text": "PolitykaPrywatności",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 173,
+      "isThinContent": true,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 2,
+      "externalLinksCount": 0
+    }
+  ],
+  "createdAt": "2026-09-08T10:22:19.438Z",
+  "pillars": [
+    {
+      "name": "Szybkość",
+      "score": 55,
+      "interpretation": "Przeciętne tempo ładowania. Użytkownicy ze słabszym łączem mogą opuszczać serwis przed wysłaniem formularza kontaktowego."
+    },
+    {
+      "name": "SEO",
+      "score": 30,
+      "interpretation": "Strona jest niewidzialna dla nowoczesnych crawlerów. Błędy w semantyce i architekturze blokują darmowy ruch organiczny."
+    },
+    {
+      "name": "Skalowalność",
+      "score": 95,
+      "interpretation": "Architektura odporna na skoki ruchu. Kampanie reklamowe Meta/Google Ads i nagły napływ zapytań nie spowolnią serwisu."
+    },
+    {
+      "name": "Automatyzacja",
+      "score": 90,
+      "interpretation": "Nowoczesne środowisko (Headless/Edge). Błyskawiczna integracja z CRM, systemami rezerwacji, płatnościami i API."
+    },
+    {
+      "name": "Bezpieczeństwo",
+      "score": 100,
+      "interpretation": "Żelazne nagłówki i nowoczesne protokoły. Dane Twoich klientów i korespondencja są chronione na poziomie korporacyjnym."
+    }
+  ]
+}

@@ -129,7 +129,7 @@ export default function MigrationCalculatorPage() {
               </p>
             </div>
             <div className="mt-6 pt-5 border-t border-slate-100 text-xs font-mono text-slate-500">
-              <span className="font-bold text-slate-700">Cel:</span> Pełny zwrot z inwestycji zazwyczaj w 30–90 dni.
+              <span className="font-bold text-slate-700">Cel:</span> Pełny zwrot z inwestycji zazwyczaj w 30-90 dni.
             </div>
           </div>
 
@@ -162,7 +162,7 @@ export default function MigrationCalculatorPage() {
               Chcesz sprawdzić kondycję techniczną swojego sklepu przed decyzją o migracji?
             </h3>
             <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6 font-light">
-              Uruchom darmowy Audyt Odporności Cyfrowej 2.0. Nasz crawler przeanalizuje do 35 podstron Twojego sklepu, sprawdzając Core Web Vitals, hierarchię nagłówków H1, tagi canonical oraz telemetrię Google Ads i Meta Pixel.
+              Uruchom darmowy Audyt Strony Internetowej. Nasz skaner przeanalizuje do 35 podstron Twojego sklepu, sprawdzając prędkość ładowania na smartfonach, strukturę nagłówków H1, tagi canonical oraz poprawne śledzenie Google Ads i Meta Pixel.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link 

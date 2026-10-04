@@ -25,12 +25,12 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
   const [copied, setCopied] = useState(false);
 
   const isEcommerce = result.siteType === 'ecommerce';
-  let conversionLabel = 'utraconych zapytań i leadów';
-  if (isEcommerce) conversionLabel = 'straty sprzedaży';
-  else if (result.siteType === 'ngo_foundation') conversionLabel = 'utraty darowizn i wsparcia 1.5%';
-  else if (result.siteType === 'gov_public') conversionLabel = 'spadku dostępności i zaufania obywateli';
-  else if (result.siteType === 'education') conversionLabel = 'utraty zaufania rodziców i kandydatów';
-  else if (result.siteType === 'local_services') conversionLabel = 'utraconych rezerwacji i telefonów';
+  let conversionLabel = 'zapytań i leadów';
+  if (isEcommerce) conversionLabel = 'sprzedaży e-commerce';
+  else if (result.siteType === 'ngo_foundation') conversionLabel = 'darowizn i wsparcia 1.5%';
+  else if (result.siteType === 'gov_public') conversionLabel = 'dostępności i zaufania obywateli';
+  else if (result.siteType === 'education') conversionLabel = 'zaufania rodziców i naboru kandydatów';
+  else if (result.siteType === 'local_services') conversionLabel = 'rezerwacji i kontaktów telefonicznych';
 
   const copyShareLink = () => {
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://molendadevelopment.pl';
@@ -50,6 +50,50 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
   const pages = result.pages || [];
   const hasProducts = evidence?.categoriesSummary?.products && evidence.categoriesSummary.products.count > 0;
   const hasBlog = evidence?.categoriesSummary?.blog && evidence.categoriesSummary.blog.count > 0;
+
+  // Lista podstron z kodami innymi niż 200 OK (błędy 4xx/5xx i przekierowania 3xx)
+  const httpIssues = React.useMemo(() => {
+    if (!result.pages) return [];
+    return result.pages
+      .filter(p => p.statusCode !== 200)
+      .map(p => {
+        let label = `Status HTTP ${p.statusCode}`;
+        if (p.statusCode === 404) label = 'Błąd HTTP 404 (Nie znaleziono)';
+        else if (p.statusCode >= 500) label = `Błąd serwera HTTP ${p.statusCode}`;
+        else if (p.statusCode >= 400) label = `Błąd klienta HTTP ${p.statusCode}`;
+        else if (p.statusCode === 301) label = 'Przekierowanie stałe HTTP 301';
+        else if (p.statusCode === 302) label = 'Przekierowanie tymczasowe HTTP 302';
+        else if (p.statusCode >= 300) label = `Przekierowanie HTTP ${p.statusCode}`;
+
+        return {
+          url: p.url,
+          label: p.url,
+          sublabel: label
+        };
+      });
+  }, [result.pages]);
+
+  // Automatyczna normalizacja raportu (zapobiega udawaniu człowieka w 1. osobie i naprawia błędy w zbuforowanych audytach)
+  const cleanAiReport = React.useMemo(() => {
+    if (!result.aiReport) return '';
+    return result.aiReport
+      .replace(/Jako Senior Architect przeanalizowałem serwis (.*?) i zidentyfikowałem/gi, 'Analiza architektoniczna serwisu $1 zidentyfikowała')
+      .replace(/Jako Senior Architect przeanalizowałem/gi, 'Analiza inżynieryjna serwisu wykazała')
+      .replace(/jako (?:Senior )?(?:Full-Stack )?Architect(?:em)?/gi, 'w ramach rekomendacji inżynieryjnych')
+      .replace(/zamiast Waszego gabinetu wybierają konkurencję z sąsiedniej ulicy/gi, 'zamiast oferty serwisu trafiają do alternatywnych wyników wyszukiwania')
+      .replace(/zamiast Waszego gabinetu/gi, 'zamiast Waszej oferty')
+      .replace(/Waszego gabinetu/gi, 'Waszego serwisu')
+      .replace(/Twojego gabinetu/gi, 'Twojego serwisu')
+      .replace(/wybierają konkurencję z sąsiedniej ulicy/gi, 'trafiają do alternatywnych ofert w Google')
+      .replace(/konkurencji z sąsiedniej ulicy/gi, 'innych ofert w wyszukiwarce')
+      .replace(/\buporządkuję\b/gi, 'rekomendowane jest uporządkowanie')
+      .replace(/\bzoptymalizuję\b/gi, 'zoptymalizowanie')
+      .replace(/\bwdrożę\b/gi, 'wdrożenie')
+      .replace(/\bskonfiguruję\b/gi, 'skonfigurowanie')
+      .replace(/\bwyeliminuję\b/gi, 'wyeliminowanie')
+      .replace(/–/g, '-')
+      .replace(/—/g, '-');
+  }, [result.aiReport]);
 
   return (
     <motion.div
@@ -111,7 +155,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
 
           <div className="mt-4 p-3 bg-rose-50/70 border border-rose-200/60 rounded-xl w-full text-center">
             <span className="text-xs font-mono text-rose-700 font-bold block">
-              Szacowana utrata {conversionLabel}:
+              Szacowany spadek {conversionLabel}:
             </span>
             <span className="text-xl font-black text-rose-600 font-mono">
               ~{result.lossPercentage}%
@@ -123,21 +167,34 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           </p>
         </div>
 
-        {/* Karta Werdyktu AI */}
+        {/* Karta Syntezy Diagnostycznej Kodu */}
         <div className="lg:col-span-2 bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-8 md:p-10 relative overflow-hidden flex flex-col justify-center">
           <div className="relative z-10">
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-orange-600 uppercase tracking-widest mb-3">
-              <Shield className="w-4 h-4" />
-              <span>Diagnoza Architekta (Synteza Inżynieryjna)</span>
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-900 uppercase tracking-widest">
+                <Shield className="w-4 h-4 text-orange-600" />
+                <span>Synteza Diagnostyczna Kodu & Architektury</span>
+              </div>
+              <span className="font-mono text-[11px] text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80">
+                Automatyczna analiza w czasie rzeczywistym
+              </span>
             </div>
             <div className="prose max-w-none text-slate-700 leading-relaxed text-sm md:text-base prose-p:mb-3 prose-strong:text-slate-900 prose-ul:my-2 prose-li:my-0.5">
-              <ReactMarkdown>{result.aiReport}</ReactMarkdown>
+              <ReactMarkdown>{cleanAiReport}</ReactMarkdown>
             </div>
+            <p className="text-[11px] font-mono text-slate-400 mt-4 pt-3 border-t border-slate-100">
+              Diagnoza opracowana na podstawie analizy parametrów HTTP, drzewa DOM oraz metryk Core Web Vitals.
+            </p>
           </div>
         </div>
       </div>
 
-      {/* SEKCJA: Pojedynek Technologiczny & Benchmark z Konkurentem (Head-to-Head) */}
+      {/* SEKCJA 1: Szybka Diagnoza Priorytetowa */}
+      {result.quickIssues && result.quickIssues.length > 0 && (
+        <QuickCriticalIssues issues={result.quickIssues} />
+      )}
+
+      {/* SEKCJA 2: Pojedynek Technologiczny & Benchmark z Konkurentem (Head-to-Head) */}
       {result.competitorBenchmark && (
         <CompetitorBenchmarkCard
           benchmark={result.competitorBenchmark}
@@ -145,23 +202,10 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
         />
       )}
 
-      {/* SEKCJA 1: Szybka Diagnoza Krytyczna (Top 3-4 wycieki zysku i budżetu z możliwością rozwinięcia) */}
-      {result.quickIssues && result.quickIssues.length > 0 && (
-        <QuickCriticalIssues issues={result.quickIssues} />
-      )}
-
-      {/* SEKCJA 2: Audyt Kampanii Płatnych & Telemetryki (Google & Meta Ads, Consent Mode v2, add_to_cart) */}
+      {/* SEKCJA 3: Audyt Kampanii Płatnych & Telemetryki */}
       {evidence?.adsAndTracking && (
         <AdsAndTrackingCard tracking={evidence.adsAndTracking} domain={result.domain} siteType={result.siteType} />
       )}
-
-      {/* SEKCJA 3: Kompleksowy Rejestr 80 Punktów Kontrolnych & Korzyści Biznesowe (ROI) */}
-      <AuditChecklistSection
-        evaluations={result.checkpointEvals}
-        stats={result.checkpointStats}
-        domain={result.domain}
-        siteType={result.siteType}
-      />
 
       {/* SEKCJA 4: Asymetryczny Bento Grid filarów technicznych */}
       <div>
@@ -371,9 +415,11 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           <AuditEvidenceCard
             title="Dostępność stron (status HTTP)"
             description={`${evidence?.status200Count}/${evidence?.totalPages} stron zwraca poprawny kod 200 OK. Błędy: ${evidence?.errorsCount}, przekierowania: ${evidence?.redirectsCount}.`}
-            status={evidence?.errorsCount === 0 ? 'ok' : 'bad'}
+            status={evidence?.errorsCount === 0 ? (evidence?.redirectsCount && evidence.redirectsCount > 0 ? 'warn' : 'ok') : 'bad'}
             percentage={((evidence?.status200Count || 0) / (evidence?.totalPages || 1)) * 100}
             metaText={`${evidence?.status200Count}/${evidence?.totalPages}`}
+            detailsLabel="Strony z błędami lub przekierowaniami HTTP:"
+            details={httpIssues}
           />
 
           <AuditEvidenceCard
@@ -507,7 +553,15 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
         </div>
       )}
 
-      {/* Sekcja 4: Interaktywna Tabela Wszystkich Podstron */}
+      {/* Sekcja: Kompleksowy Rejestr Punktów Kontrolnych & Rekomendacje Inżynieryjne */}
+      <AuditChecklistSection
+        evaluations={result.checkpointEvals}
+        stats={result.checkpointStats}
+        domain={result.domain}
+        siteType={result.siteType}
+      />
+
+      {/* Sekcja: Interaktywna Tabela Wszystkich Podstron */}
       {pages.length > 0 && <PagesTable pages={pages} />}
 
       {/* Sekcja 5: Formularz Konsultacji & Lead Capture */}

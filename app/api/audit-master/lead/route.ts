@@ -12,18 +12,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Podaj poprawny adres e-mail' }, { status: 400 });
     }
 
-    if (!phone || typeof phone !== 'string' || phone.trim().length < 7) {
-      return NextResponse.json({ error: 'Podaj poprawny numer telefonu' }, { status: 400 });
+    if (phone && typeof phone === 'string' && phone.trim().length > 0 && phone.trim().length < 6) {
+      return NextResponse.json({ error: 'Podaj poprawny numer telefonu (min. 6 cyfr) lub pozostaw to pole puste' }, { status: 400 });
     }
 
     const cleanDomain = domain ? String(domain).trim() : 'Brak domeny';
+    const cleanPhone = phone && typeof phone === 'string' && phone.trim().length >= 6 ? phone.trim() : undefined;
 
     // 1. Zapis do bazy / pliku
     await saveLead({
       auditToken: token ? String(token).trim() : undefined,
       domain: cleanDomain,
       email: email.trim(),
-      phone: phone.trim(),
+      phone: cleanPhone,
       notes: notes ? String(notes).trim() : undefined
     });
 
@@ -36,19 +37,19 @@ export async function POST(req: Request) {
           from: 'Audyt Molenda Dev <powiadomienia@panel.molendadevelopment.pl>',
           to: 'kontakt@molendadevelopment.pl',
           replyTo: email.trim(),
-          subject: `🔥 Nowy lead z Audytu: ${cleanDomain} (${email})`,
+          subject: `🔥 Nowe zapytanie z Audytu: ${cleanDomain} (${email})`,
           html: `
             <div style="font-family: sans-serif; line-height: 1.6; color: #1e293b;">
-              <h2 style="color: #0f172a;">Nowe zgłoszenie na konsultację techniczną!</h2>
-              <p>Klient zamówił bezpłatną konsultację audytu:</p>
+              <h2 style="color: #0f172a;">Nowe zgłoszenie w sprawie audytu i wdrożenia!</h2>
+              <p>Klient przesłał zapytanie ze strony audytu:</p>
               <ul>
                 <li><strong>Domena:</strong> ${cleanDomain}</li>
                 <li><strong>E-mail:</strong> <a href="mailto:${email}">${email}</a></li>
-                <li><strong>Telefon:</strong> <a href="tel:${phone}">${phone}</a></li>
+                <li><strong>Telefon:</strong> ${cleanPhone ? `<a href="tel:${cleanPhone}">${cleanPhone}</a>` : 'Brak (kontakt mailowy)'}</li>
                 ${token ? `<li><strong>Link do audytu:</strong> <a href="https://molendadevelopment.pl/narzedzia/audyt?token=${token}">Zobacz raport audytu klienta</a></li>` : ''}
-                ${notes ? `<li><strong>Dodatkowa notatka:</strong> ${notes}</li>` : ''}
+                ${notes ? `<li><strong>Treść wiadomości / cel:</strong> ${notes}</li>` : ''}
               </ul>
-              <p style="font-size: 12px; color: #64748b;">Wysłano z silnika Audytu Odporności Cyfrowej 2.0</p>
+              <p style="font-size: 12px; color: #64748b;">Wysłano z silnika Audytu Strony Internetowej</p>
             </div>
           `
         });
@@ -61,12 +62,12 @@ export async function POST(req: Request) {
     notifyLeadReceived({
       domain: cleanDomain,
       email: email.trim(),
-      phone: phone.trim(),
+      phone: cleanPhone,
       token: token ? String(token).trim() : undefined,
       notes: notes ? String(notes).trim() : undefined
     }).catch(err => console.error('Discord webhook lead failed', err));
 
-    return NextResponse.json({ success: true, message: 'Zgłoszenie zostało przyjęte. Odezwiemy się wkrótce!' });
+    return NextResponse.json({ success: true, message: 'Zgłoszenie zostało przyjęte. Odpowiem mailowo wkrótce!' });
   } catch {
     return NextResponse.json({ error: 'Wystąpił błąd podczas zapisywania zgłoszenia' }, { status: 500 });
   }

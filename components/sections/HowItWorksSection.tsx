@@ -17,7 +17,7 @@ export function HowItWorksSection() {
     {
       num: '02',
       title: 'Projekt i "Bezpieczne 7 dni"',
-      desc: 'Rysuję wygląd strony. Masz tydzień, żeby na nią popatrzeć. Jeśli powiesz: „Marcin, to zupełnie nie to” – oddaję Ci 100% zaliczki bez zadawania pytań.',
+      desc: 'Rysuję wygląd strony. Masz tydzień, żeby na nią popatrzeć. Jeśli powiesz: „Marcin, to zupełnie nie to” - oddaję Ci 100% zaliczki bez zadawania pytań.',
     },
     {
       num: '03',

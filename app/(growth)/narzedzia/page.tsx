@@ -62,7 +62,7 @@ export default function NarzedziaHub() {
           </div>
         </Link>
         
-        {/* Audyt Odporności Biznesowej */}
+        {/* Darmowy Audyt Strony Internetowej */}
         <Link 
           href="/narzedzia/audyt"
           className="group relative flex flex-col items-start p-8 rounded-3xl bg-white/80 backdrop-blur-xl border border-slate-200/70 hover:border-orange-200 hover:bg-white hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] transition-all duration-300 overflow-hidden"
@@ -74,10 +74,10 @@ export default function NarzedziaHub() {
           </div>
           
           <h2 className="relative z-10 text-2xl font-bold text-slate-900 mb-3 group-hover:text-orange-600 transition-colors">
-            Audyt Odporności Cyfrowej 2.0
+            Darmowy Audyt Strony Internetowej
           </h2>
           <p className="relative z-10 text-slate-600 leading-relaxed mb-8 text-sm sm:text-base">
-            Zaawansowany skaner wielopodstronicowy badający do 35 podstron. Wykrywa auto-kanibalizację SEO, brak tagów canonical, skrypty blokujące renderowanie oraz krytyczne błędy analityki reklamowej (Google Ads, Meta Pixel, Consent Mode v2).
+            Błyskawiczny skaner wielopodstronicowy badający do 35 podstron. Wykrywa błędy spowalniające stronę na telefonach, problemy z widocznością w Google oraz błędy w śledzeniu sprzedaży z reklam (Google Ads, Meta Pixel, GA4).
           </p>
           
           <div className="relative z-10 mt-auto flex items-center gap-2 text-sm font-bold text-orange-500 group-hover:text-orange-600">

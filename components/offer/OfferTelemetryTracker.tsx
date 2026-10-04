@@ -24,9 +24,8 @@ export default function OfferTelemetryTracker({
     const isMobile = window.innerWidth <= 768;
     const deviceType = isMobile ? 'Smartfon (Mobile)' : 'Komputer (Desktop)';
 
-    // 2. Wysłanie alertu "Otwarto ofertę" po 1.5 sekundy (odfiltrowanie natychmiastowych bounce'ów)
-    const openTimer = setTimeout(() => {
-      if (hasSentOpenedRef.current) return;
+    // 2. Wysłanie alertu "Otwarto ofertę" natychmiast po załadowaniu
+    if (!hasSentOpenedRef.current) {
       hasSentOpenedRef.current = true;
 
       fetch('/api/oferta/telemetry', {
@@ -39,9 +38,10 @@ export default function OfferTelemetryTracker({
           clientName,
           deviceType,
           referrer: document.referrer || undefined
-        })
+        }),
+        keepalive: true
       }).catch(err => console.error('[Telemetry Client] Błąd wysyłki opened:', err));
-    }, 1500);
+    }
 
     // 3. Obserwacja sekcji na ekranie za pomocą IntersectionObserver
     const observer = new IntersectionObserver(
@@ -126,7 +126,6 @@ export default function OfferTelemetryTracker({
     window.addEventListener('beforeunload', handlePageHide);
 
     return () => {
-      clearTimeout(openTimer);
       clearInterval(interval);
       observer.disconnect();
       document.removeEventListener('visibilitychange', handleVisibilityChange);

@@ -29,11 +29,11 @@ export async function proxy(request: NextRequest) {
   // W stronach SSG Next.js nie wstrzykuje nonce do wygenerowanego HTML-a podczas zapytania.
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl;
+    script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl https://www.clarity.ms https://scripts.clarity.ms https://*.clarity.ms;
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https:;
     font-src 'self' data:;
-    connect-src 'self' https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl;
+    connect-src 'self' https://analytics.molendadevelopment.pl https://n8n.molendadevelopment.pl https://www.clarity.ms https://*.clarity.ms;
     frame-src 'self' https://www.youtube.com https://n8n.molendadevelopment.pl https://dzikistyldemo.vercel.app https://www.sklep-urwis.pl https://sklep-urwis.pl https://xn--zamwtu-dxa.pl https://kajaki-u-macka.pl https://www.kajaki-u-macka.pl https://stowarzyszeniekas.pl https://www.stowarzyszeniekas.pl;
     frame-ancestors 'self';
     object-src 'none';

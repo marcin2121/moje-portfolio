@@ -2,7 +2,7 @@ import { SiteType, SITE_TYPE_LABELS } from '../types';
 
 /**
  * Moduł powiadomień Discord Webhook
- * Działa w trybie Fire-and-Forget – nie blokuje odpowiedzi serwera i nie opóźnia użytkownika.
+ * Działa w trybie Fire-and-Forget - nie blokuje odpowiedzi serwera i nie opóźnia użytkownika.
  */
 
 interface AuditNotificationParams {
@@ -20,7 +20,7 @@ interface AuditNotificationParams {
 interface LeadNotificationParams {
   domain: string;
   email: string;
-  phone: string;
+  phone?: string;
   token?: string;
   notes?: string;
 }
@@ -100,7 +100,7 @@ export async function notifyAuditGenerated(params: AuditNotificationParams): Pro
       signal: AbortSignal.timeout(4000)
     });
   } catch (err) {
-    // Cichy fallback – błąd powiadomienia Discord nie może uszkodzić odpowiedzi klienta
+    // Cichy fallback - błąd powiadomienia Discord nie może uszkodzić odpowiedzi klienta
     console.error('[Discord Webhook] Błąd wysyłki powiadomienia o audycie:', err);
   }
 }
@@ -119,7 +119,7 @@ export async function notifyLeadReceived(params: LeadNotificationParams): Promis
     const fields = [
       { name: '🌐 Domena klienta', value: domain, inline: true },
       { name: '📧 Adres e-mail', value: `[${email}](mailto:${email})`, inline: true },
-      { name: '📞 Telefon', value: `[${phone}](tel:${phone})`, inline: true }
+      { name: '📞 Telefon', value: phone ? `[${phone}](tel:${phone})` : 'Brak (kontakt mailowy)', inline: true }
     ];
 
     if (notes) {
@@ -141,7 +141,7 @@ export async function notifyLeadReceived(params: LeadNotificationParams): Promis
         {
           title: `🔥 NOWY LEAD: Zgłoszenie na konsultację techniczną (${domain})`,
           color: 0x6366f1, // Indigo
-          description: `Klient złożył zamówienie na bezpłatną konsultację i wdrożenie naprawcze w 24–48h!`,
+          description: 'Klient złożył zapytanie o konsultację techniczną i wdrożenie poprawek.',
           fields,
           footer: {
             text: 'Audit Master Lead Engine · Molenda Development'

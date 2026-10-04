@@ -17,19 +17,19 @@ export default function PrivacyPolicy() {
     },
     {
       title: "2. Podstawa Prawna i Cele Przetwarzania",
-      content: "Dane osobowe przetwarzane są na podstawie Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 (RODO): w celu realizacji kontaktu, przygotowania wyceny lub audytu technologicznego na Twoje życzenie (art. 6 ust. 1 lit. b RODO), w celu wykonania zawartej umowy o świadczenie usług programistycznych, a także w oparciu o prawnie uzasadniony interes Administratora (art. 6 ust. 1 lit. f RODO) polegający na ochronie infrastruktury serwerowej przed nadużyciami, spamem i atakami sieciowymi."
+      content: "Dane osobowe przetwarzane są na podstawie Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 (RODO): w celu realizacji kontaktu, przygotowania wyceny lub audytu technologicznego na Twoje życzenie (art. 6 ust. 1 lit. b RODO), w celu wykonania zawartej umowy o świadczenie usług programistycznych, a także w oparciu o prawnie uzasadniony interes Administratora (art. 6 ust. 1 lit. f RODO) polegający na ochronie infrastruktury serwerowej przed nadużyciami, spamem i atakami sieciowymi oraz bieżącej analizie ergonomii i stabilności serwisu."
     },
     {
       title: "3. Zakres Danych i Odbiorcy",
       content: "Gromadzimy wyłącznie minimum danych niezbędnych do celów biznesowych: imię, nazwisko lub nazwę firmy, adres e-mail, numer telefonu oraz adres URL analizowanej witryny. Twoje dane osobowe nigdy nie są sprzedawane, wypożyczane ani udostępniane podmiotom trzecim w celach reklamowych. Mogą być przekazywane wyłącznie zaufanym podmiotom zapewniającym infrastrukturę techniczną (np. certyfikowanym dostawcom usług e-mail, takim jak Resend, oraz certyfikowanym centrom danych) na podstawie umów powierzenia przetwarzania danych."
     },
     {
-      title: "4. Analityka Cookieless i Poszanowanie Prywatności",
-      content: "Serwis wykorzystuje nowoczesne, etyczne narzędzie analityczne Umami Analytics, które działa w technologii Cookieless. Oznacza to, że nie zapisujemy na Twoim urządzeniu żadnych śledzących plików cookies, nie gromadzimy unikalnych identyfikatorów ani nie tworzymy profili behawioralnych. Adresy IP są natychmiast anonimizowane przed zapisaniem. Dzięki temu korzystanie z serwisu jest w 100% zgodne z dyrektywą e-Privacy i RODO bez konieczności wyświetlania inwazyjnych banerów cookies."
+      title: "4. Analityka Cookieless i Rejestracja Sesji (Zero Cookies)",
+      content: "Serwis wykorzystuje etyczne narzędzia analityczne i diagnostyczne: Umami Analytics oraz Microsoft Clarity, skonfigurowane w 100% w trybie bezplikowym (Cookieless Mode). Na Twoim urządzeniu nie są zapisywane ani odczytywane żadne pliki cookies czy pamięć lokalna (localStorage). Skrypt Microsoft Clarity rejestruje anonimowe interakcje z interfejsem w pamięci bieżącej sesji (ruchy kursora, kliknięcia, przewijanie stron) w celu wykrywania błędów technicznych, optymalizacji użyteczności UX oraz analizy problemów w renderowaniu kodu (art. 6 ust. 1 lit. f RODO). Wszelkie dane wprowadzane w formularzach (np. adres e-mail, telefon) podlegają automatycznemu, nieodwracalnemu maskowaniu po stronie przeglądarki przed wysłaniem, a adresy IP są natychmiast anonimizowane. Dzięki temu korzystanie z serwisu nie wymaga wyświetlania inwazyjnych banerów zgody zgodnie z art. 173 Prawa Telekomunikacyjnego."
     },
     {
       title: "5. Okres Przechowywania Danych (Retencja)",
-      content: "Dane przekazane w formularzu kontaktowym lub zapytaniu o audyt przechowywane są przez okres niezbędny do przeprowadzenia rozmów biznesowych i obsługi zlecenia, a w przypadku nawiązania współpracy – przez czas trwania umowy oraz okres przedawnienia ewentualnych roszczeń wynikający z przepisów prawa (w tym prawa podatkowego i rachunkowości)."
+      content: "Dane przekazane w formularzu kontaktowym lub zapytaniu o audyt przechowywane są przez okres niezbędny do przeprowadzenia rozmów biznesowych i obsługi zlecenia, a w przypadku nawiązania współpracy - przez czas trwania umowy oraz okres przedawnienia ewentualnych roszczeń wynikający z przepisów prawa (w tym prawa podatkowego i rachunkowości)."
     },
     {
       title: "6. Bezpieczeństwo i Szyfrowanie Połączeń",
@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
     },
     {
       title: "7. Prawa Osoby, Której Dane Dotyczą",
-      content: "Przysługuje Ci prawo żądania dostępu do treści swoich danych, ich sprostowania, usunięcia ('prawo do bycia zapomnianym'), ograniczenia przetwarzania, przenoszenia danych oraz wniesienia sprzeciwu wobec przetwarzania. Masz również prawo wniesienia skargi do organu nadzorczego – Prezesa Urzędu Ochrony Danych Osobowych (PUODO, ul. Stawki 2, 00-193 Warszawa)."
+      content: "Przysługuje Ci prawo żądania dostępu do treści swoich danych, ich sprostowania, usunięcia ('prawo do bycia zapomnianym'), ograniczenia przetwarzania, przenoszenia danych oraz wniesienia sprzeciwu wobec przetwarzania. Masz również prawo wniesienia skargi do organu nadzorczego - Prezesa Urzędu Ochrony Danych Osobowych (PUODO, ul. Stawki 2, 00-193 Warszawa)."
     },
     {
       title: "8. Dobrowolność i Brak Zautomatyzowanego Profilowania",

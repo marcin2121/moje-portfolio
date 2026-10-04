@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { AuditMasterResponse, SiteType } from '../types';
+import { AuditMasterResponse, SiteType, SITE_TYPE_LABELS } from '../types';
 import { evaluateAllCheckpoints } from './checkpointsCatalog';
 import fs from 'fs';
 import path from 'path';
@@ -29,6 +29,27 @@ function ensureLocalCacheDir() {
 }
 
 function sanitizeAuditData(audit: AuditMasterResponse): AuditMasterResponse {
+  // 0. Ochrona przed fałszywym profilem gov_public dla domen komercyjnych (np. calma.pl)
+  const isRealPublicDomain = audit.domain.includes('.gov.pl') || audit.domain.includes('.bip.') ||
+    /\b(?:urzad|gmina|powiat|starostwo|ug-|um-)\b/i.test(audit.domain);
+
+  if ((audit.siteType === 'gov_public' || audit.detectedProfile === 'gov_public') && !isRealPublicDomain) {
+    audit.siteType = 'b2b_services';
+    audit.detectedProfile = 'b2b_services';
+    audit.profileLabel = SITE_TYPE_LABELS.b2b_services;
+    if (audit.evidence) {
+      audit.evidence.detectedProfile = 'b2b_services';
+    }
+    if (audit.aiReport && (audit.aiReport.includes('e-urząd') || audit.aiReport.includes('e-obywateli') || audit.aiReport.includes('kary finansowe do 10 000 zł'))) {
+      audit.aiReport = audit.aiReport
+        .replace(/e-urząd[a-z]*/gi, 'serwis')
+        .replace(/mieszkańców i procedur e-urzędu/gi, 'użytkowników i pozyskiwania zapytań ofertowych')
+        .replace(/utrudnienia w załatwianiu spraw przez e-obywateli, kolejki w urzędzie oraz ryzyko kar finansowych do 10 000 zł z ustawy o dostępności cyfrowej\./gi, 'utratę zapytań ofertowych oraz spadek konwersji ze strony WWW na rzecz bezpośredniej konkurencji.')
+        .replace(/oficjalną deklarację dostępności WCAG 2\.1 AA, /gi, '')
+        .replace(/procedur e-urzędu/gi, 'pozyskiwania klientów');
+    }
+  }
+
   // 1. Zawsze przeliczamy punkty kontrolne najnowszym katalogiem wiedzy (usuwając fałszywe flagi)
   if (audit.evidence) {
     if (audit.domain.includes('molenda') && audit.evidence.adsAndTracking) {
@@ -292,7 +313,7 @@ export async function saveLead(leadData: {
   auditToken?: string;
   domain: string;
   email: string;
-  phone: string;
+  phone?: string;
   notes?: string;
 }): Promise<boolean> {
   const cleanDomain = leadData.domain.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('/')[0];
@@ -304,7 +325,7 @@ export async function saveLead(leadData: {
         audit_token: leadData.auditToken || null,
         domain: cleanDomain,
         email: leadData.email.trim(),
-        phone: leadData.phone.trim(),
+        phone: leadData.phone?.trim() || null,
         notes: leadData.notes?.trim() || null
       });
       if (!error) return true;
@@ -327,6 +348,7 @@ export async function saveLead(leadData: {
     }
     leads.push({
       ...leadData,
+      phone: leadData.phone?.trim() || null,
       domain: cleanDomain,
       created_at: new Date().toISOString()
     });

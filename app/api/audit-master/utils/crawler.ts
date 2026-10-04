@@ -329,10 +329,9 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
     lowerHtml.includes('bip.gov.pl') ||
     /uchwa[łl]a\s+rady|zarz[ąa]dzenie\s+(?:burmistrza|prezydenta|w[óo]jta)|dziennik\s+ustaw/i.test(rawHtml);
 
-  const hasDeklaracjaDostepnosci = cheerioInstance('a[href*="deklaracja-dostepnosci"], a[href*="deklaracjadostepnosci"], a[href*="dostepnosc"]').length > 0 ||
+  const hasDeklaracjaDostepnosci = cheerioInstance('a[href*="deklaracja-dostepnosci"], a[href*="deklaracjadostepnosci"], a[href*="deklaracja_dostepnosci"], a[href*="/dostepnosc-cyfrowa"]').length > 0 ||
     lowerHtml.includes('deklaracja dostępności') || lowerHtml.includes('deklaracja dostepnosci') ||
-    lowerHtml.includes('dostępność cyfrowa') || lowerHtml.includes('dostepnosc cyfrowa') ||
-    lowerHtml.includes('wcag 2.1') || lowerHtml.includes('wcag 2.0');
+    lowerHtml.includes('dostępność cyfrowa') || lowerHtml.includes('dostepnosc cyfrowa');
 
   // 19. Sygnały profilu: Szkoła / Edukacja (Librus, Vulcan, e-dziennik)
   const hasEdziennik = cheerioInstance('a[href*="vulcan.net.pl"], a[href*="librus.pl"], a[href*="mobidziennik"], a[href*="uonetplus"]').length > 0 ||
@@ -708,13 +707,18 @@ export function detectAccurateSiteType(
   else if (userHint === 'local_services') localScore += 40;
   else if (userHint === 'b2b_services') b2bScore += 40;
 
+  // Twarde zabezpieczenie: instytucje publiczne (gov_public) muszą mieć potwierdzenie w domenie lub oficjalnym rejestrze
+  const isRealPublicEntity = lowerOrigin.includes('.gov.pl') || lowerOrigin.includes('.bip.') ||
+    /\b(?:urzad|gmina|powiat|starostwo|ug-|um-)\b/i.test(lowerOrigin) ||
+    (hasBipLink && govScore >= 60);
+
   const scores: { profile: SiteType; score: number }[] = [
-    { profile: 'gov_public', score: govScore },
-    { profile: 'education', score: eduScore },
-    { profile: 'ngo_foundation', score: ngoScore },
+    { profile: 'b2b_services', score: b2bScore },
     { profile: 'ecommerce', score: ecomScore },
     { profile: 'local_services', score: localScore },
-    { profile: 'b2b_services', score: b2bScore }
+    { profile: 'ngo_foundation', score: ngoScore },
+    { profile: 'education', score: eduScore },
+    { profile: 'gov_public', score: isRealPublicEntity ? govScore : 0 }
   ];
 
   scores.sort((a, b) => b.score - a.score);
@@ -1287,17 +1291,17 @@ export function generateQuickCriticalIssues(
     const totalAffected = evidence.duplicateTitleGroups.reduce((acc, g) => acc + g.count, 0);
     const groupsText = pluralizePolish(evidence.duplicateTitleGroups.length, 'grupa', 'grupy', 'grup');
     
-    let impactText = 'Zamiast jednej silnej pozycji w TOP 3, Twoje podstrony rotują i zbijają się nawzajem, marnując bezpłatne zapytania ofertowe z Google.';
+    let impactText = 'Zamiast jednej silnej pozycji w TOP wynikach, podstrony konkurują ze sobą na te same frazy, rozpraszając ruch organiczny z Google.';
     if (isEcommerce) {
-      impactText = 'Zamiast jednej silnej pozycji w TOP 3, Twoje produkty i kategorie rotują i zbijają się nawzajem, marnując bezpłatną sprzedaż z Google.';
+      impactText = 'Zamiast jednej silnej pozycji, podstrony produktów i kategorii konkurują ze sobą w Google, obniżając widoczność oferty.';
     } else if (siteType === 'gov_public') {
-      impactText = 'Mieszkańcy szukający konkretnych procedur lub wniosków trafiają na przypadkowe podstrony urzędu, co potęguje frustrację i generuje niepotrzebne telefony do sekretariatu.';
+      impactText = 'Mieszkańcy szukający konkretnych procedur lub wniosków trafiają na przypadkowe podstrony urzędu, co utrudnia szybkie załatwienie sprawy.';
     } else if (siteType === 'education') {
-      impactText = 'Kandydaci i rodzice szukający informacji o naborze lub profilach klas trafiają na nieaktualne strony, co obniża pozycję szkoły w rankingu rekrutacyjnym.';
+      impactText = 'Kandydaci i rodzice szukający informacji o naborze trafiają na nieaktualne podstrony, co utrudnia zapoznanie się z ofertą edukacyjną.';
     } else if (siteType === 'ngo_foundation') {
-      impactText = 'Osoby w kryzysie oraz darczyńcy szukający wsparcia lub celu 1.5% trafiają na błędne podstrony, co utrudnia dotarcie do bezpłatnej pomocy statutowej.';
+      impactText = 'Osoby szukające wsparcia lub celu 1.5% trafiają na błędne podstrony, co utrudnia dotarcie do informacji statutowych.';
     } else if (siteType === 'local_services') {
-      impactText = 'Lokalni klienci szukający Twojego gabinetu lub usług w okolicy trafiają na zduplikowane podstrony i ostatecznie przechodzą do konkurencji z sąsiedniej ulicy.';
+      impactText = 'Klienci szukający usług w okolicy trafiają na zduplikowane podstrony, co osłabia pozycję witryny w lokalnych wynikach wyszukiwania.';
     }
 
     issues.push({

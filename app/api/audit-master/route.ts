@@ -2,14 +2,14 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import * as cheerio from 'cheerio';
 import { checkRateLimit } from './utils/rateLimiter';
-import { generateGeminiReport } from './utils/geminiAI';
+import { generateGeminiReport, classifySiteTypeWithAI } from './utils/geminiAI';
 import { getInterpretation } from './utils/interpretation';
 import { crawlDomain, generateQuickCriticalIssues } from './utils/crawler';
 import { getAuditByToken, getAuditByDomain, saveAudit } from './utils/storage';
 import { evaluateAllCheckpoints } from './utils/checkpointsCatalog';
 import { fetchCompetitorData, buildCompetitorBenchmark } from './utils/competitorAnalyzer';
 import { notifyAuditGenerated } from './utils/discordNotifier';
-import { AuditMasterResponse, DetailedCodeSmells, SiteType } from './types';
+import { AuditMasterResponse, DetailedCodeSmells, SiteType, SITE_TYPE_LABELS } from './types';
 
 export async function GET(req: Request) {
   try {
@@ -208,12 +208,30 @@ export async function POST(req: Request) {
       finalPerformanceScore = Math.min(100, measuredPerf);
     }
 
-    // Precyzyjne ustalenie profilu: jeśli użytkownik nie wybrał ściśle określonego podtypu (lub podał domyślne 'services'),
-    // wykorzystujemy twarde sygnały wykryte przez crawler w DOM/HTML (np. ngo_foundation, gov_public, education)
-    const currentSiteType: SiteType =
-      requestedSiteType !== 'services'
-        ? requestedSiteType
-        : (crawlData.evidence.detectedProfile || 'b2b_services');
+    const geminiKey = process.env.GEMINI_API_KEY || '';
+
+    // Precyzyjne ustalenie profilu witryny za pomocą Gemini AI (z odpornym fallbackiem na sygnały z crawlera)
+    let currentSiteType: SiteType = requestedSiteType;
+
+    if (requestedSiteType === 'services') {
+      const rootPage = crawlData.pages.find(p => p.category === 'home') || crawlData.pages[0];
+      const aiDetectedType = await classifySiteTypeWithAI(
+        cleanDomain,
+        rootPage?.title || '',
+        rootPage?.metaDescription || '',
+        rootPage?.h1Text,
+        geminiKey
+      );
+
+      if (aiDetectedType) {
+        currentSiteType = aiDetectedType;
+      } else {
+        currentSiteType = crawlData.evidence.detectedProfile || 'b2b_services';
+      }
+    }
+
+    // Aktualizacja wykrytego profilu w dowodach technicznych
+    crawlData.evidence.detectedProfile = currentSiteType;
 
     // Wyliczanie szybkich błędów krytycznych (Top wycieki budżetu i SEO dostosowane do profilu)
     const quickIssues = generateQuickCriticalIssues(
@@ -228,7 +246,6 @@ export async function POST(req: Request) {
     const lossPercentage = avgScore >= 95 ? 2 : Math.max(5, Math.round((100 - avgScore) / 1.5));
 
     // Generowanie werdyktu AI (z odpornym fallbackiem w razie limitów Gemini)
-    const geminiKey = process.env.GEMINI_API_KEY || '';
     const aiReport = await generateGeminiReport(
       targetUrl,
       avgScore,
@@ -274,6 +291,8 @@ export async function POST(req: Request) {
       url: targetUrl,
       domain: cleanDomain,
       siteType: currentSiteType,
+      detectedProfile: currentSiteType,
+      profileLabel: SITE_TYPE_LABELS[currentSiteType] || 'Usługi B2B & Doradztwo',
       overallScore: avgScore,
       lossPercentage,
       aiReport,
