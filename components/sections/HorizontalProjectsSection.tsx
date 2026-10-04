@@ -28,7 +28,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
         <section id="portfolio" className="w-full lg:w-1/6 h-auto lg:h-full flex flex-col items-center justify-center bg-transparent relative py-20 lg:py-0 border-y lg:border-none border-slate-100">
           <div className="absolute -top-40 -left-40 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-orange-500/10 blur-[120px] rounded-full pointer-events-none" />
           <div className="font-mono text-[10px] text-orange-500 mb-4 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
+            <div className="w-1.5 h-1.5 bg-orange-500 rounded-full shadow-[0_0_6px_rgba(234,88,12,0.6)]" />
             WDROŻONE PROJEKTY
           </div>
           <h2 className="text-4xl sm:text-5xl md:text-6xl xl:text-[5.5rem] font-black tracking-tighter leading-tight mb-8 text-slate-900">
@@ -37,35 +37,35 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
         </section>
 
         {/* Sekcja 2: Stowarzyszenie KAS (PIERWSZY PROJEKT) */}
-        <section id="stowarzyszeniekas" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-12 xl:px-20 py-16 lg:py-0 border-t lg:border-none pt-16 lg:pt-14 xl:pt-20 pb-16 lg:pb-16 xl:pb-24">
-          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-10 xl:gap-16 items-center w-full">
+        <section id="stowarzyszeniekas" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-8 xl:px-16 2xl:px-20 py-16 lg:py-0 border-t lg:border-none pt-20 lg:pt-22 xl:pt-24 2xl:pt-28 pb-14 lg:pb-18 xl:pb-20 2xl:pb-24 overflow-hidden">
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-6 xl:gap-12 2xl:gap-16 items-center w-full">
             
             {/* Kolumna Lewa: Opis Inżyniersko-Biznesowy */}
-            <div className="space-y-4 xl:space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
+            <div className="space-y-3 lg:space-y-2 xl:space-y-4 2xl:space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">NGO • Dostępność Cyfrowa & E-usługi</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">Stowarzyszenie KAS</h2>
+              <h2 className="text-2xl sm:text-4xl lg:text-xl xl:text-3xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">Stowarzyszenie KAS</h2>
               
-              <div className="space-y-3 xl:space-y-4 text-xs sm:text-sm xl:text-base font-normal leading-relaxed">
+              <div className="space-y-2 lg:space-y-1.5 xl:space-y-3 2xl:space-y-4 text-xs sm:text-sm lg:text-[10.5px] xl:text-xs 2xl:text-base font-normal leading-snug lg:leading-normal xl:leading-relaxed">
                 <p className="text-slate-600">
                   <strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Organizacja pilnie potrzebowała bezpiecznego czatu wsparcia i kalendarza wizyt. Próba wdrożenia tak zaawansowanych modułów na tradycyjnym WordPressie kosztowałaby fortunę, a osiągnięcie na nim prawdziwej dostępności cyfrowej graniczyło z cudem.`)}
                 </p>
                 
                 <p className="text-slate-600">
-                  <strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Zbudowałem dedykowaną, błyskawiczną platformę z anonimowym czatem na żywo, automatycznym systemem rezerwacji i certyfikowaną dostępnością dla osób z niepełnosprawnościami – zachowując przy tym bajecznie prosty panel do edycji treści.`)}
+                  <strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Zbudowałem dedykowaną, błyskawiczną platformę z anonimowym czatem na żywo, automatycznym systemem rezerwacji i certyfikowaną dostępnością dla osób z niepełnosprawnościami - zachowując przy tym bajecznie prosty panel do edycji treści.`)}
                 </p>
                 
-                <div className="p-3.5 xl:p-4 rounded-xl bg-emerald-50 border-l-4 border-l-emerald-500 mt-3 xl:mt-4">
-                  <p className="text-slate-900 font-medium text-xs xl:text-sm">
+                <div className="p-2.5 sm:p-3.5 lg:p-2 xl:p-3.5 2xl:p-4 rounded-xl bg-emerald-50 border-l-4 border-l-emerald-500 mt-2 lg:mt-1.5 xl:mt-3 2xl:mt-4">
+                  <p className="text-slate-900 font-medium text-xs lg:text-[10.5px] xl:text-xs 2xl:text-sm">
                     <strong className="text-emerald-600">Wynik Biznesowy:</strong> {fixOrphans(`Ogromna oszczędność budżetu i zero comiesięcznych opłat za wtyczki. Organizacja zyskała pancerne narzędzie do niesienia pomocy bez ryzyka kar prawnych, a strona działa bezawaryjnie na każdym telefonie.`)}
                   </p>
                 </div>
               </div>
               
               {/* Przycisk CTA */}
-              <div className="flex justify-center lg:justify-start pt-4">
+              <div className="flex justify-center lg:justify-start pt-2 lg:pt-1 xl:pt-3">
                 <MagneticWrapper>
                   <button 
                     onClick={() => {
@@ -77,7 +77,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
                         bgClass: 'bg-emerald-500' 
                       });
                     }} 
-                    className="px-8 py-4 bg-emerald-600 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg shadow-emerald-500/20 hover:bg-emerald-700 transition-colors flex items-center gap-3"
+                    className="px-6 py-3 lg:px-5 lg:py-2.5 xl:px-8 xl:py-3.5 bg-emerald-600 text-white font-mono uppercase text-[9px] lg:text-[9.5px] xl:text-xs tracking-widest rounded-lg shadow-lg shadow-emerald-500/20 hover:bg-emerald-700 transition-colors flex items-center gap-2.5"
                   >
                     <Terminal size={14} />
                     <span>Zobacz system na żywo</span>
@@ -117,29 +117,29 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
         </section>
 
         {/* Sekcja 3: DzikiStyl.com */}
-        <section id="dzikistyl" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-12 xl:px-20 py-16 lg:py-0 border-t lg:border-none pt-16 lg:pt-14 xl:pt-20 pb-16 lg:pb-16 xl:pb-24">
-          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-10 xl:gap-16 items-center w-full">
-            <div className="space-y-4 xl:space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
+        <section id="dzikistyl" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-8 xl:px-16 2xl:px-20 py-16 lg:py-0 border-t lg:border-none pt-20 lg:pt-22 xl:pt-24 2xl:pt-28 pb-14 lg:pb-18 xl:pb-20 2xl:pb-24 overflow-hidden">
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-6 xl:gap-12 2xl:gap-16 items-center w-full">
+            <div className="space-y-3 lg:space-y-2 xl:space-y-4 2xl:space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
                 <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">E-commerce B2B</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">DzikiStyl.com</h2>
-              <div className="space-y-3 xl:space-y-4 text-xs sm:text-sm xl:text-base font-normal leading-relaxed">
+              <h2 className="text-2xl sm:text-4xl lg:text-xl xl:text-3xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">DzikiStyl.com</h2>
+              <div className="space-y-2 lg:space-y-1.5 xl:space-y-3 2xl:space-y-4 text-xs sm:text-sm lg:text-[10.5px] xl:text-xs 2xl:text-base font-normal leading-snug lg:leading-normal xl:leading-relaxed">
                 <p className="text-slate-600"><strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Przestarzała platforma (Shoper/Wix) nie radziła sobie z tysiącami wariantów produktów dla klientów B2B i "zapychała się" przy gigabajtowych plikach od agencji reklamowych.`)}</p>
                 
                 <p className="text-slate-600"><strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Stworzyłem od zera ultraszybką platformę z innowacyjnym konfiguratorem ("Frictionless Checkout"), podglądem znakowania na żywo i systemem automatycznej weryfikacji plików do druku w chmurze.`)}</p>
                 
-                <div className="p-3.5 xl:p-4 rounded-xl bg-orange-50 border-l-4 border-l-orange-500 mt-3 xl:mt-4">
-                  <p className="text-slate-900 font-medium text-xs xl:text-sm"><strong className="text-orange-500">Wynik Biznesowy:</strong> {fixOrphans(`Drastyczny skok konwersji dzięki poprawie szybkości. Automatyzacja wyeliminowała 90% pomyłek w druku i zaoszczędziła setki godzin pracy zespołu.`)}</p>
+                <div className="p-2.5 sm:p-3.5 lg:p-2 xl:p-3.5 2xl:p-4 rounded-xl bg-orange-50 border-l-4 border-l-orange-500 mt-2 lg:mt-1.5 xl:mt-3 2xl:mt-4">
+                  <p className="text-slate-900 font-medium text-xs lg:text-[10.5px] xl:text-xs 2xl:text-sm"><strong className="text-orange-500">Wynik Biznesowy:</strong> {fixOrphans(`Drastyczny skok konwersji dzięki poprawie szybkości. Automatyzacja wyeliminowała 90% pomyłek w druku i zaoszczędziła setki godzin pracy zespołu.`)}</p>
                 </div>
               </div>
-              <div className="flex justify-center lg:justify-start pt-4">
+              <div className="flex justify-center lg:justify-start pt-2 lg:pt-1 xl:pt-3">
                 <MagneticWrapper>
                   <button onClick={() => {
                     pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'DzikiStyl' });
                     handleOpenDemo({ url: 'https://dzikistyldemo.vercel.app/', title: 'dzikistyl.com', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
-                  }} className="px-8 py-4 bg-orange-500 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-colors flex items-center gap-3">
+                  }} className="px-6 py-3 lg:px-5 lg:py-2.5 xl:px-8 xl:py-3.5 bg-orange-500 text-white font-mono uppercase text-[9px] lg:text-[9.5px] xl:text-xs tracking-widest rounded-lg shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-colors flex items-center gap-2.5">
                     <Terminal size={14} />
                     <span>Zobacz system na żywo</span>
                   </button>
@@ -159,27 +159,27 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
         </section>
 
         {/* Sekcja 4: Sklep Urwis */}
-        <section id="sklepurwis" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-12 xl:px-20 py-16 lg:py-0 border-t lg:border-none pt-16 lg:pt-14 xl:pt-20 pb-16 lg:pb-16 xl:pb-24">
-          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-10 xl:gap-16 items-center w-full">
-            <div className="space-y-4 xl:space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
+        <section id="sklepurwis" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-8 xl:px-16 2xl:px-20 py-16 lg:py-0 border-t lg:border-none pt-20 lg:pt-22 xl:pt-24 2xl:pt-28 pb-14 lg:pb-18 xl:pb-20 2xl:pb-24 overflow-hidden">
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-6 xl:gap-12 2xl:gap-16 items-center w-full">
+            <div className="space-y-3 lg:space-y-2 xl:space-y-4 2xl:space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
                 <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">Grywalizacja / PWA</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">Sklep Urwis</h2>
-              <div className="space-y-3 xl:space-y-4 text-xs sm:text-sm xl:text-base font-normal leading-relaxed">
+              <h2 className="text-2xl sm:text-4xl lg:text-xl xl:text-3xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">Sklep Urwis</h2>
+              <div className="space-y-2 lg:space-y-1.5 xl:space-y-3 2xl:space-y-4 text-xs sm:text-sm lg:text-[10.5px] xl:text-xs 2xl:text-base font-normal leading-snug lg:leading-normal xl:leading-relaxed">
                 <p className="text-slate-600"><strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Sklep stacjonarny potrzebował nowoczesnego kanału dotarcia do klientów, angażując dzieci i rodziców bez wymuszania instalacji ciężkich aplikacji z Google Play/App Store.`)}</p>
                 <p className="text-slate-600"><strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Stworzyłem angażującą aplikację przeglądarkową niewymagającą instalacji, wyposażoną w interaktywne gry, moduł rozszerzonej rzeczywistości i wirtualnego doradcę wspieranego sztuczną inteligencją.`)}</p>
-                <div className="p-3.5 xl:p-4 rounded-xl bg-blue-50 border-l-4 border-l-blue-500 mt-3 xl:mt-4">
-                  <p className="text-slate-900 font-medium text-xs xl:text-sm"><strong className="text-blue-600">Wynik Biznesowy:</strong> {fixOrphans(`Zbudowanie wysoce zaangażowanej bazy lojalnych klientów. Grywalizacja zauważalnie zwiększyła częstotliwość powrotów do sklepu i średnią wartość koszyka zakupowego.`)}</p>
+                <div className="p-2.5 sm:p-3.5 lg:p-2 xl:p-3.5 2xl:p-4 rounded-xl bg-blue-50 border-l-4 border-l-blue-500 mt-2 lg:mt-1.5 xl:mt-3 2xl:mt-4">
+                  <p className="text-slate-900 font-medium text-xs lg:text-[10.5px] xl:text-xs 2xl:text-sm"><strong className="text-blue-600">Wynik Biznesowy:</strong> {fixOrphans(`Zbudowanie wysoce zaangażowanej bazy lojalnych klientów. Grywalizacja zauważalnie zwiększyła częstotliwość powrotów do sklepu i średnią wartość koszyka zakupowego.`)}</p>
                 </div>
               </div>
-              <div className="flex justify-center lg:justify-start pt-4">
+              <div className="flex justify-center lg:justify-start pt-2 lg:pt-1 xl:pt-3">
                 <MagneticWrapper>
                   <button onClick={() => {
                     pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'Sklep Urwis' });
                     handleOpenDemo({ url: 'https://www.sklep-urwis.pl', title: 'sklep-urwis.pl', colorClass: 'text-orange-500', bgClass: 'bg-orange-500' });
-                  }} className="px-8 py-4 bg-orange-500 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-colors flex items-center gap-3">
+                  }} className="px-6 py-3 lg:px-5 lg:py-2.5 xl:px-8 xl:py-3.5 bg-orange-500 text-white font-mono uppercase text-[9px] lg:text-[9.5px] xl:text-xs tracking-widest rounded-lg shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-colors flex items-center gap-2.5">
                     <Terminal size={14} />
                     <span>Zobacz system na żywo</span>
                   </button>
@@ -202,27 +202,27 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
         </section>
 
         {/* Sekcja 5: Kajaki u Maćka */}
-        <section id="kajaki" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-12 xl:px-20 py-16 lg:py-0 border-t lg:border-none pt-16 lg:pt-14 xl:pt-20 pb-16 lg:pb-16 xl:pb-24">
-          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-10 xl:gap-16 items-center w-full">
-            <div className="space-y-4 xl:space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
+        <section id="kajaki" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-6 lg:px-8 xl:px-16 2xl:px-20 py-16 lg:py-0 border-t lg:border-none pt-20 lg:pt-22 xl:pt-24 2xl:pt-28 pb-14 lg:pb-18 xl:pb-20 2xl:pb-24 overflow-hidden">
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-6 xl:gap-12 2xl:gap-16 items-center w-full">
+            <div className="space-y-3 lg:space-y-2 xl:space-y-4 2xl:space-y-6 text-center lg:text-left order-2 lg:order-1 relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 shadow-sm rounded-md mx-auto lg:mx-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 <span className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">Wizerunek / SEO</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">Kajaki u Maćka</h2>
-              <div className="space-y-3 xl:space-y-4 text-xs sm:text-sm xl:text-base font-normal leading-relaxed">
+              <h2 className="text-2xl sm:text-4xl lg:text-xl xl:text-3xl 2xl:text-6xl font-black text-slate-900 tracking-tighter">Kajaki u Maćka</h2>
+              <div className="space-y-2 lg:space-y-1.5 xl:space-y-3 2xl:space-y-4 text-xs sm:text-sm lg:text-[10.5px] xl:text-xs 2xl:text-base font-normal leading-snug lg:leading-normal xl:leading-relaxed">
                 <p className="text-slate-600"><strong className="text-slate-900">Wyzwanie:</strong> {fixOrphans(`Lokalny biznes turystyczny potrzebował nowoczesnego wizerunku w sieci oraz konfiguracji Social Mediów i map Google, by wyróżnić się na tle ogromnej konkurencji.`)}</p>
                 <p className="text-slate-600"><strong className="text-slate-900">Rozwiązanie:</strong> {fixOrphans(`Zbudowałem błyskawiczny landing page z automatycznym systemem pozyskiwania opinii. Skonfigurowałem fanpage i Wizytówkę Google z pełną spójnością wizualną i techniczną.`)}</p>
-                <div className="p-3.5 xl:p-4 rounded-xl bg-orange-50 border-l-4 border-l-orange-500 mt-3 xl:mt-4">
-                  <p className="text-slate-900 font-medium text-xs xl:text-sm"><strong className="text-orange-500">Wynik Biznesowy:</strong> {fixOrphans(`Skokowy wzrost zaufania u nowych klientów i błyskawiczne pozyskiwanie pozytywnych opinii (5 gwiazdek), co w pełni napędza rezerwacje na nadchodzące weekendy bez wydawania złotówki na reklamy.`)}</p>
+                <div className="p-2.5 sm:p-3.5 lg:p-2 xl:p-3.5 2xl:p-4 rounded-xl bg-orange-50 border-l-4 border-l-orange-500 mt-2 lg:mt-1.5 xl:mt-3 2xl:mt-4">
+                  <p className="text-slate-900 font-medium text-xs lg:text-[10.5px] xl:text-xs 2xl:text-sm"><strong className="text-orange-500">Wynik Biznesowy:</strong> {fixOrphans(`Skokowy wzrost zaufania u nowych klientów i błyskawiczne pozyskiwanie pozytywnych opinii (5 gwiazdek), co w pełni napędza rezerwacje na nadchodzące weekendy bez wydawania złotówki na reklamy.`)}</p>
                 </div>
               </div>
-              <div className="flex justify-center lg:justify-start pt-4">
+              <div className="flex justify-center lg:justify-start pt-2 lg:pt-1 xl:pt-3">
                 <MagneticWrapper>
                   <button onClick={() => {
                     pushGTMEvent('portfolio_uruchomiono_demo', { projekt: 'Kajaki u Maćka' });
                     handleOpenDemo({ url: 'https://kajaki-u-macka.pl', title: 'kajaki-u-macka.pl', colorClass: 'text-emerald-500', bgClass: 'bg-orange-500' });
-                  }} className="px-8 py-4 bg-orange-500 text-white font-mono uppercase text-[10px] lg:text-xs tracking-widest rounded-lg shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-colors flex items-center gap-3">
+                  }} className="px-6 py-3 lg:px-5 lg:py-2.5 xl:px-8 xl:py-3.5 bg-orange-500 text-white font-mono uppercase text-[9px] lg:text-[9.5px] xl:text-xs tracking-widest rounded-lg shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-colors flex items-center gap-2.5">
                     <Terminal size={14} />
                     <span>Zobacz system na żywo</span>
                   </button>
@@ -245,75 +245,75 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
         </section>
 
         {/* Sekcja 6: Referencje */}
-        <section id="referencje" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-4 lg:px-6 xl:px-12 pt-16 lg:pt-14 xl:pt-16 2xl:pt-24 pb-10 lg:pb-10 xl:pb-12 2xl:pb-18 border-t lg:border-none">
-          <div className="flex flex-col w-full max-w-5xl mx-auto relative z-10 gap-2.5 lg:gap-2.5 xl:gap-3.5 2xl:gap-5 px-2 py-1">
+        <section id="referencje" className="w-full lg:w-1/6 h-auto lg:h-full flex items-center justify-center bg-transparent lg:border-l border-slate-200 px-4 lg:px-6 xl:px-12 pt-20 lg:pt-22 xl:pt-24 2xl:pt-28 pb-14 lg:pb-18 xl:pb-20 2xl:pb-22 border-t lg:border-none overflow-hidden">
+          <div className="flex flex-col w-full max-w-5xl mx-auto relative z-10 gap-2 lg:gap-1.5 xl:gap-3 2xl:gap-5 px-2 py-1">
             
             {/* Michał - DzikiStyl */}
-            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-2.5 lg:gap-3 xl:gap-5 2xl:gap-8">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-2 lg:gap-2 xl:gap-4 2xl:gap-8">
               <div className="shrink-0 relative z-20">
-                <a href="https://dzikistyldemo.vercel.app/" target="_blank" rel="noopener noreferrer" className="block w-14 h-14 sm:w-16 sm:h-16 lg:w-14 lg:h-14 xl:w-18 xl:h-18 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-orange-500 bg-white shadow-premium relative group overflow-hidden transition-transform duration-500 hover:scale-105">
+                <a href="https://dzikistyldemo.vercel.app/" target="_blank" rel="noopener noreferrer" className="block w-11 h-11 sm:w-14 sm:h-14 lg:w-9 lg:h-9 xl:w-14 xl:h-14 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-orange-500 bg-white shadow-premium relative group overflow-hidden transition-transform duration-500 hover:scale-105">
                   <Image src="/DzikiMichał.jpg" alt="Michał - DzikiStyl" fill sizes="96px" quality={80} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <Image src="/dzikistyl-logo.png" alt="DzikiStyl Logo" fill sizes="96px" quality={80} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply" />
                   </div>
                 </a>
               </div>
-              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-2.5 sm:p-3.5 xl:p-4 2xl:p-5 shadow-premium-soft">
-                <div className="hidden lg:block absolute top-5 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
-                <div className="hidden lg:block absolute top-5 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
-                <div className="mb-1">
-                  <h3 className="text-orange-500 font-bold tracking-widest uppercase text-xs xl:text-sm">Komentarz Michała</h3>
-                  <p className="text-slate-400 font-mono text-[9px] xl:text-[10px] uppercase tracking-widest mt-0.5">Właściciel, DzikiStyl.com</p>
+              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-2 sm:p-3 lg:p-2 xl:p-3.5 2xl:p-5 shadow-premium-soft">
+                <div className="hidden lg:block absolute top-4 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
+                <div className="hidden lg:block absolute top-4 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
+                <div className="mb-0.5 lg:mb-0.5 xl:mb-1">
+                  <h3 className="text-orange-500 font-bold tracking-widest uppercase text-[11px] lg:text-[10px] xl:text-sm">Komentarz Michała</h3>
+                  <p className="text-slate-400 font-mono text-[8.5px] lg:text-[8px] xl:text-[10px] uppercase tracking-widest mt-0.5">Właściciel, DzikiStyl.com</p>
                 </div>
-                <div className="w-full h-px bg-slate-100 mb-1.5" />
-                <p className="text-[11px] lg:text-[11px] xl:text-xs 2xl:text-sm font-normal text-slate-600 leading-snug xl:leading-relaxed italic text-left">
-                  &quot;{fixOrphans(`Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból – żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji. `)}<strong className="text-slate-900 font-medium">{fixOrphans(`To, co Marcin (Molenda Development) robi w pojedynkę, po prostu przekracza ludzkie pojęcie i technologicznie wyprzedza nasze czasy o 5 lat do przodu!`)}</strong>{fixOrphans(` Z całego serca polecam usługi Molenda Development każdemu. `)}<strong className="text-orange-500 font-medium">{fixOrphans(`Wielkie dzięki – zrobiłeś absolutny kosmos!`)}</strong>&quot;
+                <div className="w-full h-px bg-slate-100 mb-1 lg:mb-0.5 xl:mb-1.5" />
+                <p className="text-[10.5px] sm:text-xs lg:text-[9.5px] xl:text-xs 2xl:text-sm font-normal text-slate-600 leading-snug lg:leading-snug xl:leading-relaxed italic text-left">
+                  &quot;{fixOrphans(`Przez lata sam rzeźbiłem stronę DzikiStyl i zawsze był ten sam ból - żadna platforma nie była w stanie udźwignąć moich skomplikowanych wymagań dotyczących personalizacji. `)}<strong className="text-slate-900 font-medium">{fixOrphans(`To, co Marcin (Molenda Development) robi w pojedynkę, po prostu przekracza ludzkie pojęcie i technologicznie wyprzedza nasze czasy o 5 lat do przodu!`)}</strong>{fixOrphans(` Z całego serca polecam usługi Molenda Development każdemu. `)}<strong className="text-orange-500 font-medium">{fixOrphans(`Wielkie dzięki - zrobiłeś absolutny kosmos!`)}</strong>&quot;
                 </p>
               </div>
             </div>
 
             {/* Krzysztof - Sklep Urwis */}
-            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-2.5 lg:gap-3 xl:gap-5 2xl:gap-8">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-2 lg:gap-2 xl:gap-4 2xl:gap-8">
               <div className="shrink-0 relative z-20">
-                <a href="https://www.sklep-urwis.pl" target="_blank" rel="noopener noreferrer" className="block w-14 h-14 sm:w-16 sm:h-16 lg:w-14 lg:h-14 xl:w-18 xl:h-18 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-blue-500 bg-white shadow-premium relative group overflow-hidden transition-transform duration-500 hover:scale-105">
+                <a href="https://www.sklep-urwis.pl" target="_blank" rel="noopener noreferrer" className="block w-11 h-11 sm:w-14 sm:h-14 lg:w-9 lg:h-9 xl:w-14 xl:h-14 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-blue-500 bg-white shadow-premium relative group overflow-hidden transition-transform duration-500 hover:scale-105">
                   <Image src="/Krzysztof_Urwis.jpg" alt="Krzysztof - Sklep Urwis" fill sizes="96px" quality={80} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <Image src="/sklepurwis-logo.png" alt="Urwis Logo" fill sizes="96px" quality={80} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply" />
                   </div>
                 </a>
               </div>
-              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-2.5 sm:p-3.5 xl:p-4 2xl:p-5 shadow-premium-soft">
-                <div className="hidden lg:block absolute top-5 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
-                <div className="hidden lg:block absolute top-5 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
-                <div className="mb-1">
-                  <h3 className="text-blue-500 font-bold tracking-widest uppercase text-xs xl:text-sm">Komentarz Krzysztofa</h3>
-                  <p className="text-slate-400 font-mono text-[9px] xl:text-[10px] uppercase tracking-widest mt-0.5">Właściciel, Sklep-Urwis.pl</p>
+              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-2 sm:p-3 lg:p-2 xl:p-3.5 2xl:p-5 shadow-premium-soft">
+                <div className="hidden lg:block absolute top-4 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
+                <div className="hidden lg:block absolute top-4 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
+                <div className="mb-0.5 lg:mb-0.5 xl:mb-1">
+                  <h3 className="text-blue-500 font-bold tracking-widest uppercase text-[11px] lg:text-[10px] xl:text-sm">Komentarz Krzysztofa</h3>
+                  <p className="text-slate-400 font-mono text-[8.5px] lg:text-[8px] xl:text-[10px] uppercase tracking-widest mt-0.5">Właściciel, Sklep-Urwis.pl</p>
                 </div>
-                <div className="w-full h-px bg-slate-100 mb-1.5" />
-                <p className="text-[11px] lg:text-[11px] xl:text-xs 2xl:text-sm font-normal text-slate-600 leading-snug xl:leading-relaxed italic text-left">
+                <div className="w-full h-px bg-slate-100 mb-1 lg:mb-0.5 xl:mb-1.5" />
+                <p className="text-[10.5px] sm:text-xs lg:text-[9.5px] xl:text-xs 2xl:text-sm font-normal text-slate-600 leading-snug lg:leading-snug xl:leading-relaxed italic text-left">
                   &quot;{fixOrphans(`Polecam z całego serca. Marcin stworzył dla mojego sklepu z zabawkami aplikację, która ma w sobie wszystko (i jeszcze więcej!) - koło fortuny z rabatami, strefę zabawy z grami na telefon i kolorowanki z naszym Urwisem. `)}<strong className="text-slate-900 font-medium">{fixOrphans(`Zarówno strona sklepu, jak i aplikacja PWA przeszły moje najśmielsze oczekiwania`)}</strong> - <strong className="text-blue-600 font-medium">{fixOrphans(`czysty profesjonalizm i masa bajerów.`)}</strong>&quot;
                 </p>
               </div>
             </div>
 
             {/* Maciek - Kajaki u Maćka */}
-            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-2.5 lg:gap-3 xl:gap-5 2xl:gap-8 pb-1">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-2 lg:gap-2 xl:gap-4 2xl:gap-8 pb-1">
               <div className="shrink-0 relative z-20">
-                <a href="https://kajaki-u-macka.pl" target="_blank" rel="noopener noreferrer" className="block w-14 h-14 sm:w-16 sm:h-16 lg:w-14 lg:h-14 xl:w-18 xl:h-18 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-emerald-500 bg-white shadow-premium relative overflow-hidden transition-transform duration-500 hover:scale-105">
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-2">
+                <a href="https://kajaki-u-macka.pl" target="_blank" rel="noopener noreferrer" className="block w-11 h-11 sm:w-14 sm:h-14 lg:w-9 lg:h-9 xl:w-14 xl:h-14 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-emerald-500 bg-white shadow-premium relative overflow-hidden transition-transform duration-500 hover:scale-105">
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-1.5">
                     <Image src="/kajaki-u-macka-logo.png" alt="Kajaki u Maćka Logo" fill sizes="96px" quality={80} className="object-cover mix-blend-multiply" />
                   </div>
                 </a>
               </div>
-              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-2.5 sm:p-3.5 xl:p-4 2xl:p-5 shadow-premium-soft">
-                <div className="hidden lg:block absolute top-5 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
-                <div className="hidden lg:block absolute top-5 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
-                <div className="mb-1">
-                  <h3 className="text-emerald-500 font-bold tracking-widest uppercase text-xs xl:text-sm">Komentarz Maćka</h3>
-                  <p className="text-slate-400 font-mono text-[9px] xl:text-[10px] uppercase tracking-widest mt-0.5">Właściciel, Kajaki u Maćka</p>
+              <div className="relative w-full lg:w-3/4 bg-white border border-slate-200 rounded-2xl xl:rounded-3xl p-2 sm:p-3 lg:p-2 xl:p-3.5 2xl:p-5 shadow-premium-soft">
+                <div className="hidden lg:block absolute top-4 -left-[12px] w-0 h-0 border-y-[12px] border-y-transparent border-r-[12px] border-r-slate-200"></div>
+                <div className="hidden lg:block absolute top-4 -left-[11px] w-0 h-0 border-y-[11px] border-y-transparent border-r-[11px] border-r-white z-10"></div>
+                <div className="mb-0.5 lg:mb-0.5 xl:mb-1">
+                  <h3 className="text-emerald-500 font-bold tracking-widest uppercase text-[11px] lg:text-[10px] xl:text-sm">Komentarz Maćka</h3>
+                  <p className="text-slate-400 font-mono text-[8.5px] lg:text-[8px] xl:text-[10px] uppercase tracking-widest mt-0.5">Właściciel, Kajaki u Maćka</p>
                 </div>
-                <div className="w-full h-px bg-slate-100 mb-1.5" />
-                <p className="text-[11px] lg:text-[11px] xl:text-xs 2xl:text-sm font-normal text-slate-600 leading-snug xl:leading-relaxed italic text-left">
+                <div className="w-full h-px bg-slate-100 mb-1 lg:mb-0.5 xl:mb-1.5" />
+                <p className="text-[10.5px] sm:text-xs lg:text-[9.5px] xl:text-xs 2xl:text-sm font-normal text-slate-600 leading-snug lg:leading-snug xl:leading-relaxed italic text-left">
                   &quot;{fixOrphans(`O stary, `)}<strong className="text-slate-900 font-medium">{fixOrphans(`ta strona jest tak kozak, nie spodziewałem się aż takiego efektu!`)}</strong>{fixOrphans(` Wygląda naprawdę obłędnie. `)}<br></br>{fixOrphans(`Oprócz zjawiskowej strony, Marcin od zera założył i skonfigurował moją Wizytówkę Google i Fanpage na Facebooku, zachowując ten sam świetny motyw wizualny. Dał mi też potężne, praktyczne rady jak z nich korzystać, żeby skutecznie ściągać klientów na rzekę. `)}<strong className="text-emerald-600 font-medium">{fixOrphans(`Jest klasa, jesteś szef po prostu!`)}</strong>&quot;
                 </p>
               </div>
