@@ -285,6 +285,8 @@ export interface AuditMasterResponse {
   detectedProfile?: SiteType;
   profileLabel?: string;
   overallScore: number;
+  platformScore?: number;
+  platformLabel?: string;
   lossPercentage: number;
   aiReport: string;
   pillars: Pillar[];

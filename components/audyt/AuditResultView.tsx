@@ -12,6 +12,7 @@ import QuickCriticalIssues from './QuickCriticalIssues';
 import AdsAndTrackingCard from './AdsAndTrackingCard';
 import AuditChecklistSection from './AuditChecklistSection';
 import CompetitorBenchmarkCard from './CompetitorBenchmarkCard';
+import LighthouseGauge, { GaugeSegment } from './LighthouseGauge';
 import { pluralizePolish } from '@/app/api/audit-master/utils/crawler';
 
 export type { AuditMasterResponse as AuditResult };
@@ -38,12 +39,6 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
     navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-emerald-700';
-    if (score >= 50) return 'text-amber-600';
-    return 'text-rose-600';
   };
 
   const evidence = result.evidence;
@@ -95,6 +90,48 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       .replace(/—/g, '-');
   }, [result.aiReport]);
 
+  const isWordPress = result.detectedPlatform?.toLowerCase().includes('wordpress') || result.detectedPlatform?.toLowerCase().includes('woocommerce');
+
+  // Segmenty w dedykowanej klasie WordPress (Lighthouse style)
+  const wpSegments: GaugeSegment[] = React.useMemo(() => {
+    const perf = result.pillars?.find(p => p.name === 'Szybkość')?.score || 50;
+    const seo = result.pillars?.find(p => p.name === 'SEO')?.score || 60;
+    const sec = result.pillars?.find(p => p.name === 'Bezpieczeństwo')?.score || 40;
+    
+    const domCount = result.codeSmells?.domElements || 1500;
+    const domScore = domCount < 1600 ? 90 : domCount < 2600 ? 70 : 45;
+    const scriptScore = Math.max(30, 90 - (result.codeSmells?.badScripts || 0) * 8);
+    const wpHygiene = Math.round((domScore + scriptScore) / 2);
+
+    const ads = result.evidence?.adsAndTracking;
+    const trackingScore = (ads?.hasGoogleAds || ads?.hasGA4) ? (ads?.hasConsentModeV2 ? 90 : 60) : 40;
+
+    return [
+      { name: 'Szybkość', score: perf },
+      { name: 'SEO', score: seo },
+      { name: 'Bezpiecz.', score: sec },
+      { name: 'Kod WP', score: wpHygiene },
+      { name: 'Analityka', score: trackingScore }
+    ];
+  }, [result.pillars, result.codeSmells, result.evidence]);
+
+  const wpScore = React.useMemo(() => {
+    if (result.platformScore !== undefined) return result.platformScore;
+    const sum = wpSegments.reduce((acc, s) => acc + s.score, 0);
+    return Math.min(95, Math.round(sum / wpSegments.length));
+  }, [result.platformScore, wpSegments]);
+
+  // Segmenty ogólne (Wszystkie technologie)
+  const allTechSegments: GaugeSegment[] = React.useMemo(() => {
+    return [
+      { name: 'Szybkość', score: result.pillars?.find(p => p.name === 'Szybkość')?.score || 50 },
+      { name: 'SEO', score: result.pillars?.find(p => p.name === 'SEO')?.score || 60 },
+      { name: 'Bezpiecz.', score: result.pillars?.find(p => p.name === 'Bezpieczeństwo')?.score || 40 },
+      { name: 'Skala', score: result.pillars?.find(p => p.name === 'Skalowalność')?.score || 40 },
+      { name: 'Automatyz.', score: result.pillars?.find(p => p.name === 'Automatyzacja')?.score || 40 }
+    ];
+  }, [result.pillars]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -144,31 +181,76 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
         </div>
       </div>
 
-      {/* Hero Bento: Wynik Główny + Werdykt Architekta */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Karta Wyniku */}
-        <div className="lg:col-span-1 bg-white/70 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-8 flex flex-col justify-center items-center text-center">
-          <p className="text-slate-500 font-mono text-xs uppercase tracking-widest mb-3">Wynik Główny</p>
-          <div className={`text-7xl font-black mb-2 ${getScoreColor(result.overallScore)} tracking-tight font-sans`}>
-            {result.overallScore}<span className="text-2xl text-slate-400 font-normal">/100</span>
+      {/* Hero Bento: Podwójny Zegar Lighthouse + Werdykt Architekta */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+        {/* Karta Wyników Lighthouse (Zegary segmentowe) */}
+        <div className="xl:col-span-5 bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-6 md:p-8 flex flex-col justify-between backdrop-blur-2xl">
+          <div>
+            <div className="flex items-center justify-between gap-2 mb-4">
+              <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-widest">
+                Indeks Architektury i Kodu
+              </span>
+              <span className="font-mono text-[11px] text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded border border-slate-200/80">
+                Segmentacja Lighthouse
+              </span>
+            </div>
+
+            {/* Zegary segmentowe w stylu Google Lighthouse */}
+            {isWordPress ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-2 my-auto">
+                <div className="p-3.5 bg-slate-50/60 rounded-2xl border border-slate-200/60 flex flex-col items-center justify-center">
+                  <LighthouseGauge
+                    score={wpScore}
+                    title="Klasa WordPress"
+                    subtitle="W ekosystemie WP (cel: >85)"
+                    segments={wpSegments}
+                    size={160}
+                    highlight={true}
+                  />
+                </div>
+                <div className="p-3.5 bg-slate-50/60 rounded-2xl border border-slate-200/60 flex flex-col items-center justify-center">
+                  <LighthouseGauge
+                    score={result.overallScore}
+                    title="Wszystkie technologie"
+                    subtitle="Sufit monolitu vs Next.js"
+                    segments={allTechSegments}
+                    size={160}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="py-4 flex justify-center">
+                <LighthouseGauge
+                  score={result.overallScore}
+                  title="Wskaźnik Architektury Web"
+                  subtitle="Średnia ważona 5 filarów"
+                  segments={allTechSegments}
+                  size={185}
+                  highlight={true}
+                />
+              </div>
+            )}
           </div>
 
-          <div className="mt-4 p-3 bg-rose-50/70 border border-rose-200/60 rounded-xl w-full text-center">
-            <span className="text-xs font-mono text-rose-700 font-bold block">
-              Szacowany spadek {conversionLabel}:
-            </span>
-            <span className="text-xl font-black text-rose-600 font-mono">
-              ~{result.lossPercentage}%
-            </span>
+          <div className="mt-4 pt-4 border-t border-slate-100">
+            <div className="p-3 bg-rose-50/70 border border-rose-200/60 rounded-xl w-full text-center">
+              <span className="text-xs font-mono text-rose-700 font-bold block">
+                Szacowany spadek {conversionLabel}:
+              </span>
+              <span className="text-xl font-black text-rose-600 font-mono">
+                ~{result.lossPercentage}%
+              </span>
+            </div>
+            <p className="text-slate-500 text-[11px] font-mono mt-2.5 text-center leading-relaxed">
+              {isWordPress
+                ? 'Wynik w klasie WP ocenia higienę kodu w Twoim ekosystemie. Wynik ogólny odzwierciedla sufit monolitu PHP.'
+                : 'Średnia ważona z analizy kodu, Core Web Vitals, indeksacji i bezpieczeństwa.'}
+            </p>
           </div>
-
-          <p className="text-slate-500 text-[11px] font-mono mt-4">
-            Średnia ważona z analizy kodu, Core Web Vitals, indeksacji i bezpieczeństwa.
-          </p>
         </div>
 
         {/* Karta Syntezy Diagnostycznej Kodu */}
-        <div className="lg:col-span-2 bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-8 md:p-10 relative overflow-hidden flex flex-col justify-center">
+        <div className="xl:col-span-7 bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-6 md:p-10 relative overflow-hidden flex flex-col justify-center backdrop-blur-2xl">
           <div className="relative z-10">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-900 uppercase tracking-widest">

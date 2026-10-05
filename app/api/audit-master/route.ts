@@ -286,6 +286,28 @@ export async function POST(req: Request) {
         )
       : undefined;
 
+    // Obliczenie wyniku w dedykowanej klasie platformy (np. WordPress / WooCommerce)
+    const isWpDetected = rootData.detectedPlatform.includes('WordPress');
+    let platformScore: number | undefined = undefined;
+    let platformLabel: string | undefined = undefined;
+
+    if (isWpDetected) {
+      platformLabel = 'Klasa WordPress';
+      const domCount = rootData.codeSmells.domElements || 1500;
+      const domScore = domCount < 1600 ? 90 : domCount < 2600 ? 70 : 45;
+      const scriptScore = Math.max(30, 90 - (rootData.codeSmells.badScripts || 0) * 8);
+      const wpHygiene = Math.round((domScore + scriptScore) / 2);
+      const ads = crawlData.evidence.adsAndTracking;
+      const trackingScore = (ads?.hasGoogleAds || ads?.hasGA4) ? (ads?.hasConsentModeV2 ? 90 : 60) : 45;
+      platformScore = Math.min(95, Math.round(
+        (finalPerformanceScore * 0.25) + 
+        (finalSeoScore * 0.25) + 
+        (rootData.securityScore * 0.15) + 
+        (wpHygiene * 0.20) + 
+        (trackingScore * 0.15)
+      ));
+    }
+
     const responsePayload: AuditMasterResponse = {
       token: tokenStr,
       url: targetUrl,
@@ -294,6 +316,8 @@ export async function POST(req: Request) {
       detectedProfile: currentSiteType,
       profileLabel: SITE_TYPE_LABELS[currentSiteType] || 'Usługi B2B & Doradztwo',
       overallScore: avgScore,
+      platformScore,
+      platformLabel,
       lossPercentage,
       aiReport,
       detectedPlatform: rootData.detectedPlatform,
