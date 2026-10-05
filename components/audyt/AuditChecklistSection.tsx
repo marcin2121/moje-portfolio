@@ -460,47 +460,51 @@ export default function AuditChecklistSection({
       {/* Pasek Filtrów i Wyszukiwarki */}
       <div className="flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center pb-6 mb-6 border-b border-slate-200/70">
         {/* Filtry Kategorii */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none">
-          <button
-            type="button"
-            onClick={() => setSelectedCategory('all')}
-            className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap cursor-pointer ${
-              selectedCategory === 'all'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
-            }`}
-          >
-            Wszystkie obszary ({mergedCheckpoints.length})
-          </button>
-          {(Object.keys(CATEGORY_LABELS) as CheckpointCategory[])
-            .filter(catKey => {
-              if (siteType !== 'ecommerce' && catKey === 'ecommerce_cro') return false;
-              return true;
-            })
-            .map(catKey => {
-              const cat = CATEGORY_LABELS[catKey];
-              const Icon = cat.icon;
-              const count = mergedCheckpoints.filter(c => c.category === catKey).length;
-              const isCatSelected = selectedCategory === catKey;
-              return (
-                <button
-                  key={catKey}
-                  type="button"
-                  onClick={() => setSelectedCategory(catKey)}
-                  className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
-                    isCatSelected
-                      ? 'bg-slate-900 text-white shadow-sm'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
-                  }`}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  <span>{cat.label}</span>
-                  <span className={`text-[10px] font-mono px-1 rounded ${isCatSelected ? 'bg-slate-800 text-slate-300' : 'text-slate-400'}`}>
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
+        <div className="relative -mx-2 px-2 lg:mx-0 lg:px-0">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none scroll-smooth pr-6 lg:pr-0">
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('all')}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap cursor-pointer shrink-0 ${
+                selectedCategory === 'all'
+                  ? 'bg-slate-900 text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
+              }`}
+            >
+              Wszystkie obszary ({mergedCheckpoints.length})
+            </button>
+            {(Object.keys(CATEGORY_LABELS) as CheckpointCategory[])
+              .filter(catKey => {
+                if (siteType !== 'ecommerce' && catKey === 'ecommerce_cro') return false;
+                return true;
+              })
+              .map(catKey => {
+                const cat = CATEGORY_LABELS[catKey];
+                const Icon = cat.icon;
+                const count = mergedCheckpoints.filter(c => c.category === catKey).length;
+                const isCatSelected = selectedCategory === catKey;
+                return (
+                  <button
+                    key={catKey}
+                    type="button"
+                    onClick={() => setSelectedCategory(catKey)}
+                    className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 cursor-pointer shrink-0 ${
+                      isCatSelected
+                        ? 'bg-slate-900 text-white shadow-sm'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{cat.label}</span>
+                    <span className={`text-[10px] font-mono px-1 rounded ${isCatSelected ? 'bg-slate-800 text-slate-300' : 'text-slate-400'}`}>
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+          </div>
+          {/* Subtelny wskaźnik przewijania poziomego na smartfonach */}
+          <div aria-hidden="true" className="pointer-events-none absolute right-0 top-0 bottom-2 w-6 bg-gradient-to-l from-white via-white/80 to-transparent lg:hidden" />
         </div>
 
         {/* Wyszukiwarka na żywo */}
@@ -526,10 +530,25 @@ export default function AuditChecklistSection({
       </div>
 
       {/* Licznik aktywnych wyników */}
-      <div className="flex items-center justify-between text-xs text-slate-500 font-mono mb-4">
-        <span>
-          Wyświetlanie: <strong className="text-slate-800">{filteredCheckpoints.length}</strong> {selectedStatus === 'issues' ? 'kwestii wymagających uwagi' : `z ${computedStats.total} punktów kontrolnych`}
-        </span>
+      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 font-mono mb-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <span>
+            Wyświetlanie: <strong className="text-slate-800">{filteredCheckpoints.length}</strong> {selectedStatus === 'issues' ? 'kwestii wymagających uwagi' : `z ${computedStats.total} punktów kontrolnych`}
+          </span>
+          {selectedCategory !== 'all' && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-indigo-50 border border-indigo-200 text-indigo-800 text-[11px] font-sans font-medium">
+              <span>Obszar: {CATEGORY_LABELS[selectedCategory as CheckpointCategory]?.label || selectedCategory}</span>
+              <button
+                type="button"
+                onClick={() => setSelectedCategory('all')}
+                className="hover:text-indigo-950 font-bold ml-1 cursor-pointer"
+                title="Wyczyść filtr obszaru"
+              >
+                ✕
+              </button>
+            </span>
+          )}
+        </div>
         <div className="flex items-center gap-3">
           {selectedStatus !== 'all' && (
             <button
@@ -577,16 +596,26 @@ export default function AuditChecklistSection({
                   key={cp.id}
                   className="p-4 md:p-5 rounded-2xl border border-emerald-200/60 bg-emerald-50/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-colors"
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-3 flex-grow">
                     <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <span className="font-mono text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                          {CATEGORY_LABELS[cp.category]?.label || cp.category}
-                        </span>
-                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded-md tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedCategory(cp.category)}
+                          className="font-mono text-[11px] font-semibold text-slate-500 hover:text-indigo-600 uppercase tracking-wider transition-colors cursor-pointer text-left inline-flex items-center gap-1 group"
+                          title={`Filtruj wg obszaru: ${CATEGORY_LABELS[cp.category]?.label || cp.category}`}
+                        >
+                          <span className="group-hover:underline">{CATEGORY_LABELS[cp.category]?.label || cp.category}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedStatus('passed')}
+                          className="font-mono text-[11px] font-bold px-2 py-0.5 rounded-md tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 transition-colors cursor-pointer"
+                          title="Filtruj: Zgodne ze standardem"
+                        >
                           Zgodne ze standardem
-                        </span>
+                        </button>
                       </div>
                       <h4 className="text-sm md:text-base font-bold text-slate-900 tracking-tight">
                         {cp.name}
@@ -608,8 +637,8 @@ export default function AuditChecklistSection({
 
             // Karta dla błędów i ostrzeżeń
             const statusBadgeBg = isFailed
-              ? 'bg-rose-50 text-rose-800 border border-rose-200'
-              : 'bg-amber-50 text-amber-800 border border-amber-200';
+              ? 'bg-rose-50 text-rose-800 border border-rose-200 hover:bg-rose-100'
+              : 'bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100';
 
             const statusText = isFailed
               ? 'Wymaga poprawy'
@@ -627,18 +656,42 @@ export default function AuditChecklistSection({
                 {/* Górny Pasek: Kategoria + Status + Metryka */}
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                      {CATEGORY_LABELS[cp.category]?.label || cp.category}
-                    </span>
-                    <span className={`font-mono text-[11px] font-bold px-2 py-0.5 rounded-md tracking-wider ${statusBadgeBg}`}>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedCategory(cp.category)}
+                      className="font-mono text-[11px] font-semibold text-slate-500 hover:text-indigo-600 uppercase tracking-wider transition-colors cursor-pointer text-left inline-flex items-center gap-1 group"
+                      title={`Filtruj wg obszaru: ${CATEGORY_LABELS[cp.category]?.label || cp.category}`}
+                    >
+                      <span className="group-hover:underline">{CATEGORY_LABELS[cp.category]?.label || cp.category}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedStatus(isFailed ? 'failed' : 'warning')}
+                      className={`font-mono text-[11px] font-bold px-2 py-0.5 rounded-md tracking-wider transition-colors cursor-pointer ${statusBadgeBg}`}
+                      title={`Filtruj tylko: ${statusText}`}
+                    >
                       {statusText}
-                    </span>
+                    </button>
                   </div>
 
                   {cp.metric && (
-                    <span className="font-mono text-xs text-slate-600 bg-white/80 border border-slate-200/80 px-2 py-0.5 rounded-md">
-                      {cp.metric}
-                    </span>
+                    cp.evidence && cp.evidence.length > 0 ? (
+                      <button
+                        type="button"
+                        onClick={() => toggleExpand(cp.id)}
+                        className="font-mono text-xs text-slate-700 bg-white/90 hover:bg-white border border-slate-200/90 hover:border-slate-400 px-2.5 py-0.5 rounded-md transition-all cursor-pointer inline-flex items-center gap-1 shadow-2xs group"
+                        title={isExpanded ? 'Ukryj powiązane adresy URL' : 'Pokaż powiązane adresy URL'}
+                      >
+                        <span>{cp.metric}</span>
+                        <span className="text-[10px] text-slate-400 group-hover:text-slate-700 font-sans">
+                          ({isExpanded ? 'zwiń' : 'szczegóły'})
+                        </span>
+                      </button>
+                    ) : (
+                      <span className="font-mono text-xs text-slate-600 bg-white/80 border border-slate-200/80 px-2 py-0.5 rounded-md">
+                        {cp.metric}
+                      </span>
+                    )
                   )}
                 </div>
 

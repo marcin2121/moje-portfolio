@@ -125,8 +125,109 @@ export default function PagesTable({ pages }: PagesTableProps) {
         )}
       </div>
 
-      {/* Tabela */}
-      <div className="overflow-x-auto rounded-2xl border border-slate-200/60">
+      {/* Widok Kart Mobilnych (< md) */}
+      <div className="md:hidden space-y-3">
+        {filteredPages.length === 0 ? (
+          <div className="text-center py-8 text-slate-400 font-mono text-xs bg-slate-50/50 rounded-2xl border border-slate-200/60 p-4">
+            Brak wyników spełniających kryteria wyszukiwania.
+          </div>
+        ) : (
+          filteredPages.map((p) => {
+            const hasIssues = p.h1Count === 0 || !p.canonical || p.isThinContent || p.missingAltCount > 0 || p.statusCode !== 200;
+            return (
+              <div
+                key={p.url}
+                className={`p-4 rounded-2xl border transition-all ${
+                  hasIssues
+                    ? 'bg-white border-slate-200/90 shadow-2xs'
+                    : 'bg-emerald-50/15 border-emerald-200/50'
+                }`}
+              >
+                {/* Górny wiersz: URL i status HTTP */}
+                <div className="flex items-start justify-between gap-2 mb-1.5">
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-xs text-slate-800 hover:text-orange-600 font-medium break-all line-clamp-2 group flex-grow"
+                  >
+                    <span className="group-hover:underline">{p.url}</span>
+                    <ExternalLink className="w-3 h-3 inline-block ml-1 opacity-40 shrink-0" />
+                  </a>
+                  <span
+                    className={`font-mono text-xs px-2 py-0.5 rounded-md font-bold shrink-0 ${
+                      p.statusCode === 200
+                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                        : 'bg-rose-50 text-rose-700 border border-rose-200'
+                    }`}
+                  >
+                    HTTP {p.statusCode}
+                  </span>
+                </div>
+
+                {/* Tytuł podstrony */}
+                {p.title && (
+                  <p className="text-[11px] text-slate-500 line-clamp-1 mb-2.5">
+                    {p.title}
+                  </p>
+                )}
+
+                {/* Pigułki parametrów technicznych */}
+                <div className="flex flex-wrap gap-1.5 text-[10px] font-mono pt-1 border-t border-slate-100">
+                  <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
+                    {categoryLabels[p.category] || p.category}
+                  </span>
+                  
+                  {p.h1Count === 1 ? (
+                    <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded font-bold">
+                      ✓ H1: 1
+                    </span>
+                  ) : p.h1Count === 0 ? (
+                    <span className="bg-rose-50 text-rose-700 border border-rose-200 px-1.5 py-0.5 rounded font-bold">
+                      ✕ Brak H1
+                    </span>
+                  ) : (
+                    <span className="bg-amber-50 text-amber-800 border border-amber-200 px-1.5 py-0.5 rounded font-bold">
+                      ⚠ H1: {p.h1Count}x
+                    </span>
+                  )}
+
+                  {p.canonical ? (
+                    <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded font-bold">
+                      ✓ Canonical
+                    </span>
+                  ) : (
+                    <span className="bg-rose-50 text-rose-700 border border-rose-200 px-1.5 py-0.5 rounded font-bold">
+                      ✕ Brak Canonical
+                    </span>
+                  )}
+
+                  {p.missingAltCount > 0 ? (
+                    <span className="bg-amber-50 text-amber-800 border border-amber-200 px-1.5 py-0.5 rounded font-bold">
+                      ⚠ Brak alt: {p.missingAltCount}
+                    </span>
+                  ) : (
+                    <span className="bg-slate-50 text-slate-500 border border-slate-200/60 px-1.5 py-0.5 rounded">
+                      ✓ Wszystkie alt
+                    </span>
+                  )}
+
+                  <span className="bg-slate-50 text-slate-500 border border-slate-200/60 px-1.5 py-0.5 rounded">
+                    {p.responseTimeMs}ms
+                  </span>
+
+                  <span className="bg-slate-50 text-slate-500 border border-slate-200/60 px-1.5 py-0.5 rounded">
+                    {p.wordCount} słów
+                  </span>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* Tabela Pulpitowa (md+) */}
+      <div className="hidden md:block overflow-x-auto rounded-2xl border border-slate-200/60">
         <table className="w-full text-left text-xs">
           <thead className="bg-slate-50/90 border-b border-slate-200/70 font-mono text-[11px] text-slate-500 uppercase tracking-wider">
             <tr>

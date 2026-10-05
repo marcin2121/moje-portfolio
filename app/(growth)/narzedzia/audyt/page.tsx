@@ -19,7 +19,7 @@ function AudytFormFallback() {
 
 export default function AudytPage() {
   return (
-    <main className="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-slate-600 selection:bg-orange-500 selection:text-white">
+    <main className="min-h-screen pt-36 sm:pt-40 md:pt-44 pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-slate-600 selection:bg-orange-500 selection:text-white">
       {/* Powrót */}
       <Link 
         href="/narzedzia" 
