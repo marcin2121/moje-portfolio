@@ -13,6 +13,7 @@ import AdsAndTrackingCard from './AdsAndTrackingCard';
 import AuditChecklistSection from './AuditChecklistSection';
 import CompetitorBenchmarkCard from './CompetitorBenchmarkCard';
 import LighthouseGauge, { GaugeSegment } from './LighthouseGauge';
+import MissingPointsRoadmap from './MissingPointsRoadmap';
 import { pluralizePolish } from '@/app/api/audit-master/utils/crawler';
 
 export type { AuditMasterResponse as AuditResult };
@@ -190,8 +191,8 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
               <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-widest">
                 Indeks Architektury i Kodu
               </span>
-              <span className="font-mono text-[11px] text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded border border-slate-200/80">
-                Segmentacja Lighthouse
+              <span className="font-mono text-[11px] text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80 whitespace-nowrap">
+                Wskaźnik Wielowektorowy
               </span>
             </div>
 
@@ -270,6 +271,13 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           </div>
         </div>
       </div>
+
+      {/* SEKCJA 0.5: Bilans utraconych punktów & Recepta na 100/100 */}
+      <MissingPointsRoadmap
+        result={result}
+        wpScore={wpScore}
+        isWordPress={isWordPress}
+      />
 
       {/* SEKCJA 1: Szybka Diagnoza Priorytetowa */}
       {result.quickIssues && result.quickIssues.length > 0 && (

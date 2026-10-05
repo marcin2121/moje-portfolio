@@ -48,6 +48,9 @@ export interface PageTrackingSignals {
   hasFormSpamProtection?: boolean;
   hasOpenGraph?: boolean;
   hasExpressPayments?: boolean;
+  hasClarity?: boolean;
+  hasHotjar?: boolean;
+  hasSessionRecording?: boolean;
   // Sygnały profilu (Profile Signals)
   hasBipLink?: boolean;
   hasDeklaracjaDostepnosci?: boolean;
@@ -361,6 +364,26 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
     lowerHtml.includes('"@type":"professionalservice"') || lowerHtml.includes('"@type": "professionalservice"') ||
     /oferta\s+dla\s+firm|zapytaj\s+o\s+wycen[ęe]|case\s+study|nasze\s+wdro[żz]enia|konsultacje\s+b2b/i.test(rawHtml);
 
+  // 23. Analityka behawioralna i mapy ciepła: Microsoft Clarity (Cookieless, Snippet, Tag, ID)
+  const hasClarity =
+    lowerHtml.includes('clarity.ms') ||
+    lowerHtml.includes('window.clarity') ||
+    lowerHtml.includes('clarity("') ||
+    lowerHtml.includes("clarity('") ||
+    lowerHtml.includes('c,l,a,r,i,t,y') ||
+    lowerHtml.includes('microsoft-clarity') ||
+    lowerHtml.includes('yotc5ca90h') ||
+    cheerioInstance('script[id*="clarity"], script[src*="clarity"]').length > 0;
+
+  // 24. Hotjar
+  const hasHotjar =
+    lowerHtml.includes('hotjar.com') ||
+    lowerHtml.includes('static.hotjar.com') ||
+    lowerHtml.includes('hjid:') ||
+    lowerHtml.includes('_hjsettings');
+
+  const hasSessionRecording = hasClarity || hasHotjar;
+
   return {
     hasGoogleAds,
     googleAdsId,
@@ -388,6 +411,9 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
     hasFormSpamProtection,
     hasOpenGraph,
     hasExpressPayments,
+    hasClarity,
+    hasHotjar,
+    hasSessionRecording,
     hasBipLink,
     hasDeklaracjaDostepnosci,
     hasEdziennik,
@@ -793,6 +819,9 @@ export function buildEvidenceSummary(
   const hasFormSpamProtection = signals.some(s => s.hasFormSpamProtection);
   const hasOpenGraph = signals.some(s => s.hasOpenGraph);
   const hasExpressPayments = signals.some(s => s.hasExpressPayments);
+  const hasClarity = signals.some(s => s.hasClarity);
+  const hasHotjar = signals.some(s => s.hasHotjar);
+  const hasSessionRecording = hasClarity || hasHotjar || signals.some(s => s.hasSessionRecording);
 
   const hasProductPages = isEcommerce || pages.some(p => p.category === 'product' || p.url.includes('/produkt/') || p.url.includes('/product/'));
   const hasOmnibusCompliance = hasSalePrice ? hasOmnibusMention : true;
@@ -883,7 +912,7 @@ export function buildEvidenceSummary(
       severity: 'critical',
       description: `Podstrony z wariantami produktów zwracają błąd 504 Gateway Timeout lub ładują się powyżej 2.5 sekundy (dotyczy m.in. ${variantTimeoutUrls[0]}).`,
       impact: 'Gdy użytkownik klika w reklamę produktową z wybranym rozmiarem/kolorem z Google Shopping lub Meta Ads, widzi biały ekran błędu. 100% budżetu wydanego na to kliknięcie zostaje bezpowrotnie przepalone, a klient natychmiast kupuje u konkurencji.',
-      developerSolution: 'Zoptymalizuję zapytania SQL wariantów w bazie, usunę wąskie gardła w szablonie i wdrożę object caching (Redis) w 24–48h, obniżając czas odpowiedzi poniżej 300ms.'
+      developerSolution: 'Zoptymalizuję zapytania SQL wariantów w bazie, usunę wąskie gardła w szablonie i wdrożę object caching (Redis) w 24-48h, obniżając czas odpowiedzi poniżej 300ms.'
     });
   }
 
@@ -930,7 +959,7 @@ export function buildEvidenceSummary(
       title: 'Utrata połączeń na smartfonach: nieklikalny numer telefonu w treści',
       severity: 'warning',
       description: 'Wykryto numer telefonu w treści strony, który nie jest aktywnym linkiem <a href="tel:...">.',
-      impact: 'Klient wchodzący ze smartfona z płatnej reklamy nie może kliknąć, aby połączyć się z biurem – musi ręcznie kopiować lub przepisywać numer. Powoduje to utratę nawet 40-50% potencjalnych połączeń telefonicznych.',
+      impact: 'Klient wchodzący ze smartfona z płatnej reklamy nie może kliknąć, aby połączyć się z biurem - musi ręcznie kopiować lub przepisywać numer. Powoduje to utratę nawet 40-50% potencjalnych połączeń telefonicznych.',
       developerSolution: 'Przekształcę wszystkie wystąpienia numerów telefonów w klikalne przyciski tel: z mikro-animacją i podpiętą telemetrią kliknięć w 24h.'
     });
   }
@@ -997,6 +1026,9 @@ export function buildEvidenceSummary(
     hasClickToCallTracking,
     hasFormSpamProtection,
     hasOpenGraph,
+    hasClarity,
+    hasHotjar,
+    hasSessionRecording,
     variantTimeoutUrls,
     adBudgetLeakRisk,
     issues: trackingIssues,
@@ -1273,7 +1305,7 @@ export function generateQuickCriticalIssues(
     });
   }
 
-  // 2. Priorytet: Dla podmiotów publicznych i szkół – brak Deklaracji Dostępności (wymóg ustawowy)
+  // 2. Priorytet: Dla podmiotów publicznych i szkół - brak Deklaracji Dostępności (wymóg ustawowy)
   if ((siteType === 'gov_public' || siteType === 'education') && !evidence.profileSignals?.hasDeklaracjaDostepnosci) {
     issues.push({
       id: 'quick-missing-wcag-declaration',

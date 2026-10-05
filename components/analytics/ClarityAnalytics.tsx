@@ -1,7 +1,3 @@
-'use client';
-
-import Script from 'next/script';
-
 /**
  * Microsoft Clarity w trybie Cookieless (Zero Cookies / Zero Consent Banner).
  * 
@@ -10,17 +6,15 @@ import Script from 'next/script';
  * sprawia, że Clarity działa w pamięci sesji bez zapisywania ani odczytywania plików cookie
  * czy localStorage na urządzeniu użytkownika.
  * 
- * Nie wymaga to wyświetlania banera cookies.
- * 
- * Aby aktywować, wystarczy dodać NEXT_PUBLIC_CLARITY_ID w pliku .env.local
+ * Renderowane po stronie serwera (SSR) jako inline script, co gwarantuje
+ * natychmiastową detekcję przez silnik audytu i boty.
  */
 export default function ClarityAnalytics() {
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID || 'yotc5ca90h';
 
   return (
-    <Script
+    <script
       id="microsoft-clarity-cookieless"
-      strategy="afterInteractive"
       dangerouslySetInnerHTML={{
         __html: `
           (function(c,l,a,r,i,t,y){

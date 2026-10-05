@@ -264,6 +264,14 @@ export async function POST(req: Request) {
     // Unikalny token URL do trwałego linku (np. /narzedzia/audyt?token=a8f9c1...)
     const tokenStr = crypto.randomBytes(16).toString('hex');
 
+    // Synchronizacja wykrytych narzędzi analizy sesji z crawlera
+    if (crawlData.evidence?.adsAndTracking?.hasClarity && !rootData.codeSmells.trackers?.includes('Microsoft Clarity')) {
+      rootData.codeSmells.trackers?.push('Microsoft Clarity');
+    }
+    if (crawlData.evidence?.adsAndTracking?.hasHotjar && !rootData.codeSmells.trackers?.includes('Hotjar')) {
+      rootData.codeSmells.trackers?.push('Hotjar');
+    }
+
     // Ewaluacja 80 punktów kontrolnych (Master Audit Checklist)
     const checkpointResult = evaluateAllCheckpoints(
       crawlData.evidence,
@@ -448,9 +456,25 @@ async function analyzeRootUrl(targetUrl: string) {
 
       if (lowerHtml.includes('googletagmanager.com')) codeSmells.trackers?.push('Google Tag Manager');
       if (lowerHtml.includes('connect.facebook.net') || lowerHtml.includes('fbq(')) codeSmells.trackers?.push('Meta Pixel');
-      if (lowerHtml.includes('analytics.tiktok.com')) codeSmells.trackers?.push('TikTok Pixel');
-      if (lowerHtml.includes('hotjar.com')) codeSmells.trackers?.push('Hotjar');
-      if (lowerHtml.includes('clarity.ms')) codeSmells.trackers?.push('Microsoft Clarity');
+      const hasClarity = 
+        lowerHtml.includes('clarity.ms') ||
+        lowerHtml.includes('window.clarity') ||
+        lowerHtml.includes('clarity("') ||
+        lowerHtml.includes("clarity('") ||
+        lowerHtml.includes('c,l,a,r,i,t,y') ||
+        lowerHtml.includes('microsoft-clarity') ||
+        lowerHtml.includes('yotc5ca90h') ||
+        lowerHtml.includes('/tag/clarity') ||
+        $('script[id*="clarity"], script[src*="clarity"]').length > 0;
+
+      const hasHotjar = 
+        lowerHtml.includes('hotjar.com') ||
+        lowerHtml.includes('static.hotjar.com') ||
+        lowerHtml.includes('hjid:') ||
+        lowerHtml.includes('_hjsettings');
+
+      if (hasHotjar) codeSmells.trackers?.push('Hotjar');
+      if (hasClarity) codeSmells.trackers?.push('Microsoft Clarity');
 
       // Rekalibracja progu DOM (<1400 elementów to super wynik we współczesnym frontendzie z SVG i komponentami)
       scalabilityScore = codeSmells.domElements < 1400 ? 98 : codeSmells.domElements < 2400 ? 80 : codeSmells.domElements < 3500 ? 50 : 30;

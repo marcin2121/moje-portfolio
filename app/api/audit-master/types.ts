@@ -77,6 +77,9 @@ export interface AdsAndTrackingAudit {
   hasClickToCallTracking?: boolean;
   hasFormSpamProtection?: boolean;
   hasOpenGraph?: boolean;
+  hasClarity?: boolean;
+  hasHotjar?: boolean;
+  hasSessionRecording?: boolean;
   variantTimeoutUrls?: string[];
   adBudgetLeakRisk: 'none' | 'low' | 'medium' | 'critical';
   issues: TrackingIssue[];

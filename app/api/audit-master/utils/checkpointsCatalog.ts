@@ -1071,7 +1071,10 @@ export function evaluateAllCheckpoints(
   addEval('track-click-to-email', 'passed', 'Standard analityczny');
 
   // track-session-recording: zgodność z RODO Art. 9 dla podmiotów NGO, publicznych i pomocowych
-  const hasSessionRecord = codeSmells.trackers?.some(t => t.includes('Clarity') || t.includes('Hotjar'));
+  const hasSessionRecord = codeSmells.trackers?.some(t => t.includes('Clarity') || t.includes('Hotjar')) ||
+    evidence.adsAndTracking?.hasSessionRecording ||
+    evidence.adsAndTracking?.hasClarity ||
+    evidence.adsAndTracking?.hasHotjar;
   if (isPublicOrNgo) {
     if (hasSessionRecord) {
       addEval('track-session-recording', 'passed', 'Clarity / Hotjar aktywne (zalecana weryfikacja maskowania danych)');
