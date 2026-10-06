@@ -33,7 +33,7 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
           Kluczowe kwestie techniczne do rozwiązania
         </h3>
         <p className="text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-          Zidentyfikowano {issues.length} priorytetowe obszary w strukturze i kodzie serwisu. Ich uporządkowanie bezpośrednio przekłada się na poprawną indeksację i komfort użytkowników.
+          Zidentyfikowano {issues.length} {issues.length === 1 ? 'priorytetowy obszar' : issues.length >= 2 && issues.length <= 4 ? 'priorytetowe obszary' : 'priorytetowych obszarów'} w strukturze i kodzie serwisu. Ich uporządkowanie bezpośrednio przekłada się na poprawną indeksację i komfort użytkowników.
         </p>
       </div>
 
