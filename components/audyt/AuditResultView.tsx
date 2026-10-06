@@ -167,8 +167,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           <div className="text-right text-xs text-slate-600">
             <strong className="block text-slate-900 font-bold text-sm">Marcin Molenda</strong>
             <span>Architektura Next.js & Inżynieria Web</span>
-            <span className="block font-mono text-[11px] mt-0.5">marcin@molendadevelopment.pl</span>
-            <span className="block font-mono text-[11px] font-bold text-slate-900">+48 789 746 950</span>
+            <span className="block font-mono text-[11px] mt-0.5">kontakt@molendadevelopment.pl</span>
           </div>
         </div>
       </div>
@@ -284,75 +283,77 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           </div>
         )}
 
-        <div className="mt-6 pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-6 pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           {result.lossPercentage === 0 || result.overallScore === 100 ? (
-            <div className="p-3 bg-emerald-50/70 border border-emerald-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
-              <span className="text-xs font-mono text-emerald-700 font-bold whitespace-nowrap">
-                Efektywność techniczna:
-              </span>
-              <span className="text-xl font-black text-emerald-600 font-mono">
-                100% (Maksymalna)
-              </span>
+            <div className="p-3.5 bg-emerald-50/70 border border-emerald-200/60 rounded-xl px-5 text-left flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-mono text-emerald-700 font-bold">
+                  Efektywność techniczna:
+                </span>
+                <span className="text-xl font-black text-emerald-600 font-mono whitespace-nowrap shrink-0">
+                  100% (Maksymalna)
+                </span>
+              </div>
             </div>
           ) : result.lossPercentage <= 6 ? (
-            <div className="p-3 bg-emerald-50/60 border border-emerald-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
+            <div className="p-3.5 bg-emerald-50/60 border border-emerald-200/60 rounded-xl px-5 text-left flex-1 min-w-0">
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-emerald-800 font-bold whitespace-nowrap">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-mono text-emerald-800 font-bold">
                     Ryzyko utraty części {conversionLabel}:
                   </span>
-                  <span className="text-[11px] font-mono font-bold bg-emerald-200/70 text-emerald-900 px-2 py-0.5 rounded-md">
+                  <span className="text-[11px] font-mono font-bold bg-emerald-200/70 text-emerald-900 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0">
                     NISKIE
                   </span>
-                  <span className="text-sm font-black text-emerald-700 font-mono">
+                  <span className="text-sm font-black text-emerald-700 font-mono whitespace-nowrap shrink-0">
                     ~{result.lossPercentage}%
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 font-mono mt-0.5">
+                <p className="text-[11px] text-slate-500 font-mono mt-1">
                   Drobne usterki semantyczne bez krytycznego wpływu na bieżącą konwersję.
                 </p>
               </div>
             </div>
           ) : result.lossPercentage <= 15 ? (
-            <div className="p-3 bg-amber-50/70 border border-amber-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
+            <div className="p-3.5 bg-amber-50/70 border border-amber-200/60 rounded-xl px-5 text-left flex-1 min-w-0">
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-amber-800 font-bold whitespace-nowrap">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-mono text-amber-800 font-bold">
                     Ryzyko utraty części {conversionLabel}:
                   </span>
-                  <span className="text-[11px] font-mono font-bold bg-amber-200/70 text-amber-900 px-2 py-0.5 rounded-md">
+                  <span className="text-[11px] font-mono font-bold bg-amber-200/70 text-amber-900 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0">
                     UMIARKOWANE
                   </span>
-                  <span className="text-sm font-black text-amber-700 font-mono">
+                  <span className="text-sm font-black text-amber-700 font-mono whitespace-nowrap shrink-0">
                     ~{result.lossPercentage}%
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 font-mono mt-0.5">
+                <p className="text-[11px] text-slate-500 font-mono mt-1">
                   Odczuwalne spowolnienie lub braki w śledzeniu zdarzeń osłabiające wyniki.
                 </p>
               </div>
             </div>
           ) : (
-            <div className="p-3 bg-rose-50/70 border border-rose-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
+            <div className="p-3.5 bg-rose-50/70 border border-rose-200/60 rounded-xl px-5 text-left flex-1 min-w-0">
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-rose-700 font-bold whitespace-nowrap">
-                    Szacowany spadek {conversionLabel}:
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-mono text-rose-700 font-bold">
+                    Ryzyko utraty części {conversionLabel}:
                   </span>
-                  <span className="text-[11px] font-mono font-bold bg-rose-200/70 text-rose-900 px-2 py-0.5 rounded-md">
+                  <span className="text-[11px] font-mono font-bold bg-rose-200/70 text-rose-900 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0">
                     PODWYŻSZONE
                   </span>
-                  <span className="text-sm font-black text-rose-600 font-mono">
+                  <span className="text-sm font-black text-rose-600 font-mono whitespace-nowrap shrink-0">
                     ~{result.lossPercentage}%
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 font-mono mt-0.5">
+                <p className="text-[11px] text-slate-500 font-mono mt-1">
                   Poważne blokady renderowania lub brak kluczowej analityki.
                 </p>
               </div>
             </div>
           )}
-          <p className="text-slate-500 text-[11px] font-mono text-center sm:text-right leading-relaxed max-w-md">
+          <p className="text-slate-500 text-[11px] font-mono text-left sm:text-right leading-relaxed max-w-xs shrink-0">
             {isWordPress
               ? 'Pierwszy wynik ocenia jakość strony na tle innych witryn WordPress. Drugi wynik porównuje ją z najszybszymi, nowoczesnymi technologiami internetowymi.'
               : 'Trzystopniowa inżynieryjna skala ryzyka biznesowego wyliczana na podstawie szybkości ładowania, poprawności kodu i wskaźników Google.'}
@@ -787,7 +788,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
             <strong className="text-slate-900 font-bold">Molenda Development</strong> · Niezależny Audyt Inżynieryjny Witryny
           </div>
           <div className="font-mono text-[11px] text-slate-800">
-            molendadevelopment.pl · tel. +48 789 746 950 · marcin@molendadevelopment.pl
+            molendadevelopment.pl · kontakt@molendadevelopment.pl
           </div>
         </div>
       </div>
