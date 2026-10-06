@@ -15,6 +15,7 @@ import {
   CHECKPOINTS_CATALOG
 } from '../app/api/audit-master/utils/checkpointsCatalog';
 import { generateDeterministicReport } from '../app/api/audit-master/utils/geminiAI';
+import { allocateExactPoints } from '../components/audyt/MissingPointsRoadmap';
 
 interface AuditScenarioConfig {
   id: number;
@@ -669,6 +670,19 @@ describe('Audit Master: 100 Pełnych Audytów dla Każdego Typu Witryny', () => 
         expect(report.toLowerCase()).toMatch(/(usług|klient|telefon|kontakt|rezerwac|okolic)/);
       } else if (sc.siteType === 'b2b_services') {
         expect(report.toLowerCase()).toMatch(/(b2b|ofert|klient|lead)/);
+      }
+
+      // 9. Weryfikacja matematycznej spojnosci Roadmapy brakujacych punktow
+      const missingPoints = 100 - avgScore;
+      if (missingPoints > 0) {
+        const mockDeductions = [
+          { id: 'd1', pillar: 'Szybkosc', category: 'Wydajnosc', pointsLost: 10, title: 'T1', shortDiagnosis: 'D1', technicalReason: 'R1', stepsToMax: [], businessGain: 'G1', icon: null },
+          { id: 'd2', pillar: 'SEO', category: 'SEO', pointsLost: 5, title: 'T2', shortDiagnosis: 'D2', technicalReason: 'R2', stepsToMax: [], businessGain: 'G2', icon: null },
+          { id: 'd3', pillar: 'Analityka', category: 'Analityka', pointsLost: 15, title: 'T3', shortDiagnosis: 'D3', technicalReason: 'R3', stepsToMax: [], businessGain: 'G3', icon: null }
+        ];
+        const allocated = allocateExactPoints(mockDeductions, missingPoints);
+        const sumAllocated = allocated.reduce((s, it) => s + it.pointsLost, 0);
+        expect(sumAllocated).toBe(missingPoints);
       }
     });
   });

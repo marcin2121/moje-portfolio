@@ -32,6 +32,46 @@ interface MissingPointItem {
   icon: React.ReactNode;
 }
 
+export function allocateExactPoints(items: MissingPointItem[], totalMissing: number): MissingPointItem[] {
+  if (items.length === 0 || totalMissing <= 0) return [];
+
+  // Posortuj najpierw po wstępnej wadze strat
+  const sorted = [...items].sort((a, b) => b.pointsLost - a.pointsLost);
+
+  // Jeśli brakujących punktów jest mniej niż pozycji, zachowaj tylko top N pozycji
+  const activeItems = totalMissing < sorted.length ? sorted.slice(0, totalMissing) : sorted;
+
+  const rawSum = activeItems.reduce((s, it) => s + Math.max(1, it.pointsLost), 0);
+
+  // Przypisz wstępnie punkty zaokrąglone w dół, min 1
+  let distributed = 0;
+  activeItems.forEach(it => {
+    const share = Math.floor((Math.max(1, it.pointsLost) / rawSum) * totalMissing);
+    it.pointsLost = Math.max(1, share);
+    distributed += it.pointsLost;
+  });
+
+  // Rozdysponuj resztę do największych pozycji
+  let diff = totalMissing - distributed;
+  let i = 0;
+  while (diff > 0 && activeItems.length > 0) {
+    activeItems[i % activeItems.length].pointsLost += 1;
+    diff -= 1;
+    i++;
+  }
+  while (diff < 0 && activeItems.length > 0) {
+    const target = activeItems[activeItems.length - 1 - ((-diff - 1) % activeItems.length)];
+    if (target.pointsLost > 1) {
+      target.pointsLost -= 1;
+      diff += 1;
+    } else {
+      break;
+    }
+  }
+
+  return activeItems.sort((a, b) => b.pointsLost - a.pointsLost);
+}
+
 interface MissingPointsRoadmapProps {
   result: AuditMasterResponse;
   wpScore?: number;
@@ -455,27 +495,6 @@ document.querySelector('form')?.addEventListener('submit', () => {
       }
     }
 
-    // Wyrównanie puli punktów tak, aby suma pointsLost dokładnie odpowiadała allMissingTotal
-    if (items.length > 0 && allMissingTotal > 0) {
-      const rawSum = items.reduce((s, it) => s + it.pointsLost, 0);
-      if (rawSum === 0) {
-        items.forEach((it, idx) => {
-          it.pointsLost = idx === 0 ? allMissingTotal : 0;
-        });
-      } else if (rawSum !== allMissingTotal) {
-        let remainder = allMissingTotal;
-        items.forEach((it, idx) => {
-          if (idx === items.length - 1) {
-            it.pointsLost = Math.max(1, remainder);
-          } else {
-            const allocated = Math.max(1, Math.round((it.pointsLost / rawSum) * allMissingTotal));
-            it.pointsLost = allocated;
-            remainder -= allocated;
-          }
-        });
-      }
-    }
-
     // Bezpieczny fallback: jeśli brakuje punktów do 100/100, ale żaden filar nie miał score < 100
     if (items.length === 0 && allMissingTotal > 0) {
       items.push({
@@ -508,8 +527,7 @@ document.querySelector('form')?.addEventListener('submit', () => {
       });
     }
 
-    // Sortowanie od największej straty punktów
-    return items.sort((a, b) => b.pointsLost - a.pointsLost);
+    return allocateExactPoints(items, allMissingTotal);
   }, [result, allMissingTotal]);
 
   // Silnik potrąceń w dedykowanej klasie WordPress
@@ -687,28 +705,39 @@ gtag('consent', 'default', {
       });
     }
 
-    // Wyrównanie puli punktów tak, aby suma pointsLost dokładnie odpowiadała wpMissingTotal
-    if (items.length > 0 && wpMissingTotal > 0) {
-      const rawSum = items.reduce((s, it) => s + it.pointsLost, 0);
-      if (rawSum === 0) {
-        items.forEach((it, idx) => {
-          it.pointsLost = idx === 0 ? wpMissingTotal : 0;
-        });
-      } else if (rawSum !== wpMissingTotal) {
-        let remainder = wpMissingTotal;
-        items.forEach((it, idx) => {
-          if (idx === items.length - 1) {
-            it.pointsLost = Math.max(1, remainder);
-          } else {
-            const allocated = Math.max(1, Math.round((it.pointsLost / rawSum) * wpMissingTotal));
-            it.pointsLost = allocated;
-            remainder -= allocated;
+    // Bezpieczny fallback: jeśli brakuje punktów do 100/100, ale żaden filar nie wygenerował błędu
+    if (items.length === 0 && wpMissingTotal > 0) {
+      items.push({
+        id: 'wp-deduction-general-tuning',
+        pillar: 'Optymalizacja WP',
+        category: 'Dostrojenie środowiska WordPress',
+        pointsLost: wpMissingTotal,
+        title: 'Drobne optymalizacje parametrów wydajnościowych WordPress',
+        shortDiagnosis: `Instalacja WordPress osiąga bardzo dobry wynik, a do maksymalnej noty 100/100 brakuje jedynie ${wpMissingTotal} pkt.`,
+        technicalReason: 'Drobne odchylenia w czasach renderowania szablonu lub buforowania powstrzymują instalację przed zdobyciem idealnego wyniku.',
+        stepsToMax: [
+          {
+            step: 1,
+            title: 'Wdrożenie wtyczki buforującej',
+            desc: 'Aktywacja buforowania stron (WP Super Cache lub LiteSpeed Cache).'
+          },
+          {
+            step: 2,
+            title: 'Optymalizacja bazy danych MySQL',
+            desc: 'Wyczyszczenie rewizji wpisów i transientów z tabeli wp_options.'
+          },
+          {
+            step: 3,
+            title: 'Wydłużenie nagłówków pamięci podręcznej',
+            desc: 'Włączenie nagłówków Expires dla obrazów i stylów w .htaccess.'
           }
-        });
-      }
+        ],
+        businessGain: 'Osiągnięcie perfekcyjnego wyniku w klasie WordPress i maksymalna responsywność serwisu.',
+        icon: <Sparkles className="w-5 h-5 text-indigo-600" />
+      });
     }
 
-    return items.sort((a, b) => b.pointsLost - a.pointsLost);
+    return allocateExactPoints(items, wpMissingTotal);
   }, [result, wpMissingTotal]);
 
   const activeItems = activeTab === 'wordpress' && isWordPress ? wpDeductions : allDeductions;

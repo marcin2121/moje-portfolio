@@ -18,6 +18,7 @@ import {
   isAssetUrl
 } from '@/app/api/audit-master/utils/crawler';
 import { generateDeterministicReport } from '@/app/api/audit-master/utils/geminiAI';
+import { allocateExactPoints } from '@/components/audyt/MissingPointsRoadmap';
 
 describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
   it('should have exactly 80 structured checkpoints in the knowledge base catalog', () => {
@@ -1040,5 +1041,44 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
       expect(isAssetUrl('https://motherearth.store/collections/nowosci')).toBe(false);
     });
   });
+
+  describe('MissingPointsRoadmap: allocateExactPoints mathematical precision', () => {
+    it('exact integer sum equals totalMissing when totalMissing is smaller than item count', () => {
+      const mockItems = [
+        { id: '1', pillar: 'P1', category: 'C1', pointsLost: 10, title: 'T1', shortDiagnosis: 'D1', technicalReason: 'R1', stepsToMax: [], businessGain: 'G1', icon: null },
+        { id: '2', pillar: 'P2', category: 'C2', pointsLost: 5, title: 'T2', shortDiagnosis: 'D2', technicalReason: 'R2', stepsToMax: [], businessGain: 'G2', icon: null },
+        { id: '3', pillar: 'P3', category: 'C3', pointsLost: 3, title: 'T3', shortDiagnosis: 'D3', technicalReason: 'R3', stepsToMax: [], businessGain: 'G3', icon: null }
+      ];
+
+      // totalMissing = 2 (np. wynik 98/100 jak molendadevelopment.pl)
+      const allocated = allocateExactPoints(mockItems, 2);
+      expect(allocated.length).toBe(2);
+      const sum = allocated.reduce((s, it) => s + it.pointsLost, 0);
+      expect(sum).toBe(2);
+    });
+
+    it('exact integer sum equals totalMissing for arbitrary values (27 missing points like motherearth.store)', () => {
+      const mockItems = [
+        { id: '1', pillar: 'P1', category: 'C1', pointsLost: 15, title: 'T1', shortDiagnosis: 'D1', technicalReason: 'R1', stepsToMax: [], businessGain: 'G1', icon: null },
+        { id: '2', pillar: 'P2', category: 'C2', pointsLost: 8, title: 'T2', shortDiagnosis: 'D2', technicalReason: 'R2', stepsToMax: [], businessGain: 'G2', icon: null },
+        { id: '3', pillar: 'P3', category: 'C3', pointsLost: 5, title: 'T3', shortDiagnosis: 'D3', technicalReason: 'R3', stepsToMax: [], businessGain: 'G3', icon: null },
+        { id: '4', pillar: 'P4', category: 'C4', pointsLost: 3, title: 'T4', shortDiagnosis: 'D4', technicalReason: 'R4', stepsToMax: [], businessGain: 'G4', icon: null }
+      ];
+
+      const allocated = allocateExactPoints(mockItems, 27);
+      const sum = allocated.reduce((s, it) => s + it.pointsLost, 0);
+      expect(sum).toBe(27);
+    });
+
+    it('returns empty array when totalMissing is 0 (100/100 perfect score)', () => {
+      const mockItems = [
+        { id: '1', pillar: 'P1', category: 'C1', pointsLost: 5, title: 'T1', shortDiagnosis: 'D1', technicalReason: 'R1', stepsToMax: [], businessGain: 'G1', icon: null }
+      ];
+
+      const allocated = allocateExactPoints(mockItems, 0);
+      expect(allocated.length).toBe(0);
+    });
+  });
 });
+
 

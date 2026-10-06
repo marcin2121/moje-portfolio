@@ -211,7 +211,7 @@ export default function CompetitorBenchmarkCard({ benchmark, yourDomain }: Compe
                     {benchmark.metrics.platform.competitorPlatform}
                   </div>
                   <div className="col-span-2 md:col-span-1 text-right">
-                    <span className="text-[10px] font-mono text-slate-400 font-semibold">—</span>
+                    <span className="text-[10px] font-mono text-slate-400 font-semibold">-</span>
                   </div>
                 </div>
 
