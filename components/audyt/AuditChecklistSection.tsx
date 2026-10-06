@@ -281,6 +281,14 @@ export default function AuditChecklistSection({
 
   const issuesCount = computedStats.failed + computedStats.warning;
 
+  // Jesli serwis nie posiada zadnych usterek (0 bledow w kodzie i 0 optymalizacji),
+  // domyslnie pokazujemy wszystkie zaliczone testy zamiast pustego widoku
+  useEffect(() => {
+    if (issuesCount === 0 && selectedStatus === 'issues') {
+      setSelectedStatus('all');
+    }
+  }, [issuesCount, selectedStatus, setSelectedStatus]);
+
   // Filtrowanie listy z priorytetyzacją wag i hierarchią ważności (błędy krytyczne zawsze na początku)
   const filteredCheckpoints = useMemo(() => {
     return mergedCheckpoints
@@ -457,83 +465,68 @@ export default function AuditChecklistSection({
         </button>
       </div>
 
-      {/* Pasek Filtrów i Wyszukiwarki */}
-      <div className="flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center pb-6 mb-6 border-b border-slate-200/70">
-        {/* Filtry Kategorii */}
-        <div className="relative -mx-2 px-2 lg:mx-0 lg:px-0">
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none scroll-smooth pr-6 lg:pr-0">
-            <button
-              type="button"
-              onClick={() => setSelectedCategory('all')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap cursor-pointer shrink-0 ${
-                selectedCategory === 'all'
-                  ? 'bg-slate-900 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
-              }`}
-            >
-              Wszystkie obszary ({mergedCheckpoints.length})
-            </button>
-            {(Object.keys(CATEGORY_LABELS) as CheckpointCategory[])
-              .filter(catKey => {
-                if (siteType !== 'ecommerce' && catKey === 'ecommerce_cro') return false;
-                return true;
-              })
-              .map(catKey => {
-                const cat = CATEGORY_LABELS[catKey];
-                const Icon = cat.icon;
-                const count = mergedCheckpoints.filter(c => c.category === catKey).length;
-                const isCatSelected = selectedCategory === catKey;
-                return (
-                  <button
-                    key={catKey}
-                    type="button"
-                    onClick={() => setSelectedCategory(catKey)}
-                    className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 cursor-pointer shrink-0 ${
-                      isCatSelected
-                        ? 'bg-slate-900 text-white shadow-sm'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    <span>{cat.label}</span>
-                    <span className={`text-[10px] font-mono px-1 rounded ${isCatSelected ? 'bg-slate-800 text-slate-300' : 'text-slate-400'}`}>
-                      {count}
-                    </span>
-                  </button>
-                );
-              })}
-          </div>
-          {/* Subtelny wskaźnik przewijania poziomego na smartfonach */}
-          <div aria-hidden="true" className="pointer-events-none absolute right-0 top-0 bottom-2 w-6 bg-gradient-to-l from-white via-white/80 to-transparent lg:hidden" />
+      {/* Pasek Filtrów Kategorii */}
+      <div className="relative pb-3 mb-4 border-b border-slate-200/60">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
+          <button
+            type="button"
+            onClick={() => setSelectedCategory('all')}
+            className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap cursor-pointer shrink-0 ${
+              selectedCategory === 'all'
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
+            }`}
+          >
+            Wszystkie obszary ({mergedCheckpoints.length})
+          </button>
+          {(Object.keys(CATEGORY_LABELS) as CheckpointCategory[])
+            .filter(catKey => {
+              if (siteType !== 'ecommerce' && catKey === 'ecommerce_cro') return false;
+              return true;
+            })
+            .map(catKey => {
+              const cat = CATEGORY_LABELS[catKey];
+              const Icon = cat.icon;
+              const count = mergedCheckpoints.filter(c => c.category === catKey).length;
+              const isCatSelected = selectedCategory === catKey;
+              return (
+                <button
+                  key={catKey}
+                  type="button"
+                  onClick={() => setSelectedCategory(catKey)}
+                  className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 cursor-pointer shrink-0 ${
+                    isCatSelected
+                      ? 'bg-slate-900 text-white shadow-sm'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{cat.label}</span>
+                  <span className={`text-[10px] font-mono px-1 rounded ${isCatSelected ? 'bg-slate-800 text-slate-300' : 'text-slate-400'}`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
         </div>
-
-        {/* Wyszukiwarka na żywo */}
-        <div className="relative min-w-[240px] md:min-w-[280px]">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Szukaj parametru lub diagnozy..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400 text-slate-900 placeholder:text-slate-400 transition-all font-sans"
-          />
-          {searchQuery && (
-            <button
-              type="button"
-              onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-mono cursor-pointer"
-            >
-              ✕
-            </button>
-          )}
-        </div>
+        {/* Subtelny wskaźnik przewijania poziomego */}
+        <div aria-hidden="true" className="pointer-events-none absolute right-0 top-0 bottom-3 w-8 bg-gradient-to-l from-white via-white/80 to-transparent" />
       </div>
 
-      {/* Licznik aktywnych wyników */}
-      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 font-mono mb-4">
-        <div className="flex flex-wrap items-center gap-2">
+      {/* Pasek akcji: Licznik aktywnych wyników + Wyszukiwarka na żywo */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs mb-5">
+        <div className="flex flex-wrap items-center gap-2 text-slate-500 font-mono">
           <span>
-            Wyświetlanie: <strong className="text-slate-800">{filteredCheckpoints.length}</strong> {selectedStatus === 'issues' ? 'kwestii wymagających uwagi' : `z ${computedStats.total} punktów kontrolnych`}
+            Wyświetlanie: <strong className="text-slate-800">{filteredCheckpoints.length}</strong>{' '}
+            {selectedStatus === 'issues'
+              ? 'kwestii wymagających uwagi'
+              : selectedStatus === 'failed'
+              ? 'błędów w kodzie'
+              : selectedStatus === 'warning'
+              ? 'zalecanych optymalizacji'
+              : selectedStatus === 'passed'
+              ? 'zaliczonych testów'
+              : `z ${computedStats.total} punktów kontrolnych`}
           </span>
           {selectedCategory !== 'all' && (
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-indigo-50 border border-indigo-200 text-indigo-800 text-[11px] font-sans font-medium">
@@ -548,28 +541,48 @@ export default function AuditChecklistSection({
               </button>
             </span>
           )}
-        </div>
-        <div className="flex items-center gap-3">
           {selectedStatus !== 'all' && (
             <button
               type="button"
               onClick={() => setSelectedStatus('all')}
-              className="text-xs text-slate-600 hover:text-slate-900 font-semibold cursor-pointer underline"
+              className="text-xs text-slate-600 hover:text-slate-900 font-semibold cursor-pointer underline font-sans ml-1"
             >
               Pokaż wszystkie ({computedStats.total})
             </button>
           )}
-          {(selectedStatus !== 'issues' || selectedCategory !== 'all' || searchQuery) && (
+          {(selectedStatus !== (issuesCount > 0 ? 'issues' : 'all') || selectedCategory !== 'all' || searchQuery) && (
             <button
               type="button"
               onClick={() => {
-                setSelectedStatus('issues');
+                setSelectedStatus(issuesCount > 0 ? 'issues' : 'all');
                 setSelectedCategory('all');
                 setSearchQuery('');
               }}
-              className="text-xs text-indigo-600 hover:underline font-semibold cursor-pointer"
+              className="text-xs text-indigo-600 hover:underline font-semibold cursor-pointer font-sans ml-1"
             >
               Resetuj filtry
+            </button>
+          )}
+        </div>
+
+        {/* Wyszukiwarka na żywo - bezpieczna szerokość bez ucinania poza kartę */}
+        <div className="relative w-full sm:w-64 md:w-72 shrink-0">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder="Szukaj parametru lub diagnozy..."
+            className="w-full pl-9 pr-8 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400 text-slate-900 placeholder:text-slate-400 transition-all font-sans"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              aria-label="Wyczyść wyszukiwanie"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-mono cursor-pointer p-0.5"
+            >
+              ✕
             </button>
           )}
         </div>
@@ -578,11 +591,41 @@ export default function AuditChecklistSection({
       {/* Lista Punktów Kontrolnych */}
       <div className="space-y-4">
         {filteredCheckpoints.length === 0 ? (
-          <div className="text-center py-12 bg-slate-50/50 rounded-2xl border border-slate-200/60 p-8">
-            <Filter className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-            <p className="text-sm font-bold text-slate-700">Brak punktów spełniających wybrane kryteria</p>
-            <p className="text-xs text-slate-500 mt-1">Zmień filtr statusu lub wyczyść zapytanie wyszukiwania.</p>
-          </div>
+          issuesCount === 0 && (selectedStatus === 'issues' || selectedStatus === 'failed' || selectedStatus === 'warning') && !searchQuery ? (
+            <div className="text-center py-12 bg-emerald-50/50 rounded-2xl border border-emerald-200/80 p-8">
+              <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto mb-3" />
+              <p className="text-base font-bold text-slate-800">Wszystkie punkty kontrolne zaliczone!</p>
+              <p className="text-xs text-slate-600 mt-1 max-w-md mx-auto">
+                Audytowana witryna nie posiada żadnych błędów ani zaległych optymalizacji w tym widoku ({computedStats.passed} z {computedStats.total} punktów spełnia standardy).
+              </p>
+              <button
+                type="button"
+                onClick={() => setSelectedStatus('all')}
+                className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-all cursor-pointer shadow-sm"
+              >
+                <span>Zobacz wszystkie zaliczone testy ({computedStats.passed})</span>
+              </button>
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-slate-50/50 rounded-2xl border border-slate-200/60 p-8">
+              <Filter className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+              <p className="text-sm font-bold text-slate-700">Brak punktów spełniających wybrane kryteria</p>
+              <p className="text-xs text-slate-500 mt-1">Zmień filtr statusu lub wyczyść zapytanie wyszukiwania.</p>
+              {(selectedStatus !== 'all' || selectedCategory !== 'all' || searchQuery) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedStatus('all');
+                    setSelectedCategory('all');
+                    setSearchQuery('');
+                  }}
+                  className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200 transition-colors cursor-pointer"
+                >
+                  Pokaż wszystkie punkty ({computedStats.total})
+                </button>
+              )}
+            </div>
+          )
         ) : (
           filteredCheckpoints.map(cp => {
             const isExpanded = expandedId === cp.id;
