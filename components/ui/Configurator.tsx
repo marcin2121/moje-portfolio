@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Target, Clock, FileWarning, Rocket, ArrowRight, CheckCircle2, ArrowLeft, Mail, Check } from 'lucide-react';
 import MagneticWrapper from '@/components/ui/MagneticWrapper';
-import { pushGTMEvent } from '@/app/page';
+import { trackGeneralLeadConversion } from '@/lib/telemetry';
 import { fixOrphans } from '@/utils/typography';
 
 const PROBLEMS = [
@@ -42,7 +42,9 @@ export default function Configurator() {
     try {
       const response = await fetch('https://formspree.io/f/mgolplyg', { method: 'POST', body: formData, headers: { Accept: 'application/json' } });
       if (response.ok) {
-        pushGTMEvent('formularz_premium_wyslany', { etap: selectedProblem });
+        const emailVal = formData.get('email');
+        const emailStr = typeof emailVal === 'string' ? emailVal : undefined;
+        trackGeneralLeadConversion(emailStr);
         setIsDone(true);
       }
     } finally { 

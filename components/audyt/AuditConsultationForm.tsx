@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, CheckCircle2, Loader2, Phone, Mail, Search, Wrench, Sparkles } from 'lucide-react';
 import { SiteType, SITE_TYPE_LABELS } from '@/app/api/audit-master/types';
+import { trackLeadConversion } from '@/lib/telemetry';
 
 export type ConsultationIntent = 'audit' | 'fixes' | 'both';
 
@@ -123,6 +124,16 @@ export default function AuditConsultationForm({
       }
 
       setIsSuccess(true);
+
+      // Śledzenie konwersji Google Ads (Makrokonwersja: Lead / Usługa)
+      trackLeadConversion({
+        domain,
+        intent,
+        email,
+        phone: phone ? phone.trim() : undefined,
+        token,
+        notes: notes ? notes.trim() : undefined,
+      });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Wystąpił błąd. Spróbuj ponownie.';
       setErrorMessage(msg);

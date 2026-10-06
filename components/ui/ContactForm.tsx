@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sendContactEmail } from '@/app/actions/sendContactEmail';
 import { CheckCircle2, AlertCircle, Loader2, Target, Clock, FileWarning, Rocket, Mail, Check, ArrowLeft, ArrowRight } from 'lucide-react';
-import { pushGTMEvent } from '@/app/page';
+import { pushGTMEvent, trackGeneralLeadConversion } from '@/lib/telemetry';
 import { fixOrphans } from '@/utils/typography';
 import { useRouter } from 'next/navigation';
 
@@ -45,7 +45,9 @@ export default function ContactForm() {
     const result = await sendContactEmail(formData);
 
     if (result.success) {
-      pushGTMEvent('formularz_kontaktowy_sukces');
+      const emailVal = formData.get('email');
+      const emailStr = typeof emailVal === 'string' ? emailVal : undefined;
+      trackGeneralLeadConversion(emailStr);
       router.push('/sukces');
     } else {
       setStatus('error');

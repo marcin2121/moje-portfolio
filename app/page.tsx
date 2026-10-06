@@ -57,20 +57,8 @@ const NAV_DOTS = [
   { id: 15, title: 'Kontakt' },
 ] as const;
 
-export const pushGTMEvent = (eventName: string, params: Record<string, unknown> = {}) => {
-  if (typeof window !== 'undefined') {
-    const w = window as unknown as {
-      dataLayer?: Record<string, unknown>[];
-      umami?: { track: (event: string, data?: Record<string, unknown>) => void };
-    };
-    w.dataLayer = w.dataLayer || [];
-    w.dataLayer.push({ event: eventName, ...params });
-
-    if (w.umami?.track) {
-      w.umami.track(eventName, params);
-    }
-  }
-};
+import { pushGTMEvent } from '@/lib/telemetry';
+export { pushGTMEvent };
 
 export default function PortfolioHome() {
   const containerRef    = useRef<HTMLDivElement>(null);

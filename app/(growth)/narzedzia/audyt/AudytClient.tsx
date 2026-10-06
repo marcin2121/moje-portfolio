@@ -7,7 +7,7 @@ import { Search, Loader2, Building2, ShoppingCart, Swords, X } from 'lucide-reac
 import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
 import { SiteType } from '@/app/api/audit-master/types';
 import { parseDomainFromToken } from '@/app/api/audit-master/utils/token';
-import { pushGTMEvent } from '@/app/page';
+import { trackAuditEvent } from '@/lib/telemetry';
 
 export function AudytClient() {
   const searchParams = useSearchParams();
@@ -85,9 +85,11 @@ export function AudytClient() {
         window.history.replaceState(null, '', `/narzedzia/audyt?token=${encodeURIComponent(data.token)}&url=${encodeURIComponent(domainSlug)}`);
       }
 
-      pushGTMEvent('audyt_wygenerowany', {
-        domena: data.domain || targetUrl,
-        wynik: data.overallScore
+      trackAuditEvent({
+        domain: data.domain || targetUrl,
+        score: data.overallScore,
+        siteType: siteType,
+        token: data.token,
       });
     } catch (err: unknown) {
       clearInterval(stepInterval);

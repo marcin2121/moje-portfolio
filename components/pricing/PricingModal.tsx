@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { pushGTMEvent } from '@/app/page';
+import { pushGTMEvent, trackGeneralLeadConversion } from '@/lib/telemetry';
 import { sendContactEmail } from '@/app/actions/sendContactEmail';
 import { TIERS_SERVICES } from './constants';
 
@@ -39,7 +39,9 @@ export default function PricingModal({ selectedTier, onClose }: PricingModalProp
 
     if (result.success) {
       setStatus('success');
-      pushGTMEvent(`cennik_pakiet_sukces`, { pakiet: selectedTier.name });
+      const emailVal = formData.get('email');
+      const emailStr = typeof emailVal === 'string' ? emailVal : undefined;
+      trackGeneralLeadConversion(emailStr);
     } else {
       setStatus('error');
       setErrorMessage(result.error || 'Wystąpił błąd podczas wysyłania.');

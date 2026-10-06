@@ -4,6 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import UxLogger from "@/components/UxLogger";
 import ClarityAnalytics from "@/components/analytics/ClarityAnalytics";
+import GoogleAdsTracker from "@/components/analytics/GoogleAdsTracker";
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -93,6 +94,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
          {/* Microsoft Clarity (Cookieless Mode, zero cookies, GDPR-compliant) */}
          <ClarityAnalytics />
+
+         {/* Google Ads & Consent Mode v2 */}
+         <GoogleAdsTracker />
         
         {/* Advanced JSON-LD structured data for E-E-A-T and GEO */}
         <script
