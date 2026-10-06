@@ -13,7 +13,9 @@ import {
   detectAccurateSiteType,
   pluralizePolish,
   PageTrackingSignals,
-  buildEvidenceSummary
+  buildEvidenceSummary,
+  isSitemapOrXmlUrl,
+  isAssetUrl
 } from '@/app/api/audit-master/utils/crawler';
 import { generateDeterministicReport } from '@/app/api/audit-master/utils/geminiAI';
 
@@ -1012,4 +1014,31 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
       expect(report).not.toContain('paraliż');
     });
   });
+
+  describe('Crawler URL Filtering & Shopify handling', () => {
+    it('accurately identifies XML sitemaps and child sitemaps even with query strings', () => {
+      expect(isSitemapOrXmlUrl('https://motherearth.store/sitemap_products_1.xml?from=8919418011956&to=15560725725559')).toBe(true);
+      expect(isSitemapOrXmlUrl('https://motherearth.store/sitemap.xml')).toBe(true);
+      expect(isSitemapOrXmlUrl('https://example.com/sitemap_index.xml.gz')).toBe(true);
+      expect(isSitemapOrXmlUrl('https://example.com/sitemap-taxonomies.xml')).toBe(true);
+      expect(isSitemapOrXmlUrl('https://example.com/wp-sitemap-posts-post-1.xml')).toBe(true);
+
+      expect(isSitemapOrXmlUrl('https://motherearth.store/products/sukienka-lniana')).toBe(false);
+      expect(isSitemapOrXmlUrl('https://motherearth.store/collections/nowosci')).toBe(false);
+      expect(isSitemapOrXmlUrl('https://example.com/kontakt')).toBe(false);
+    });
+
+    it('accurately identifies static assets and non-HTML files', () => {
+      expect(isAssetUrl('https://motherearth.store/cdn/shop/files/foto.webp?v=1720000000')).toBe(true);
+      expect(isAssetUrl('https://example.com/images/banner.jpg')).toBe(true);
+      expect(isAssetUrl('https://example.com/static/style.css')).toBe(true);
+      expect(isAssetUrl('https://example.com/static/bundle.js')).toBe(true);
+      expect(isAssetUrl('https://example.com/docs/regulamin.pdf')).toBe(true);
+      expect(isAssetUrl('https://example.com/data.json')).toBe(true);
+
+      expect(isAssetUrl('https://motherearth.store/products/sukienka-lniana')).toBe(false);
+      expect(isAssetUrl('https://motherearth.store/collections/nowosci')).toBe(false);
+    });
+  });
 });
+

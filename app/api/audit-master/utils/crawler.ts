@@ -118,8 +118,31 @@ export async function crawlDomain(
   return { pages, evidence };
 }
 
+export function isSitemapOrXmlUrl(urlStr: string): boolean {
+  try {
+    const u = new URL(urlStr);
+    const pathname = u.pathname.toLowerCase();
+    return pathname.endsWith('.xml') ||
+      pathname.endsWith('.xml.gz') ||
+      pathname.includes('sitemap') ||
+      /\.(xml|gz)$/i.test(pathname);
+  } catch {
+    return urlStr.includes('.xml') || urlStr.includes('sitemap');
+  }
+}
+
+export function isAssetUrl(urlStr: string): boolean {
+  try {
+    const u = new URL(urlStr);
+    const pathname = u.pathname.toLowerCase();
+    return /\.(jpg|jpeg|png|webp|gif|svg|pdf|css|js|woff|woff2|ttf|eot|ico|mp4|webm|zip|tar|rar|json|txt|md|markdown|csv)$/i.test(pathname);
+  } catch {
+    return false;
+  }
+}
+
 /**
- * Wykrywanie podstron z sitemapy lub linków strony głównej
+ * Wykrywanie podstron z sitemapy (obsługa index sitemaps np. Shopify, WordPress) lub linków strony głównej
  */
 async function discoverUrls(origin: string, fallbackUrl: string): Promise<string[]> {
   const urls: string[] = [];
@@ -133,30 +156,64 @@ async function discoverUrls(origin: string, fallbackUrl: string): Promise<string
     try {
       const res = await fetch(sitemapUrl, {
         headers: { 'User-Agent': USER_AGENT },
-        signal: AbortSignal.timeout(3000),
+        signal: AbortSignal.timeout(3500),
         cache: 'no-store'
       });
 
       if (res.ok) {
         const text = await res.text();
-        const matches = text.match(/<loc>(https?:\/\/[^<]+)<\/loc>/gi);
-        if (matches && matches.length > 0) {
-          for (const match of matches) {
-            const loc = match.replace(/<\/?loc>/gi, '').trim();
-            // Ignorujemy pliki xml (pod-sitemapy) oraz zasoby statyczne
-            if (!loc.endsWith('.xml') && !loc.match(/\.(jpg|jpeg|png|webp|gif|svg|pdf|css|js)$/i)) {
-              urls.push(loc);
+        const locMatches = text.match(/<loc>(https?:\/\/[^<]+)<\/loc>/gi) || [];
+        const locs = locMatches.map(m => m.replace(/<\/?loc>/gi, '').trim().replace(/&amp;/g, '&'));
+
+        const childSitemaps: string[] = [];
+        for (const loc of locs) {
+          if (isSitemapOrXmlUrl(loc)) {
+            childSitemaps.push(loc);
+          } else if (!isAssetUrl(loc)) {
+            urls.push(loc);
+          }
+        }
+
+        // Jeśli trafiliśmy na sitemap index (np. Shopify, RankMath, Yoast), pobierz prawdziwe podstrony z pod-sitemap
+        if (childSitemaps.length > 0) {
+          // Priorytetyzujemy sitemapy produktów, stron i kolekcji dla domyślnego języka
+          const prioritizedChildren = childSitemaps.filter(s => {
+            const lower = s.toLowerCase();
+            return !lower.includes('/en/') && !lower.includes('/pl-en/') && !lower.includes('/en-en/') && !lower.includes('/de/');
+          });
+          const targetsToFetch = (prioritizedChildren.length > 0 ? prioritizedChildren : childSitemaps).slice(0, 5);
+
+          for (const childSitemapUrl of targetsToFetch) {
+            try {
+              const childRes = await fetch(childSitemapUrl, {
+                headers: { 'User-Agent': USER_AGENT },
+                signal: AbortSignal.timeout(3500),
+                cache: 'no-store'
+              });
+              if (childRes.ok) {
+                const childText = await childRes.text();
+                const childLocMatches = childText.match(/<loc>(https?:\/\/[^<]+)<\/loc>/gi) || [];
+                for (const childMatch of childLocMatches) {
+                  const childLoc = childMatch.replace(/<\/?loc>/gi, '').trim().replace(/&amp;/g, '&');
+                  if (!isSitemapOrXmlUrl(childLoc) && !isAssetUrl(childLoc)) {
+                    urls.push(childLoc);
+                  }
+                }
+              }
+            } catch {
+              // Ignorujemy błędy pojedynczej pod-sitemapy
             }
           }
-          if (urls.length >= 10) break;
         }
+
+        if (urls.length >= 15) break;
       }
     } catch {
       // Ignorujemy błędy pobierania sitemapy
     }
   }
 
-  // Fallback: Jeśli sitemap dał mniej niż 5 adresów, pobierz linki z homepage
+  // Fallback: Jeśli sitemapy nie dostarczyły wystarczającej liczby adresów, wyciągnij linki z homepage
   if (urls.length < 5) {
     try {
       const res = await fetch(fallbackUrl, {
@@ -172,7 +229,9 @@ async function discoverUrls(origin: string, fallbackUrl: string): Promise<string
           if (href && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('tel:') && !href.startsWith('javascript:')) {
             try {
               const fullUrl = new URL(href, origin).toString();
-              urls.push(fullUrl);
+              if (!isSitemapOrXmlUrl(fullUrl) && !isAssetUrl(fullUrl)) {
+                urls.push(fullUrl);
+              }
             } catch {
               // Błędny URL
             }
@@ -441,6 +500,10 @@ async function analyzeSinglePage(
   url: string,
   origin: string
 ): Promise<{ page: PageAuditResult; tracking: PageTrackingSignals } | null> {
+  if (isSitemapOrXmlUrl(url) || isAssetUrl(url)) {
+    return null;
+  }
+
   const reqStart = performance.now();
   try {
     const res = await fetch(url, {
@@ -448,6 +511,11 @@ async function analyzeSinglePage(
       signal: AbortSignal.timeout(3000),
       cache: 'no-store'
     });
+
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType && !contentType.includes('text/html') && !contentType.includes('application/xhtml+xml')) {
+      return null;
+    }
 
     const responseTimeMs = Math.round(performance.now() - reqStart);
     const statusCode = res.status;
@@ -626,13 +694,13 @@ function categorizeUrl(url: string, schemas: string[], origin: string): 'home' |
   if (pathname === '' || pathname === '/' || pathname === '/index.html' || pathname === '/index.php') {
     return 'home';
   }
-  if (pathname.includes('/produkt/') || pathname.includes('/product/') || pathname.includes('/item/') || schemas.includes('Product')) {
+  if (pathname.includes('/products/') || pathname.includes('/produkt/') || pathname.includes('/product/') || pathname.includes('/item/') || pathname.includes('/p/') || schemas.includes('Product')) {
     return 'product';
   }
   if (pathname.includes('/blog') || pathname.includes('/artykul/') || pathname.includes('/wpis/') || pathname.includes('/post/') || schemas.includes('Article') || schemas.includes('BlogPosting')) {
     return 'blog';
   }
-  if (pathname.includes('/sklep') || pathname.includes('/kategoria/') || pathname.includes('/category/') || pathname.includes('/shop') || pathname.includes('/c/')) {
+  if (pathname.includes('/collections/') || pathname.includes('/collection/') || pathname.includes('/kolekcja/') || pathname.includes('/kolekcje/') || pathname.includes('/sklep') || pathname.includes('/kategoria/') || pathname.includes('/category/') || pathname.includes('/shop') || pathname.includes('/c/')) {
     return 'shop';
   }
   return 'info';
@@ -835,7 +903,7 @@ export function buildEvidenceSummary(
   const hasSessionRecording = hasClarity || hasHotjar || signals.some(s => s.hasSessionRecording);
   const hasPrivacyAnalytics = signals.some(s => s.hasPrivacyAnalytics);
 
-  const hasProductPages = isEcommerce || pages.some(p => p.category === 'product' || p.url.includes('/produkt/') || p.url.includes('/product/'));
+  const hasProductPages = isEcommerce || pages.some(p => p.category === 'product' || p.url.includes('/produkt/') || p.url.includes('/product/') || p.url.includes('/products/'));
   const hasOmnibusCompliance = hasSalePrice ? hasOmnibusMention : true;
 
   // Wykrywanie wariantów zwracających błędy (504 timeout / bardzo wolne > 2.5s)
@@ -1445,7 +1513,10 @@ function normalizeUrl(url: string, origin: string): string {
 function isValidInternalUrl(urlStr: string, host: string): boolean {
   try {
     const u = new URL(urlStr);
-    return u.hostname.toLowerCase() === host && !urlStr.match(/\.(jpg|jpeg|png|webp|gif|svg|pdf|css|js|xml|zip)$/i);
+    if (u.hostname.toLowerCase() !== host) return false;
+    if (isSitemapOrXmlUrl(urlStr)) return false;
+    if (isAssetUrl(urlStr)) return false;
+    return true;
   } catch {
     return false;
   }
