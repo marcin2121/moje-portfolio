@@ -196,6 +196,11 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
               Zbadano fundamenty strony głównej.{' '}
               <a
                 href="#konsultacja"
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('select-consultation-topic', {
+                    detail: { intent: 'audit' }
+                  }));
+                }}
                 className="text-orange-600 hover:text-orange-700 font-medium underline underline-offset-2 transition-colors"
               >
                 Chcesz pełny audyt wszystkich podstron serwisu?

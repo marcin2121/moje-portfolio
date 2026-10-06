@@ -346,6 +346,7 @@ export async function saveLead(leadData: {
   email: string;
   phone?: string;
   notes?: string;
+  intent?: string;
 }): Promise<boolean> {
   const cleanDomain = leadData.domain.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('/')[0];
 
@@ -357,7 +358,8 @@ export async function saveLead(leadData: {
         domain: cleanDomain,
         email: leadData.email.trim(),
         phone: leadData.phone?.trim() || null,
-        notes: leadData.notes?.trim() || null
+        notes: leadData.notes?.trim() || null,
+        intent: leadData.intent || null
       });
       if (!error) return true;
     } catch {

@@ -6,7 +6,7 @@ import { Resend } from 'resend';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { email, phone, domain, token, notes } = body;
+    const { email, phone, domain, token, notes, intent = 'both' } = body;
 
     if (!email || typeof email !== 'string' || !email.includes('@')) {
       return NextResponse.json({ error: 'Podaj poprawny adres e-mail' }, { status: 400 });
@@ -18,6 +18,12 @@ export async function POST(req: Request) {
 
     const cleanDomain = domain ? String(domain).trim() : 'Brak domeny';
     const cleanPhone = phone && typeof phone === 'string' && phone.trim().length >= 6 ? phone.trim() : undefined;
+    const cleanIntent: 'audit' | 'fixes' | 'both' = (intent === 'audit' || intent === 'fixes') ? intent : 'both';
+    const intentLabel = cleanIntent === 'audit'
+      ? 'Chcę pełny audyt serwisu'
+      : cleanIntent === 'fixes'
+      ? 'Chcę wdrożyć poprawki z audytu'
+      : 'Pakiet: Pełny audyt + wdrożenie poprawek';
 
     // 1. Zapis do bazy / pliku
     await saveLead({
@@ -25,7 +31,8 @@ export async function POST(req: Request) {
       domain: cleanDomain,
       email: email.trim(),
       phone: cleanPhone,
-      notes: notes ? String(notes).trim() : undefined
+      notes: notes ? String(notes).trim() : undefined,
+      intent: cleanIntent
     });
 
     // 2. Powiadomienie e-mail przez Resend
@@ -37,16 +44,17 @@ export async function POST(req: Request) {
           from: 'Audyt Molenda Dev <powiadomienia@panel.molendadevelopment.pl>',
           to: 'kontakt@molendadevelopment.pl',
           replyTo: email.trim(),
-          subject: `🔥 Nowe zapytanie z Audytu: ${cleanDomain} (${email})`,
+          subject: `🔥 Nowe zapytanie [${intentLabel}]: ${cleanDomain} (${email})`,
           html: `
             <div style="font-family: sans-serif; line-height: 1.6; color: #1e293b;">
-              <h2 style="color: #0f172a;">Nowe zgłoszenie w sprawie audytu i wdrożenia!</h2>
-              <p>Klient przesłał zapytanie ze strony audytu:</p>
+              <h2 style="color: #0f172a;">Nowe zgłoszenie z audytu strony!</h2>
+              <p>Klient przesłał zapytanie z formularza audytu:</p>
               <ul>
+                <li><strong>Wybrany zakres:</strong> <span style="color: #ea580c; font-weight: bold;">${intentLabel}</span></li>
                 <li><strong>Domena:</strong> ${cleanDomain}</li>
                 <li><strong>E-mail:</strong> <a href="mailto:${email}">${email}</a></li>
                 <li><strong>Telefon:</strong> ${cleanPhone ? `<a href="tel:${cleanPhone}">${cleanPhone}</a>` : 'Brak (kontakt mailowy)'}</li>
-                ${token ? `<li><strong>Link do audytu:</strong> <a href="https://molendadevelopment.pl/narzedzia/audyt?token=${token}">Zobacz raport audytu klienta</a></li>` : ''}
+                ${token ? `<li><strong>Link do audytu:</strong> <a href="https://molendadevelopment.pl/narzedzia/audyt?token=${token}&url=${encodeURIComponent(cleanDomain)}">Zobacz raport audytu klienta</a></li>` : ''}
                 ${notes ? `<li><strong>Treść wiadomości / cel:</strong> ${notes}</li>` : ''}
               </ul>
               <p style="font-size: 12px; color: #64748b;">Wysłano z silnika Audytu Strony Internetowej</p>
@@ -64,7 +72,8 @@ export async function POST(req: Request) {
       email: email.trim(),
       phone: cleanPhone,
       token: token ? String(token).trim() : undefined,
-      notes: notes ? String(notes).trim() : undefined
+      notes: notes ? String(notes).trim() : undefined,
+      intent: cleanIntent
     }).catch(err => console.error('Discord webhook lead failed', err));
 
     return NextResponse.json({ success: true, message: 'Zgłoszenie zostało przyjęte. Odpowiem mailowo wkrótce!' });

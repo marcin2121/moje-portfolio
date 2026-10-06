@@ -24,6 +24,7 @@ interface LeadNotificationParams {
   phone?: string;
   token?: string;
   notes?: string;
+  intent?: 'audit' | 'fixes' | 'both';
 }
 
 const getWebhookUrl = (): string | undefined => {
@@ -146,6 +147,19 @@ export async function notifyLeadReceived(params: LeadNotificationParams): Promis
       { name: '📧 Adres e-mail', value: `[${email}](mailto:${email})`, inline: true },
       { name: '📞 Telefon', value: phone ? `[${phone}](tel:${phone})` : 'Brak (kontakt mailowy)', inline: true }
     ];
+
+    if (params.intent) {
+      const intentLabels: Record<string, string> = {
+        audit: '📋 Chcę pełny audyt serwisu',
+        fixes: '🛠️ Chcę wdrożyć poprawki z audytu',
+        both: '🚀 Pełny audyt + wdrożenie poprawek'
+      };
+      fields.unshift({
+        name: '🎯 Wybrany zakres',
+        value: intentLabels[params.intent] || params.intent,
+        inline: false
+      });
+    }
 
     if (notes) {
       fields.push({ name: '📝 Treść wiadomości', value: notes, inline: false });
