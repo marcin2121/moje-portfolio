@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Loader2, Building2, ShoppingCart, Swords } from 'lucide-react';
+import { Search, Loader2, Building2, ShoppingCart, Swords, X } from 'lucide-react';
 import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
 import { SiteType } from '@/app/api/audit-master/types';
 import { parseDomainFromToken } from '@/app/api/audit-master/utils/token';
@@ -23,6 +23,10 @@ export function AudytClient() {
   const [scanStep, setScanStep] = useState(0);
   const [result, setResult] = useState<AuditResult | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Refy zapobiegające wielokrotnemu pobieraniu tego samego tokenu / blokowaniu przełącznika profilu
+  const processedInitialTokenRef = React.useRef<string | null>(null);
+  const initialUrlScannedRef = React.useRef<boolean>(false);
 
   const scanSteps = [
     "Inicjalizacja i wykrywanie mapy witryny (sitemap.xml)...",
@@ -77,6 +81,7 @@ export function AudytClient() {
 
       if (data.token && typeof window !== 'undefined') {
         const domainSlug = data.domain || targetUrl;
+        processedInitialTokenRef.current = data.token;
         window.history.replaceState(null, '', `/narzedzia/audyt?token=${encodeURIComponent(data.token)}&url=${encodeURIComponent(domainSlug)}`);
       }
 
@@ -93,9 +98,19 @@ export function AudytClient() {
     }
   }, [scanSteps.length]);
 
-  // Jeśli w URL jest gotowy token (np. z powiadomienia Discord lub cold maila), załaduj z cache lub przeprowadź audyt
+  // Ref synchronizowany z profilem witryny, by nie dodawać siteType do dependency array efektu URL
+  const siteTypeRef = React.useRef(siteType);
+  useEffect(() => {
+    siteTypeRef.current = siteType;
+  }, [siteType]);
+
+  // Jeśli w URL jest gotowy token (np. z powiadomienia Discord lub cold maila), załaduj go jednorazowo
   useEffect(() => {
     if (tokenParam) {
+      if (processedInitialTokenRef.current === tokenParam) {
+        return;
+      }
+      processedInitialTokenRef.current = tokenParam;
       setIsScanning(true);
       setErrorMessage('');
       const targetQuery = urlParam
@@ -109,7 +124,7 @@ export function AudytClient() {
             const candidateDomain = errData?.fallbackDomain || urlParam || parseDomainFromToken(tokenParam);
             if (candidateDomain) {
               setUrl(candidateDomain);
-              handleScan(candidateDomain, siteType, competitorParam || undefined);
+              handleScan(candidateDomain, siteTypeRef.current, competitorParam || undefined);
               return null;
             }
             throw new Error('Raport o podanym identyfikatorze wygasł lub nie został odnaleziony. Wpisz adres strony powyżej, aby wygenerować nową analizę.');
@@ -126,7 +141,7 @@ export function AudytClient() {
           const candidateDomain = urlParam || parseDomainFromToken(tokenParam);
           if (candidateDomain) {
             setUrl(candidateDomain);
-            handleScan(candidateDomain, siteType, competitorParam || undefined);
+            handleScan(candidateDomain, siteTypeRef.current, competitorParam || undefined);
             return;
           }
           setErrorMessage(err.message);
@@ -137,14 +152,16 @@ export function AudytClient() {
         .finally(() => {
           setIsScanning(false);
         });
-    } else if (urlParam) {
-      handleScan(urlParam, siteType, competitorParam || undefined);
+    } else if (urlParam && !initialUrlScannedRef.current) {
+      initialUrlScannedRef.current = true;
+      handleScan(urlParam, siteTypeRef.current, competitorParam || undefined);
     }
-  }, [tokenParam, urlParam, competitorParam, siteType, handleScan]);
+  }, [tokenParam, urlParam, competitorParam, handleScan]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleScan(url, siteType, showCompetitor ? competitorUrl : undefined);
+    if (!url.trim()) return;
+    handleScan(url.trim(), siteType, showCompetitor ? competitorUrl : undefined);
   };
 
   return (
@@ -155,7 +172,7 @@ export function AudytClient() {
           <button
             type="button"
             onClick={() => setSiteType('services')}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${
+            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
               siteType === 'services'
                 ? 'bg-slate-900 text-white shadow-sm'
                 : 'text-slate-500 hover:text-slate-900'
@@ -167,7 +184,7 @@ export function AudytClient() {
           <button
             type="button"
             onClick={() => setSiteType('ecommerce')}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${
+            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
               siteType === 'ecommerce'
                 ? 'bg-slate-900 text-white shadow-sm'
                 : 'text-slate-500 hover:text-slate-900'
@@ -186,19 +203,38 @@ export function AudytClient() {
             {siteType === 'ecommerce' ? 'Adres sklepu internetowego (URL)' : 'Adres strony firmowej / portalu (URL)'}
           </label>
           <div className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="text"
-              required
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder={siteType === 'ecommerce' ? 'np. dzikistyl.com, rltpolska.pl' : 'np. stowarzyszeniekas.pl, moja-firma.pl'}
-              className="flex-grow bg-white/90 border-2 border-slate-200 focus:border-orange-500 rounded-xl py-3.5 px-5 text-slate-900 text-sm outline-none transition-colors shadow-inner font-mono"
-              disabled={isScanning}
-            />
+            <div className="relative flex-grow">
+              <input
+                type="text"
+                required
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder={siteType === 'ecommerce' ? 'np. dzikistyl.com, rltpolska.pl' : 'np. stowarzyszeniekas.pl, moja-firma.pl'}
+                className="w-full bg-white/90 border-2 border-slate-200 focus:border-orange-500 rounded-xl py-3.5 px-5 pr-10 text-slate-900 text-sm outline-none transition-colors shadow-inner font-mono"
+                disabled={isScanning}
+              />
+              {url && !isScanning && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUrl('');
+                    setResult(null);
+                    processedInitialTokenRef.current = null;
+                    if (typeof window !== 'undefined') {
+                      window.history.replaceState(null, '', '/narzedzia/audyt');
+                    }
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer transition-colors"
+                  title="Wyczyść adres i zresetuj audyt"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
             <button
               type="submit"
-              disabled={isScanning || !url}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 px-8 rounded-xl text-xs sm:text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(249,115,22,0.25)] hover:scale-[1.02] shrink-0 active:scale-95"
+              disabled={isScanning || !url.trim()}
+              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 px-8 rounded-xl text-xs sm:text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(249,115,22,0.25)] hover:scale-[1.02] shrink-0 active:scale-95 cursor-pointer"
             >
               {isScanning ? (
                 <>
