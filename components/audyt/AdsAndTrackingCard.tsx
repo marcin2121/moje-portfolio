@@ -12,7 +12,8 @@ import {
   ShieldAlert,
   ShoppingCart,
   Database,
-  Mail
+  Mail,
+  Info
 } from 'lucide-react';
 import { AdsAndTrackingAudit, SiteType, SITE_TYPE_LABELS } from '@/app/api/audit-master/types';
 
@@ -83,6 +84,19 @@ export default function AdsAndTrackingCard({ tracking, domain, siteType = 'servi
           )}
         </div>
       </div>
+
+      {/* Baner informacyjny dla środowisk stagingowych / preview */}
+      {tracking.isStagingEnvironment && (
+        <div className="mb-8 p-4 rounded-2xl bg-sky-50/70 border border-sky-200/80 text-sky-900 text-xs flex items-start gap-3">
+          <Info className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
+          <div className="leading-relaxed">
+            <strong className="font-semibold block text-sky-950 mb-0.5 text-xs">
+              Wykryto środowisko przedwdrożeniowe (Vercel Preview / Staging)
+            </strong>
+            Brak wpiętych tagów analitycznych (Google Analytics 4, Meta Pixel) jest prawidłowy na etapie deweloperskim, aby nie zanieczyszczać statystyk ruchem roboczym. Pamiętaj o ich wdrożeniu i aktywacji przed finalnym przepięciem na oficjalną domenę produkcyjną.
+          </div>
+        </div>
+      )}
 
       {/* Siatka 6 kafelków telemetrycznych */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">

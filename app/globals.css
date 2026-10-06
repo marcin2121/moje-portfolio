@@ -192,3 +192,8 @@ body {
   * { overflow-wrap: break-word; }
   h1, h2, h3, h4, h5, h6, p, a, span { word-break: break-word; hyphens: auto; }
 }
+
+@media print {
+  footer { display: none !important; }
+  @page { margin: 1.2cm; size: A4 portrait; }
+}

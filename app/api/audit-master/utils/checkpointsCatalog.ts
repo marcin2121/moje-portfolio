@@ -499,14 +499,14 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
   },
   'seo-schema-article': {
     id: 'seo-schema-article',
-    name: 'Mikrodane Schema Article / BlogPosting pod silniki AI (SearchGPT / Gemini)',
+    name: 'Dane strukturalne Schema.org JSON-LD (Rich Snippets / AI Search)',
     category: 'seo_indexing',
     severity: 'warning',
-    defaultDiagnosisPassed: 'Treści merytoryczne posiadają semantyczne mikrodane Article/BlogPosting.',
-    defaultDiagnosisFailed: 'Wpisy blogowe i poradniki nie posiadają danych strukturalnych Schema Article.',
-    businessImpact: 'Nowoczesne wyszukiwarki AI (SearchGPT, Google AI Overviews, Perplexity) nie potrafią zacytować Twojej strony jako eksperta.',
-    businessBenefit: 'Obecność w podsumowaniach sztucznej inteligencji (AI Overviews) i dominacja na rynku zapytań głosowych i semantycznych.',
-    developerSolution: 'Wdrożenie pełnych mikrodanych Article/BlogPosting z autorem, datą publikacji i grafiką zgodnie ze standardem Schema.org.'
+    defaultDiagnosisPassed: 'Wykryto zwalidowane mikrodane Schema.org (Organization, LocalBusiness, FAQ lub Article) w formacie JSON-LD.',
+    defaultDiagnosisFailed: 'Brak danych strukturalnych Schema.org JSON-LD na stronie.',
+    businessImpact: 'Strona nie wyświetla gwiazdek ocen, rozszerzonych danych kontaktowych ani sekcji FAQ bezpośrednio w wynikach Google, obniżając CTR o 20-30%. Modele AI (ChatGPT, Gemini) mają utrudnioną interpretację profilu firmy.',
+    businessBenefit: 'Wizualne wyróżnienie w Google (Rich Snippets), wyższy wskaźnik klikalności (CTR) o 20-30% i natychmiastowe cytowanie profilu firmy przez silniki AI Search.',
+    developerSolution: 'Wdrożenie semantycznego bloku JSON-LD ze schematem Organization/LocalBusiness oraz FAQPage w kodzie witryny.'
   },
   'seo-anchor-text-quality': {
     id: 'seo-anchor-text-quality',
@@ -1275,12 +1275,25 @@ export function evaluateAllCheckpoints(
   // seo-internal-linking
   addEval('seo-internal-linking', 'passed', 'Gęste linkowanie');
 
-  // seo-schema-article
+  // seo-schema-article: Sprawdzamy dane strukturalne Schema.org (Organization, LocalBusiness, FAQPage, Article/BlogPosting)
+  const allSchemas = pages.flatMap(p => p.schemas || []);
+  const uniqueSchemas = Array.from(new Set(allSchemas)).filter(Boolean);
   const blogMissingSchema = evidence.categoriesSummary?.blog?.missingSchema || 0;
+
   if (blogMissingSchema > 0) {
     addEval('seo-schema-article', 'warning', `${blogMissingSchema} artykułów bez Schema Article`);
+  } else if (uniqueSchemas.length === 0 && (!evidence.detectedSchemas || evidence.detectedSchemas.length === 0)) {
+    addEval(
+      'seo-schema-article',
+      'warning',
+      'Brak Schema.org JSON-LD',
+      undefined,
+      'Brak danych strukturalnych Schema.org (Organization, LocalBusiness, FAQ) w kodzie. Google nie wyświetla gwiazdek ocen ani rozszerzonych wyników Rich Snippets, co obniża współczynnik klikalności (CTR) o 20-30%.'
+    );
   } else {
-    addEval('seo-schema-article', 'passed', 'Mikrodane artykułów OK');
+    const list = uniqueSchemas.length > 0 ? uniqueSchemas : (evidence.detectedSchemas || []);
+    const preview = list.slice(0, 3).join(', ');
+    addEval('seo-schema-article', 'passed', preview ? `Schema.org: ${preview}` : 'Schema.org aktywny');
   }
 
   // seo-anchor-text-quality

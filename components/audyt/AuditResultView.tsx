@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Zap, Search, Server, Settings, Copy, Check } from 'lucide-react';
+import { Shield, Zap, Search, Server, Settings, Copy, Check, Printer } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { AuditMasterResponse } from '@/app/api/audit-master/types';
 import AuditEvidenceCard from './AuditEvidenceCard';
@@ -10,6 +10,7 @@ import PagesTable from './PagesTable';
 import AuditConsultationForm from './AuditConsultationForm';
 import QuickCriticalIssues from './QuickCriticalIssues';
 import AdsAndTrackingCard from './AdsAndTrackingCard';
+import SocialSharePreviewCard from './SocialSharePreviewCard';
 import AuditChecklistSection from './AuditChecklistSection';
 import CompetitorBenchmarkCard from './CompetitorBenchmarkCard';
 import LighthouseGauge, { GaugeSegment } from './LighthouseGauge';
@@ -40,6 +41,12 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
     navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleDownloadPdf = () => {
+    if (typeof window !== 'undefined') {
+      window.print();
+    }
   };
 
   const evidence = result.evidence;
@@ -143,8 +150,31 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className="space-y-12"
     >
-      {/* Pasek Nagłówka Audytu + Kopiowanie Linku */}
-      <div className="bg-white/80 border border-slate-200/70 rounded-3xl p-6 md:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)] flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      {/* Dedykowany nagłówek dokumentu do druku / zapisu PDF */}
+      <div className="hidden print:block pb-6 mb-6 border-b-2 border-slate-900">
+        <div className="flex justify-between items-start">
+          <div>
+            <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-widest block mb-1">
+              Oficjalny Raport Audytu Technicznego · Molenda Development
+            </span>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+              {result.domain}
+            </h1>
+            <p className="text-xs text-slate-600 mt-1 font-sans">
+              Przeanalizowano {evidence?.totalPages || 1} podstron · Wygenerowano: {new Date(result.createdAt).toLocaleDateString('pl-PL')} · Wynik ogólny: <strong className="text-slate-900 font-bold">{result.overallScore}/100</strong>
+            </p>
+          </div>
+          <div className="text-right text-xs text-slate-600">
+            <strong className="block text-slate-900 font-bold text-sm">Marcin Molenda</strong>
+            <span>Architektura Next.js & Inżynieria Web</span>
+            <span className="block font-mono text-[11px] mt-0.5">marcin@molendadevelopment.pl</span>
+            <span className="block font-mono text-[11px] font-bold text-slate-900">+48 789 746 950</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Pasek Nagłówka Audytu + Kopiowanie Linku + Pobieranie PDF */}
+      <div className="bg-white/80 border border-slate-200/70 rounded-3xl p-6 md:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.04)] flex flex-col md:flex-row justify-between items-start md:items-center gap-6 print:border-slate-300">
         <div>
           <div className="flex items-center gap-3 mb-1">
             <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-wider">
@@ -164,11 +194,11 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 print:hidden">
           <button
             type="button"
             onClick={copyShareLink}
-            className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm active:scale-95"
+            className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
           >
             {copied ? (
               <>
@@ -181,6 +211,15 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
                 <span>Kopiuj unikalny link do audytu</span>
               </>
             )}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs font-semibold px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
+          >
+            <Printer className="w-4 h-4 text-slate-600" />
+            <span>Pobierz Raport PDF (Dla Zarządu)</span>
           </button>
         </div>
       </div>
@@ -307,6 +346,13 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       {evidence?.adsAndTracking && (
         <AdsAndTrackingCard tracking={evidence.adsAndTracking} domain={result.domain} siteType={result.siteType} />
       )}
+
+      {/* SEKCJA 3.5: Wizualny Podgląd Udostępniania Social Media & Schema.org */}
+      <SocialSharePreviewCard
+        openGraph={evidence?.openGraphSummary || evidence?.adsAndTracking?.openGraphData}
+        detectedSchemas={evidence?.detectedSchemas}
+        domain={result.domain}
+      />
 
       {/* SEKCJA 4: Asymetryczny Bento Grid filarów technicznych */}
       <div>
@@ -666,12 +712,26 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       {pages.length > 0 && <PagesTable pages={pages} />}
 
       {/* Sekcja 5: Formularz Konsultacji & Lead Capture */}
-      <AuditConsultationForm
-        domain={result.domain}
-        token={result.token}
-        siteType={result.siteType}
-        overallScore={result.overallScore}
-      />
+      <div className="print:hidden">
+        <AuditConsultationForm
+          domain={result.domain}
+          token={result.token}
+          siteType={result.siteType}
+          overallScore={result.overallScore}
+        />
+      </div>
+
+      {/* Stopka raportu PDF do druku */}
+      <div className="hidden print:block pt-6 mt-8 border-t-2 border-slate-900 text-xs text-slate-600">
+        <div className="flex justify-between items-center">
+          <div>
+            <strong className="text-slate-900 font-bold">Molenda Development</strong> · Niezależny Audyt Inżynieryjny Witryny
+          </div>
+          <div className="font-mono text-[11px] text-slate-800">
+            molendadevelopment.pl · tel. +48 789 746 950 · marcin@molendadevelopment.pl
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }

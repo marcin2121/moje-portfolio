@@ -77,6 +77,8 @@ export interface AdsAndTrackingAudit {
   hasClickToCallTracking?: boolean;
   hasFormSpamProtection?: boolean;
   hasOpenGraph?: boolean;
+  openGraphData?: OpenGraphData;
+  isStagingEnvironment?: boolean;
   hasClarity?: boolean;
   hasHotjar?: boolean;
   hasSessionRecording?: boolean;
@@ -85,6 +87,16 @@ export interface AdsAndTrackingAudit {
   adBudgetLeakRisk: 'none' | 'low' | 'medium' | 'critical';
   issues: TrackingIssue[];
   profileSignals?: ProfileSignals;
+}
+
+export interface OpenGraphData {
+  hasOpenGraph: boolean;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  ogUrl?: string;
+  ogSiteName?: string;
+  ogType?: string;
 }
 
 export type SiteType =
@@ -146,6 +158,9 @@ export interface EvidenceSummary {
   detectedProfile?: SiteType;
   profileLabel?: string;
   profileSignals?: ProfileSignals;
+  detectedSchemas?: string[];
+  openGraphSummary?: OpenGraphData;
+  isStagingEnvironment?: boolean;
 }
 
 export interface Pillar {

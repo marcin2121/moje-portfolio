@@ -10,7 +10,8 @@ import {
   DetailedCodeSmells,
   SiteType,
   SITE_TYPE_LABELS,
-  ProfileSignals
+  ProfileSignals,
+  OpenGraphData
 } from '../types';
 
 interface CrawlOptions {
@@ -47,6 +48,13 @@ export interface PageTrackingSignals {
   hasClickToCallTracking?: boolean;
   hasFormSpamProtection?: boolean;
   hasOpenGraph?: boolean;
+  ogData?: {
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImage?: string;
+    ogUrl?: string;
+    ogSiteName?: string;
+  };
   hasExpressPayments?: boolean;
   hasClarity?: boolean;
   hasHotjar?: boolean;
@@ -380,8 +388,20 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
     lowerHtml.includes('wpcf7-form-control-wrap')
   );
 
-  // 16. Open Graph dla social media (og:image)
-  const hasOpenGraph = cheerioInstance('meta[property="og:image"], meta[name="og:image"]').length > 0;
+  // 16. Open Graph dla social media (og:image / og:title / og:description)
+  const rawOgImage = cheerioInstance('meta[property="og:image"], meta[name="og:image"]').attr('content') || undefined;
+  const ogTitle = cheerioInstance('meta[property="og:title"], meta[name="og:title"]').attr('content') || cheerioInstance('title').text().trim() || undefined;
+  const ogDescription = cheerioInstance('meta[property="og:description"], meta[name="og:description"]').attr('content') || cheerioInstance('meta[name="description"]').attr('content') || undefined;
+  const ogUrl = cheerioInstance('meta[property="og:url"], meta[name="og:url"]').attr('content') || undefined;
+  const ogSiteName = cheerioInstance('meta[property="og:site_name"], meta[name="og:site_name"]').attr('content') || undefined;
+  const hasOpenGraph = Boolean(rawOgImage && rawOgImage.trim().length > 0);
+  const ogData = {
+    ogTitle,
+    ogDescription,
+    ogImage: rawOgImage ? rawOgImage.trim() : undefined,
+    ogUrl,
+    ogSiteName
+  };
 
   // 17. Szybkie płatności mobilne (BLIK, Apple Pay, Google Pay, BNPL)
   const hasExpressPayments = /blik|apple\s*pay|google\s*pay|paypo|klarna|twisto/i.test(rawHtml);
@@ -479,6 +499,7 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
     hasClickToCallTracking,
     hasFormSpamProtection,
     hasOpenGraph,
+    ogData,
     hasExpressPayments,
     hasClarity,
     hasHotjar,
@@ -555,6 +576,15 @@ async function analyzeSinglePage(
         extractSchemaTypes(json, schemas);
       } catch {
         // Ignorujemy błędy parsowania JSON-LD
+      }
+    });
+
+    // Obsługa Microdata HTML5 (itemtype="https://schema.org/...")
+    $('body, head, div, section, article, main, header, footer').filter('[itemtype]').each((_, el) => {
+      const it = $(el).attr('itemtype') || '';
+      const match = it.match(/schema\.org\/([A-Za-z0-9_-]+)/i);
+      if (match && match[1]) {
+        schemas.push(match[1]);
       }
     });
 
@@ -641,7 +671,21 @@ async function analyzeSinglePage(
         internalLinksCount,
         externalLinksCount
       },
-      tracking: trackingSignals
+      tracking: {
+        ...trackingSignals,
+        ogData: trackingSignals.ogData ? {
+          ...trackingSignals.ogData,
+          ogImage: trackingSignals.ogData.ogImage && !trackingSignals.ogData.ogImage.startsWith('http')
+            ? (() => {
+                try {
+                  return new URL(trackingSignals.ogData.ogImage, url).href;
+                } catch {
+                  return trackingSignals.ogData.ogImage;
+                }
+              })()
+            : trackingSignals.ogData.ogImage
+        } : undefined
+      }
     };
   } catch {
     // W przypadku błędu połączenia z podstroną
@@ -1068,9 +1112,21 @@ export function buildEvidenceSummary(
     });
   }
 
+  // Wykrywanie środowiska stagingowego / preview (Vercel, Netlify, Cloudflare Pages, dev, staging)
+  const isStagingEnvironment = /vercel\.app|netlify\.app|pages\.dev|webflow\.io|preview|staging|dev\.|test\./i.test(origin);
+  const firstSignalWithOg = signals.find(s => s.ogData?.ogImage || s.ogData?.ogTitle) || signals[0];
+  const primaryOgData: OpenGraphData = {
+    hasOpenGraph,
+    ogImage: firstSignalWithOg?.ogData?.ogImage,
+    ogTitle: firstSignalWithOg?.ogData?.ogTitle || pages[0]?.title,
+    ogDescription: firstSignalWithOg?.ogData?.ogDescription || pages[0]?.metaDescription,
+    ogUrl: firstSignalWithOg?.ogData?.ogUrl || pages[0]?.url,
+    ogSiteName: firstSignalWithOg?.ogData?.ogSiteName
+  };
+
   const hasPaidAds = hasGoogleAds || hasMetaPixel || hasTikTokPixel;
   let adBudgetLeakRisk: 'none' | 'low' | 'medium' | 'critical' = 'none';
-  if (!hasPaidAds || isPublicOrNgo) {
+  if (!hasPaidAds || isPublicOrNgo || isStagingEnvironment) {
     adBudgetLeakRisk = 'none';
   } else if (trackingIssues.some(i => i.severity === 'critical')) {
     adBudgetLeakRisk = 'critical';
@@ -1106,6 +1162,8 @@ export function buildEvidenceSummary(
     hasClickToCallTracking,
     hasFormSpamProtection,
     hasOpenGraph,
+    openGraphData: primaryOgData,
+    isStagingEnvironment,
     hasClarity,
     hasHotjar,
     hasSessionRecording,
@@ -1141,7 +1199,10 @@ export function buildEvidenceSummary(
       },
       detectedProfile: siteType,
       profileLabel: SITE_TYPE_LABELS[siteType] || 'Usługi B2B & Doradztwo',
-      profileSignals
+      profileSignals,
+      detectedSchemas: [],
+      openGraphSummary: primaryOgData,
+      isStagingEnvironment
     };
   }
 
@@ -1319,7 +1380,10 @@ export function buildEvidenceSummary(
     },
     detectedProfile: siteType,
     profileLabel: SITE_TYPE_LABELS[siteType] || 'Usługi B2B & Doradztwo',
-    profileSignals
+    profileSignals,
+    detectedSchemas: Array.from(new Set(pages.flatMap(p => p.schemas || []))).filter(Boolean),
+    openGraphSummary: adsAndTracking.openGraphData,
+    isStagingEnvironment
   };
 }
 
