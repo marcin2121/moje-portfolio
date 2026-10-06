@@ -363,6 +363,7 @@ export async function POST(req: Request) {
       detectedPlatform: rootData.detectedPlatform,
       siteType: currentSiteType,
       criticalLeaksCount: quickIssues.length,
+      criticalIssues: quickIssues.map(q => q.title),
       competitorDomain: competitorBenchmark?.competitorDomain,
       competitorScore: competitorBenchmark?.competitorScore
     }).catch(err => {

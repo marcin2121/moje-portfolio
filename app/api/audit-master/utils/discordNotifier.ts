@@ -13,6 +13,7 @@ interface AuditNotificationParams {
   detectedPlatform: string;
   siteType: SiteType;
   criticalLeaksCount?: number;
+  criticalIssues?: string[];
   competitorDomain?: string;
   competitorScore?: number;
 }
@@ -28,6 +29,17 @@ interface LeadNotificationParams {
 const getWebhookUrl = (): string | undefined => {
   return process.env.DISCORD_WEBHOOK_URL;
 };
+
+function formatCriticalIssuesCount(count: number): string {
+  if (count === 0) return 'Brak błędów krytycznych';
+  if (count === 1) return '1 błąd krytyczny';
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
+    return `${count} błędy krytyczne`;
+  }
+  return `${count} błędów krytycznych`;
+}
 
 /**
  * Wysyła powiadomienie na Discord o nowo wygenerowanym audycie.
@@ -45,6 +57,7 @@ export async function notifyAuditGenerated(params: AuditNotificationParams): Pro
       detectedPlatform,
       siteType,
       criticalLeaksCount = 0,
+      criticalIssues,
       competitorDomain,
       competitorScore
     } = params;
@@ -54,12 +67,24 @@ export async function notifyAuditGenerated(params: AuditNotificationParams): Pro
     const siteLabel = SITE_TYPE_LABELS[siteType] || (siteType === 'ecommerce' ? '🛒 E-commerce (Sklep)' : '🏢 Usługi / B2B');
     const auditUrl = `https://molendadevelopment.pl/narzedzia/audyt?token=${token}`;
 
+    const lossText = overallScore >= 100 || lossPercentage === 0
+      ? 'Maksymalna wydajność'
+      : `Szacowany spadek: ~${lossPercentage}%`;
+
     const fields = [
-      { name: 'Wynik Główny', value: `**${overallScore}/100** (Utrata: ~${lossPercentage}%)`, inline: true },
+      { name: 'Wynik Główny', value: `**${overallScore}/100** (${lossText})`, inline: true },
       { name: 'Typ witryny', value: siteLabel, inline: true },
       { name: 'Wykryta platforma', value: detectedPlatform || 'Nierozpoznano', inline: true },
-      { name: 'Krytyczne wycieki', value: `${criticalLeaksCount} krytycznych błędów`, inline: true }
+      { name: 'Błędy krytyczne', value: formatCriticalIssuesCount(criticalLeaksCount), inline: true }
     ];
+
+    if (criticalIssues && criticalIssues.length > 0) {
+      fields.push({
+        name: '⚠️ Kluczowe usterki',
+        value: criticalIssues.slice(0, 4).map(t => `• ${t}`).join('\n'),
+        inline: false
+      });
+    }
 
     if (competitorDomain && competitorScore !== undefined) {
       fields.push({
