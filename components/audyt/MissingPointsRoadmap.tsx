@@ -674,7 +674,7 @@ gtag('consent', 'default', {
                           href="#kontakt"
                           className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-all shrink-0 shadow-sm"
                         >
-                          <span>Zleć wdrożenie poprawki Marcinowi</span>
+                          <span>Potrzebujesz z tym pomocy?</span>
                           <ArrowRight className="w-3.5 h-3.5 text-orange-400" />
                         </a>
                       </div>
