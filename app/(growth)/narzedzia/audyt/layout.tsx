@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'Darmowy Audyt Strony Internetowej i Sklepu WWW | Marcin Molenda',
+  title: 'Darmowy Audyt Strony Internetowej i Sklepu WWW',
   description: 'Błyskawiczny audyt techniczny witryny: prędkość na telefonach, widoczność w Google, błędy w kodzie oraz poprawne śledzenie konwersji z reklam.',
   alternates: {
     canonical: '/narzedzia/audyt',

@@ -8,10 +8,12 @@ interface AuditConsultationFormProps {
   domain: string;
   token?: string;
   siteType?: SiteType;
+  overallScore?: number;
 }
 
-export default function AuditConsultationForm({ domain, token, siteType = 'services' }: AuditConsultationFormProps) {
+export default function AuditConsultationForm({ domain, token, siteType = 'services', overallScore }: AuditConsultationFormProps) {
   const isEcommerce = siteType === 'ecommerce';
+  const isPerfect = (overallScore ?? 0) >= 100;
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
@@ -90,13 +92,19 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
 
       <div className="max-w-2xl relative z-10">
         <span className="text-orange-400 font-mono text-xs uppercase tracking-widest font-semibold block mb-3">
-          Konsultacja techniczna i wdrożenie {SITE_TYPE_LABELS[siteType] ? `· ${SITE_TYPE_LABELS[siteType]}` : (isEcommerce ? '· Sklep E-commerce' : '· Usługi / B2B')}
+          {isPerfect
+            ? `Konsultacja architektoniczna i rozwój ${SITE_TYPE_LABELS[siteType] ? `· ${SITE_TYPE_LABELS[siteType]}` : (isEcommerce ? '· Sklep E-commerce' : '· Usługi / B2B')}`
+            : `Konsultacja techniczna i wdrożenie ${SITE_TYPE_LABELS[siteType] ? `· ${SITE_TYPE_LABELS[siteType]}` : (isEcommerce ? '· Sklep E-commerce' : '· Usługi / B2B')}`}
         </span>
         <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">
-          Chcesz wdrożyć poprawki z audytu dla {domain}?
+          {isPerfect
+            ? `Twój serwis osiągnął 100/100! Szukasz wsparcia przy rozwoju ${domain}?`
+            : `Chcesz wdrożyć poprawki z audytu dla ${domain}?`}
         </h3>
         <p className="text-slate-400 text-sm leading-relaxed mb-8">
-          {siteType === 'gov_public' || siteType === 'education'
+          {isPerfect
+            ? 'Napisz do mnie, jeśli planujesz rozbudowę serwisu o nowe moduły, zaawansowane integracje API lub dedykowane aplikacje webowe. Pomogę Ci utrzymać najwyższy standard inżynieryjny i szybkość działania przy skalowaniu platformy.'
+            : siteType === 'gov_public' || siteType === 'education'
             ? 'Napisz do mnie. Przeanalizuję usterki z raportu i wskażę, jak spełnić wymagania prawne WCAG 2.1 AA (Deklaracja Dostępności), zabezpieczyć formularze przed botami i wdrożyć kluczowe poprawki w architekturze bez konieczności kosztownej przebudowy.'
             : siteType === 'ngo_foundation'
             ? 'Napisz do mnie. Przeanalizuję usterki z raportu i wskażę, jak zabezpieczyć formularze przed spamem, ułatwić darczyńcom wpłaty i poprawić widoczność w Google.'
@@ -113,7 +121,9 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
                 Zapytanie wysłane pomyślnie!
               </h4>
               <p className="text-slate-300 text-xs leading-relaxed">
-                Dziękuję za kontakt. Przeanalizuję usterki z raportu i odpowiem na Twój adres e-mail z konkretnymi wskazówkami technicznymi oraz planem wdrożenia poprawek.
+                {isPerfect
+                  ? 'Dziękuję za kontakt. Odpowiem na Twój adres e-mail z propozycją współpracy przy rozwoju i skalowaniu Twojej platformy.'
+                  : 'Dziękuję za kontakt. Przeanalizuję usterki z raportu i odpowiem na Twój adres e-mail z konkretnymi wskazówkami technicznymi oraz planem wdrożenia poprawek.'}
               </p>
             </div>
           </div>
@@ -171,7 +181,9 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
                 type="text"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder={isEcommerce
+                placeholder={isPerfect
+                  ? "np. chcemy wdrożyć nowy moduł, zintegrować system CRM/ERP lub zoptymalizować procesy"
+                  : isEcommerce
                   ? "np. chcemy naprawić śledzenie koszyka (add_to_cart), przyspieszyć sklep, obniżyć porzucenia koszyka"
                   : "np. chcemy naprawić śledzenie konwersji, poprawić pozycje w Google, usunąć dług techniczny"}
                 className="w-full bg-slate-800/90 border border-slate-700/80 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 transition-colors"
@@ -190,7 +202,7 @@ export default function AuditConsultationForm({ domain, token, siteType = 'servi
                 </>
               ) : (
                 <>
-                  <span>Skonsultuj audyt mailowo</span>
+                  <span>{isPerfect ? 'Napisz w sprawie rozwoju' : 'Skonsultuj audyt mailowo'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}

@@ -726,17 +726,27 @@ gtag('consent', 'default', {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-wider">
-              Plan naprawczy
+              {currentMissing === 0 ? 'Status optymalizacji' : 'Plan naprawczy'}
             </span>
-            <span className="text-[11px] font-mono text-rose-700 bg-rose-50 border border-rose-200/80 px-2 py-0.5 rounded-md font-bold whitespace-nowrap">
-              -{currentMissing} pkt do perfekcji
-            </span>
+            {currentMissing === 0 ? (
+              <span className="text-[11px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md font-bold whitespace-nowrap">
+                Perfekcyjny wynik 100/100
+              </span>
+            ) : (
+              <span className="text-[11px] font-mono text-rose-700 bg-rose-50 border border-rose-200/80 px-2 py-0.5 rounded-md font-bold whitespace-nowrap">
+                -{currentMissing} pkt do perfekcji
+              </span>
+            )}
           </div>
           <h3 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-            <span>Za co brakuje punktów i jak zdobyć 100/100?</span>
+            <span>{currentMissing === 0 ? 'Maksymalny wynik optymalizacji witryny' : 'Za co brakuje punktów i jak zdobyć 100/100?'}</span>
           </h3>
           <p className="text-xs text-slate-500 font-mono mt-1">
-            Twój aktualny wynik to <strong>{currentScore}/100</strong>. Kliknij dowolną pozycję poniżej, aby odkryć instrukcję odzyskania pełnej puli punktów.
+            {currentMissing === 0 ? (
+              <>Twój aktualny wynik to <strong>{currentScore}/100</strong>. Wszystkie badane obszary spełniają najwyższe standardy inżynieryjne.</>
+            ) : (
+              <>Twój aktualny wynik to <strong>{currentScore}/100</strong>. Kliknij dowolną pozycję poniżej, aby odkryć instrukcję odzyskania pełnej puli punktów.</>
+            )}
           </p>
         </div>
 

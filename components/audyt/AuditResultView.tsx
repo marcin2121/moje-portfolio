@@ -189,7 +189,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       <div className="w-full bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-6 md:p-8 backdrop-blur-2xl">
         <div className="flex items-center justify-between gap-2 mb-6 pb-4 border-b border-slate-100">
           <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-widest">
-            Ocena techniczna witryny
+            Podsumowanie audytu
           </span>
           <span className="font-mono text-[11px] text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80 whitespace-nowrap">
             Kompleksowy test 64 parametrów
@@ -235,14 +235,25 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
         )}
 
         <div className="mt-6 pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="p-3 bg-rose-50/70 border border-rose-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
-            <span className="text-xs font-mono text-rose-700 font-bold whitespace-nowrap">
-              Szacowany spadek {conversionLabel}:
-            </span>
-            <span className="text-xl font-black text-rose-600 font-mono">
-              ~{result.lossPercentage}%
-            </span>
-          </div>
+          {result.lossPercentage === 0 || result.overallScore === 100 ? (
+            <div className="p-3 bg-emerald-50/70 border border-emerald-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
+              <span className="text-xs font-mono text-emerald-700 font-bold whitespace-nowrap">
+                Efektywność techniczna:
+              </span>
+              <span className="text-xl font-black text-emerald-600 font-mono">
+                100% (Maksymalna)
+              </span>
+            </div>
+          ) : (
+            <div className="p-3 bg-rose-50/70 border border-rose-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
+              <span className="text-xs font-mono text-rose-700 font-bold whitespace-nowrap">
+                Szacowany spadek {conversionLabel}:
+              </span>
+              <span className="text-xl font-black text-rose-600 font-mono">
+                ~{result.lossPercentage}%
+              </span>
+            </div>
+          )}
           <p className="text-slate-500 text-[11px] font-mono text-center sm:text-right leading-relaxed max-w-md">
             {isWordPress
               ? 'Pierwszy wynik ocenia jakość strony na tle innych witryn WordPress. Drugi wynik porównuje ją z najszybszymi, nowoczesnymi technologiami internetowymi.'
@@ -655,7 +666,12 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       {pages.length > 0 && <PagesTable pages={pages} />}
 
       {/* Sekcja 5: Formularz Konsultacji & Lead Capture */}
-      <AuditConsultationForm domain={result.domain} token={result.token} siteType={result.siteType} />
+      <AuditConsultationForm
+        domain={result.domain}
+        token={result.token}
+        siteType={result.siteType}
+        overallScore={result.overallScore}
+      />
     </motion.div>
   );
 }

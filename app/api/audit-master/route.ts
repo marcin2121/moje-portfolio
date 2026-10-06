@@ -247,7 +247,7 @@ export async function POST(req: Request) {
     const avgScore = Math.round(
       (finalPerformanceScore + finalSeoScore + rootData.securityScore + rootData.scalabilityScore + rootData.automationScore) / 5
     );
-    const lossPercentage = avgScore >= 95 ? 2 : Math.max(5, Math.round((100 - avgScore) / 1.5));
+    const lossPercentage = avgScore >= 100 ? 0 : avgScore >= 95 ? 2 : Math.max(5, Math.round((100 - avgScore) / 1.5));
 
     // Generowanie werdyktu AI (z odpornym fallbackiem w razie limitów Gemini)
     const aiReport = await generateGeminiReport(
