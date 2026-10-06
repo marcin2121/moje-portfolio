@@ -396,6 +396,11 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
     expect(pluralizePolish(21, 'grupa', 'grupy', 'grup')).toBe('21 grup');
     expect(pluralizePolish(22, 'grupa', 'grupy', 'grup')).toBe('22 grupy');
     expect(pluralizePolish(105, 'grupa', 'grupy', 'grup')).toBe('105 grup');
+
+    expect(pluralizePolish(1, 'podstronę', 'podstrony', 'podstron')).toBe('1 podstronę');
+    expect(pluralizePolish(2, 'podstronę', 'podstrony', 'podstron')).toBe('2 podstrony');
+    expect(pluralizePolish(5, 'podstronę', 'podstrony', 'podstron')).toBe('5 podstron');
+    expect(pluralizePolish(24, 'podstronę', 'podstrony', 'podstron')).toBe('24 podstrony');
   });
 
   describe('3-Level Profile Detection Engine (detectAccurateSiteType)', () => {
@@ -1013,6 +1018,118 @@ describe('Audit Master: 80 Checkpoints Engine & ROI Benefits', () => {
       expect(report).not.toContain('przepalanie budżetu');
       expect(report).not.toContain('fałszywe konwersje');
       expect(report).not.toContain('paraliż');
+    });
+
+    it('6. Narrative Consistency Guardrail: high score (>=85) with structural issues acknowledges enterprise foundation but highlights quick SEO corrections without claiming code changes are not needed', () => {
+      const mockEvidence: EvidenceSummary = {
+        totalPages: 1,
+        avgResponseTimeMs: 284,
+        status200Count: 1,
+        redirectsCount: 0,
+        errorsCount: 0,
+        noIndexCount: 0,
+        missingTitleCount: 0,
+        duplicateTitleGroups: [],
+        missingMetaCount: 0,
+        avgMetaLength: 152,
+        missingH1Count: 1,
+        missingH1Urls: ['https://dzikistyl.vercel.app/'],
+        thinContentCount: 0,
+        thinContentUrls: [],
+        missingCanonicalCount: 1,
+        missingCanonicalUrls: ['https://dzikistyl.vercel.app/'],
+        missingAltTotal: 0,
+        isStagingEnvironment: true,
+        adsAndTracking: {
+          hasGoogleAds: false,
+          hasGoogleTagManager: false,
+          hasGA4: false,
+          hasMetaPixel: false,
+          hasTikTokPixel: false,
+          hasConsentModeV2: false,
+          hasDataLayer: false,
+          hasAddToCartTracking: false,
+          hasPurchaseTracking: false,
+          hasCartButtons: false,
+          hasLeadForms: false,
+          adBudgetLeakRisk: 'none',
+          issues: []
+        },
+        categoriesSummary: {
+          overall: { goodCount: 1, warnCount: 0, badCount: 0 }
+        }
+      };
+
+      const report = generateDeterministicReport(
+        'https://dzikistyl.vercel.app',
+        98,
+        'Next.js 15 (Turbopack)',
+        2,
+        false,
+        mockEvidence,
+        { jquery: false, badScripts: 0, domElements: 380, inlineStyles: 0 },
+        'b2b_services'
+      );
+
+      // Must state enterprise level
+      expect(report).toContain('wzorowy poziom inżynieryjny (98/100)');
+      // Must explicitly mention the quick SEO adjustments
+      expect(report).toContain('brak nagłówka H1');
+      expect(report).toContain('brak tagu canonical');
+      // Must NOT unconditionally claim no code changes are needed without mentioning the quick corrections
+      expect(report).toContain('Wdrożenie tych kosmetycznych poprawek w strukturze HTML zajmuje chwilę i nie wymaga przebudowy serwisu');
+    });
+
+    it('7. Meta Description Tolerance: 70-195 chars passes without warning (supports 176 chars without false alarms)', () => {
+      const baseEvidence: EvidenceSummary = {
+        totalPages: 1,
+        avgResponseTimeMs: 100,
+        status200Count: 1,
+        redirectsCount: 0,
+        errorsCount: 0,
+        noIndexCount: 0,
+        missingTitleCount: 0,
+        duplicateTitleGroups: [],
+        missingMetaCount: 0,
+        avgMetaLength: 176, // 176 chars
+        missingH1Count: 0,
+        missingH1Urls: [],
+        thinContentCount: 0,
+        thinContentUrls: [],
+        missingCanonicalCount: 0,
+        missingCanonicalUrls: [],
+        missingAltTotal: 0,
+        adsAndTracking: {
+          hasGoogleAds: false,
+          hasGoogleTagManager: false,
+          hasGA4: false,
+          hasMetaPixel: false,
+          hasTikTokPixel: false,
+          hasConsentModeV2: false,
+          hasDataLayer: false,
+          hasAddToCartTracking: false,
+          hasPurchaseTracking: false,
+          hasCartButtons: false,
+          hasLeadForms: false,
+          adBudgetLeakRisk: 'none',
+          issues: []
+        },
+        categoriesSummary: {
+          overall: { goodCount: 1, warnCount: 0, badCount: 0 }
+        }
+      };
+
+      const result176 = evaluateAllCheckpoints(baseEvidence, [], { jquery: false, badScripts: 0, domElements: 100, inlineStyles: 0 }, 'b2b_services');
+      const eval176 = result176.evals.find(e => e.id === 'seo-meta-description-length');
+      expect(eval176?.status).toBe('passed');
+
+      const result60 = evaluateAllCheckpoints({ ...baseEvidence, avgMetaLength: 60 }, [], { jquery: false, badScripts: 0, domElements: 100, inlineStyles: 0 }, 'b2b_services');
+      const eval60 = result60.evals.find(e => e.id === 'seo-meta-description-length');
+      expect(eval60?.status).toBe('warning');
+
+      const result210 = evaluateAllCheckpoints({ ...baseEvidence, avgMetaLength: 210 }, [], { jquery: false, badScripts: 0, domElements: 100, inlineStyles: 0 }, 'b2b_services');
+      const eval210 = result210.evals.find(e => e.id === 'seo-meta-description-length');
+      expect(eval210?.status).toBe('warning');
     });
   });
 

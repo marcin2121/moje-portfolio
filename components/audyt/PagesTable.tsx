@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { Search, ExternalLink } from 'lucide-react';
 import { PageAuditResult } from '@/app/api/audit-master/types';
+import { pluralizePolish } from '@/app/api/audit-master/utils/crawler';
 
 interface PagesTableProps {
   pages: PageAuditResult[];
@@ -43,7 +44,7 @@ export default function PagesTable({ pages }: PagesTableProps) {
             Wszystkie zbadane podstrony
           </h3>
           <p className="text-xs text-slate-500 font-mono mt-0.5">
-            Przeanalizowano {pages.length} unikalnych adresów URL w domenie
+            Przeanalizowano {pluralizePolish(pages.length, 'unikalny adres URL', 'unikalne adresy URL', 'unikalnych adresów URL')} w domenie
           </p>
         </div>
 

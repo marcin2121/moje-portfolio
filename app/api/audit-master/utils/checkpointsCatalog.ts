@@ -389,7 +389,7 @@ export const CHECKPOINTS_CATALOG: Record<string, CatalogCheckpointDefinition> = 
   },
   'seo-meta-description-length': {
     id: 'seo-meta-description-length',
-    name: 'Prawidłowa długość meta description (120-160 znaków)',
+    name: 'Prawidłowa długość meta description (70-195 znaków)',
     category: 'seo_indexing',
     severity: 'warning',
     defaultDiagnosisPassed: 'Długość opisów meta description mieści się w optymalnym przedziale.',
@@ -1219,7 +1219,7 @@ export function evaluateAllCheckpoints(
   }
 
   // seo-meta-description-length
-  if (evidence.avgMetaLength > 0 && (evidence.avgMetaLength < 70 || evidence.avgMetaLength > 175)) {
+  if (evidence.avgMetaLength > 0 && (evidence.avgMetaLength < 70 || evidence.avgMetaLength > 195)) {
     addEval('seo-meta-description-length', 'warning', `Średnia długość: ${evidence.avgMetaLength} zn.`);
   } else {
     addEval('seo-meta-description-length', 'passed', `${evidence.avgMetaLength || 140} zn.`);

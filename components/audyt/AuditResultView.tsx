@@ -161,7 +161,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
               {result.domain}
             </h1>
             <p className="text-xs text-slate-600 mt-1 font-sans">
-              Przeanalizowano {evidence?.totalPages || 1} podstron · Wygenerowano: {new Date(result.createdAt).toLocaleDateString('pl-PL')} · Wynik ogólny: <strong className="text-slate-900 font-bold">{result.overallScore}/100</strong>
+              Przeanalizowano {pluralizePolish(evidence?.totalPages || 1, 'podstronę', 'podstrony', 'podstron')} · Wygenerowano: {new Date(result.createdAt).toLocaleDateString('pl-PL')} · Wynik ogólny: <strong className="text-slate-900 font-bold">{result.overallScore}/100</strong>
             </p>
           </div>
           <div className="text-right text-xs text-slate-600">
@@ -190,8 +190,24 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
             {result.domain}
           </h2>
           <p className="text-xs text-slate-500 font-mono mt-1">
-            Przeanalizowano {evidence?.totalPages || 1} podstron · Wygenerowano: {new Date(result.createdAt).toLocaleDateString('pl-PL')}
+            Przeanalizowano {pluralizePolish(evidence?.totalPages || 1, 'podstronę', 'podstrony', 'podstron')} · Wygenerowano: {new Date(result.createdAt).toLocaleDateString('pl-PL')}
           </p>
+          {(evidence?.totalPages || 1) === 1 && (
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs print:hidden">
+              <span className="font-mono text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200/80 px-2 py-0.5 rounded-md">
+                Szybki Skan Ekspresowy (Strona Główna)
+              </span>
+              <span className="text-slate-600 text-xs">
+                Zbadano fundamenty strony głównej. Chcesz zweryfikować pozostałe podstrony oferty i koszyka?{' '}
+                <a
+                  href="#konsultacja"
+                  className="text-orange-600 hover:text-orange-700 font-semibold underline underline-offset-2 transition-colors"
+                >
+                  Zamów pełny audyt całego serwisu
+                </a>
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-wrap items-center gap-3 print:hidden">
@@ -283,20 +299,68 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
                 100% (Maksymalna)
               </span>
             </div>
+          ) : result.lossPercentage <= 6 ? (
+            <div className="p-3 bg-emerald-50/60 border border-emerald-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono text-emerald-800 font-bold whitespace-nowrap">
+                    Ryzyko utraty części {conversionLabel}:
+                  </span>
+                  <span className="text-[11px] font-mono font-bold bg-emerald-200/70 text-emerald-900 px-2 py-0.5 rounded-md">
+                    NISKIE
+                  </span>
+                  <span className="text-sm font-black text-emerald-700 font-mono">
+                    ~{result.lossPercentage}%
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 font-mono mt-0.5">
+                  Drobne usterki semantyczne bez krytycznego wpływu na bieżącą konwersję.
+                </p>
+              </div>
+            </div>
+          ) : result.lossPercentage <= 15 ? (
+            <div className="p-3 bg-amber-50/70 border border-amber-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono text-amber-800 font-bold whitespace-nowrap">
+                    Ryzyko utraty części {conversionLabel}:
+                  </span>
+                  <span className="text-[11px] font-mono font-bold bg-amber-200/70 text-amber-900 px-2 py-0.5 rounded-md">
+                    UMIARKOWANE
+                  </span>
+                  <span className="text-sm font-black text-amber-700 font-mono">
+                    ~{result.lossPercentage}%
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 font-mono mt-0.5">
+                  Odczuwalne spowolnienie lub braki w śledzeniu zdarzeń osłabiające wyniki.
+                </p>
+              </div>
+            </div>
           ) : (
             <div className="p-3 bg-rose-50/70 border border-rose-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
-              <span className="text-xs font-mono text-rose-700 font-bold whitespace-nowrap">
-                Szacowany spadek {conversionLabel}:
-              </span>
-              <span className="text-xl font-black text-rose-600 font-mono">
-                ~{result.lossPercentage}%
-              </span>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono text-rose-700 font-bold whitespace-nowrap">
+                    Szacowany spadek {conversionLabel}:
+                  </span>
+                  <span className="text-[11px] font-mono font-bold bg-rose-200/70 text-rose-900 px-2 py-0.5 rounded-md">
+                    PODWYŻSZONE
+                  </span>
+                  <span className="text-sm font-black text-rose-600 font-mono">
+                    ~{result.lossPercentage}%
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 font-mono mt-0.5">
+                  Poważne blokady renderowania lub brak kluczowej analityki.
+                </p>
+              </div>
             </div>
           )}
           <p className="text-slate-500 text-[11px] font-mono text-center sm:text-right leading-relaxed max-w-md">
             {isWordPress
               ? 'Pierwszy wynik ocenia jakość strony na tle innych witryn WordPress. Drugi wynik porównuje ją z najszybszymi, nowoczesnymi technologiami internetowymi.'
-              : 'Średnia ważona z analizy szybkości ładowania, widoczności w Google i bezpieczeństwa witryny.'}
+              : 'Trzystopniowa inżynieryjna skala ryzyka biznesowego wyliczana na podstawie szybkości ładowania, poprawności kodu i wskaźników Google.'}
           </p>
         </div>
       </div>
@@ -712,7 +776,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       {pages.length > 0 && <PagesTable pages={pages} />}
 
       {/* Sekcja 5: Formularz Konsultacji & Lead Capture */}
-      <div className="print:hidden">
+      <div id="konsultacja" className="print:hidden scroll-mt-28">
         <AuditConsultationForm
           domain={result.domain}
           token={result.token}

@@ -78,6 +78,23 @@ export async function generateGeminiReport(
     ? `\nZIDENTYFIKOWANE GŁÓWNE KWESTIE TECHNICZNE:\n${quickIssues.map(q => `- ${q.title} (${q.shortDesc})`).join('\n')}`
     : '';
 
+  const isStaging = evidence?.isStagingEnvironment || false;
+  const stagingNote = isStaging
+    ? '\n- ŚRODOWISKO TESTOWE / PREVIEW: Wykryto domenę stagingową. Brak kodów analitycznych (GA4, Meta Pixel) jest w pełni uzasadniony na tym etapie prac deweloperskich.'
+    : '';
+
+  const structuralIssueItems: string[] = [];
+  if (missingH1Count > 0) {
+    structuralIssueItems.push(`brak nagłówka H1 (${pluralizePolish(missingH1Count, 'podstrona', 'podstrony', 'podstron')})`);
+  }
+  if (missingCanonicalCount > 0) {
+    structuralIssueItems.push(`brak tagu canonical (${pluralizePolish(missingCanonicalCount, 'adres', 'adresy', 'adresów')})`);
+  }
+  if (duplicateTitlesCount > 0) {
+    structuralIssueItems.push(`zduplikowane tagi Title (${pluralizePolish(duplicateTitlesCount, 'grupa', 'grupy', 'grup')})`);
+  }
+  const hasStructuralIssues = structuralIssueItems.length > 0;
+
   const empiricalEvidenceText = evidence ? `
 DANE Z PRZEANALIZOWANYCH ${pagesScanned} PODSTRON:
 - Zbadane podstrony: ${pagesScanned} szt. (średni czas odpowiedzi: ${avgResponseTime}ms)
@@ -85,6 +102,7 @@ DANE Z PRZEANALIZOWANYCH ${pagesScanned} PODSTRON:
 - Podstrony bez nagłówka H1: ${missingH1Count} szt.
 - Podstrony z ubogą treścią (Thin Content <200 słów): ${thinContentCount} szt.
 - Podstrony bez tagu Canonical: ${missingCanonicalCount} szt.
+${stagingNote}
 ${trackingIssuesText}
 ${quickIssuesText}
 ` : '';
@@ -123,7 +141,7 @@ TWARDE GUARDRAILE:
 4. BEZWZGLĘDNY ZAKAZ ZAKŁADANIA BRANŻY W CIEMNO:
    - Nigdy nie używaj słów "gabinet" czy "pacjent" dla profili usługowych, chyba że treść audytu wprost dotyczy lekarza/stomatologa. Używaj pojęć ogólnych: klienci, odbiorcy, użytkownicy.
 5. PRAWDA DANYCH:
-   - Nigdy nie wspominaj o kampaniach płatnych (Google Ads), jeśli serwis ich nie prowadzi.
+   - Nigdy nie wspominaj o kampaniach płatnych (Google Ads), jeśli serwis ich nie prowadzi. Jeśli witryna znajduje się na domenie testowej/stagingowej, nie penalizuj braku kodów śledzących.
 6. ZASADA INTERPUNKCJI:
    - Kategoryczny ZAKAZ używania myślników pauzowych (—) oraz półpauzowych (–). Używaj wyłącznie przecinków, dwukropków, nawiasów lub zwykłego łącznika (-).
 7. FORMA:
@@ -132,10 +150,26 @@ TWARDE GUARDRAILE:
 
   let userPrompt = '';
   if (isHighScore) {
-    userPrompt = `
+    if (hasStructuralIssues) {
+      userPrompt = `
 Serwis ${entityName} (${targetUrl}) uzyskał bardzo wysoki wynik ${avgScore}/100.
 Stack technologiczny: ${detectedPlatform}. Średni czas odpowiedzi serwera: ${avgResponseTime}ms.
 Przeanalizowano podstron: ${pagesScanned}. Profil: ${SITE_TYPE_LABELS[siteType] || 'Usługi'}.
+${isStaging ? 'Wykryto domenę testową/preview (staging) - brak tagów reklamowych i analityki jest celowy na tym etapie.' : ''}
+Zdiagnozowane drobne kwestie semantyczne SEO: ${structuralIssueItems.join(', ')}.
+
+Zadanie:
+Napisz zwięzłą ocenę techniczną w 3. osobie (maksymalnie 3 zdania), naturalnym językiem polskim:
+1. Ocena techniczna: Wskaż wzorową jakość architektury i wydajności (${avgResponseTime}ms), zaznaczając, że fundamenty technologiczne są na najwyższym poziomie inżynieryjnym.
+2. Drobna korekta semantyczna: Wskaż, że jedynym zalecanym usprawnieniem jest szybka, kosmetyczna korekta w semantyce HTML i architekturze SEO (${structuralIssueItems.join(', ')}), która nie wymaga przebudowy serwisu.
+3. Rekomendacja strategiczna: Podkreśl, że po wdrożeniu tych drobnych poprawek dalsze modyfikacje kodu nie będą potrzebne, a zasoby warto skierować na: ${goalDescription}.
+`.trim();
+    } else {
+      userPrompt = `
+Serwis ${entityName} (${targetUrl}) uzyskał bardzo wysoki wynik ${avgScore}/100.
+Stack technologiczny: ${detectedPlatform}. Średni czas odpowiedzi serwera: ${avgResponseTime}ms.
+Przeanalizowano podstron: ${pagesScanned}. Profil: ${SITE_TYPE_LABELS[siteType] || 'Usługi'}.
+${isStaging ? 'Wykryto domenę testową/preview (staging) - brak tagów reklamowych i analityki jest celowy na tym etapie.' : ''}
 
 Zadanie:
 Napisz zwięzłą ocenę techniczną w 3. osobie (maksymalnie 3 zdania), naturalnym językiem polskim zrozumiałym dla właściciela firmy:
@@ -143,16 +177,18 @@ Napisz zwięzłą ocenę techniczną w 3. osobie (maksymalnie 3 zdania), natural
 2. Gotowość biznesowa: Zauważ, że fundamenty techniczne są w pełni stabilne i gotowe na realizację celów biznesowych: ${goalDescription}.
 3. Rekomendacja strategiczna: Podkreśl, że dalsze modyfikacje kodu nie są potrzebne, a zasoby warto skierować na budowanie autorytetu, widoczności oferty i pozyskiwanie nowych klientów.
 `.trim();
+    }
   } else {
     userPrompt = `
 Serwis ${entityName} (${targetUrl}) uzyskał wynik ${avgScore}/100.
 Wykryta platforma: ${detectedPlatform}. Profil organizacji: ${SITE_TYPE_LABELS[siteType] || 'Usługi'}.
+${isStaging ? 'Wykryto domenę testową/preview (staging) - brak tagów reklamowych i analityki jest celowy na tym etapie.' : ''}
 ${empiricalEvidenceText}
 ${codeSmellsText}
 Zadanie:
 Napisz precyzyjną, rzeczową diagnozę techniczną w 3. osobie lub bezosobowo (maksymalnie 3 zdania), naturalnym językiem zrozumiałym dla przedsiębiorcy:
 1. Zdiagnozuj 1-2 najważniejsze realne usterki z powyższych dowodów (np. duplikaty Title, brak H1, blokujące skrypty JS). Zakaz wymyślania usterek nieobecnych w dowodach!
-2. Pokaż wpływ techniczny: Wyjaśnij szacowany spadek ~${lossPercentage}% w obszarze: ${conversionTerm} (${lossDescription}). Zachowaj spokojny, inżynieryjny ton.
+2. Pokaż wpływ techniczny: ${lossPercentage <= 6 ? `Wskaż niskie ryzyko utraty części zapytań/leadow (~${lossPercentage}%)` : `Wyjaśnij szacowany spadek ~${lossPercentage}%`} w obszarze: ${conversionTerm} (${lossDescription}). Zachowaj spokojny, inżynieryjny ton.
 3. Plan działania: Wskaż zwięźle w 3. osobie rekomendowany zakres wdrożenia w 24-48h bez burzenia obecnej strony (${architectRoleDescription}).
 `.trim();
   }
@@ -218,6 +254,19 @@ export function generateDeterministicReport(
     conversionTerm = 'rezerwacji i telefonów klientów';
   }
 
+  const structuralIssueItems: string[] = [];
+  if (evidence?.missingH1Count && evidence.missingH1Count > 0) {
+    structuralIssueItems.push(`brak nagłówka H1 (${pluralizePolish(evidence.missingH1Count, 'podstrona', 'podstrony', 'podstron')})`);
+  }
+  if (evidence?.missingCanonicalCount && evidence.missingCanonicalCount > 0) {
+    structuralIssueItems.push(`brak tagu canonical (${pluralizePolish(evidence.missingCanonicalCount, 'adres', 'adresy', 'adresów')})`);
+  }
+  if (evidence?.duplicateTitleGroups && evidence.duplicateTitleGroups.length > 0) {
+    structuralIssueItems.push(`zduplikowane tagi Title (${pluralizePolish(evidence.duplicateTitleGroups.length, 'grupa', 'grupy', 'grup')})`);
+  }
+
+  const hasStructuralIssues = structuralIssueItems.length > 0;
+
   if (avgScore >= 85) {
     let strategicGoalAdvice = 'realizację celów i pozyskiwanie odbiorców';
     if (siteType === 'ngo_foundation') {
@@ -232,6 +281,14 @@ export function generateDeterministicReport(
       strategicGoalAdvice = 'pozyskiwanie kwalifikowanych leadów B2B i budowanie autorytetu branżowego';
     } else if (siteType === 'ecommerce') {
       strategicGoalAdvice = 'skalowanie rentowności sprzedaży (ROAS) i optymalizację retencji klientów (LTV)';
+    }
+
+    if (hasStructuralIssues) {
+      return `Architektura **${targetUrl}** reprezentuje wzorowy poziom inżynieryjny (${avgScore}/100) z błyskawicznym czasem odpowiedzi serwera (średnio ${evidence?.avgResponseTimeMs || 80}ms). Fundamenty technologiczne są znakomite, a jedynym obszarem wymagającym szybkiej uwagi jest drobna korekta semantyki SEO: ${structuralIssueItems.join(' oraz ')}.
+
+Wdrożenie tych kosmetycznych poprawek w strukturze HTML zajmuje chwilę i nie wymaga przebudowy serwisu. Po ich uzupełnieniu kod jest w 100% zoptymalizowany pod roboty indeksujące i AI Search, a dalsze ingerencje w architekturę nie są potrzebne.
+
+**💡 Rekomendacja strategiczna:** Wprowadź drobną korektę semantyczną i skieruj zasoby na ${strategicGoalAdvice}, bo technologicznie serwis już teraz wyprzedza 95% konkurencji rynkowej.`;
     }
 
     return `Architektura **${targetUrl}** reprezentuje najwyższy standard inżynieryjny (${avgScore}/100). Kod jest czysty, serwer odpowiada błyskawicznie (średnio ${evidence?.avgResponseTimeMs || 80}ms), a struktura podstron nie wykazuje długu technologicznego. 
@@ -262,11 +319,6 @@ Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego 
   if (codeSmells?.pageBuilders && codeSmells.pageBuilders.length > 0) {
     issues.push(`narzut kodu z builderów (**${codeSmells.pageBuilders.join(', ')}**), rozdmuchujący drzewo DOM do ${codeSmells.domElements} elementów`);
   }
-
-  const hasStructuralIssues =
-    (evidence?.missingH1Count || 0) > 0 ||
-    (evidence?.duplicateTitleGroups?.length || 0) > 0 ||
-    (evidence?.missingCanonicalCount || 0) > 0;
 
   if (!hasStructuralIssues && issues.length === 0) {
     if (codeSmells?.domElements && codeSmells.domElements > 1200) {
@@ -322,8 +374,14 @@ Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego 
   }
 
   const lossText = hasStructuralIssues
-    ? `Przez te niedociągnięcia strukturalne serwis notuje szacunkowy spadek **${lossPercentage}% ${conversionTerm}**.`
-    : `Mimo dobrej struktury SEO, rezerwy w czasie renderowania mogą obniżać potencjał w obszarze: **${conversionTerm}** o szacunkowo **${lossPercentage}%**.`;
+    ? (lossPercentage <= 6
+        ? `Niedociągnięcia te wiążą się z **niskim ryzykiem utraty części ${conversionTerm}** (szacunkowo ~${lossPercentage}%), jednak ich usunięcie zabezpiecza pełną widoczność oferty w wyszukiwarkach.`
+        : lossPercentage <= 15
+        ? `Przez te niedociągnięcia strukturalne serwis notuje umiarkowane ryzyko obniżenia **${conversionTerm}** o ~${lossPercentage}%.`
+        : `Przez te niedociągnięcia strukturalne serwis notuje podwyższone ryzyko obniżenia **${conversionTerm}** o ~${lossPercentage}%.`)
+    : (lossPercentage <= 6
+        ? `Mimo dobrej struktury SEO, rezerwy w czasie renderowania wiążą się z **niskim ryzykiem obniżenia ${conversionTerm}** o szacunkowo ~${lossPercentage}%.`
+        : `Mimo dobrej struktury SEO, rezerwy w czasie renderowania mogą wiązać się z ryzykiem obniżenia potencjału w obszarze: **${conversionTerm}** o szacunkowo ~${lossPercentage}%.`);
 
   return `Szczegółowy audyt **${targetUrl}** (${platform}) wykazał wynik **${avgScore}/100**. W zbadanej próbce zdiagnozowano kluczowe kwestie techniczne: ${issuesSummary}.
 
