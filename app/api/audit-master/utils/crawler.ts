@@ -80,15 +80,16 @@ export async function crawlDomain(
   const concurrency = options.concurrency ?? 4;
 
   const startTime = Date.now();
-  const parsedTarget = new URL(targetUrl.startsWith('http') ? targetUrl : `https://${targetUrl}`);
+  const validTargetUrl = targetUrl.startsWith('http') ? targetUrl : `https://${targetUrl}`;
+  const parsedTarget = new URL(validTargetUrl);
   const origin = parsedTarget.origin;
   const hostname = parsedTarget.hostname.toLowerCase();
 
   // 1. Zbieranie listy URL-i do przeskanowania (Sitemap + fallback Homepage links)
-  const discoveredUrls = await discoverUrls(origin, targetUrl);
+  const discoveredUrls = await discoverUrls(origin, validTargetUrl);
   
   // Ograniczamy do maxPages, upewniając się, że homepage jest na 1. miejscu i nie ma duplikatów z trailing slash
-  const normalizedTarget = normalizeUrl(targetUrl, origin);
+  const normalizedTarget = normalizeUrl(validTargetUrl, origin);
   const normalizedDiscovered = discoveredUrls.map(u => normalizeUrl(u, origin));
   const queue = Array.from(new Set([normalizedTarget, ...normalizedDiscovered]))
     .filter(u => isValidInternalUrl(u, hostname))
@@ -150,10 +151,44 @@ export function isAssetUrl(urlStr: string): boolean {
 }
 
 /**
- * Wykrywanie podstron z sitemapy (obsługa index sitemaps np. Shopify, WordPress) lub linków strony głównej
+ * Wykrywanie podstron z sitemapy (obsługa index sitemaps np. Shopify, WordPress) oraz linków strony głównej
  */
 async function discoverUrls(origin: string, fallbackUrl: string): Promise<string[]> {
-  const urls: string[] = [];
+  const originObj = new URL(origin);
+  const cleanTargetHost = originObj.hostname.toLowerCase().replace(/^www\./, '');
+  const sitemapUrls: string[] = [];
+  const homepageUrls: string[] = [];
+
+  const normalizeLoc = (loc: string): string | null => {
+    try {
+      const u = new URL(loc, origin);
+      // Auto-korekta: środowiska deweloperskie/staging z domyślnym localhost:3000 w sitemapie
+      if (u.hostname.toLowerCase() === 'localhost' || u.hostname.toLowerCase() === '127.0.0.1' || u.hostname.toLowerCase().endsWith('.local')) {
+        u.protocol = originObj.protocol;
+        u.hostname = originObj.hostname;
+        u.port = originObj.port;
+      }
+
+      const cleanUHost = u.hostname.toLowerCase().replace(/^www\./, '');
+      if (cleanUHost !== cleanTargetHost) {
+        return null;
+      }
+
+      // Unifikujemy protokół i domenę do badanego origin (rozwiązanie problemu www vs bez www)
+      u.protocol = originObj.protocol;
+      u.hostname = originObj.hostname;
+      u.port = originObj.port;
+
+      const full = u.toString();
+      if (isSitemapOrXmlUrl(full) || isAssetUrl(full)) {
+        return null;
+      }
+      return full;
+    } catch {
+      return null;
+    }
+  };
+
   const sitemapCandidates = [
     `${origin}/sitemap.xml`,
     `${origin}/sitemap_index.xml`,
@@ -176,15 +211,18 @@ async function discoverUrls(origin: string, fallbackUrl: string): Promise<string
         const childSitemaps: string[] = [];
         for (const loc of locs) {
           if (isSitemapOrXmlUrl(loc)) {
-            childSitemaps.push(loc);
-          } else if (!isAssetUrl(loc)) {
-            urls.push(loc);
+            const normalizedChild = normalizeLoc(loc) || loc;
+            childSitemaps.push(normalizedChild);
+          } else {
+            const valid = normalizeLoc(loc);
+            if (valid) {
+              sitemapUrls.push(valid);
+            }
           }
         }
 
         // Jeśli trafiliśmy na sitemap index (np. Shopify, RankMath, Yoast), pobierz prawdziwe podstrony z pod-sitemap
         if (childSitemaps.length > 0) {
-          // Priorytetyzujemy sitemapy produktów, stron i kolekcji dla domyślnego języka
           const prioritizedChildren = childSitemaps.filter(s => {
             const lower = s.toLowerCase();
             return !lower.includes('/en/') && !lower.includes('/pl-en/') && !lower.includes('/en-en/') && !lower.includes('/de/');
@@ -203,8 +241,11 @@ async function discoverUrls(origin: string, fallbackUrl: string): Promise<string
                 const childLocMatches = childText.match(/<loc>(https?:\/\/[^<]+)<\/loc>/gi) || [];
                 for (const childMatch of childLocMatches) {
                   const childLoc = childMatch.replace(/<\/?loc>/gi, '').trim().replace(/&amp;/g, '&');
-                  if (!isSitemapOrXmlUrl(childLoc) && !isAssetUrl(childLoc)) {
-                    urls.push(childLoc);
+                  if (!isSitemapOrXmlUrl(childLoc)) {
+                    const valid = normalizeLoc(childLoc);
+                    if (valid) {
+                      sitemapUrls.push(valid);
+                    }
                   }
                 }
               }
@@ -214,44 +255,43 @@ async function discoverUrls(origin: string, fallbackUrl: string): Promise<string
           }
         }
 
-        if (urls.length >= 15) break;
+        if (sitemapUrls.length >= 35) break;
       }
     } catch {
       // Ignorujemy błędy pobierania sitemapy
     }
   }
 
-  // Fallback: Jeśli sitemapy nie dostarczyły wystarczającej liczby adresów, wyciągnij linki z homepage
-  if (urls.length < 5) {
-    try {
-      const res = await fetch(fallbackUrl, {
-        headers: { 'User-Agent': USER_AGENT },
-        signal: AbortSignal.timeout(4000),
-        cache: 'no-store'
-      });
-      if (res.ok) {
-        const html = await res.text();
-        const $ = cheerio.load(html);
-        $('a[href]').each((_, el) => {
-          const href = $(el).attr('href');
-          if (href && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('tel:') && !href.startsWith('javascript:')) {
-            try {
-              const fullUrl = new URL(href, origin).toString();
-              if (!isSitemapOrXmlUrl(fullUrl) && !isAssetUrl(fullUrl)) {
-                urls.push(fullUrl);
-              }
-            } catch {
-              // Błędny URL
+  // ZAWSZE wyciągaj linki ze strony głównej HTML (menu nawigacji, sekcje, footer)
+  try {
+    const res = await fetch(fallbackUrl, {
+      headers: { 'User-Agent': USER_AGENT },
+      signal: AbortSignal.timeout(4000),
+      cache: 'no-store'
+    });
+    if (res.ok) {
+      const html = await res.text();
+      const $ = cheerio.load(html);
+      $('a[href]').each((_, el) => {
+        const href = $(el).attr('href');
+        if (href && !href.startsWith('#') && !href.startsWith('?') && !href.startsWith('mailto:') && !href.startsWith('tel:') && !href.startsWith('javascript:')) {
+          try {
+            const fullUrl = new URL(href, origin).toString();
+            if (isValidInternalUrl(fullUrl, cleanTargetHost)) {
+              homepageUrls.push(fullUrl);
             }
+          } catch {
+            // Błędny URL
           }
-        });
-      }
-    } catch {
-      // Ignorujemy błędy
+        }
+      });
     }
+  } catch {
+    // Ignorujemy błędy
   }
 
-  return urls;
+  // Zwracamy najpierw linki ze strony głównej (kluczowe strony nawigacji), uzupełnione o sitemapę
+  return [...homepageUrls, ...sitemapUrls];
 }
 
 /**
@@ -620,14 +660,15 @@ async function analyzeSinglePage(
     // Linki wewnętrzne i zewnętrzne (przed usunięciem)
     let internalLinksCount = 0;
     let externalLinksCount = 0;
-    const currentHost = new URL(origin).hostname;
+    const currentHost = new URL(origin).hostname.toLowerCase().replace(/^www\./, '');
 
     $('a[href]').each((_, a) => {
       const href = $(a).attr('href');
       if (!href) return;
       try {
         const linkUrl = new URL(href, origin);
-        if (linkUrl.hostname === currentHost) {
+        const linkHost = linkUrl.hostname.toLowerCase().replace(/^www\./, '');
+        if (linkHost === currentHost) {
           internalLinksCount++;
         } else {
           externalLinksCount++;
@@ -1113,7 +1154,8 @@ export function buildEvidenceSummary(
   }
 
   // Wykrywanie środowiska stagingowego / preview (Vercel, Netlify, Cloudflare Pages, dev, staging)
-  const isStagingEnvironment = /vercel\.app|netlify\.app|pages\.dev|webflow\.io|preview|staging|dev\.|test\./i.test(origin);
+  const targetUrlOrigin = pages[0]?.url ? new URL(pages[0].url).origin : '';
+  const isStagingEnvironment = /vercel\.app|netlify\.app|pages\.dev|webflow\.io|preview|staging|dev\.|test\./i.test(targetUrlOrigin);
   const firstSignalWithOg = signals.find(s => s.ogData?.ogImage || s.ogData?.ogTitle) || signals[0];
   const primaryOgData: OpenGraphData = {
     hasOpenGraph,
@@ -1562,7 +1604,24 @@ export function generateQuickCriticalIssues(
 
 function normalizeUrl(url: string, origin: string): string {
   try {
+    const originObj = new URL(origin);
     const u = new URL(url, origin);
+
+    // Auto-fix dla sitemap ze środowisk deweloperskich/staging z localhost
+    if (u.hostname.toLowerCase() === 'localhost' || u.hostname.toLowerCase() === '127.0.0.1' || u.hostname.toLowerCase().endsWith('.local')) {
+      u.protocol = originObj.protocol;
+      u.hostname = originObj.hostname;
+      u.port = originObj.port;
+    } else {
+      const cleanUHost = u.hostname.toLowerCase().replace(/^www\./, '');
+      const cleanOriginHost = originObj.hostname.toLowerCase().replace(/^www\./, '');
+      if (cleanUHost === cleanOriginHost) {
+        u.protocol = originObj.protocol;
+        u.hostname = originObj.hostname;
+        u.port = originObj.port;
+      }
+    }
+
     u.hash = '';
     let res = u.toString();
     if (res.endsWith('/')) {
@@ -1577,7 +1636,9 @@ function normalizeUrl(url: string, origin: string): string {
 function isValidInternalUrl(urlStr: string, host: string): boolean {
   try {
     const u = new URL(urlStr);
-    if (u.hostname.toLowerCase() !== host) return false;
+    const cleanUHost = u.hostname.toLowerCase().replace(/^www\./, '');
+    const cleanHost = host.toLowerCase().replace(/^www\./, '');
+    if (cleanUHost !== cleanHost) return false;
     if (isSitemapOrXmlUrl(urlStr)) return false;
     if (isAssetUrl(urlStr)) return false;
     return true;
