@@ -197,3 +197,22 @@ body {
   footer { display: none !important; }
   @page { margin: 1.2cm; size: A4 portrait; }
 }
+
+.custom-horizontal-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+.custom-horizontal-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-horizontal-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.custom-horizontal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+.custom-horizontal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+

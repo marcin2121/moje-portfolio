@@ -193,20 +193,15 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
             Przeanalizowano {pluralizePolish(evidence?.totalPages || 1, 'podstronę', 'podstrony', 'podstron')} · Wygenerowano: {new Date(result.createdAt).toLocaleDateString('pl-PL')}
           </p>
           {(evidence?.totalPages || 1) === 1 && (
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs print:hidden">
-              <span className="font-mono text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200/80 px-2 py-0.5 rounded-md">
-                Szybki Skan Ekspresowy (Strona Główna)
-              </span>
-              <span className="text-slate-600 text-xs">
-                Zbadano fundamenty strony głównej. Chcesz zweryfikować pozostałe podstrony oferty i koszyka?{' '}
-                <a
-                  href="#konsultacja"
-                  className="text-orange-600 hover:text-orange-700 font-semibold underline underline-offset-2 transition-colors"
-                >
-                  Zamów pełny audyt całego serwisu
-                </a>
-              </span>
-            </div>
+            <p className="mt-2 text-xs text-slate-500 print:hidden">
+              Zbadano fundamenty strony głównej.{' '}
+              <a
+                href="#konsultacja"
+                className="text-orange-600 hover:text-orange-700 font-medium underline underline-offset-2 transition-colors"
+              >
+                Chcesz pełny audyt wszystkich podstron serwisu?
+              </a>
+            </p>
           )}
         </div>
 
@@ -235,7 +230,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
             className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs font-semibold px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
           >
             <Printer className="w-4 h-4 text-slate-600" />
-            <span>Pobierz Raport PDF (Dla Zarządu)</span>
+            <span>Pobierz Raport PDF</span>
           </button>
         </div>
       </div>

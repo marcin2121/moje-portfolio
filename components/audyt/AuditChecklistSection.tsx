@@ -17,7 +17,9 @@ import {
   Zap,
   Smartphone,
   Layers,
-  Sparkles
+  Sparkles,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import {
   CheckpointCategory,
@@ -211,6 +213,49 @@ export default function AuditChecklistSection({
       setSelectedCategory('all');
     }
   }, [siteType, selectedCategory, setSelectedCategory]);
+
+  // Obsługa przewijania paska kategorii (kółko myszy + nawigacja)
+  const categoryScrollRef = React.useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkCategoryScroll = () => {
+    const el = categoryScrollRef.current;
+    if (el) {
+      setCanScrollLeft(el.scrollLeft > 6);
+      setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 6);
+    }
+  };
+
+  useEffect(() => {
+    checkCategoryScroll();
+    const el = categoryScrollRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkCategoryScroll, { passive: true });
+    }
+    window.addEventListener('resize', checkCategoryScroll);
+    return () => {
+      if (el) el.removeEventListener('scroll', checkCategoryScroll);
+      window.removeEventListener('resize', checkCategoryScroll);
+    };
+  }, []);
+
+  const handleCategoryWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (categoryScrollRef.current) {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        categoryScrollRef.current.scrollLeft += e.deltaY;
+        checkCategoryScroll();
+      }
+    }
+  };
+
+  const scrollCategories = (direction: 'left' | 'right') => {
+    if (categoryScrollRef.current) {
+      const scrollOffset = direction === 'left' ? -220 : 220;
+      categoryScrollRef.current.scrollBy({ left: scrollOffset, behavior: 'smooth' });
+      setTimeout(checkCategoryScroll, 250);
+    }
+  };
 
   // Scalenie ewaluacji z bazą wiedzy z inteligentną filtracją profilu biznesowego
   const mergedCheckpoints = useMemo<MergedCheckpoint[]>(() => {
@@ -466,8 +511,26 @@ export default function AuditChecklistSection({
       </div>
 
       {/* Pasek Filtrów Kategorii */}
-      <div className="relative pb-3 mb-4 border-b border-slate-200/60">
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
+      <div className="relative pb-3 mb-4 border-b border-slate-200/60 group">
+        {canScrollLeft && (
+          <button
+            type="button"
+            onClick={() => scrollCategories('left')}
+            aria-label="Przewiń kategorie w lewo"
+            className="absolute left-0 top-0 bottom-3 z-10 w-9 bg-gradient-to-r from-white via-white/95 to-transparent flex items-center justify-start text-slate-700 hover:text-slate-950 cursor-pointer"
+          >
+            <span className="w-6 h-6 rounded-md bg-white border border-slate-200/80 shadow-xs flex items-center justify-center hover:bg-slate-50 transition-colors">
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </span>
+          </button>
+        )}
+
+        <div
+          ref={categoryScrollRef}
+          onWheel={handleCategoryWheel}
+          onScroll={checkCategoryScroll}
+          className="flex items-center gap-1.5 overflow-x-auto pb-2 scroll-smooth custom-horizontal-scrollbar px-1"
+        >
           <button
             type="button"
             onClick={() => setSelectedCategory('all')}
@@ -509,8 +572,19 @@ export default function AuditChecklistSection({
               );
             })}
         </div>
-        {/* Subtelny wskaźnik przewijania poziomego */}
-        <div aria-hidden="true" className="pointer-events-none absolute right-0 top-0 bottom-3 w-8 bg-gradient-to-l from-white via-white/80 to-transparent" />
+
+        {canScrollRight && (
+          <button
+            type="button"
+            onClick={() => scrollCategories('right')}
+            aria-label="Przewiń kategorie w prawo"
+            className="absolute right-0 top-0 bottom-3 z-10 w-9 bg-gradient-to-l from-white via-white/95 to-transparent flex items-center justify-end text-slate-700 hover:text-slate-950 cursor-pointer"
+          >
+            <span className="w-6 h-6 rounded-md bg-white border border-slate-200/80 shadow-xs flex items-center justify-center hover:bg-slate-50 transition-colors">
+              <ChevronRight className="w-3.5 h-3.5" />
+            </span>
+          </button>
+        )}
       </div>
 
       {/* Pasek akcji: Licznik aktywnych wyników + Wyszukiwarka na żywo */}
