@@ -87,6 +87,9 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       .replace(/\bwdrożę\b/gi, 'wdrożenie')
       .replace(/\bskonfiguruję\b/gi, 'skonfigurowanie')
       .replace(/\bwyeliminuję\b/gi, 'wyeliminowanie')
+      .replace(/exemplaryczn[a-ząęółśżźćń]+/gi, 'wzorową')
+      .replace(/\bexemplary\b/gi, 'wzorową')
+      .replace(/\(?\bRFP\b\)?/gi, '')
       .replace(/–/g, '-')
       .replace(/—/g, '-');
   }, [result.aiReport]);
@@ -186,10 +189,10 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       <div className="w-full bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-6 md:p-8 backdrop-blur-2xl">
         <div className="flex items-center justify-between gap-2 mb-6 pb-4 border-b border-slate-100">
           <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-widest">
-            Indeks Architektury i Kodu
+            Ocena techniczna witryny
           </span>
           <span className="font-mono text-[11px] text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80 whitespace-nowrap">
-            Wskaźnik Wielowektorowy
+            Kompleksowy test 64 parametrów
           </span>
         </div>
 
@@ -264,7 +267,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
             <ReactMarkdown>{cleanAiReport}</ReactMarkdown>
           </div>
           <p className="text-[11px] font-mono text-slate-400 mt-4 pt-3 border-t border-slate-100">
-            Diagnoza opracowana na podstawie analizy parametrów HTTP, drzewa DOM oraz metryk Core Web Vitals.
+            Diagnoza opracowana na podstawie analizy szybkości serwera, poprawności kodu oraz wskaźników Google Core Web Vitals.
           </p>
         </div>
       </div>

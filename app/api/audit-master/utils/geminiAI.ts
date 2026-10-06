@@ -25,15 +25,15 @@ export async function generateGeminiReport(
   const isEcommerce = siteType === 'ecommerce';
   
   let entityName = 'Serwis firmowy / strona usługowa';
-  let conversionTerm = 'zapytań ofertowych i leadów B2B';
-  let goalDescription = 'pozyskiwanie zapytań ofertowych (RFP) i nowych klientów biznesowych';
-  let lossDescription = 'utrata zapytań ofertowych i kontaktów B2B na rzecz bezpośredniej konkurencji';
-  let architectRoleDescription = 'rekomendowane wdrożenie obejmuje optymalizację lejków konwersji i naprawę semantyki w 24-48h';
+  let conversionTerm = 'zapytań ofertowych i nowych kontaktów';
+  let goalDescription = 'pozyskiwanie zapytań ofertowych i nowych klientów biznesowych';
+  let lossDescription = 'utrata zapytań ofertowych i kontaktów na rzecz bezpośredniej konkurencji';
+  let architectRoleDescription = 'rekomendowane wdrożenie obejmuje optymalizację ścieżek kontaktu i naprawę semantyki w 24-48h';
 
   if (siteType === 'ecommerce') {
     entityName = 'Sklep internetowy e-commerce';
     conversionTerm = 'transakcji i sprzedaży e-commerce';
-    goalDescription = 'przychód, konwersja koszyka i wysoki ROAS z kampanii produktowych';
+    goalDescription = 'przychód, konwersja koszyka i wysoki zwrot z kampanii produktowych';
     lossDescription = 'porzucone koszyki i bezpośrednia utrata przychodów ze sprzedaży';
     architectRoleDescription = 'rekomendowane wdrożenie obejmuje konfigurację warstwy dataLayer oraz uporządkowanie nagłówków i canonicali w 24-48 godzin';
   } else if (siteType === 'gov_public') {
@@ -106,35 +106,42 @@ ${quickIssuesText}
   // --- ULEPSZONA DYNAMIKA PROMPTU DLA GEMINI ---
   const isHighScore = avgScore >= 85;
   const systemInstruction = `
-Jesteś zaawansowanym silnikiem analizy inżynieryjnej na platformie audytowej Marcina Molendy (Senior Architect).
-Generujesz obiektywną, wysoce precyzyjną, rzeczową i zwięzłą "Syntezę Diagnostyczną Kodu" dla właściciela serwisu.
+Jesteś obiektywnym silnikiem analizy technicznej na platformie audytowej Marcina Molendy.
+Generujesz zwięzłą, obiektywną i w 100% zrozumiałą ocenę techniczną witryny dla polskiego przedsiębiorcy (właściciela firmy).
 
 TWARDE GUARDRAILE:
-1. PISZ WYŁĄCZNIE W 3. OSOBIE / BEZOSOBOWO (BEZWZGLĘDNY ZAKAZ UDAWANIA CZŁOWIEKA W PIERWSZEJ OSOBIE):
-   Kategorycznie ZAKAZUJE SIĘ zwrotów typu "Jako Senior Architect przeanalizowałem...", "Uporządkuję...", "Wdrożę...".
-   Użytkownik widzi, że audyt wygenerował się automatycznie w czasie rzeczywistym. Oczekuje obiektywnej ekspertyzy silnika audytowego, a nie bota udającego człowieka.
-   Pisz bezosobowo: "Analiza inżynieryjna serwisu wykazała...", "Zidentyfikowano...", "Rekomendowane wdrożenie techniczne w 24-48h obejmuje...".
-2. POWAGA, INŻYNIERYJNA PRECYZJA (ZERO MARKETINGOWEJ AGRESJI I STRASZENIA):
-   Kategoryczny zakaz tanich chwytów: żadnych "wycieków zysku", "przepalania budżetu", "paraliżu" ani założeń o "konkurencji z sąsiedniej ulicy". Pisz rzetelnie o kodzie, indeksacji i doświadczeniu użytkowników.
-3. BEZWZGLĘDNY ZAKAZ ZAKŁADANIA BRANŻY W CIEMNO:
-   Nigdy nie używaj słów "gabinet" czy "pacjent" dla profili usługowych, chyba że treść audytu wprost dotyczy lekarza/stomatologa. Używaj pojęć ogólnych: klienci, odbiorcy, użytkownicy.
-4. BEZWZGLĘDNA PRAWDA DANYCH:
-   Nigdy nie wspominaj o kampaniach płatnych (Google Ads), jeśli serwis ich nie prowadzi.
-5. FORMA:
-   Maksymalnie 3 zwięzłe, merytoryczne zdania (lub 2 krótkie akapity). Czysty Markdown (pogrubienia kluczowych metryk).
+1. PISZ W CZYSTYM, NATURALNYM JĘZYKU POLSKIM DLA PRZEDSIĘBIORCÓW:
+   - Targetem są polscy przedsiębiorcy, którzy nie są programistami i często nie znają języka angielskiego.
+   - Kategoryczny ZAKAZ sztucznych kalk językowych z angielskiego, np. "exemplaryczna jakość" (użyj: "wzorowa jakość", "bardzo wysoka jakość kodu"), "performantny", "robustny", "scalowalny", "implementować".
+   - Kategoryczny ZAKAZ obcojęzycznych skrótowców korporacyjnych, np. "RFP" (Request for Proposal). Pisz po prostu: "zapytania ofertowe", "nowi klienci".
+   - Pisz po ludzku, profesjonalnie: "błyskawiczny czas odpowiedzi serwera", "czysty kod bez zbędnych obciążeń", "pełna gotowość do pozyskiwania klientów".
+2. PISZ WYŁĄCZNIE W 3. OSOBIE / BEZOSOBOWO:
+   - Kategoryczny ZAKAZ zwrotów typu "Jako architekt przeanalizowałem...", "Wdrożę...", "Zoptymalizuję...".
+   - Pisz bezosobowo: "Analiza techniczna serwisu wykazała...", "Zidentyfikowano...", "Rekomendowane wdrożenie techniczne w 24-48h obejmuje...".
+3. SPOKÓJ, BIZNESOWY REALIZM (ZERO STRASZENIA):
+   - Zakaz tanich chwytów marketingowych: żadnych "wycieków zysku", "paraliżu", "przepalania budżetu" ani założeń o "konkurencji z sąsiedniej ulicy". Pisz rzetelnie o kodzie, indeksacji i doświadczeniu użytkowników.
+4. BEZWZGLĘDNY ZAKAZ ZAKŁADANIA BRANŻY W CIEMNO:
+   - Nigdy nie używaj słów "gabinet" czy "pacjent" dla profili usługowych, chyba że treść audytu wprost dotyczy lekarza/stomatologa. Używaj pojęć ogólnych: klienci, odbiorcy, użytkownicy.
+5. PRAWDA DANYCH:
+   - Nigdy nie wspominaj o kampaniach płatnych (Google Ads), jeśli serwis ich nie prowadzi.
+6. ZASADA INTERPUNKCJI:
+   - Kategoryczny ZAKAZ używania myślników pauzowych (—) oraz półpauzowych (–). Używaj wyłącznie przecinków, dwukropków, nawiasów lub zwykłego łącznika (-).
+7. FORMA:
+   - Maksymalnie 3 zwięzłe, merytoryczne zdania (lub 2 krótkie akapity). Czysty Markdown (pogrubienia kluczowych metryk).
 `.trim();
 
   let userPrompt = '';
   if (isHighScore) {
     userPrompt = `
-Serwis ${entityName} (${targetUrl}) uzyskał bardzo dobry wynik ${avgScore}/100.
+Serwis ${entityName} (${targetUrl}) uzyskał bardzo wysoki wynik ${avgScore}/100.
 Stack technologiczny: ${detectedPlatform}. Średni czas odpowiedzi serwera: ${avgResponseTime}ms.
 Przeanalizowano podstron: ${pagesScanned}. Profil: ${SITE_TYPE_LABELS[siteType] || 'Usługi'}.
+
 Zadanie:
-Napisz obiektywną syntezę architektoniczną w 3. osobie (maksymalnie 3 zdania):
-1. Docenienie klasy kodu: Zauważ krótki czas reakcji (${avgResponseTime}ms) oraz brak długu technologicznego na platformie ${detectedPlatform}.
-2. Przesunięcie priorytetów: Wskaż, że fundamenty techniczne są solidne i gotowe na realizację celów: ${goalDescription}.
-3. Rekomendacja strategiczna: Zasugeruj skupienie zasobów na budowaniu autorytetu i zaufania odbiorców w obszarze właściwym dla profilu (${entityName}).
+Napisz zwięzłą ocenę techniczną w 3. osobie (maksymalnie 3 zdania), naturalnym językiem polskim zrozumiałym dla właściciela firmy:
+1. Ocena techniczna: Wskaż wzorową jakość kodu, krótki czas odpowiedzi serwera (${avgResponseTime}ms) oraz brak długu technologicznego na platformie ${detectedPlatform}.
+2. Gotowość biznesowa: Zauważ, że fundamenty techniczne są w pełni stabilne i gotowe na realizację celów biznesowych: ${goalDescription}.
+3. Rekomendacja strategiczna: Podkreśl, że dalsze modyfikacje kodu nie są potrzebne, a zasoby warto skierować na budowanie autorytetu, widoczności oferty i pozyskiwanie nowych klientów.
 `.trim();
   } else {
     userPrompt = `
@@ -143,7 +150,7 @@ Wykryta platforma: ${detectedPlatform}. Profil organizacji: ${SITE_TYPE_LABELS[s
 ${empiricalEvidenceText}
 ${codeSmellsText}
 Zadanie:
-Napisz precyzyjną, rzeczową diagnozę inżynieryjną w 3. osobie lub bezosobowo (maksymalnie 3 zdania):
+Napisz precyzyjną, rzeczową diagnozę techniczną w 3. osobie lub bezosobowo (maksymalnie 3 zdania), naturalnym językiem zrozumiałym dla przedsiębiorcy:
 1. Zdiagnozuj 1-2 najważniejsze realne usterki z powyższych dowodów (np. duplikaty Title, brak H1, blokujące skrypty JS). Zakaz wymyślania usterek nieobecnych w dowodach!
 2. Pokaż wpływ techniczny: Wyjaśnij szacowany spadek ~${lossPercentage}% w obszarze: ${conversionTerm} (${lossDescription}). Zachowaj spokojny, inżynieryjny ton.
 3. Plan działania: Wskaż zwięźle w 3. osobie rekomendowany zakres wdrożenia w 24-48h bez burzenia obecnej strony (${architectRoleDescription}).
@@ -162,7 +169,14 @@ Napisz precyzyjną, rzeczową diagnozę inżynieryjną w 3. osobie lub bezosobow
     });
 
     if (response.text && response.text.trim().length > 20) {
-      return response.text.trim();
+      let cleaned = response.text.trim();
+      cleaned = cleaned
+        .replace(/exemplaryczn[a-ząęółśżźćń]+/gi, 'wzorową')
+        .replace(/\bexemplary\b/gi, 'wzorowy')
+        .replace(/\(?\bRFP\b\)?/gi, '')
+        .replace(/\s{2,}/g, ' ')
+        .replace(/[\u2013\u2014]/g, '-');
+      return cleaned;
     }
   } catch {
     // W razie limitu Gemini (429) lub braku połączenia odpalamy deterministyczny fallback
@@ -222,7 +236,7 @@ export function generateDeterministicReport(
 
     return `Architektura **${targetUrl}** reprezentuje najwyższy standard inżynieryjny (${avgScore}/100). Kod jest czysty, serwer odpowiada błyskawicznie (średnio ${evidence?.avgResponseTimeMs || 80}ms), a struktura podstron nie wykazuje długu technologicznego. 
 
-Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego ROI – infrastruktura jest w pełni gotowa na realizację kluczowych celów i skalowanie zasięgu.
+Dalsze inwestowanie w mikrosekundowe optymalizacje nie przyniesie zauważalnego zwrotu z inwestycji (ROI) - infrastruktura jest w pełni gotowa na realizację kluczowych celów i pozyskiwanie klientów.
 
 **💡 Rekomendacja strategiczna:** Skieruj zasoby na ${strategicGoalAdvice}, bo technologicznie serwis wyprzedza 95% konkurencji rynkowej.`;
   }

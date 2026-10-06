@@ -260,16 +260,16 @@ add_header Content-Security-Policy "default-src 'self' https: data: 'unsafe-inli
       items.push({
         id: 'deduction-architecture',
         pillar: 'Skalowalność',
-        category: 'Architektura frontendu & Czystość DOM',
+        category: 'Struktura kodu & Czystość szablonu',
         pointsLost: scaleLost,
-        title: 'Złożoność drzewa DOM i narzut bibliotek pomocniczych',
-        shortDiagnosis: `Drzewo DOM zawiera ${domCount} elementów (zalecany standard: <1400). ${builders.length > 0 ? `Wykryto builder: ${builders.join(', ')}.` : ''}`,
-        technicalReason: 'Zbyt głębokie zagnieżdżenia kontenerów i narzut kodu obciążają pamięć RAM na urządzeniach mobilnych, spowalniając kalkulacje stylów CSS i responsywność interfejsu.',
+        title: 'Złożoność kodu strony i narzut bibliotek pomocniczych',
+        shortDiagnosis: `Kod strony zawiera ${domCount} elementów HTML (zalecany standard: poniżej 1400). ${builders.length > 0 ? `Wykryto builder: ${builders.join(', ')}.` : ''}`,
+        technicalReason: 'Zbyt głębokie zagnieżdżenia kontenerów i narzut kodu obciążają pamięć na urządzeniach mobilnych, spowalniając wyświetlanie strony i responsywność.',
         stepsToMax: [
           {
             step: 1,
-            title: 'Spłaszczenie struktury drzewa DOM',
-            desc: 'Eliminacja zbędnych wrapperów kontenerowych i zastąpienie ich nowoczesnym CSS Grid / Flexbox.'
+            title: 'Uproszczenie struktury kodu strony',
+            desc: 'Eliminacja zbędnych wrapperów kontenerowych i zastąpienie ich nowoczesnym układem CSS Grid / Flexbox.'
           },
           {
             step: 2,
