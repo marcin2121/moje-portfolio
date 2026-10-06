@@ -51,6 +51,7 @@ export interface PageTrackingSignals {
   hasClarity?: boolean;
   hasHotjar?: boolean;
   hasSessionRecording?: boolean;
+  hasPrivacyAnalytics?: boolean;
   // Sygnały profilu (Profile Signals)
   hasBipLink?: boolean;
   hasDeklaracjaDostepnosci?: boolean;
@@ -384,6 +385,15 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
 
   const hasSessionRecording = hasClarity || hasHotjar;
 
+  // 25. Bezciasteczkowa analityka Privacy-First (Umami, Plausible, Fathom, Simple Analytics)
+  const hasPrivacyAnalytics =
+    lowerHtml.includes('analytics.molendadevelopment.pl') ||
+    lowerHtml.includes('umami.is') ||
+    lowerHtml.includes('data-website-id') ||
+    lowerHtml.includes('plausible.io') ||
+    lowerHtml.includes('usefathom.com') ||
+    lowerHtml.includes('simpleanalytics.com');
+
   return {
     hasGoogleAds,
     googleAdsId,
@@ -414,6 +424,7 @@ export function extractTrackingSignals(rawHtml: string, $?: cheerio.CheerioAPI):
     hasClarity,
     hasHotjar,
     hasSessionRecording,
+    hasPrivacyAnalytics,
     hasBipLink,
     hasDeklaracjaDostepnosci,
     hasEdziennik,
@@ -822,6 +833,7 @@ export function buildEvidenceSummary(
   const hasClarity = signals.some(s => s.hasClarity);
   const hasHotjar = signals.some(s => s.hasHotjar);
   const hasSessionRecording = hasClarity || hasHotjar || signals.some(s => s.hasSessionRecording);
+  const hasPrivacyAnalytics = signals.some(s => s.hasPrivacyAnalytics);
 
   const hasProductPages = isEcommerce || pages.some(p => p.category === 'product' || p.url.includes('/produkt/') || p.url.includes('/product/'));
   const hasOmnibusCompliance = hasSalePrice ? hasOmnibusMention : true;
@@ -1029,6 +1041,7 @@ export function buildEvidenceSummary(
     hasClarity,
     hasHotjar,
     hasSessionRecording,
+    hasPrivacyAnalytics,
     variantTimeoutUrls,
     adBudgetLeakRisk,
     issues: trackingIssues,

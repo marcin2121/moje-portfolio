@@ -80,6 +80,7 @@ export interface AdsAndTrackingAudit {
   hasClarity?: boolean;
   hasHotjar?: boolean;
   hasSessionRecording?: boolean;
+  hasPrivacyAnalytics?: boolean;
   variantTimeoutUrls?: string[];
   adBudgetLeakRisk: 'none' | 'low' | 'medium' | 'critical';
   issues: TrackingIssue[];

@@ -182,8 +182,12 @@ export async function POST(req: Request) {
       if (crawlData.evidence.missingTitleCount > 0) penalty += 10;
 
       if (penalty === 0) {
-        // Wszystkie zbadane podstrony posiadają wzorowe H1, canonical, unikalne title i pełną treść
-        finalSeoScore = Math.max(finalSeoScore, 98);
+        // Wszystkie zbadane podstrony posiadaja wzorowe H1, canonical, unikalne title
+        if (crawlData.evidence.thinContentCount === 0) {
+          finalSeoScore = 100;
+        } else {
+          finalSeoScore = Math.max(finalSeoScore, 98);
+        }
       } else {
         finalSeoScore = Math.max(25, Math.min(100, Math.round(finalSeoScore - penalty)));
       }
@@ -473,14 +477,43 @@ async function analyzeRootUrl(targetUrl: string) {
         lowerHtml.includes('hjid:') ||
         lowerHtml.includes('_hjsettings');
 
+      const hasPrivacyAnalytics = 
+        lowerHtml.includes('analytics.molendadevelopment.pl') ||
+        lowerHtml.includes('umami.is') ||
+        lowerHtml.includes('data-website-id') ||
+        lowerHtml.includes('plausible.io') ||
+        lowerHtml.includes('usefathom.com') ||
+        lowerHtml.includes('simpleanalytics.com');
+
       if (hasHotjar) codeSmells.trackers?.push('Hotjar');
       if (hasClarity) codeSmells.trackers?.push('Microsoft Clarity');
+      if (hasPrivacyAnalytics) codeSmells.trackers?.push('Privacy-First Analytics');
 
-      // Rekalibracja progu DOM (<1400 elementów to super wynik we współczesnym frontendzie z SVG i komponentami)
-      scalabilityScore = codeSmells.domElements < 1400 ? 98 : codeSmells.domElements < 2400 ? 80 : codeSmells.domElements < 3500 ? 50 : 30;
-      automationScore = codeSmells.badScripts === 0 ? 90 : Math.max(30, 90 - codeSmells.badScripts * 10);
+      // Rekalibracja progu DOM (<1400 elementow to super wynik we wspolczesnym frontendzie z SVG i komponentami)
+      if (codeSmells.domElements < 1400 && !codeSmells.jquery && (codeSmells.pageBuilders || []).length === 0) {
+        scalabilityScore = 100;
+      } else if (codeSmells.domElements < 2000) {
+        scalabilityScore = 85;
+      } else if (codeSmells.domElements < 3000) {
+        scalabilityScore = 60;
+      } else {
+        scalabilityScore = 30;
+      }
 
-      // Uniwersalna detekcja Next.js (App Router z streamingiem self.__next_f + Pages Router __NEXT_DATA__)
+      const hasAnyTracking = hasClarity || hasHotjar || hasPrivacyAnalytics || 
+        lowerHtml.includes('googletagmanager.com') || 
+        lowerHtml.includes('google-analytics.com') || 
+        lowerHtml.includes('gtag(');
+
+      if (codeSmells.badScripts === 0 && hasAnyTracking) {
+        automationScore = 100;
+      } else if (codeSmells.badScripts === 0) {
+        automationScore = 90;
+      } else {
+        automationScore = Math.max(30, 90 - codeSmells.badScripts * 10);
+      }
+
+      // Uniwersalna detekcja Next.js (App Router ze streamingiem self.__next_f + Pages Router __NEXT_DATA__)
       const isNextJs = lowerHtml.includes('/_next/static/') || 
                        lowerHtml.includes('self.__next_f') || 
                        lowerHtml.includes('__next_data__') ||
@@ -490,10 +523,20 @@ async function analyzeRootUrl(targetUrl: string) {
 
       if (isNextJs) {
         detectedPlatform = 'Next.js / React (Serverless Edge)';
-        scalabilityScore = Math.max(scalabilityScore, 98);
-        automationScore = Math.max(automationScore, 95);
+        if (codeSmells.domElements < 1400) {
+          scalabilityScore = 100;
+        } else {
+          scalabilityScore = Math.max(scalabilityScore, 98);
+        }
+
+        if (codeSmells.badScripts === 0 && hasAnyTracking) {
+          automationScore = 100;
+        } else {
+          automationScore = Math.max(automationScore, 95);
+        }
+
         performanceScore = Math.max(performanceScore, 96);
-        // Bezwzględnie czyścimy WordPressowe page buildery na Next.js (eliminacja false-positives np. Divi)
+        // Bezwzglednie czyscimy WordPressowe page buildery na Next.js (eliminacja false-positives np. Divi)
         codeSmells.pageBuilders = [];
       } else if (isShopify) {
         detectedPlatform = 'Shopify SaaS';

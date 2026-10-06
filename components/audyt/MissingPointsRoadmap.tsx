@@ -150,58 +150,110 @@ add_header Content-Security-Policy "default-src 'self' https: data: 'unsafe-inli
     // 3. SEO & INDEKSACJA
     const seoPillar = result.pillars?.find(p => p.name === 'SEO');
     const seoScore = seoPillar ? seoPillar.score : 60;
-    const seoLost = Math.round((100 - seoScore) * 0.20);
+    const seoLost = Math.max(1, Math.round((100 - seoScore) * 0.20));
 
-    if (seoLost > 0) {
+    if (seoScore < 100) {
       const missingCanonical = result.evidence?.missingCanonicalCount || 0;
       const dupTitles = result.evidence?.duplicateTitleGroups?.length || 0;
       const missingH1 = result.evidence?.missingH1Count || 0;
+      const thinContent = result.evidence?.thinContentCount || 0;
 
-      items.push({
-        id: 'deduction-seo',
-        pillar: 'SEO',
-        category: 'SEO & Architektura indeksowalności',
-        pointsLost: seoLost,
-        title: 'Błędy tagów kanonicznych i powielanie metadanych podstron',
-        shortDiagnosis: `Wykryto ${missingCanonical} podstron bez tagu canonical, ${dupTitles} grup duplikatów <title> oraz ${missingH1} podstron bez nagłówka H1.`,
-        technicalReason: 'Brak jawnego wskazania adresu kanonicznego prowadzi do kanibalizacji słów kluczowych i rozmywania autorytetu domeny między wariantami URL z parametrami lub ukośnikiem.',
-        stepsToMax: [
-          {
-            step: 1,
-            title: 'Wdrożenie bezwzględnych tagów rel="canonical"',
-            desc: 'Wygenerowanie precyzyjnego linku kanonicznego na 100% podstron z zachowaniem preferowanego protokołu HTTPS.'
-          },
-          {
-            step: 2,
-            title: 'Unifikacja i wydłużenie meta tagów title',
-            desc: 'Stworzenie unikalnych szablonów o długości 50-60 znaków zawierających kluczową frazę ofertową i geolokalizację.'
-          },
-          {
-            step: 3,
-            title: 'Uporządkowanie hierarchii nagłówków',
-            desc: 'Zapewnienie dokładnie jednego nagłówka <h1> na każdej podstronie oddającego intencję wyszukiwania użytkownika.'
-          }
-        ],
-        codeSnippet: `<!-- Wzorcowa sekcja metadanych SEO dla każdej podstrony -->
+      if (thinContent > 0 && missingCanonical === 0 && dupTitles === 0 && missingH1 === 0) {
+        items.push({
+          id: 'deduction-seo-thin-content',
+          pillar: 'SEO',
+          category: 'SEO & Jakość treści (Helpful Content)',
+          pointsLost: seoLost,
+          title: 'Podstrony o znikomej objętości tekstu (Thin Content < 200 słów)',
+          shortDiagnosis: `Zdiagnozowano ${thinContent} podstron o objętości poniżej 200 słów tekstu. Google promuje witryny wyczerpująco wyjaśniające zagadnienia.`,
+          technicalReason: 'Algorytmy Google (Helpful Content) oraz roboty indeksujące SearchGPT/Gemini obniżają ocenę domen zawierających podstrony znikomą ilością tekstu merytorycznego.',
+          stepsToMax: [
+            {
+              step: 1,
+              title: 'Rozbudowa treści do minimum 250-350 słów',
+              desc: 'Uzupełnienie podstron o szczegółowy opis oferty, proces realizacji, korzyści dla klienta oraz parametry techniczne.'
+            },
+            {
+              step: 2,
+              title: 'Wdrożenie modułu pytań i odpowiedzi (FAQ)',
+              desc: 'Dodanie sekcji FAQ z mikrodanymi Schema.org FAQPage odpowiadających na kluczowe wątpliwości klientów.'
+            },
+            {
+              step: 3,
+              title: 'Wzbogacenie o dowody zaufania (Social Proof)',
+              desc: 'Dodanie opinii, referencji, certyfikatów lub metryk liczbowych potwierdzających skuteczność oferty.'
+            }
+          ],
+          codeSnippet: `<!-- Semantyczna sekcja FAQ z danymi Schema.org FAQPage -->
+<section class="faq-container">
+  <h2>Często zadawane pytania</h2>
+  <div itemscope itemtype="https://schema.org/FAQPage">
+    <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 itemprop="name">Ile trwa realizacja projektu?</h3>
+      <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">Standardowy czas wdrożenia dedykowanego rozwiązania wynosi od 2 do 4 tygodni.</p>
+      </div>
+    </div>
+  </div>
+</section>`,
+          businessGain: 'Większy autorytet w algorytmie Google Helpful Content, wyższa widoczność w wyszukiwarkach AI (SearchGPT, Gemini) i lepsza konwersja klientów.',
+          icon: <Search className="w-5 h-5 text-emerald-600" />
+        });
+      } else {
+        const issuesSummary: string[] = [];
+        if (missingCanonical > 0) issuesSummary.push(`${missingCanonical} bez tagu canonical`);
+        if (dupTitles > 0) issuesSummary.push(`${dupTitles} grup duplikatów <title>`);
+        if (missingH1 > 0) issuesSummary.push(`${missingH1} bez nagłówka H1`);
+        if (thinContent > 0) issuesSummary.push(`${thinContent} stron thin content`);
+
+        items.push({
+          id: 'deduction-seo',
+          pillar: 'SEO',
+          category: 'SEO & Architektura indeksowalności',
+          pointsLost: seoLost,
+          title: 'Tagi kanoniczne, unikalność metadanych i struktura nagłówków',
+          shortDiagnosis: issuesSummary.length > 0 
+            ? `Wykryto kwestie do optymalizacji: ${issuesSummary.join(', ')}.`
+            : 'Optymalizacja meta tagów, linków kanonicznych i semantyki HTML pod kątem maksymalnej widoczności w Google.',
+          technicalReason: 'Brak jawnego wskazania adresu kanonicznego lub nieoptymalne metadane prowadzą do kanibalizacji słów kluczowych i rozmywania autorytetu domeny.',
+          stepsToMax: [
+            {
+              step: 1,
+              title: 'Wdrożenie bezwzględnych tagów rel="canonical"',
+              desc: 'Wygenerowanie precyzyjnego linku kanonicznego na 100% podstron z zachowaniem preferowanego protokołu HTTPS.'
+            },
+            {
+              step: 2,
+              title: 'Unifikacja i optymalizacja meta tagów title',
+              desc: 'Stworzenie unikalnych szablonów o długości 50-60 znaków zawierających kluczową frazę ofertową i geolokalizację.'
+            },
+            {
+              step: 3,
+              title: 'Uporządkowanie hierarchii nagłówków',
+              desc: 'Zapewnienie dokładnie jednego nagłówka <h1> na każdej podstronie oddającego intencję wyszukiwania użytkownika.'
+            }
+          ],
+          codeSnippet: `<!-- Wzorcowa sekcja metadanych SEO dla każdej podstrony -->
 <head>
   <link rel="canonical" href="https://${result.domain}/uslugi/projektowanie" />
-  <title>Precyzyjne Aplikacje Webowe | Marcin Molenda Portfolio</title>
+  <title>Precyzyjne Aplikacje Webowe | ${result.domain}</title>
   <meta name="description" content="Projektowanie systemów internetowych o czasie ładowania <1s..." />
 </head>
 <body>
   <h1>Projektowanie dedykowanych aplikacji webowych</h1>
 </body>`,
-        businessGain: 'Wyeliminowanie problemu zduplikowanej treści (Duplicate Content), wyższy wskaźnik klikalności CTR w wyszukiwarce i stabilny wzrost pozycji w Google.',
-        icon: <Search className="w-5 h-5 text-emerald-600" />
-      });
+          businessGain: 'Wyeliminowanie problemu zduplikowanej treści (Duplicate Content), wyższy wskaźnik klikalności CTR w wyszukiwarce i stabilny wzrost pozycji w Google.',
+          icon: <Search className="w-5 h-5 text-emerald-600" />
+        });
+      }
     }
 
     // 4. KOD & ARCHITEKTURA
     const scalePillar = result.pillars?.find(p => p.name === 'Skalowalność');
     const scaleScore = scalePillar ? scalePillar.score : 40;
-    const scaleLost = Math.round((100 - scaleScore) * 0.20);
+    const scaleLost = Math.max(1, Math.round((100 - scaleScore) * 0.20));
 
-    if (scaleLost > 0) {
+    if (scaleScore < 100) {
       const domCount = result.codeSmells?.domElements || 1500;
       const builders = result.codeSmells?.pageBuilders || [];
 
@@ -210,9 +262,9 @@ add_header Content-Security-Policy "default-src 'self' https: data: 'unsafe-inli
         pillar: 'Skalowalność',
         category: 'Architektura frontendu & Czystość DOM',
         pointsLost: scaleLost,
-        title: 'Nadmierna złożoność drzewa DOM i narzut bibliotek',
-        shortDiagnosis: `Drzewo DOM zawiera ${domCount} elementów (zalecany limit: <1400). ${builders.length > 0 ? `Wykryto builder: ${builders.join(', ')}.` : ''}`,
-        technicalReason: 'Zbyt głębokie zagnieżdżenia kontenerów i narzut kodu z builderów obciążają pamięć RAM na urządzeniach mobilnych, spowalniając kalkulacje stylów CSS i responsywność.',
+        title: 'Złożoność drzewa DOM i narzut bibliotek pomocniczych',
+        shortDiagnosis: `Drzewo DOM zawiera ${domCount} elementów (zalecany standard: <1400). ${builders.length > 0 ? `Wykryto builder: ${builders.join(', ')}.` : ''}`,
+        technicalReason: 'Zbyt głębokie zagnieżdżenia kontenerów i narzut kodu obciążają pamięć RAM na urządzeniach mobilnych, spowalniając kalkulacje stylów CSS i responsywność interfejsu.',
         stepsToMax: [
           {
             step: 1,
@@ -231,7 +283,7 @@ add_header Content-Security-Policy "default-src 'self' https: data: 'unsafe-inli
           }
         ],
         codeSnippet: `// Nowoczesna alternatywa Vanilla JS bez bibliotek pomocniczych:
-// Zamiast 90KB jQuery:
+// Zamiast ciężkich bibliotek:
 document.querySelectorAll('[data-accordion]').forEach(item => {
   item.addEventListener('click', () => item.classList.toggle('is-open'));
 });`,
@@ -243,39 +295,152 @@ document.querySelectorAll('[data-accordion]').forEach(item => {
     // 5. TELEMETRIA & ANALITYKA
     const autoPillar = result.pillars?.find(p => p.name === 'Automatyzacja');
     const autoScore = autoPillar ? autoPillar.score : 40;
-    const autoLost = Math.round((100 - autoScore) * 0.20);
+    const autoLost = Math.max(1, Math.round((100 - autoScore) * 0.20));
 
-    if (autoLost > 0) {
+    if (autoScore < 100) {
       const ads = result.evidence?.adsAndTracking;
-      const hasConsent = ads?.hasConsentModeV2;
-      const hasRecording = ads?.hasSessionRecording || ads?.hasClarity || ads?.hasHotjar;
+      const hasClarity = !!(ads?.hasClarity || result.codeSmells?.trackers?.some(t => t.includes('Clarity')));
+      const hasHotjar = !!(ads?.hasHotjar || result.codeSmells?.trackers?.some(t => t.includes('Hotjar')));
+      const hasRecording = hasClarity || hasHotjar || !!ads?.hasSessionRecording;
+      const hasPaidAds = !!(ads?.hasGoogleAds || ads?.hasMetaPixel || ads?.hasTikTokPixel);
+      const hasConsent = !!ads?.hasConsentModeV2;
+      const hasGA4 = !!ads?.hasGA4;
+      const hasGTM = !!ads?.hasGoogleTagManager;
+      const hasPrivacy = !!(ads?.hasPrivacyAnalytics || result.codeSmells?.trackers?.some(t => t.includes('Privacy-First')));
 
-      items.push({
-        id: 'deduction-telemetry',
-        pillar: 'Automatyzacja',
-        category: 'Telemetria & Zgody RODO (Consent Mode v2)',
-        pointsLost: autoLost,
-        title: 'Brak standardu Consent Mode v2 lub map behawioralnych',
-        shortDiagnosis: `${!hasConsent ? 'Brak aktywnego Google Consent Mode v2. ' : ''}${!hasRecording ? 'Brak narzędzi analityki sesji (Microsoft Clarity / Hotjar). ' : ''}Brak telemetrii konwersji.`,
-        technicalReason: 'Kampanie reklamowe bez Consent Mode v2 nie mogą modelować konwersji w UE, a brak analizy behawioralnej uniemożliwia identyfikację miejsc, w których klienci porzucają formularze lub ofertę.',
-        stepsToMax: [
-          {
-            step: 1,
-            title: 'Wdrożenie Google Consent Mode v2',
-            desc: 'Ustawienie domyślnych flag ad_storage: denied i analytics_storage: denied z aktualizacją po akceptacji banera.'
-          },
-          {
-            step: 2,
-            title: 'Integracja cookieless Microsoft Clarity',
-            desc: 'Wdrożenie bezpłatnego, zgodnego z RODO narzędzia do nagrań sesji działającego w pamięci podręcznej (zero ciasteczek).'
-          },
-          {
-            step: 3,
-            title: 'Telemetria mikro-konwersji w dataLayer',
-            desc: 'Przesyłanie zdarzeń click_to_call, wysłania formularza i kliknięć w ofertę bezpośrednio do GA4.'
-          }
-        ],
-        codeSnippet: `<!-- Cookieless Microsoft Clarity (Zero Cookies / Zgodność z RODO) -->
+      if (hasPaidAds && !hasConsent) {
+        items.push({
+          id: 'deduction-telemetry-consent',
+          pillar: 'Automatyzacja',
+          category: 'Zgody RODO & Kampanie reklamowe (Consent Mode v2)',
+          pointsLost: autoLost,
+          title: 'Brak Google Consent Mode v2 dla płatnych kampanii reklamowych',
+          shortDiagnosis: 'Wykryto kody śledzące płatnych kampanii Google Ads / Meta Ads bez aktywnego standardu Consent Mode v2.',
+          technicalReason: 'Od marca 2024 brak Consent Mode v2 blokuje zbieranie danych dla inteligentnych kampanii Google Ads w UE, a kampanie Performance Max tracą modelowanie utraconych konwersji.',
+          stepsToMax: [
+            {
+              step: 1,
+              title: 'Wdrożenie Google Consent Mode v2',
+              desc: 'Ustawienie domyślnych flag ad_storage: denied i analytics_storage: denied z aktualizacją po akceptacji banera.'
+            },
+            {
+              step: 2,
+              title: 'Integracja z Google Tag Managerem',
+              desc: 'Powiązanie zgód z tagami marketingowymi bez blokowania podstawowych statystyk serwisu.'
+            },
+            {
+              step: 3,
+              title: 'Weryfikacja trybu Advanced Consent Mode',
+              desc: 'Przesyłanie bezciasteczkowych pingów telemetrycznych umożliwiających modelowanie konwersji przez algorytmy Google AI.'
+            }
+          ],
+          codeSnippet: `// Standardowa inicjalizacja Google Consent Mode v2:
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'ad_user_data': 'denied',
+  'ad_personalization': 'denied',
+  'analytics_storage': 'denied'
+});`,
+          businessGain: 'Odzyskanie do 70% modelowanych konwersji w Google Ads, odblokowanie inteligentnego targetowania i 100% zgodność prawna z UODO.',
+          icon: <BarChart3 className="w-5 h-5 text-blue-600" />
+        });
+      } else if (hasRecording && hasPrivacy) {
+        items.push({
+          id: 'deduction-telemetry-events',
+          pillar: 'Automatyzacja',
+          category: 'Telemetria mikro-konwersji & Zdarzenia biznesowe',
+          pointsLost: autoLost,
+          title: 'Telemetria mikro-konwersji i wysyłki formularzy ofertowych',
+          shortDiagnosis: 'Wykryto Microsoft Clarity oraz analitykę cookieless. Do uzyskania 100/100 zalecana jest precyzyjna telemetria wysłanych zapytań i kliknięć w kontakt.',
+          technicalReason: 'Narzędzia analityczne i nagrania sesji działają prawidłowo, jednak brak dedykowanych zdarzeń (custom events) utrudnia automatyczne zliczanie leadów ze wszystkich formularzy.',
+          stepsToMax: [
+            {
+              step: 1,
+              title: 'Śledzenie zdarzenia wysłania formularza (generate_lead)',
+              desc: 'Emisja zdarzenia po pomyślnej walidacji i wysłaniu zapytania ofertowego do systemu analitycznego.'
+            },
+            {
+              step: 2,
+              title: 'Pomiar kliknięć w numery telefonów i e-mail (click_to_call)',
+              desc: 'Zliczanie prób nawiązania kontaktu bezpośredniego z poziomu urządzeń mobilnych.'
+            },
+            {
+              step: 3,
+              title: 'Konfiguracja celów biznesowych w analityce',
+              desc: 'Utworzenie raportów konwersji i lejków porzuceń na poszczególnych etapach formularza kontaktowego.'
+            }
+          ],
+          codeSnippet: `// Rejestracja zdarzenia wysłania formularza w analityce cookieless:
+document.querySelector('form')?.addEventListener('submit', () => {
+  window.umami?.track('generate_lead', { source: 'formularz_kontaktowy' });
+  window.clarity && window.clarity('event', 'lead_submitted');
+});`,
+          businessGain: 'Precyzyjna wiedza o liczbie i źródłach pozyskanych leadów B2B oraz pełna ochrona prywatności odwiedzających.',
+          icon: <BarChart3 className="w-5 h-5 text-blue-600" />
+        });
+      } else if (hasRecording && !hasGA4 && !hasGTM && !hasPrivacy) {
+        items.push({
+          id: 'deduction-telemetry-analytics',
+          pillar: 'Automatyzacja',
+          category: 'Analityka konwersji & Ruchu użytkowników',
+          pointsLost: autoLost,
+          title: 'Konfiguracja centralnego systemu analityki konwersji (GA4 / Umami)',
+          shortDiagnosis: 'Wykryto narzędzie analizy sesji (Microsoft Clarity), lecz brak systemu do zliczania statystyk odwiedzin, źródeł ruchu i konwersji.',
+          technicalReason: 'Nagrania sesji pokazują pojedyncze wizyty, ale bez analityki statystycznej nie wiesz, które źródła ruchu generują realne zapytania ofertowe.',
+          stepsToMax: [
+            {
+              step: 1,
+              title: 'Wdrożenie analityki statystycznej (GA4 lub Privacy-First Umami)',
+              desc: 'Uruchomienie strumienia danych do pomiaru liczby odwiedzających, czasu spędzonego na stronie i źródeł wizyt.'
+            },
+            {
+              step: 2,
+              title: 'Śledzenie formularzy kontaktowych i połączeń tel:',
+              desc: 'Automatyczny pomiar konwersji zapytań ofertowych i kliknięć w przyciski kontaktu.'
+            },
+            {
+              step: 3,
+              title: 'Raportowanie efektywności kanałów marketingowych',
+              desc: 'Identyfikacja najbardziej rentownych podstron i źródeł odwiedzających.'
+            }
+          ],
+          codeSnippet: `<!-- Bezciasteczkowa, zgodna z RODO analityka Umami -->
+<script async defer
+  src="https://twoja-analityka.pl/script.js"
+  data-website-id="TWOJ-WEBSITE-ID">
+</script>`,
+          businessGain: 'Dokładna wiedza o liczbie klientów i skuteczności poszczególnych podstron bez spowalniania witryny.',
+          icon: <BarChart3 className="w-5 h-5 text-blue-600" />
+        });
+      } else {
+        items.push({
+          id: 'deduction-telemetry-general',
+          pillar: 'Automatyzacja',
+          category: 'Telemetria & Analityka zachowań użytkowników',
+          pointsLost: autoLost,
+          title: 'Brak narzędzi analityki konwersji i zachowań użytkowników',
+          shortDiagnosis: 'Brak aktywnego systemu analitycznego (GA4 / Umami) oraz narzędzi analizy behawioralnej sesji klientów.',
+          technicalReason: 'Brak telemetryki uniemożliwia ocenę zachowań klientów, weryfikację miejsc porzucania oferty oraz optymalizację współczynnika konwersji.',
+          stepsToMax: [
+            {
+              step: 1,
+              title: 'Konfiguracja bezpłatnej analityki ruchu (GA4 / Umami)',
+              desc: 'Podpięcie strumienia danych do monitorowania liczby wizyt, źródeł wejść i czasu sesji.'
+            },
+            {
+              step: 2,
+              title: 'Wdrożenie bezciasteczkowego Microsoft Clarity',
+              desc: 'Uruchomienie darmowych map ciepła (Click Maps / Scroll Maps) i anonimowych nagrań sesji.'
+            },
+            {
+              step: 3,
+              title: 'Telemetria wysłanych zapytań kontaktowych',
+              desc: 'Pomiar konwersji formularzy ofertowych i kliknięć w numery telefonów.'
+            }
+          ],
+          codeSnippet: `<!-- Bezciasteczkowe Microsoft Clarity (Zero Cookies / Zgodność z RODO) -->
 <script>
   (function(c,l,a,r,i,t,y){
     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -284,14 +449,68 @@ document.querySelectorAll('[data-accordion]').forEach(item => {
   })(window, document, "clarity", "script", "ID_PROJEKTU");
   window.clarity && window.clarity('consent', false);
 </script>`,
-        businessGain: 'Odzyskanie do 70% modelowanych konwersji w Google Ads, pełna wiedza o zachowaniach klientów na stronie i 100% zgodność prawna z UODO.',
-        icon: <BarChart3 className="w-5 h-5 text-blue-600" />
+          businessGain: 'Pełny wgląd w zachowania klientów na stronie i możliwość usuwania barier blokujących składanie zapytań.',
+          icon: <BarChart3 className="w-5 h-5 text-blue-600" />
+        });
+      }
+    }
+
+    // Wyrównanie puli punktów tak, aby suma pointsLost dokładnie odpowiadała allMissingTotal
+    if (items.length > 0 && allMissingTotal > 0) {
+      const rawSum = items.reduce((s, it) => s + it.pointsLost, 0);
+      if (rawSum === 0) {
+        items.forEach((it, idx) => {
+          it.pointsLost = idx === 0 ? allMissingTotal : 0;
+        });
+      } else if (rawSum !== allMissingTotal) {
+        let remainder = allMissingTotal;
+        items.forEach((it, idx) => {
+          if (idx === items.length - 1) {
+            it.pointsLost = Math.max(1, remainder);
+          } else {
+            const allocated = Math.max(1, Math.round((it.pointsLost / rawSum) * allMissingTotal));
+            it.pointsLost = allocated;
+            remainder -= allocated;
+          }
+        });
+      }
+    }
+
+    // Bezpieczny fallback: jeśli brakuje punktów do 100/100, ale żaden filar nie miał score < 100
+    if (items.length === 0 && allMissingTotal > 0) {
+      items.push({
+        id: 'deduction-general-tuning',
+        pillar: 'Optymalizacja',
+        category: 'Dostrojenie architektury serwisu',
+        pointsLost: allMissingTotal,
+        title: 'Drobne optymalizacje parametrów wydajnościowych i SEO',
+        shortDiagnosis: `Serwis osiąga bardzo wysoki wynik ogólny, a do maksymalnej noty 100/100 brakuje jedynie ${allMissingTotal} pkt.`,
+        technicalReason: 'Drobne odchylenia w czasach renderowania lub strukturze tekstu podstron powstrzymują serwis przed zdobyciem idealnego wyniku.',
+        stepsToMax: [
+          {
+            step: 1,
+            title: 'Weryfikacja najwolniejszych zasobów',
+            desc: 'Analiza wykresów wodospadowych (Waterfall) w celu skrócenia czasu ładowania zewnętrznych skryptów i czcionek.'
+          },
+          {
+            step: 2,
+            title: 'Rozbudowa treści i metadanych',
+            desc: 'Wzbogacenie podstron o dodatkowe akapity merytoryczne i sekcje pytań FAQ.'
+          },
+          {
+            step: 3,
+            title: 'Optymalizacja pamięci podręcznej',
+            desc: 'Wydłużenie nagłówków Cache-Control dla zasobów statycznych do 1 roku.'
+          }
+        ],
+        businessGain: 'Osiągnięcie perfekcyjnego wyniku 100/100 i maksymalna stabilność serwisu.',
+        icon: <Sparkles className="w-5 h-5 text-indigo-600" />
       });
     }
 
     // Sortowanie od największej straty punktów
     return items.sort((a, b) => b.pointsLost - a.pointsLost);
-  }, [result]);
+  }, [result, allMissingTotal]);
 
   // Silnik potrąceń w dedykowanej klasie WordPress
   const wpDeductions = React.useMemo<MissingPointItem[]>(() => {
@@ -427,6 +646,7 @@ define('EMPTY_TRASH_DAYS', 7);`,
     // 4. ANALITYKA & CONSENT MODE
     const ads = result.evidence?.adsAndTracking;
     const hasConsent = ads?.hasConsentModeV2;
+    const hasRecording = ads?.hasSessionRecording || ads?.hasClarity || ads?.hasHotjar;
     if (!hasConsent) {
       items.push({
         id: 'wp-deduction-analytics',
@@ -449,8 +669,8 @@ define('EMPTY_TRASH_DAYS', 7);`,
           },
           {
             step: 3,
-            title: 'Podpięcie Microsoft Clarity w trybie bezciasteczkowym',
-            desc: 'Dodanie darmowych nagrań sesji, które nie wymagają zgód cookies (pamięć sesyjna).'
+            title: hasRecording ? 'Telemetria formularzy i zdarzeń w motywie' : 'Podpięcie Microsoft Clarity w trybie bezciasteczkowym',
+            desc: hasRecording ? 'Śledzenie zdarzeń submitowania formularzy i kliknięć w numery telefonów.' : 'Dodanie darmowych nagrań sesji, które nie wymagają zgód cookies (pamięć sesyjna).'
           }
         ],
         codeSnippet: `// Wdrożenie Consent Mode v2 przed załadowaniem skryptów analitycznych:
@@ -467,8 +687,29 @@ gtag('consent', 'default', {
       });
     }
 
+    // Wyrównanie puli punktów tak, aby suma pointsLost dokładnie odpowiadała wpMissingTotal
+    if (items.length > 0 && wpMissingTotal > 0) {
+      const rawSum = items.reduce((s, it) => s + it.pointsLost, 0);
+      if (rawSum === 0) {
+        items.forEach((it, idx) => {
+          it.pointsLost = idx === 0 ? wpMissingTotal : 0;
+        });
+      } else if (rawSum !== wpMissingTotal) {
+        let remainder = wpMissingTotal;
+        items.forEach((it, idx) => {
+          if (idx === items.length - 1) {
+            it.pointsLost = Math.max(1, remainder);
+          } else {
+            const allocated = Math.max(1, Math.round((it.pointsLost / rawSum) * wpMissingTotal));
+            it.pointsLost = allocated;
+            remainder -= allocated;
+          }
+        });
+      }
+    }
+
     return items.sort((a, b) => b.pointsLost - a.pointsLost);
-  }, [result]);
+  }, [result, wpMissingTotal]);
 
   const activeItems = activeTab === 'wordpress' && isWordPress ? wpDeductions : allDeductions;
   const currentMissing = activeTab === 'wordpress' && isWordPress ? wpMissingTotal : allMissingTotal;

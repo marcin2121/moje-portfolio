@@ -77,6 +77,17 @@ export default function RltPolskaCaseStudyPage() {
         </div>
       </div>
 
+      {/* Kontekst inzynieryjny i wyzwania wyjsciowe */}
+      <div className="space-y-6 text-zinc-300 leading-relaxed text-base">
+        <h2 className="text-2xl font-bold text-white tracking-tight">Wyzwania wydajnosciowe monolitu PHP</h2>
+        <p>
+          Dotychczasowa architektura serwisu oparta na silniku WordPress, kreatorze Elementor oraz kilkudziesieciu wtyczkach WooCommerce generowala znaczace obciazenie bazy danych MySQL przy kazdym wejsciu uzytkownika. Kazde zapytanie HTTP zmuszalo interpreter PHP do dynamicznego generowania drzewa DOM od podstaw, co przy wzmozonym ruchu z kampanii marketingowych prowadzilo do wyczerpania limitow pamieci serwera oraz powstawania krytycznych bledow HTTP 508 (Resource Limit Reached).
+        </p>
+        <p>
+          Dodatkowym problemem byl narzut skryptow JavaScript. Ponad 1.4 MB synchronicznie ladowanych bibliotek blokowalo renderowanie pierwszego ekranu na smartfonach, wydluzajac czas LCP (Largest Contentful Paint) do prawie 5 sekund. Skutkowalo to wysokim wspolczynnikiem porzucen uzytkownikow mobilnych i utrata potencjalnych zamowien.
+        </p>
+      </div>
+
       <div>
         <h2 className="text-2xl font-bold text-white mb-6">Metryki Inżynieryjne</h2>
         <CaseStudyMetricsBoard 
@@ -85,10 +96,24 @@ export default function RltPolskaCaseStudyPage() {
         />
       </div>
 
+      {/* Architektura rozwiazania i dekompozycja */}
+      <div className="space-y-6 text-zinc-300 leading-relaxed text-base border-t border-white/10 pt-8">
+        <h2 className="text-2xl font-bold text-white tracking-tight">Dekompozycja do Next.js i Edge Network</h2>
+        <p>
+          Proces migracji polegal na calkowitym rozdzieleniu warstwy prezentacji od logiki biznesowej. Zbudowano nowoczesny frontend w technologii Next.js App Router z wykorzystaniem React 19 oraz Tailwind CSS. Wykorzystano model hybrydowy: statyczna prekompilacje stron (SSG) z inkrementalna rewalidacja (ISR) dla kart ofertowych oraz serwowanie zasobow bezposrednio z wezlow brzegowych Vercel Edge Network.
+        </p>
+        <p>
+          Dzieki temu czas odpowiedzi serwera (TTFB) spadl z 850ms do zaledwie 90ms, poniewaz uzytkownicy otrzymuja natychmiast prekompilowany kod HTML bez koniecznosci angazowania bazy danych. Waga pakietu JavaScript zostala zredukowana z 1450 KB do 110 KB dzieki usunieciu legacy zaleznosci jQuery i zastapieniu ich natywnymi rozwiazaniami przegladarkowymi.
+        </p>
+      </div>
+
       <div className="bg-zinc-900/50 text-white rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10">
-        <h2 className="text-2xl font-bold mb-4">Wpływ Biznesowy</h2>
-        <p className="text-lg text-zinc-400 leading-relaxed">
+        <h2 className="text-2xl font-bold mb-4">Wpływ Biznesowy i Rezultaty</h2>
+        <p className="text-lg text-zinc-400 leading-relaxed mb-4">
           {caseStudyData.frontendMetrics.businessImpactSummary}
+        </p>
+        <p className="text-sm text-zinc-400 leading-relaxed">
+          Wdrozenie nowej architektury zaowocowalo 100% dostepnoscia serwisu podczas szczytow sezonowych, zredukowaniem kosztow serwerowych oraz wzrostem konwersji mobilnej o 35% dzieki blyskawicznemu ladowaniu oferty na kazdym urzadzeniu.
         </p>
       </div>
     </div>

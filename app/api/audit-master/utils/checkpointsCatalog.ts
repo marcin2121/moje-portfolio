@@ -1004,11 +1004,13 @@ export function evaluateAllCheckpoints(
     addEval('track-consent-mode-v2', 'passed', 'Brak tagów Google wymagających zgód');
   }
 
-  // track-gtm-installed: elastyczność telemetryczna (GTM lub bezpośredni GA4)
+  // track-gtm-installed: elastyczność telemetryczna (GTM, bezpośredni GA4 lub Privacy-First)
   if (tracking.hasGoogleTagManager) {
     addEval('track-gtm-installed', 'passed', tracking.gtmId ? `GTM: ${tracking.gtmId}` : 'GTM aktywny');
   } else if (tracking.hasGA4) {
     addEval('track-gtm-installed', 'passed', `Natywny GA4 (${tracking.ga4Id || 'gtag.js'}) bez narzutu GTM - zaliczone`);
+  } else if (tracking.hasPrivacyAnalytics) {
+    addEval('track-gtm-installed', 'passed', 'Lekka analityka cookieless (Umami/Plausible) bez narzutu zewnętrznych kontenerów');
   } else {
     addEval('track-gtm-installed', 'warning', 'Brak kontenera GTM ani GA4');
   }
@@ -1025,6 +1027,8 @@ export function evaluateAllCheckpoints(
   // track-ga4-installed
   if (tracking.hasGA4) {
     addEval('track-ga4-installed', 'passed', tracking.ga4Id ? `GA4: ${tracking.ga4Id}` : 'GA4 aktywny');
+  } else if (tracking.hasPrivacyAnalytics) {
+    addEval('track-ga4-installed', 'passed', 'Aktywna bezciasteczkowa analityka Privacy-First (Umami/Plausible) zgodna z RODO');
   } else {
     addEval('track-ga4-installed', 'warning', 'Brak Google Analytics 4');
   }
