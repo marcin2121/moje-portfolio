@@ -36,7 +36,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
 
   const copyShareLink = () => {
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://molendadevelopment.pl';
-    const link = `${origin}/narzedzia/audyt?token=${result.token}`;
+    const link = `${origin}/narzedzia/audyt?token=${result.token}&url=${encodeURIComponent(result.domain)}`;
     navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);

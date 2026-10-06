@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Loader2, Building2, ShoppingCart, Swords } from 'lucide-react';
 import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
 import { SiteType } from '@/app/api/audit-master/types';
+import { parseDomainFromToken } from '@/app/api/audit-master/utils/token';
 import { pushGTMEvent } from '@/app/page';
 
 export function AudytClient() {
@@ -75,7 +76,8 @@ export function AudytClient() {
       setResult(data);
 
       if (data.token && typeof window !== 'undefined') {
-        window.history.replaceState(null, '', `/narzedzia/audyt?token=${encodeURIComponent(data.token)}`);
+        const domainSlug = data.domain || targetUrl;
+        window.history.replaceState(null, '', `/narzedzia/audyt?token=${encodeURIComponent(data.token)}&url=${encodeURIComponent(domainSlug)}`);
       }
 
       pushGTMEvent('audyt_wygenerowany', {
@@ -91,24 +93,42 @@ export function AudytClient() {
     }
   }, [scanSteps.length]);
 
-  // Jeśli w URL jest gotowy token (np. z cold maila), załaduj natychmiast z cache
+  // Jeśli w URL jest gotowy token (np. z powiadomienia Discord lub cold maila), załaduj z cache lub przeprowadź audyt
   useEffect(() => {
     if (tokenParam) {
       setIsScanning(true);
       setErrorMessage('');
-      fetch(`/api/audit-master?token=${encodeURIComponent(tokenParam)}`)
+      const targetQuery = urlParam
+        ? `token=${encodeURIComponent(tokenParam)}&url=${encodeURIComponent(urlParam)}`
+        : `token=${encodeURIComponent(tokenParam)}`;
+
+      fetch(`/api/audit-master?${targetQuery}`)
         .then(async (res) => {
           if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            const candidateDomain = errData?.fallbackDomain || urlParam || parseDomainFromToken(tokenParam);
+            if (candidateDomain) {
+              setUrl(candidateDomain);
+              handleScan(candidateDomain, siteType, competitorParam || undefined);
+              return null;
+            }
             throw new Error('Raport o podanym identyfikatorze wygasł lub nie został odnaleziony. Wpisz adres strony powyżej, aby wygenerować nową analizę.');
           }
           return res.json();
         })
-        .then((data: AuditResult) => {
+        .then((data: AuditResult | null) => {
+          if (!data) return;
           setResult(data);
           if (data.url) setUrl(data.url);
           if (data.siteType) setSiteType(data.siteType);
         })
         .catch((err: Error) => {
+          const candidateDomain = urlParam || parseDomainFromToken(tokenParam);
+          if (candidateDomain) {
+            setUrl(candidateDomain);
+            handleScan(candidateDomain, siteType, competitorParam || undefined);
+            return;
+          }
           setErrorMessage(err.message);
           if (typeof window !== 'undefined') {
             window.history.replaceState(null, '', '/narzedzia/audyt');

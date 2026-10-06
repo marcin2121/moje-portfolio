@@ -65,7 +65,7 @@ export async function notifyAuditGenerated(params: AuditNotificationParams): Pro
     // Kolor w zależności od wyniku: Zielony (>=80), Bursztynowy (50-79), Czerwony (<50)
     const color = overallScore >= 80 ? 0x10b981 : overallScore >= 50 ? 0xf59e0b : 0xe11d48;
     const siteLabel = SITE_TYPE_LABELS[siteType] || (siteType === 'ecommerce' ? '🛒 E-commerce (Sklep)' : '🏢 Usługi / B2B');
-    const auditUrl = `https://molendadevelopment.pl/narzedzia/audyt?token=${token}`;
+    const auditUrl = `https://molendadevelopment.pl/narzedzia/audyt?token=${token}&url=${encodeURIComponent(domain)}`;
 
     const lossText = overallScore >= 100 || lossPercentage === 0
       ? 'Maksymalna wydajność'
@@ -139,7 +139,7 @@ export async function notifyLeadReceived(params: LeadNotificationParams): Promis
 
   try {
     const { domain, email, phone, token, notes } = params;
-    const auditUrl = token ? `https://molendadevelopment.pl/narzedzia/audyt?token=${token}` : null;
+    const auditUrl = token ? `https://molendadevelopment.pl/narzedzia/audyt?token=${token}&url=${encodeURIComponent(domain)}` : null;
 
     const fields = [
       { name: '🌐 Domena klienta', value: domain, inline: true },

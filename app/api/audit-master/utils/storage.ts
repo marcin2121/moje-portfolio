@@ -1,10 +1,14 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { AuditMasterResponse, SiteType, SITE_TYPE_LABELS } from '../types';
 import { evaluateAllCheckpoints } from './checkpointsCatalog';
+import { parseDomainFromToken } from './token';
 import fs from 'fs';
 import path from 'path';
 
 let supabase: SupabaseClient | null = null;
+
+// Podręczna pamięć RAM instancji serwera (odporna na opóźnienia i tymczasowe awarie dysku)
+const memoryAuditCache = new Map<string, AuditMasterResponse>();
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -162,6 +166,11 @@ function sanitizeAuditData(audit: AuditMasterResponse): AuditMasterResponse {
 }
 
 export async function getAuditByToken(token: string): Promise<AuditMasterResponse | null> {
+  // 0. Sprawdź pamięć podręczną procesu (RAM)
+  if (memoryAuditCache.has(token)) {
+    return memoryAuditCache.get(token)!;
+  }
+
   // 1. Sprawdź Supabase
   if (supabase) {
     try {
@@ -172,10 +181,12 @@ export async function getAuditByToken(token: string): Promise<AuditMasterRespons
         .maybeSingle();
 
       if (!error && data?.data) {
-        return sanitizeAuditData({
+        const audit = sanitizeAuditData({
           ...(data.data as AuditMasterResponse),
           cached: true
         });
+        memoryAuditCache.set(token, audit);
+        return audit;
       }
     } catch {
       // Fallback do lokalnego cache
@@ -189,13 +200,25 @@ export async function getAuditByToken(token: string): Promise<AuditMasterRespons
     if (fs.existsSync(filePath)) {
       const raw = fs.readFileSync(filePath, 'utf-8');
       const parsed = JSON.parse(raw) as AuditMasterResponse;
-      return sanitizeAuditData({
+      const audit = sanitizeAuditData({
         ...parsed,
         cached: true
       });
+      memoryAuditCache.set(token, audit);
+      return audit;
     }
   } catch {
     // Ignoruj
+  }
+
+  // 3. Fallback: Jeśli kontener został zrestartowany, odzyskaj domenę zakodowaną w tokenie
+  const domain = parseDomainFromToken(token);
+  if (domain) {
+    const domainAudit = await getAuditByDomain(domain);
+    if (domainAudit) {
+      memoryAuditCache.set(token, domainAudit);
+      return domainAudit;
+    }
   }
 
   return null;
@@ -265,10 +288,15 @@ export async function getAuditByDomain(
 export async function saveAudit(audit: AuditMasterResponse): Promise<{ token: string }> {
   const cleanDomain = audit.domain.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('/')[0];
 
+  // 0. Zapisz w pamięci RAM procesu
+  memoryAuditCache.set(audit.token, audit);
+  memoryAuditCache.set(cleanDomain, audit);
+  memoryAuditCache.set(`${cleanDomain}:${audit.siteType}`, audit);
+
   // 1. Zapisz w Supabase
   if (supabase) {
     try {
-      await supabase.from('audit_reports').insert({
+      const { error } = await supabase.from('audit_reports').insert({
         token: audit.token,
         domain: cleanDomain,
         url: audit.url,
@@ -277,6 +305,9 @@ export async function saveAudit(audit: AuditMasterResponse): Promise<{ token: st
         loss_percentage: audit.lossPercentage,
         data: audit
       });
+      if (error) {
+        console.warn('[Supabase Insert Notice]', error.message);
+      }
     } catch {
       // Ignoruj błąd i zapisz lokalnie
     }

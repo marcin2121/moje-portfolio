@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import * as cheerio from 'cheerio';
 import { checkRateLimit } from './utils/rateLimiter';
 import { generateGeminiReport, classifySiteTypeWithAI } from './utils/geminiAI';
@@ -9,23 +8,42 @@ import { getAuditByToken, getAuditByDomain, saveAudit } from './utils/storage';
 import { evaluateAllCheckpoints } from './utils/checkpointsCatalog';
 import { fetchCompetitorData, buildCompetitorBenchmark } from './utils/competitorAnalyzer';
 import { notifyAuditGenerated } from './utils/discordNotifier';
+import { generateAuditToken, parseDomainFromToken } from './utils/token';
 import { AuditMasterResponse, DetailedCodeSmells, SiteType, SITE_TYPE_LABELS } from './types';
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const token = searchParams.get('token');
+    const urlFromQuery = searchParams.get('url') || searchParams.get('domain');
 
-    if (!token) {
-      return NextResponse.json({ error: 'Brak wymaganego parametru token' }, { status: 400 });
+    if (!token && !urlFromQuery) {
+      return NextResponse.json({ error: 'Brak wymaganego parametru token lub url' }, { status: 400 });
     }
 
-    const cachedAudit = await getAuditByToken(token);
-    if (!cachedAudit) {
-      return NextResponse.json({ error: 'Raport audytu nie został odnaleziony lub wygasł' }, { status: 404 });
+    if (token) {
+      const cachedAudit = await getAuditByToken(token);
+      if (cachedAudit) {
+        return NextResponse.json(cachedAudit);
+      }
     }
 
-    return NextResponse.json(cachedAudit);
+    // Jeśli nie znaleziono po tokenie, spróbuj odnaleźć po domenie (z parametru lub zakodowanej w tokenie)
+    const fallbackDomain = urlFromQuery || (token ? parseDomainFromToken(token) : null);
+    if (fallbackDomain) {
+      const domainAudit = await getAuditByDomain(fallbackDomain);
+      if (domainAudit) {
+        return NextResponse.json(domainAudit);
+      }
+
+      // Jeśli nadal brak zapisanego raportu, zwróć 404 z fallbackDomain, aby klient mógł automatycznie uruchomić świeży skan
+      return NextResponse.json({
+        error: 'Raport wygasł',
+        fallbackDomain
+      }, { status: 404 });
+    }
+
+    return NextResponse.json({ error: 'Raport audytu nie został odnaleziony lub wygasł' }, { status: 404 });
   } catch {
     return NextResponse.json({ error: 'Błąd podczas pobierania zapisanego audytu' }, { status: 500 });
   }
@@ -265,8 +283,8 @@ export async function POST(req: Request) {
       quickIssues
     );
 
-    // Unikalny token URL do trwałego linku (np. /narzedzia/audyt?token=a8f9c1...)
-    const tokenStr = crypto.randomBytes(16).toString('hex');
+    // Unikalny token URL kodujący domenę (odporny na restart kontenera i utratę cache)
+    const tokenStr = generateAuditToken(cleanDomain);
 
     // Synchronizacja wykrytych narzędzi analizy sesji z crawlera
     if (crawlData.evidence?.adsAndTracking?.hasClarity && !rootData.codeSmells.trackers?.includes('Microsoft Clarity')) {

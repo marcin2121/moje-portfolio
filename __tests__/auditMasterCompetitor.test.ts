@@ -5,6 +5,7 @@ import {
   RawCompetitorData
 } from '@/app/api/audit-master/utils/competitorAnalyzer';
 import { notifyAuditGenerated, notifyLeadReceived } from '@/app/api/audit-master/utils/discordNotifier';
+import { generateAuditToken, parseDomainFromToken } from '@/app/api/audit-master/utils/token';
 import { EvidenceSummary } from '@/app/api/audit-master/types';
 
 describe('Audit Master: Head-to-Head Competitor Benchmark & Discord Engine', () => {
@@ -164,5 +165,18 @@ describe('Audit Master: Head-to-Head Competitor Benchmark & Discord Engine', () 
       token: 'abcd1234efgh5678',
       notes: 'Zależy mi na audycie i wdrożeniu BLIK oraz add_to_cart.'
     })).resolves.not.toThrow();
+  });
+
+  it('generates self-contained domain tokens and accurately recovers domains', () => {
+    const token = generateAuditToken('motherearth.store');
+    expect(token).toBeDefined();
+    expect(token).toContain('-');
+
+    const recovered = parseDomainFromToken(token);
+    expect(recovered).toBe('motherearth.store');
+
+    // Obsługa niepoprawnych tokenów bez rzucania błędów
+    expect(parseDomainFromToken('stary-hex-token-bez-domeny')).toBeNull();
+    expect(parseDomainFromToken('')).toBeNull();
   });
 });
