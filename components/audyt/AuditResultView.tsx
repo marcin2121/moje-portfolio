@@ -111,7 +111,7 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       { name: 'Szybkość', score: perf },
       { name: 'SEO', score: seo },
       { name: 'Bezpiecz.', score: sec },
-      { name: 'Kod WP', score: wpHygiene },
+      { name: 'Jakość kodu', score: wpHygiene },
       { name: 'Analityka', score: trackingScore }
     ];
   }, [result.pillars, result.codeSmells, result.evidence]);
@@ -128,8 +128,8 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       { name: 'Szybkość', score: result.pillars?.find(p => p.name === 'Szybkość')?.score || 50 },
       { name: 'SEO', score: result.pillars?.find(p => p.name === 'SEO')?.score || 60 },
       { name: 'Bezpiecz.', score: result.pillars?.find(p => p.name === 'Bezpieczeństwo')?.score || 40 },
-      { name: 'Skala', score: result.pillars?.find(p => p.name === 'Skalowalność')?.score || 40 },
-      { name: 'Automatyz.', score: result.pillars?.find(p => p.name === 'Automatyzacja')?.score || 40 }
+      { name: 'Stabilność', score: result.pillars?.find(p => p.name === 'Skalowalność')?.score || 40 },
+      { name: 'Analityka', score: result.pillars?.find(p => p.name === 'Automatyzacja')?.score || 40 }
     ];
   }, [result.pillars]);
 
@@ -182,93 +182,90 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
         </div>
       </div>
 
-      {/* Hero Bento: Podwójny Zegar Lighthouse + Werdykt Architekta */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-        {/* Karta Wyników Lighthouse (Zegary segmentowe) */}
-        <div className="xl:col-span-5 bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-6 md:p-8 flex flex-col justify-between backdrop-blur-2xl">
-          <div>
-            <div className="flex items-center justify-between gap-2 mb-4">
-              <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-widest">
-                Indeks Architektury i Kodu
-              </span>
-              <span className="font-mono text-[11px] text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80 whitespace-nowrap">
-                Wskaźnik Wielowektorowy
-              </span>
-            </div>
-
-            {/* Zegary segmentowe w stylu Google Lighthouse */}
-            {isWordPress ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-2 my-auto">
-                <div className="p-3.5 bg-slate-50/60 rounded-2xl border border-slate-200/60 flex flex-col items-center justify-center">
-                  <LighthouseGauge
-                    score={wpScore}
-                    title="Klasa WordPress"
-                    subtitle="W ekosystemie WP (cel: >85)"
-                    segments={wpSegments}
-                    size={160}
-                    highlight={true}
-                  />
-                </div>
-                <div className="p-3.5 bg-slate-50/60 rounded-2xl border border-slate-200/60 flex flex-col items-center justify-center">
-                  <LighthouseGauge
-                    score={result.overallScore}
-                    title="Wszystkie technologie"
-                    subtitle="Sufit monolitu vs Next.js"
-                    segments={allTechSegments}
-                    size={160}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="py-4 flex justify-center">
-                <LighthouseGauge
-                  score={result.overallScore}
-                  title="Wskaźnik Architektury Web"
-                  subtitle="Średnia ważona 5 filarów"
-                  segments={allTechSegments}
-                  size={185}
-                  highlight={true}
-                />
-              </div>
-            )}
-          </div>
-
-          <div className="mt-4 pt-4 border-t border-slate-100">
-            <div className="p-3 bg-rose-50/70 border border-rose-200/60 rounded-xl w-full text-center">
-              <span className="text-xs font-mono text-rose-700 font-bold block">
-                Szacowany spadek {conversionLabel}:
-              </span>
-              <span className="text-xl font-black text-rose-600 font-mono">
-                ~{result.lossPercentage}%
-              </span>
-            </div>
-            <p className="text-slate-500 text-[11px] font-mono mt-2.5 text-center leading-relaxed">
-              {isWordPress
-                ? 'Wynik w klasie WP ocenia higienę kodu w Twoim ekosystemie. Wynik ogólny odzwierciedla sufit monolitu PHP.'
-                : 'Średnia ważona z analizy kodu, Core Web Vitals, indeksacji i bezpieczeństwa.'}
-            </p>
-          </div>
+      {/* 1. Karta Wyników Architektury i Kodu (Pełna szerokość) */}
+      <div className="w-full bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-6 md:p-8 backdrop-blur-2xl">
+        <div className="flex items-center justify-between gap-2 mb-6 pb-4 border-b border-slate-100">
+          <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-widest">
+            Indeks Architektury i Kodu
+          </span>
+          <span className="font-mono text-[11px] text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80 whitespace-nowrap">
+            Wskaźnik Wielowektorowy
+          </span>
         </div>
 
-        {/* Karta Syntezy Diagnostycznej Kodu */}
-        <div className="xl:col-span-7 bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-6 md:p-10 relative overflow-hidden flex flex-col justify-center backdrop-blur-2xl">
-          <div className="relative z-10">
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-              <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-900 uppercase tracking-widest">
-                <Shield className="w-4 h-4 text-orange-600" />
-                <span>Synteza Diagnostyczna Kodu & Architektury</span>
-              </div>
-              <span className="font-mono text-[11px] text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80">
-                Automatyczna analiza w czasie rzeczywistym
-              </span>
+        {/* Zegary telemetryczne */}
+        {isWordPress ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-2">
+            <div className="p-6 bg-slate-50/60 rounded-2xl border border-slate-200/60 flex flex-col items-center justify-center">
+              <LighthouseGauge
+                score={wpScore}
+                title="Na tle stron WordPress"
+                subtitle="Optymalizacja w ramach Twojej technologii"
+                segments={wpSegments}
+                size={180}
+                highlight={true}
+                badgeText="Twoja platforma"
+              />
             </div>
-            <div className="prose max-w-none text-slate-700 leading-relaxed text-sm md:text-base prose-p:mb-3 prose-strong:text-slate-900 prose-ul:my-2 prose-li:my-0.5">
-              <ReactMarkdown>{cleanAiReport}</ReactMarkdown>
+            <div className="p-6 bg-slate-50/60 rounded-2xl border border-slate-200/60 flex flex-col items-center justify-center">
+              <LighthouseGauge
+                score={result.overallScore}
+                title="Na tle liderów rynku"
+                subtitle="Względem najszybszych technologii w sieci"
+                segments={allTechSegments}
+                size={180}
+              />
             </div>
-            <p className="text-[11px] font-mono text-slate-400 mt-4 pt-3 border-t border-slate-100">
-              Diagnoza opracowana na podstawie analizy parametrów HTTP, drzewa DOM oraz metryk Core Web Vitals.
-            </p>
           </div>
+        ) : (
+          <div className="py-6 flex justify-center">
+            <LighthouseGauge
+              score={result.overallScore}
+              title="Ocena techniczna witryny"
+              subtitle="Szybkość, SEO, bezpieczeństwo i stabilność"
+              segments={allTechSegments}
+              size={195}
+              highlight={true}
+              badgeText="Wynik ogólny"
+            />
+          </div>
+        )}
+
+        <div className="mt-6 pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="p-3 bg-rose-50/70 border border-rose-200/60 rounded-xl px-5 text-center sm:text-left flex items-center gap-3">
+            <span className="text-xs font-mono text-rose-700 font-bold whitespace-nowrap">
+              Szacowany spadek {conversionLabel}:
+            </span>
+            <span className="text-xl font-black text-rose-600 font-mono">
+              ~{result.lossPercentage}%
+            </span>
+          </div>
+          <p className="text-slate-500 text-[11px] font-mono text-center sm:text-right leading-relaxed max-w-md">
+            {isWordPress
+              ? 'Pierwszy wynik ocenia jakość strony na tle innych witryn WordPress. Drugi wynik porównuje ją z najszybszymi, nowoczesnymi technologiami internetowymi.'
+              : 'Średnia ważona z analizy szybkości ładowania, widoczności w Google i bezpieczeństwa witryny.'}
+          </p>
+        </div>
+      </div>
+
+      {/* 2. Karta Wyników Audytu (Pełna szerokość) */}
+      <div className="w-full bg-white/80 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-3xl p-6 md:p-8 relative overflow-hidden backdrop-blur-2xl">
+        <div className="relative z-10">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-900 uppercase tracking-widest">
+              <Shield className="w-4 h-4 text-orange-600" />
+              <span>Wyniki audytu</span>
+            </div>
+            <span className="font-mono text-[11px] text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80">
+              Automatyczna analiza w czasie rzeczywistym
+            </span>
+          </div>
+          <div className="prose max-w-none text-slate-700 leading-relaxed text-sm md:text-base prose-p:mb-3 prose-strong:text-slate-900 prose-ul:my-2 prose-li:my-0.5">
+            <ReactMarkdown>{cleanAiReport}</ReactMarkdown>
+          </div>
+          <p className="text-[11px] font-mono text-slate-400 mt-4 pt-3 border-t border-slate-100">
+            Diagnoza opracowana na podstawie analizy parametrów HTTP, drzewa DOM oraz metryk Core Web Vitals.
+          </p>
         </div>
       </div>
 

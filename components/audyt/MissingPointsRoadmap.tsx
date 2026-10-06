@@ -485,7 +485,7 @@ gtag('consent', 'default', {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-wider">
-              Diagnostyka Inżynieryjna
+              Plan naprawczy
             </span>
             <span className="text-[11px] font-mono text-rose-700 bg-rose-50 border border-rose-200/80 px-2 py-0.5 rounded-md font-bold whitespace-nowrap">
               -{currentMissing} pkt do perfekcji
@@ -511,7 +511,7 @@ gtag('consent', 'default', {
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Klasa WordPress ({wpScore ?? 0}/100)
+              Względem stron WordPress ({wpScore ?? 0}/100)
             </button>
             <button
               type="button"
@@ -522,7 +522,7 @@ gtag('consent', 'default', {
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Wszystkie technologie ({result.overallScore}/100)
+              Na tle liderów rynku ({result.overallScore}/100)
             </button>
           </div>
         )}

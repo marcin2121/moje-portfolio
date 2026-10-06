@@ -14,6 +14,7 @@ interface LighthouseGaugeProps {
   segments: GaugeSegment[];
   size?: number; // default 175
   highlight?: boolean;
+  badgeText?: string;
 }
 
 export default function LighthouseGauge({
@@ -22,7 +23,8 @@ export default function LighthouseGauge({
   subtitle,
   segments,
   size = 175,
-  highlight = false
+  highlight = false,
+  badgeText
 }: LighthouseGaugeProps) {
   const [hoveredSeg, setHoveredSeg] = React.useState<GaugeSegment | null>(null);
 
@@ -189,7 +191,7 @@ export default function LighthouseGauge({
           </h4>
           {highlight && (
             <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200/80 rounded-md font-semibold whitespace-nowrap shrink-0">
-              Dedykowana
+              {badgeText || 'Twoja platforma'}
             </span>
           )}
         </div>
