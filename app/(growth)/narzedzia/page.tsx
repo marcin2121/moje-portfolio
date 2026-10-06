@@ -64,7 +64,7 @@ export default function NarzedziaHub() {
         
         {/* Darmowy Audyt Strony Internetowej */}
         <Link 
-          href="/narzedzia/audyt"
+          href="/narzedzia/audyt#formularz-audytu"
           className="group relative flex flex-col items-start p-8 rounded-3xl bg-white/80 backdrop-blur-xl border border-slate-200/70 hover:border-orange-200 hover:bg-white hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] transition-all duration-300 overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
@@ -142,7 +142,7 @@ export default function NarzedziaHub() {
             </h3>
           </div>
           <p className="text-slate-600 text-sm leading-relaxed">
-            Jeśli w swojej organizacji marnujesz czas na powtarzalne obliczenia w arkuszach lub potrzebujesz dedykowanego modułu analitycznego – zakoduję go dla Ciebie w ramach dedykowanego wdrożenia.
+            Jeśli w swojej organizacji marnujesz czas na powtarzalne obliczenia w arkuszach lub potrzebujesz dedykowanego modułu analitycznego, zakoduję go dla Ciebie w ramach dedykowanego wdrożenia.
           </p>
         </div>
         

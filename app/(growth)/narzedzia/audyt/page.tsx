@@ -8,33 +8,47 @@ function AudytFormFallback() {
     <div className="w-full">
       {/* Skeleton profilu */}
       <div className="flex justify-center mb-8">
-        <div className="bg-white/80 p-1.5 rounded-2xl border border-slate-200 flex gap-2 shadow-sm w-80 h-12 animate-pulse" />
+        <div className="bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/90 flex gap-2 shadow-inner w-80 h-12 animate-pulse" />
       </div>
 
       {/* Skeleton formularza */}
-      <div className="bg-white/70 border border-slate-200/70 rounded-3xl p-6 md:p-8 backdrop-blur-3xl mb-12 shadow-[0_20px_50px_rgba(0,0,0,0.04)] h-36 animate-pulse" />
+      <div className="bg-white/95 border border-slate-200/90 rounded-3xl p-6 md:p-8 mb-12 shadow-[0_20px_50px_rgba(15,23,42,0.06)] h-36 animate-pulse" />
     </div>
   );
 }
 
 export default function AudytPage() {
   return (
-    <main className="min-h-screen pt-36 sm:pt-40 md:pt-44 pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-slate-600 selection:bg-orange-500 selection:text-white">
+    <main className="min-h-screen pt-28 sm:pt-32 md:pt-36 pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-slate-600 selection:bg-orange-500 selection:text-white relative">
+      {/* Delikatne tło ambientowe budujące głębię i kontrast */}
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-gradient-to-b from-orange-500/5 via-slate-100/40 to-transparent blur-3xl pointer-events-none -z-10" />
+
       {/* Powrót */}
       <Link 
         href="/narzedzia" 
-        className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-500 hover:text-orange-600 transition-colors mb-8 group"
+        className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-slate-500 hover:text-orange-600 transition-colors mb-6 group"
       >
         <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
         <span>Powrót do narzędzi</span>
       </Link>
 
-      {/* Nagłówek H1 renderowany statycznie na serwerze */}
+      {/* Nagłówek H1 renderowany statycznie na serwerze z obsługą interaktywnego przejścia */}
       <div className="text-center mb-10">
-        <h1 className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-slate-900">
-          Darmowy Audyt Strony Internetowej
-        </h1>
-        <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto font-light leading-relaxed">
+        <a 
+          href="#formularz-audytu"
+          id="darmowy-audyt-naglowek"
+          className="inline-block group focus:outline-none cursor-pointer"
+          title="Kliknij, aby przejść do formularza i wpisać adres strony"
+        >
+          <div className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-orange-600 mb-3 group-hover:text-orange-500 transition-colors">
+            <Activity className="w-4 h-4" />
+            <span>Skaner Architektury Webowej 2026</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4 text-slate-900 group-hover:text-orange-600 transition-colors">
+            Darmowy Audyt Strony Internetowej
+          </h1>
+        </a>
+        <p className="text-base md:text-lg text-slate-700 max-w-2xl mx-auto font-normal leading-relaxed">
           Błyskawiczna analiza Twojej strony WWW lub sklepu. Sprawdzamy prędkość ładowania na telefonach, błędy blokujące pozycje w Google oraz poprawność śledzenia sprzedaży i konwersji z reklam.
         </p>
       </div>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Loader2, Building2, ShoppingCart, Swords, X } from 'lucide-react';
+import { Search, Loader2, Building2, ShoppingCart, Swords, X, Globe } from 'lucide-react';
 import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
 import { SiteType } from '@/app/api/audit-master/types';
 import { parseDomainFromToken } from '@/app/api/audit-master/utils/token';
@@ -160,6 +160,41 @@ export function AudytClient() {
     }
   }, [tokenParam, urlParam, competitorParam, handleScan]);
 
+  const urlInputRef = React.useRef<HTMLInputElement>(null);
+
+  const focusAuditInput = React.useCallback(() => {
+    const formEl = document.getElementById('formularz-audytu');
+    if (formEl) {
+      formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    setTimeout(() => {
+      if (urlInputRef.current) {
+        urlInputRef.current.focus();
+        urlInputRef.current.select();
+      }
+    }, 250);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (window.location.hash === '#formularz-audytu' || searchParams.get('focus') === '1') {
+        setTimeout(focusAuditInput, 200);
+      }
+    }
+
+    const headingEl = document.getElementById('darmowy-audyt-naglowek');
+    if (headingEl) {
+      const handleHeadingClick = (e: MouseEvent) => {
+        e.preventDefault();
+        focusAuditInput();
+      };
+      headingEl.addEventListener('click', handleHeadingClick);
+      return () => {
+        headingEl.removeEventListener('click', handleHeadingClick);
+      };
+    }
+  }, [focusAuditInput, searchParams]);
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!url.trim()) return;
@@ -170,49 +205,60 @@ export function AudytClient() {
     <div className="w-full">
       {/* Przełącznik Profilu */}
       <div className="flex justify-center mb-8">
-        <div className="bg-white/80 p-1.5 rounded-2xl border border-slate-200 flex gap-2 shadow-sm backdrop-blur-md">
+        <div className="bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/90 flex gap-1.5 shadow-inner backdrop-blur-md">
           <button
             type="button"
             onClick={() => setSiteType('services')}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer ${
               siteType === 'services'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'text-slate-500 hover:text-slate-900'
+                ? 'bg-white text-slate-900 font-bold shadow-sm border border-slate-200/60'
+                : 'text-slate-600 hover:text-slate-900 font-medium hover:bg-white/60'
             }`}
           >
-            <Building2 className="w-4 h-4" />
-            Strona Firmowa / Usługi
+            <Building2 className={`w-4 h-4 transition-colors ${siteType === 'services' ? 'text-orange-500' : 'text-slate-400'}`} />
+            <span>Strona Firmowa / Usługi</span>
           </button>
           <button
             type="button"
             onClick={() => setSiteType('ecommerce')}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer ${
               siteType === 'ecommerce'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'text-slate-500 hover:text-slate-900'
+                ? 'bg-white text-slate-900 font-bold shadow-sm border border-slate-200/60'
+                : 'text-slate-600 hover:text-slate-900 font-medium hover:bg-white/60'
             }`}
           >
-            <ShoppingCart className="w-4 h-4" />
-            Sklep E-commerce
+            <ShoppingCart className={`w-4 h-4 transition-colors ${siteType === 'ecommerce' ? 'text-orange-500' : 'text-slate-400'}`} />
+            <span>Sklep E-commerce</span>
           </button>
         </div>
       </div>
 
       {/* Formularz Skanowania */}
-      <div className="bg-white/70 border border-slate-200/70 rounded-3xl p-6 md:p-8 backdrop-blur-3xl mb-12 shadow-[0_20px_50px_rgba(0,0,0,0.04)] relative overflow-hidden">
+      <div 
+        id="formularz-audytu"
+        className="scroll-mt-32 bg-white/95 border border-slate-200/90 rounded-3xl p-6 md:p-8 backdrop-blur-2xl mb-12 shadow-[0_20px_50px_rgba(15,23,42,0.06)] relative overflow-hidden"
+      >
         <form onSubmit={onSubmit} className="relative z-10">
-          <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider font-mono">
-            {siteType === 'ecommerce' ? 'Adres sklepu internetowego (URL)' : 'Adres strony firmowej / portalu (URL)'}
-          </label>
+          <div className="flex items-center justify-between mb-2.5">
+            <label htmlFor="audit-url-input" className="block text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+              {siteType === 'ecommerce' ? 'Adres sklepu internetowego (URL)' : 'Adres strony firmowej / portalu (URL)'}
+            </label>
+            <span className="text-[11px] font-mono text-slate-500 hidden sm:inline-block">
+              Skaner bada szybkość, kod, SEO i tagi reklamowe
+            </span>
+          </div>
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-grow">
+              <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
               <input
+                ref={urlInputRef}
+                id="audit-url-input"
                 type="text"
                 required
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder={siteType === 'ecommerce' ? 'np. dzikistyl.com, rltpolska.pl' : 'np. stowarzyszeniekas.pl, moja-firma.pl'}
-                className="w-full bg-white/90 border-2 border-slate-200 focus:border-orange-500 rounded-xl py-3.5 px-5 pr-10 text-slate-900 text-sm outline-none transition-colors shadow-inner font-mono"
+                className="w-full bg-slate-50/70 hover:bg-white focus:bg-white border-2 border-slate-200 hover:border-slate-300 focus:border-orange-500 rounded-xl py-3.5 pl-11 pr-10 text-slate-900 text-sm outline-none transition-all shadow-inner font-mono focus:ring-4 focus:ring-orange-500/10"
                 disabled={isScanning}
               />
               {url && !isScanning && (
