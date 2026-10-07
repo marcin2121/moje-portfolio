@@ -5,14 +5,19 @@ import { AudytClient } from './AudytClient';
 
 function AudytFormFallback() {
   return (
-    <div className="w-full">
-      {/* Skeleton profilu */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/90 flex gap-2 shadow-inner w-80 h-12 animate-pulse" />
+    <div className="w-full bg-white/95 border border-slate-200/90 rounded-3xl backdrop-blur-2xl mb-12 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.08)] overflow-hidden animate-pulse">
+      <div className="bg-slate-50/90 border-b border-slate-200/80 px-8 py-4 h-14 flex items-center justify-between">
+        <div className="flex gap-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />
+          <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />
+          <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />
+        </div>
+        <div className="h-7 w-52 bg-slate-200 rounded-lg" />
       </div>
-
-      {/* Skeleton formularza */}
-      <div className="bg-white/95 border border-slate-200/90 rounded-3xl p-6 md:p-8 mb-12 shadow-[0_20px_50px_rgba(15,23,42,0.06)] h-36 animate-pulse" />
+      <div className="p-8 md:p-10 space-y-4">
+        <div className="h-16 bg-slate-100 rounded-2xl" />
+        <div className="h-6 bg-slate-100 rounded-md w-1/3" />
+      </div>
     </div>
   );
 }

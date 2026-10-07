@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Loader2, Building2, ShoppingCart, Swords, X, Globe } from 'lucide-react';
+import { Loader2, Building2, ShoppingCart, Swords, X, Globe, Lock, Zap, ShieldCheck, Sparkles, Play } from 'lucide-react';
 import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
 import { SiteType } from '@/app/api/audit-master/types';
 import { parseDomainFromToken } from '@/app/api/audit-master/utils/token';
@@ -203,142 +203,232 @@ export function AudytClient() {
 
   return (
     <div className="w-full">
-      {/* Przełącznik Profilu */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/90 flex gap-1.5 shadow-inner backdrop-blur-md">
-          <button
-            type="button"
-            onClick={() => setSiteType('services')}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer ${
-              siteType === 'services'
-                ? 'bg-white text-slate-900 font-bold shadow-sm border border-slate-200/60'
-                : 'text-slate-600 hover:text-slate-900 font-medium hover:bg-white/60'
-            }`}
-          >
-            <Building2 className={`w-4 h-4 transition-colors ${siteType === 'services' ? 'text-orange-500' : 'text-slate-400'}`} />
-            <span>Strona Firmowa / Usługi</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setSiteType('ecommerce')}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer ${
-              siteType === 'ecommerce'
-                ? 'bg-white text-slate-900 font-bold shadow-sm border border-slate-200/60'
-                : 'text-slate-600 hover:text-slate-900 font-medium hover:bg-white/60'
-            }`}
-          >
-            <ShoppingCart className={`w-4 h-4 transition-colors ${siteType === 'ecommerce' ? 'text-orange-500' : 'text-slate-400'}`} />
-            <span>Sklep E-commerce</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Formularz Skanowania */}
+      {/* Terminal / Konsola Diagnostyczna */}
       <div 
         id="formularz-audytu"
-        className="scroll-mt-32 bg-white/95 border border-slate-200/90 rounded-3xl p-6 md:p-8 backdrop-blur-2xl mb-12 shadow-[0_20px_50px_rgba(15,23,42,0.06)] relative overflow-hidden"
+        className="scroll-mt-28 bg-white/95 border border-slate-200/90 rounded-3xl backdrop-blur-2xl mb-12 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.08)] relative overflow-hidden transition-all duration-300"
       >
-        <form onSubmit={onSubmit} className="relative z-10">
-          <div className="flex items-center justify-between mb-2.5">
-            <label htmlFor="audit-url-input" className="block text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
-              {siteType === 'ecommerce' ? 'Adres sklepu internetowego (URL)' : 'Adres strony firmowej / portalu (URL)'}
-            </label>
-            <span className="text-[11px] font-mono text-slate-500 hidden sm:inline-block">
-              Skaner bada szybkość, kod, SEO i tagi reklamowe
+        {/* Pasek narzędziowy konsoli (Inspector Bar) */}
+        <div className="bg-slate-50/90 border-b border-slate-200/80 px-5 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+          {/* Lewa strona: Kropki okna i etykieta */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 select-none" aria-hidden="true">
+              <span className="w-2.5 h-2.5 rounded-full bg-slate-300/80 border border-slate-400/40 inline-block" />
+              <span className="w-2.5 h-2.5 rounded-full bg-slate-300/80 border border-slate-400/40 inline-block" />
+              <span className="w-2.5 h-2.5 rounded-full bg-slate-300/80 border border-slate-400/40 inline-block" />
+            </div>
+            <span className="font-mono text-[11px] font-bold text-slate-500 uppercase tracking-wider hidden sm:inline-block">
+              Silnik Diagnostyczny v2.6 · 64 parametry
             </span>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-grow">
-              <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-              <input
-                ref={urlInputRef}
-                id="audit-url-input"
-                type="text"
-                required
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder={siteType === 'ecommerce' ? 'np. dzikistyl.com, rltpolska.pl' : 'np. stowarzyszeniekas.pl, moja-firma.pl'}
-                className="w-full bg-slate-50/70 hover:bg-white focus:bg-white border-2 border-slate-200 hover:border-slate-300 focus:border-orange-500 rounded-xl py-3.5 pl-11 pr-10 text-slate-900 text-sm outline-none transition-all shadow-inner font-mono focus:ring-4 focus:ring-orange-500/10"
-                disabled={isScanning}
-              />
-              {url && !isScanning && (
+
+          {/* Środek / Przełącznik Profilu (zintegrowany, nowoczesny) */}
+          <div className="inline-flex items-center bg-white border border-slate-200 rounded-xl p-1 shadow-xs">
+            <button
+              type="button"
+              onClick={() => setSiteType('services')}
+              className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                siteType === 'services'
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Building2 className={`w-3.5 h-3.5 ${siteType === 'services' ? 'text-orange-400' : 'text-slate-400'}`} />
+              <span>Strona Firmowa</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setSiteType('ecommerce')}
+              className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                siteType === 'ecommerce'
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <ShoppingCart className={`w-3.5 h-3.5 ${siteType === 'ecommerce' ? 'text-orange-400' : 'text-slate-400'}`} />
+              <span>Sklep E-commerce</span>
+            </button>
+          </div>
+
+          {/* Prawa strona: status certyfikatu */}
+          <div className="hidden md:flex items-center gap-1.5 font-mono text-[11px] text-emerald-600 font-bold uppercase tracking-wider">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Skan Bezpieczny SSL</span>
+          </div>
+        </div>
+
+        {/* Ciało konsoli */}
+        <div className="p-6 sm:p-8 md:p-10">
+          <form onSubmit={onSubmit} className="relative z-10">
+            {/* Etykieta główna z zachętą */}
+            <div className="flex items-center justify-between mb-3">
+              <label htmlFor="audit-url-input" className="block text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider font-mono">
+                {siteType === 'ecommerce' ? 'Wpisz adres sklepu (URL)' : 'Wpisz adres strony firmowej (URL)'}
+              </label>
+              <span className="text-xs font-mono text-orange-600 font-bold">
+                Bez rejestracji · Wynik w 15s
+              </span>
+            </div>
+
+            {/* Monumentalny Omnibox Bar */}
+            <div className="group relative rounded-2xl p-2 sm:p-2.5 bg-slate-50/90 hover:bg-slate-50 focus-within:bg-white border-2 border-slate-200/90 hover:border-slate-300 focus-within:border-orange-500 focus-within:ring-4 focus-within:ring-orange-500/15 shadow-inner transition-all duration-200">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                {/* Przedrostek https:// z kłódeczką */}
+                <div className="hidden xs:flex items-center gap-1.5 pl-2 sm:pl-3 pr-2 text-slate-400 font-mono text-sm sm:text-base font-bold select-none shrink-0 border-r border-slate-200/70 sm:py-2">
+                  <div className="p-1 rounded-md bg-emerald-100/70 text-emerald-700">
+                    <Lock className="w-3.5 h-3.5" />
+                  </div>
+                  <span>https://</span>
+                </div>
+
+                {/* Pole tekstowe */}
+                <div className="relative flex-grow flex items-center">
+                  <Globe className="xs:hidden w-4 h-4 text-slate-400 mr-2 shrink-0 ml-2" />
+                  <input
+                    ref={urlInputRef}
+                    id="audit-url-input"
+                    type="text"
+                    required
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    placeholder={siteType === 'ecommerce' ? 'twoj-sklep.pl' : 'twoja-firma.pl'}
+                    className="w-full bg-transparent text-slate-900 text-base sm:text-lg md:text-xl font-mono font-semibold outline-none py-2 px-1 placeholder:text-slate-400 placeholder:font-normal"
+                    disabled={isScanning}
+                  />
+                  {url && !isScanning && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUrl('');
+                        setResult(null);
+                        processedInitialTokenRef.current = null;
+                        if (typeof window !== 'undefined') {
+                          window.history.replaceState(null, '', '/narzedzia/audyt');
+                        }
+                      }}
+                      className="text-slate-400 hover:text-slate-600 p-2 cursor-pointer transition-colors shrink-0"
+                      title="Wyczyść adres"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Duży Przycisk CTA */}
+                <button
+                  type="submit"
+                  disabled={isScanning || !url.trim()}
+                  className="bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-extrabold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base tracking-tight transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_10px_25px_rgba(249,115,22,0.3)] hover:shadow-[0_14px_35px_rgba(249,115,22,0.4)] hover:scale-[1.01] shrink-0 cursor-pointer"
+                >
+                  {isScanning ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span>Skanowanie...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-5 h-5 text-amber-200 fill-amber-200" />
+                      <span>{siteType === 'ecommerce' ? 'Rozpocznij Test Sklepu' : 'Rozpocznij Darmowy Audyt'}</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Szybkie przykłady demo (One-Click Demo Chips) */}
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-2.5 pt-2">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+                <span className="text-slate-500 font-medium">Sprawdź gotowe demo:</span>
                 <button
                   type="button"
                   onClick={() => {
-                    setUrl('');
-                    setResult(null);
-                    processedInitialTokenRef.current = null;
-                    if (typeof window !== 'undefined') {
-                      window.history.replaceState(null, '', '/narzedzia/audyt');
-                    }
+                    setUrl('stowarzyszeniekas.pl');
+                    setSiteType('services');
+                    handleScan('stowarzyszeniekas.pl', 'services');
                   }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer transition-colors"
-                  title="Wyczyść adres i zresetuj audyt"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-orange-50 hover:text-orange-700 hover:border-orange-200 border border-slate-200 rounded-lg text-slate-700 font-semibold transition-colors cursor-pointer"
+                  title="Kliknij, aby przetestować na przykładzie stowarzyszeniekas.pl"
                 >
-                  <X className="w-4 h-4" />
+                  <Play className="w-3 h-3 text-orange-500 fill-orange-500" />
+                  <span>stowarzyszeniekas.pl</span>
+                  <span className="text-[10px] text-slate-500 uppercase font-bold">(NGO/Usługi)</span>
                 </button>
-              )}
-            </div>
-            <button
-              type="submit"
-              disabled={isScanning || !url.trim()}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 px-8 rounded-xl text-xs sm:text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(249,115,22,0.25)] hover:scale-[1.02] shrink-0 active:scale-95 cursor-pointer"
-            >
-              {isScanning ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Skanowanie witryny...</span>
-                </>
-              ) : (
-                <>
-                  <Search className="w-4 h-4" />
-                  <span>{siteType === 'ecommerce' ? 'Analizuj Sklep' : 'Analizuj Stronę'}</span>
-                </>
-              )}
-            </button>
-          </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUrl('dzikistyldemo.vercel.app');
+                    setSiteType('ecommerce');
+                    handleScan('dzikistyldemo.vercel.app', 'ecommerce');
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-orange-50 hover:text-orange-700 hover:border-orange-200 border border-slate-200 rounded-lg text-slate-700 font-semibold transition-colors cursor-pointer"
+                  title="Kliknij, aby przetestować na przykładzie sklepu dzikistyldemo"
+                >
+                  <Play className="w-3 h-3 text-orange-500 fill-orange-500" />
+                  <span>dzikistyldemo.vercel.app</span>
+                  <span className="text-[10px] text-slate-500 uppercase font-bold">(E-commerce)</span>
+                </button>
+              </div>
 
-          {/* Opcja Benchmarku z Konkurentem */}
-          <div className="mt-4 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() => setShowCompetitor(!showCompetitor)}
-              className="text-xs font-mono font-semibold text-slate-600 hover:text-orange-600 flex items-center gap-1.5 transition-colors"
-            >
-              <Swords className="w-3.5 h-3.5 text-orange-500" />
-              <span>{showCompetitor ? 'Ukryj porównanie z konkurentem' : 'Porównaj z konkurentem'}</span>
-            </button>
-          </div>
-
-          <AnimatePresence>
-            {showCompetitor && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mt-3 pt-3 border-t border-slate-100 overflow-hidden"
+              {/* Opcja Benchmarku z Konkurentem */}
+              <button
+                type="button"
+                onClick={() => setShowCompetitor(!showCompetitor)}
+                className="text-xs font-mono font-semibold text-slate-600 hover:text-orange-600 flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <label className="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider font-mono">
-                  Adres witryny konkurenta (opcjonalnie)
-                </label>
-                <input
-                  type="text"
-                  value={competitorUrl}
-                  onChange={(e) => setCompetitorUrl(e.target.value)}
-                  placeholder="np. rywal-sklep.pl, inna-firma.com"
-                  className="w-full bg-white/90 border border-slate-200 focus:border-orange-500 rounded-xl py-2.5 px-4 text-slate-900 text-xs sm:text-sm outline-none transition-colors shadow-inner font-mono"
-                  disabled={isScanning}
-                />
-                <span className="text-[10px] text-slate-400 font-mono mt-1 block">
-                  Przetestujemy równolegle czas reakcji (TTFB), silnik, zdarzenie add_to_cart oraz Consent Mode v2 rywala.
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </form>
+                <Swords className="w-3.5 h-3.5 text-orange-500" />
+                <span>{showCompetitor ? 'Ukryj porównanie' : 'Porównaj z konkurentem'}</span>
+              </button>
+            </div>
+
+            {/* Rozwinięcie pola konkurenta */}
+            <AnimatePresence>
+              {showCompetitor && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="mt-4 pt-4 border-t border-slate-200/80 overflow-hidden"
+                >
+                  <label className="block text-xs font-bold text-slate-700 mb-2 uppercase tracking-wider font-mono">
+                    Adres witryny konkurenta (opcjonalnie)
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={competitorUrl}
+                      onChange={(e) => setCompetitorUrl(e.target.value)}
+                      placeholder="np. rywal-sklep.pl, inna-firma.com"
+                      className="w-full bg-slate-50/70 focus:bg-white border-2 border-slate-200 focus:border-orange-500 rounded-xl py-3 px-4 text-slate-900 text-sm outline-none transition-colors shadow-inner font-mono"
+                      disabled={isScanning}
+                    />
+                  </div>
+                  <span className="text-xs text-slate-500 font-mono mt-1.5 block">
+                    Skaner zbada równolegle czas reakcji (TTFB), błędy w kodzie oraz analitykę rywala.
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </form>
+
+          {/* Trzy twarde gwarancje pod spodem */}
+          <div className="mt-8 pt-6 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono text-slate-600">
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-orange-500 shrink-0" />
+              <span>Skan 64 parametrów w ~15 sekund</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+              <span>Zero instalacji i bez podawania haseł</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
+              <span>Diagnoza wycieków w Google Ads i SEO</span>
+            </div>
+          </div>
+        </div>
 
         {errorMessage && (
-          <div className="mt-4 p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-mono">
+          <div className="mx-6 sm:mx-10 mb-6 p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-mono">
             {errorMessage}
           </div>
         )}
