@@ -335,6 +335,48 @@ export function AudytClient() {
               </div>
             </div>
 
+            {/* Aktywny wskaźnik postępu skanowania */}
+            <AnimatePresence>
+              {isScanning && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: 'auto' }}
+                  exit={{ opacity: 0, y: -6, height: 0 }}
+                  className="mt-4 p-4 sm:p-5 rounded-2xl bg-orange-500/[0.06] border border-orange-500/20 overflow-hidden shadow-xs"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
+                    <div className="flex items-center gap-2.5">
+                      <Loader2 className="w-4 h-4 text-orange-500 animate-spin shrink-0" />
+                      <span className="text-slate-800 font-mono text-xs sm:text-sm font-semibold">
+                        {scanSteps[scanStep]}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 self-end sm:self-auto shrink-0 font-mono">
+                      <span className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold">Postęp testu:</span>
+                      <span className="text-xs sm:text-sm font-bold text-orange-600 bg-orange-100/90 border border-orange-200/80 px-2 py-0.5 rounded-md">
+                        {Math.round(((scanStep + 1) / scanSteps.length) * 100)}%
+                      </span>
+                    </div>
+                  </div>
+                  <div className="h-2 w-full bg-slate-200/80 rounded-full overflow-hidden p-0.5 shadow-inner">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-orange-500 to-amber-500 rounded-full shadow-xs"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${((scanStep + 1) / scanSteps.length) * 100}%` }}
+                      transition={{ duration: 0.5, ease: 'easeOut' }}
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Komunikat o błędzie */}
+            {errorMessage && (
+              <div className="mt-4 p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-mono">
+                {errorMessage}
+              </div>
+            )}
+
             {/* Szybkie przykłady demo (One-Click Demo Chips) */}
             <div className="mt-4 flex flex-wrap items-center justify-between gap-2.5 pt-2">
               <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
@@ -342,29 +384,29 @@ export function AudytClient() {
                 <button
                   type="button"
                   onClick={() => {
-                    setUrl('stowarzyszeniekas.pl');
+                    setUrl('molendadevelopment.pl');
                     setSiteType('services');
-                    handleScan('stowarzyszeniekas.pl', 'services');
+                    handleScan('molendadevelopment.pl', 'services');
                   }}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-orange-50 hover:text-orange-700 hover:border-orange-200 border border-slate-200 rounded-lg text-slate-700 font-semibold transition-colors cursor-pointer"
-                  title="Kliknij, aby przetestować na przykładzie stowarzyszeniekas.pl"
+                  title="Kliknij, aby przetestować na przykładzie molendadevelopment.pl"
                 >
                   <Play className="w-3 h-3 text-orange-500 fill-orange-500" />
-                  <span>stowarzyszeniekas.pl</span>
+                  <span>molendadevelopment.pl</span>
                   <span className="text-[10px] text-slate-500 uppercase font-bold">(Strona firmowa)</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => {
-                    setUrl('dzikistyldemo.vercel.app');
+                    setUrl('dzikistyl.vercel.app');
                     setSiteType('ecommerce');
-                    handleScan('dzikistyldemo.vercel.app', 'ecommerce');
+                    handleScan('dzikistyl.vercel.app', 'ecommerce');
                   }}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-orange-50 hover:text-orange-700 hover:border-orange-200 border border-slate-200 rounded-lg text-slate-700 font-semibold transition-colors cursor-pointer"
-                  title="Kliknij, aby przetestować na przykładzie sklepu dzikistyldemo"
+                  title="Kliknij, aby przetestować na przykładzie sklepu DzikiStyl"
                 >
                   <Play className="w-3 h-3 text-orange-500 fill-orange-500" />
-                  <span>dzikistyldemo.vercel.app</span>
+                  <span>dzikistyl.vercel.app</span>
                   <span className="text-[10px] text-slate-500 uppercase font-bold">(Sklep online)</span>
                 </button>
               </div>
@@ -426,39 +468,6 @@ export function AudytClient() {
             </div>
           </div>
         </div>
-
-        {errorMessage && (
-          <div className="mx-6 sm:mx-10 mb-6 p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-mono">
-            {errorMessage}
-          </div>
-        )}
-
-        {/* Stepper skanowania */}
-        <AnimatePresence mode="wait">
-          {isScanning && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mt-6 pt-6 border-t border-slate-100 overflow-hidden"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-slate-600 font-mono text-xs">{scanSteps[scanStep]}</span>
-                <span className="text-orange-600 font-mono font-bold text-xs">
-                  {Math.round(((scanStep + 1) / scanSteps.length) * 100)}%
-                </span>
-              </div>
-              <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-orange-500"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${((scanStep + 1) / scanSteps.length) * 100}%` }}
-                  transition={{ duration: 0.5 }}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       {result && <AuditResultView result={result} onRetry={() => setResult(null)} />}

@@ -1,0 +1,1147 @@
+{
+  "token": "cmx0cG9sc2thLnBs-9txbs3iy1bqh",
+  "url": "https://rltpolska.pl",
+  "domain": "rltpolska.pl",
+  "siteType": "ecommerce",
+  "detectedProfile": "ecommerce",
+  "profileLabel": "E-Commerce & Sklep",
+  "overallScore": 85,
+  "lossPercentage": 10,
+  "aiReport": "Analiza techniczna serwisu wykazała **wzorową jakość architektury i wydajności**, gdzie średni czas odpowiedzi serwera na poziomie **77ms** potwierdza, że fundamenty technologiczne oparte na technologii Next.js są na najwyższym poziomie inżynieryjnym. Jedynym zalecanym usprawnieniem jest szybka, kosmetyczna korekta w semantyce HTML i architekturze SEO (brak nagłówka H1 na 7 podstronach, brak tagu canonical dla 8 adresów oraz 1 grupa zduplikowanych tagów Title), która nie wymaga głębokiej przebudowy serwisu. Po wdrożeniu tych drobnych poprawek dalsze modyfikacje kodu nie będą potrzebne, a zasoby biznesowe warto w pełni skierować na zwiększanie przychodów, optymalizację konwersji koszyka oraz wysoki zwrot z kampanii produktowych.",
+  "detectedPlatform": "Next.js / React (Serverless Edge)",
+  "wafDetected": false,
+  "codeSmells": {
+    "jquery": false,
+    "badScripts": 0,
+    "domElements": 126,
+    "inlineStyles": 0,
+    "pageBuilders": [],
+    "trackers": [
+      "Privacy-First Analytics"
+    ],
+    "missingAltCount": 0,
+    "unoptimizedImagesCount": 0
+  },
+  "evidence": {
+    "totalPages": 18,
+    "avgResponseTimeMs": 77,
+    "status200Count": 18,
+    "redirectsCount": 0,
+    "errorsCount": 0,
+    "noIndexCount": 0,
+    "missingTitleCount": 0,
+    "duplicateTitleGroups": [
+      {
+        "title": "RLT Polska - Urządzenia do fotobiomodulacji LED",
+        "count": 3,
+        "urls": [
+          "https://rltpolska.pl",
+          "https://rltpolska.pl/sklep",
+          "https://rltpolska.pl/jak-to-dziala"
+        ]
+      }
+    ],
+    "missingMetaCount": 0,
+    "avgMetaLength": 195,
+    "missingH1Count": 7,
+    "missingH1Urls": [
+      "https://rltpolska.pl",
+      "https://rltpolska.pl/sklep",
+      "https://rltpolska.pl/blog",
+      "https://rltpolska.pl/produkt/panel-swietlny-rlpro100",
+      "https://rltpolska.pl/produkt/maska-tlm200-c",
+      "https://rltpolska.pl/produkt/maska-tlm200-k",
+      "https://rltpolska.pl/produkt/rlt-belt-pro"
+    ],
+    "thinContentCount": 7,
+    "thinContentUrls": [
+      {
+        "url": "https://rltpolska.pl",
+        "wordCount": 1
+      },
+      {
+        "url": "https://rltpolska.pl/sklep",
+        "wordCount": 0
+      },
+      {
+        "url": "https://rltpolska.pl/blog",
+        "wordCount": 0
+      },
+      {
+        "url": "https://rltpolska.pl/produkt/panel-swietlny-rlpro100",
+        "wordCount": 1
+      },
+      {
+        "url": "https://rltpolska.pl/produkt/maska-tlm200-c",
+        "wordCount": 1
+      },
+      {
+        "url": "https://rltpolska.pl/produkt/maska-tlm200-k",
+        "wordCount": 1
+      },
+      {
+        "url": "https://rltpolska.pl/produkt/rlt-belt-pro",
+        "wordCount": 1
+      }
+    ],
+    "missingCanonicalCount": 8,
+    "missingCanonicalUrls": [
+      "https://rltpolska.pl",
+      "https://rltpolska.pl/sklep",
+      "https://rltpolska.pl/jak-to-dziala",
+      "https://rltpolska.pl/blog",
+      "https://rltpolska.pl/kontakt",
+      "https://rltpolska.pl/regulamin",
+      "https://rltpolska.pl/polityka-prywatnosci",
+      "https://rltpolska.pl/zwroty"
+    ],
+    "missingAltTotal": 0,
+    "adsAndTracking": {
+      "hasGoogleAds": false,
+      "hasGoogleTagManager": false,
+      "hasGA4": false,
+      "hasMetaPixel": false,
+      "hasTikTokPixel": false,
+      "hasConsentModeV2": false,
+      "hasDataLayer": false,
+      "hasAddToCartTracking": false,
+      "hasPurchaseTracking": false,
+      "hasCartButtons": true,
+      "hasLeadForms": true,
+      "hasViewItemTracking": false,
+      "hasProductSchema": false,
+      "hasOmnibusCompliance": true,
+      "hasExpressPayments": true,
+      "hasClickableContacts": false,
+      "hasUnclickablePhone": false,
+      "hasClickToCallTracking": false,
+      "hasFormSpamProtection": false,
+      "hasOpenGraph": true,
+      "openGraphData": {
+        "hasOpenGraph": true,
+        "ogImage": "https://rltpolska.pl/og-image.jpg",
+        "ogTitle": "RLT Polska - Urządzenia do fotobiomodulacji LED",
+        "ogDescription": "Profesjonalne panele i maski LED do fotobiomodulacji. Technologia światła czerwonego i bliskiej podczerwieni dla Twojego zdrowia i urody.",
+        "ogUrl": "https://rltpolska.pl",
+        "ogSiteName": "RLT Polska"
+      },
+      "isStagingEnvironment": false,
+      "hasClarity": false,
+      "hasHotjar": false,
+      "hasSessionRecording": false,
+      "hasPrivacyAnalytics": true,
+      "variantTimeoutUrls": [],
+      "adBudgetLeakRisk": "none",
+      "issues": [
+        {
+          "id": "leak-schema-product-missing",
+          "title": "Brak Rich Snippets w Google: brak Schema.org Product / Offer",
+          "severity": "warning",
+          "description": "Podstrony produktów nie zawierają pełnych danych strukturalnych Schema.org (Product, Offer, AggregateRating).",
+          "impact": "Produkty w wynikach wyszukiwania Google nie wyświetlają gwiazdek ocen, aktualnej ceny ani statusu dostępności. Przez to CTR spada o 25-40% na rzecz konkurencji mającej bogate wyniki wyszukiwania.",
+          "developerSolution": "Zaimplementuję zwalidowany kod JSON-LD Schema.org Product ze stanami magazynowymi i ceną zgodny z Google Rich Results w 24h."
+        },
+        {
+          "id": "leak-unprotected-form-spam",
+          "title": "Zanieczyszczenie kampanii reklamowych: formularz bez ochrony antyspamowej",
+          "severity": "warning",
+          "description": "Formularze kontaktowe nie posiadają zabezpieczenia przed botami (Turnstile, reCAPTCHA v3, Honeypot).",
+          "impact": "Automatyczne boty zalewają skrzynkę spamem. Co gorsza, fikcyjne wysyłki zanieczyszczają algorytmy Google/Meta Ads fałszywymi konwersjami, przez co reklamy optymalizują się pod spamerów zamiast realnych klientów.",
+          "developerSolution": "Zintegruję niewidoczną dla ludzi ochronę Cloudflare Turnstile lub inteligentny honeypot bez denerwujących puzzli captcha w 24h."
+        }
+      ],
+      "profileSignals": {
+        "hasBipLink": false,
+        "hasDeklaracjaDostepnosci": false,
+        "hasEdziennik": false,
+        "hasDonationOrKrs": false,
+        "hasLocalBusinessSignals": false,
+        "hasB2bSignals": false
+      }
+    },
+    "categoriesSummary": {
+      "products": {
+        "count": 4,
+        "missingH1": 4,
+        "missingCanonical": 0,
+        "missingSchema": 4,
+        "missingImages": 4,
+        "goodCount": 1,
+        "warnCount": 2,
+        "badCount": 1
+      },
+      "blog": {
+        "count": 7,
+        "missingH1": 1,
+        "missingCanonical": 1,
+        "missingSchema": 7,
+        "avgWordCount": 232,
+        "goodCount": 0,
+        "warnCount": 2,
+        "badCount": 2
+      },
+      "overall": {
+        "goodCount": 4,
+        "warnCount": 2,
+        "badCount": 2
+      }
+    },
+    "detectedProfile": "ecommerce",
+    "profileLabel": "E-Commerce & Sklep",
+    "profileSignals": {
+      "hasBipLink": false,
+      "hasDeklaracjaDostepnosci": false,
+      "hasEdziennik": false,
+      "hasDonationOrKrs": false,
+      "hasLocalBusinessSignals": false,
+      "hasB2bSignals": false
+    },
+    "detectedSchemas": [],
+    "openGraphSummary": {
+      "hasOpenGraph": true,
+      "ogImage": "https://rltpolska.pl/og-image.jpg",
+      "ogTitle": "RLT Polska - Urządzenia do fotobiomodulacji LED",
+      "ogDescription": "Profesjonalne panele i maski LED do fotobiomodulacji. Technologia światła czerwonego i bliskiej podczerwieni dla Twojego zdrowia i urody.",
+      "ogUrl": "https://rltpolska.pl",
+      "ogSiteName": "RLT Polska"
+    },
+    "isStagingEnvironment": false
+  },
+  "quickIssues": [
+    {
+      "id": "quick-duplicate-titles",
+      "title": "Auto-kanibalizacja w Google: 1 grupa identycznych tagów Title",
+      "type": "seo",
+      "severity": "critical",
+      "shortDesc": "Aż 3 podstrony posiadają identyczne tytuły, przez co konkurują ze sobą na te same frazy w wynikach wyszukiwania.",
+      "affectedCount": 3,
+      "businessImpact": "Zamiast jednej silnej pozycji, podstrony produktów i kategorii konkurują ze sobą w Google, obniżając widoczność oferty.",
+      "developerAction": "Zaimplementuję dynamiczny szablon unikalnych tagów Title w warstwie CMS/kodu z automatycznym sufiksem wyróżniającym w 24h.",
+      "details": [
+        {
+          "label": "« RLT Polska - Urządzenia do fotobiomodulacji LED » (3 stron)",
+          "sublabel": "https://rltpolska.pl, https://rltpolska.pl/sklep i 1 więcej..."
+        }
+      ]
+    },
+    {
+      "id": "quick-missing-h1",
+      "title": "Brak nagłówków H1 na 7 podstronach",
+      "type": "seo",
+      "severity": "warning",
+      "shortDesc": "Strony nie posiadają głównego nagłówka semantycznego, który wskazuje robotom wyszukiwarek i modelom AI temat podstrony.",
+      "affectedCount": 7,
+      "businessImpact": "Znacznie słabsza widoczność w Google na precyzyjne frazy z długiego ogona (long-tail) oraz gorsza interpretacja treści przez boty AI (SearchGPT, Gemini).",
+      "developerAction": "Wprowadzę automatyczny, semantyczny tag <h1> w strukturze widoków szablonu bez naruszania aktualnego designu serwisu.",
+      "details": [
+        {
+          "url": "https://rltpolska.pl"
+        },
+        {
+          "url": "https://rltpolska.pl/sklep"
+        },
+        {
+          "url": "https://rltpolska.pl/blog"
+        },
+        {
+          "url": "https://rltpolska.pl/produkt/panel-swietlny-rlpro100"
+        },
+        {
+          "url": "https://rltpolska.pl/produkt/maska-tlm200-c"
+        }
+      ]
+    },
+    {
+      "id": "quick-missing-canonical",
+      "title": "Brak tagów Canonical na 8 podstronach",
+      "type": "seo",
+      "severity": "warning",
+      "shortDesc": "Strony nie informują wyszukiwarki o oficjalnym adresie kanonicznym, co grozi tworzeniem niekontrolowanych duplikatów.",
+      "affectedCount": 8,
+      "businessImpact": "Rozpraszanie autorytetu domeny PageRank i marnowanie budżetu indeksowania (Crawl Budget) Google.",
+      "developerAction": "Zaimplementuję samoodnoszący się tag <link rel=\"canonical\"> w nagłówku witryny wyliczany na bieżąco z czystego URL.",
+      "details": [
+        {
+          "url": "https://rltpolska.pl"
+        },
+        {
+          "url": "https://rltpolska.pl/sklep"
+        },
+        {
+          "url": "https://rltpolska.pl/jak-to-dziala"
+        },
+        {
+          "url": "https://rltpolska.pl/blog"
+        },
+        {
+          "url": "https://rltpolska.pl/kontakt"
+        }
+      ]
+    }
+  ],
+  "checkpointEvals": [
+    {
+      "id": "track-add-to-cart",
+      "status": "passed",
+      "metric": "Brak reklam"
+    },
+    {
+      "id": "track-purchase",
+      "status": "passed",
+      "metric": "Brak transakcji online"
+    },
+    {
+      "id": "track-view-item",
+      "status": "passed",
+      "metric": "Brak katalogu produktów"
+    },
+    {
+      "id": "track-consent-mode-v2",
+      "status": "passed",
+      "metric": "Czystość telemetryczna (Brak komercyjnych pikseli)"
+    },
+    {
+      "id": "track-gtm-installed",
+      "status": "passed",
+      "metric": "Lekka analityka cookieless (Umami/Plausible) bez narzutu zewnętrznych kontenerów"
+    },
+    {
+      "id": "track-datalayer-standard",
+      "status": "passed",
+      "metric": "Brak GTM"
+    },
+    {
+      "id": "track-ga4-installed",
+      "status": "passed",
+      "metric": "Aktywna bezciasteczkowa analityka Privacy-First (Umami/Plausible) zgodna z RODO"
+    },
+    {
+      "id": "track-meta-pixel",
+      "status": "passed",
+      "metric": "Brak piksela"
+    },
+    {
+      "id": "track-tiktok-pixel",
+      "status": "passed",
+      "metric": "Brak piksela TikTok"
+    },
+    {
+      "id": "track-lead-form",
+      "status": "passed",
+      "metric": "OK"
+    },
+    {
+      "id": "track-click-to-call",
+      "status": "passed",
+      "metric": "Brak telefonu w widoku"
+    },
+    {
+      "id": "track-click-to-email",
+      "status": "passed",
+      "metric": "Standard analityczny"
+    },
+    {
+      "id": "track-session-recording",
+      "status": "warning",
+      "metric": "Brak map ciepła i nagrań sesji"
+    },
+    {
+      "id": "track-ad-leak-risk",
+      "status": "passed",
+      "metric": "Brak wycieków budżetu (Serwis bez płatnych reklam)"
+    },
+    {
+      "id": "ecom-variant-health",
+      "status": "passed",
+      "metric": "Warianty stabilne"
+    },
+    {
+      "id": "ecom-omnibus-compliance",
+      "status": "passed",
+      "metric": "Zgodne z dyrektywą Omnibus"
+    },
+    {
+      "id": "ecom-express-payments",
+      "status": "passed",
+      "metric": "Wykryto płatności mobilne"
+    },
+    {
+      "id": "ecom-schema-product",
+      "status": "warning",
+      "metric": "Brak Schema.org Product"
+    },
+    {
+      "id": "ecom-schema-offers",
+      "status": "warning",
+      "metric": "Brak mikrodanych ofert"
+    },
+    {
+      "id": "ecom-schema-stock",
+      "status": "passed",
+      "metric": "Dostępność magazynowa"
+    },
+    {
+      "id": "ecom-cart-buttons",
+      "status": "passed",
+      "metric": "Przyciski aktywne"
+    },
+    {
+      "id": "ecom-cart-visibility",
+      "status": "passed",
+      "metric": "Koszyk w nagłówku"
+    },
+    {
+      "id": "ecom-trust-signals",
+      "status": "passed",
+      "metric": "Sygnały zaufania e-commerce"
+    },
+    {
+      "id": "ecom-consumer-rights",
+      "status": "passed",
+      "metric": "Informacje o zwrotach i reklamacjach"
+    },
+    {
+      "id": "ecom-cross-sell",
+      "status": "passed",
+      "metric": "Moduły rekomendacji"
+    },
+    {
+      "id": "ecom-free-shipping",
+      "status": "passed",
+      "metric": "Próg darmowej dostawy"
+    },
+    {
+      "id": "ecom-product-images",
+      "status": "warning",
+      "metric": "4 produktów bez zdjęć"
+    },
+    {
+      "id": "seo-http-status-200",
+      "status": "passed",
+      "metric": "18/18 stron 200 OK"
+    },
+    {
+      "id": "seo-redirect-hygiene",
+      "status": "passed",
+      "metric": "Czyste linki"
+    },
+    {
+      "id": "seo-title-presence",
+      "status": "passed",
+      "metric": "Tytuły obecne"
+    },
+    {
+      "id": "seo-title-cannibalization",
+      "status": "failed",
+      "metric": "1 grupa duplikatów"
+    },
+    {
+      "id": "seo-title-optimal-length",
+      "status": "passed",
+      "metric": "Optymalna długość"
+    },
+    {
+      "id": "seo-meta-description-presence",
+      "status": "passed",
+      "metric": "Wszystkie strony z opisem"
+    },
+    {
+      "id": "seo-meta-description-length",
+      "status": "passed",
+      "metric": "195 zn."
+    },
+    {
+      "id": "seo-h1-presence",
+      "status": "failed",
+      "metric": "Brak H1 na 7 stronach",
+      "evidence": [
+        "https://rltpolska.pl",
+        "https://rltpolska.pl/sklep",
+        "https://rltpolska.pl/blog",
+        "https://rltpolska.pl/produkt/panel-swietlny-rlpro100",
+        "https://rltpolska.pl/produkt/maska-tlm200-c",
+        "https://rltpolska.pl/produkt/maska-tlm200-k",
+        "https://rltpolska.pl/produkt/rlt-belt-pro"
+      ]
+    },
+    {
+      "id": "seo-h1-uniqueness",
+      "status": "passed",
+      "metric": "Jednokrotny H1"
+    },
+    {
+      "id": "seo-canonical-presence",
+      "status": "failed",
+      "metric": "Brak canonical na 8 stronach",
+      "evidence": [
+        "https://rltpolska.pl",
+        "https://rltpolska.pl/sklep",
+        "https://rltpolska.pl/jak-to-dziala",
+        "https://rltpolska.pl/blog",
+        "https://rltpolska.pl/kontakt",
+        "https://rltpolska.pl/regulamin",
+        "https://rltpolska.pl/polityka-prywatnosci",
+        "https://rltpolska.pl/zwroty"
+      ]
+    },
+    {
+      "id": "seo-self-canonical",
+      "status": "passed",
+      "metric": "Prawidłowe canonicale"
+    },
+    {
+      "id": "seo-noindex-safety",
+      "status": "passed",
+      "metric": "Bezpieczna indeksacja"
+    },
+    {
+      "id": "seo-thin-content",
+      "status": "warning",
+      "metric": "7 stron thin content (<200 słów)"
+    },
+    {
+      "id": "seo-robots-txt",
+      "status": "passed",
+      "metric": "Plik robots.txt dostępny"
+    },
+    {
+      "id": "seo-sitemap-xml",
+      "status": "passed",
+      "metric": "Mapa sitemap.xml"
+    },
+    {
+      "id": "seo-internal-linking",
+      "status": "passed",
+      "metric": "Gęste linkowanie"
+    },
+    {
+      "id": "seo-schema-article",
+      "status": "warning",
+      "metric": "7 artykułów bez Schema Article"
+    },
+    {
+      "id": "seo-anchor-text-quality",
+      "status": "passed",
+      "metric": "Opisowe kotwice"
+    },
+    {
+      "id": "perf-ttfb-server",
+      "status": "passed",
+      "metric": "77ms (Optymalny < 800ms)"
+    },
+    {
+      "id": "perf-render-blocking-scripts",
+      "status": "passed",
+      "metric": "0 skryptów blokujących"
+    },
+    {
+      "id": "perf-dom-size",
+      "status": "passed",
+      "metric": "126 elementów DOM (Optymalne)"
+    },
+    {
+      "id": "perf-pagebuilder-bloat",
+      "status": "passed",
+      "metric": "Czysty kod Next.js (brak builderów)"
+    },
+    {
+      "id": "perf-modern-stack",
+      "status": "passed",
+      "metric": "Next.js Serverless Edge"
+    },
+    {
+      "id": "perf-jquery-free",
+      "status": "passed",
+      "metric": "Brak jQuery (Vanilla / Modern)"
+    },
+    {
+      "id": "perf-inline-styles",
+      "status": "passed",
+      "metric": "Czyste arkusze stylów"
+    },
+    {
+      "id": "perf-image-lazy-loading",
+      "status": "passed",
+      "metric": "Leniwe ładowanie aktywne"
+    },
+    {
+      "id": "perf-image-modern-formats",
+      "status": "passed",
+      "metric": "Formaty nowej generacji"
+    },
+    {
+      "id": "perf-image-dimensions",
+      "status": "passed",
+      "metric": "Wymiary zadeklarowane"
+    },
+    {
+      "id": "perf-lcp-metric",
+      "status": "passed",
+      "metric": "LCP < 2.5s"
+    },
+    {
+      "id": "perf-fcp-metric",
+      "status": "passed",
+      "metric": "FCP < 1.5s"
+    },
+    {
+      "id": "perf-waf-protection",
+      "status": "passed",
+      "metric": "CDN / Edge"
+    },
+    {
+      "id": "ux-clickable-phone",
+      "status": "passed",
+      "metric": "Kontakt online / Formularz"
+    },
+    {
+      "id": "ux-clickable-email",
+      "status": "passed",
+      "metric": "Aktywne linki mailto:"
+    },
+    {
+      "id": "ux-image-alt-tags",
+      "status": "passed",
+      "metric": "Opisy alternatywne kompletne"
+    },
+    {
+      "id": "ux-viewport-configuration",
+      "status": "passed",
+      "metric": "Responsywny viewport"
+    },
+    {
+      "id": "ux-favicon-presence",
+      "status": "passed",
+      "metric": "Favicon obecny"
+    },
+    {
+      "id": "ux-touch-target-size",
+      "status": "passed",
+      "metric": "Minimalnie 44x44px"
+    },
+    {
+      "id": "ux-font-readability",
+      "status": "passed",
+      "metric": "Czytelny font WCAG AA"
+    },
+    {
+      "id": "ux-form-usability",
+      "status": "passed",
+      "metric": "Autouzupełnianie mobilne"
+    },
+    {
+      "id": "ux-navigation-accessibility",
+      "status": "passed",
+      "metric": "Menu responsywne"
+    },
+    {
+      "id": "ux-lead-cta-prominence",
+      "status": "passed",
+      "metric": "Czytelne CTA"
+    },
+    {
+      "id": "sec-https-ssl",
+      "status": "passed",
+      "metric": "Wymuszone HTTPS"
+    },
+    {
+      "id": "sec-hsts-header",
+      "status": "passed",
+      "metric": "HSTS skonfigurowany"
+    },
+    {
+      "id": "sec-xframe-options",
+      "status": "passed",
+      "metric": "Ochrona przed Clickjackingiem"
+    },
+    {
+      "id": "sec-content-type-options",
+      "status": "passed",
+      "metric": "nosniff aktywny"
+    },
+    {
+      "id": "sec-content-security-policy",
+      "status": "passed",
+      "metric": "Polityka CSP"
+    },
+    {
+      "id": "sec-form-spam-protection",
+      "status": "warning",
+      "metric": "Formularz bez ochrony antyspamowej"
+    },
+    {
+      "id": "sec-waf-protection",
+      "status": "passed",
+      "metric": "Zabezpieczenie serwerowe"
+    },
+    {
+      "id": "sec-cms-version-leak",
+      "status": "passed",
+      "metric": "Wersja CMS ukryta"
+    },
+    {
+      "id": "sec-opengraph-tags",
+      "status": "passed",
+      "metric": "Open Graph z miniaturą"
+    },
+    {
+      "id": "sec-privacy-policy",
+      "status": "passed",
+      "metric": "Polityka prywatności dostępna"
+    },
+    {
+      "id": "sec-terms-of-service",
+      "status": "passed",
+      "metric": "Regulamin podlinkowany"
+    },
+    {
+      "id": "sec-company-details",
+      "status": "passed",
+      "metric": "Dane rejestrowe firmy"
+    }
+  ],
+  "checkpointStats": {
+    "total": 80,
+    "passed": 70,
+    "warning": 7,
+    "failed": 3,
+    "criticalLeaksCount": 3
+  },
+  "pages": [
+    {
+      "url": "https://rltpolska.pl",
+      "category": "home",
+      "statusCode": 200,
+      "responseTimeMs": 81,
+      "title": "RLT Polska - Urządzenia do fotobiomodulacji LED",
+      "titleLength": 47,
+      "metaDescription": "Odkryj zaawansowane systemy do fotobiomodulacji LED. Panele i maski wykorzystujące precyzyjne fale 660nm i 850nm do wsparcia regeneracji i domowej pielęgnacji.",
+      "metaLength": 159,
+      "h1Count": 0,
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 1,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/sklep",
+      "category": "shop",
+      "statusCode": 200,
+      "responseTimeMs": 68,
+      "title": "RLT Polska - Urządzenia do fotobiomodulacji LED",
+      "titleLength": 47,
+      "metaDescription": "Odkryj zaawansowane systemy do fotobiomodulacji LED. Panele i maski wykorzystujące światło czerwone i bliską podczerwień (NIR) do wsparcia regeneracji i kondycję skóry.",
+      "metaLength": 168,
+      "h1Count": 0,
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 0,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/jak-to-dziala",
+      "category": "info",
+      "statusCode": 200,
+      "responseTimeMs": 80,
+      "title": "RLT Polska - Urządzenia do fotobiomodulacji LED",
+      "titleLength": 47,
+      "metaDescription": "Odkryj zaawansowane systemy do fotobiomodulacji LED. Panele i maski wykorzystujące światło czerwone i bliską podczerwień (NIR) do wsparcia regeneracji i kondycję skóry.",
+      "metaLength": 168,
+      "h1Count": 1,
+      "h1Text": "Światło, które leczy na poziomie komórkowym.",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 234,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 9,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/blog",
+      "category": "blog",
+      "statusCode": 200,
+      "responseTimeMs": 67,
+      "title": "Wiedza o Świetle | Blog RLT Polska",
+      "titleLength": 34,
+      "metaDescription": "Artykuły oparte na badaniach z zakresu fotobiologii. Dowiedz się, jak działa fotobiomodulacja LED i jak wspierać regenerację.",
+      "metaLength": 125,
+      "h1Count": 0,
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 0,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/kontakt",
+      "category": "info",
+      "statusCode": 200,
+      "responseTimeMs": 72,
+      "title": "Kontakt | RLT Polska",
+      "titleLength": 20,
+      "metaDescription": "Masz pytania o parametry techniczne urządzeń LED? Skontaktuj się z naszym zespołem ekspertów.",
+      "metaLength": 93,
+      "h1Count": 1,
+      "h1Text": "Centrum Wiedzy i Wsparcia",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 68,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 3
+    },
+    {
+      "url": "https://rltpolska.pl/regulamin",
+      "category": "info",
+      "statusCode": 200,
+      "responseTimeMs": 72,
+      "title": "Regulamin Sklepu | RLT Polska",
+      "titleLength": 29,
+      "metaDescription": "Regulamin świadczenia usług i sprzedaży w sklepie RLT Polska.",
+      "metaLength": 61,
+      "h1Count": 1,
+      "h1Text": "Regulamin Sklepu",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 532,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/polityka-prywatnosci",
+      "category": "info",
+      "statusCode": 200,
+      "responseTimeMs": 88,
+      "title": "Polityka Prywatności | RLT Polska",
+      "titleLength": 33,
+      "metaDescription": "Zasady przetwarzania danych osobowych oraz ochrony prywatności użytkowników serwisu RLT Polska.",
+      "metaLength": 95,
+      "h1Count": 1,
+      "h1Text": "Polityka Prywatności",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 486,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/zwroty",
+      "category": "info",
+      "statusCode": 200,
+      "responseTimeMs": 87,
+      "title": "Polityka Zwrotów i Reklamacji | RLT Polska",
+      "titleLength": 42,
+      "metaDescription": "Zasady odstąpienia od umowy, zwrotów oraz składania reklamacji w sklepie RLT Polska.",
+      "metaLength": 84,
+      "h1Count": 1,
+      "h1Text": "Zwroty i Reklamacje",
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 644,
+      "isThinContent": false,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/produkt/panel-swietlny-rlpro100",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 71,
+      "title": "Panel Multispektralny RLPRO100 | RLT Polska",
+      "titleLength": 43,
+      "metaDescription": "Panel RLPRO100 to kwintesencja profesjonalnej fotobiomodulacji zamknięta w kompaktowej formie. Wyposażony w 60 wysokowydajnych emiterów o mocy 5W każdy, dostarcza uderzeniową dawkę energii (≥140 mW/cm²) w multispektrogramie 9 długości fal. Dzięki zaawansowanej technologii pulsacyjnej oraz inteligentnemu sterowaniu przez aplikację, RLPRO100 stanowi potężne narzędzie do głębokiej regeneracji tkanek, optymalizacji mitochondrialnej i biohackingu na najwyższym poziomie",
+      "metaLength": 468,
+      "h1Count": 0,
+      "canonical": "https://rltpolska.pl/produkt/panel-swietlny-rlpro100",
+      "hasSelfCanonical": true,
+      "wordCount": 1,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/produkt/maska-tlm200-c",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 68,
+      "title": "Maska LED TLM200-C | RLT Polska",
+      "titleLength": 31,
+      "metaDescription": "Maska TLM200-C to najbardziej wszechstronny system fotobiomodulacji w naszej ofercie. Wyposażona w 234 precyzyjne diody LED, oferuje aż 7 terapeutycznych trybów pracy, pozwalając na jednoczesną walkę z trądzikiem, przebarwieniami i oznakami starzenia. Wykonana z ultra-miękkiego silikonu klasy medycznej, dostarcza kliniczną dawkę energii 44 mW/cm², stanowiąc kompletne, bezprzewodowe centrum odnowy skóry w Twoim domu",
+      "metaLength": 418,
+      "h1Count": 0,
+      "canonical": "https://rltpolska.pl/produkt/maska-tlm200-c",
+      "hasSelfCanonical": true,
+      "wordCount": 1,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/produkt/maska-tlm200-k",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 71,
+      "title": "Maska LED TLM200-K | RLT Polska",
+      "titleLength": 31,
+      "metaDescription": "Maska TLM200-K to szczytowe osiągnięcie w dziedzinie mobilnej fotobiomodulacji. Wykorzystując technologię Dual-Spectrum (630nm & 830nm), dostarcza klinicznie potwierdzoną dawkę energii bezpośrednio do komórek skóry. Wykonana z ultra-elastycznego silikonu klasy medycznej, łączy bezkompromisową moc optyczną 45 mW/cm² z lekkością, która definiuje nowy standard domowej pielęgnacji.",
+      "metaLength": 380,
+      "h1Count": 0,
+      "canonical": "https://rltpolska.pl/produkt/maska-tlm200-k",
+      "hasSelfCanonical": true,
+      "wordCount": 1,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/produkt/rlt-belt-pro",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 87,
+      "title": "RLT Recovery Belt PRO | RLT Polska",
+      "titleLength": 34,
+      "metaDescription": "RLT Recovery Belt PRO to zaawansowany, wodoodporny system regeneracji tkanek głębokich. Jako jedno z nielicznych urządzeń na rynku, integruje terapię światłem czerwonym i bliską podczerwienią (660nm & 850nm) z systemem wibracji somatosensorycznej. Zaprojektowany z myślą o natychmiastowej uldze w bólu kręgosłupa, regeneracji potreningowej i wsparciu procesów metabolicznych, oferuje standard bezpieczeństwa potwierdzony certyfikatem UL.",
+      "metaLength": 437,
+      "h1Count": 0,
+      "canonical": "https://rltpolska.pl/produkt/rlt-belt-pro",
+      "hasSelfCanonical": true,
+      "wordCount": 1,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 8,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/blog/czym-jest-terapia-swiatlem-czerwonym-rlt-kompleksowy-przewodnik",
+      "category": "blog",
+      "statusCode": 200,
+      "responseTimeMs": 75,
+      "title": "Czym jest Fotobiomodulacja LED? Kompleksowy Przewodnik | RLT Polska",
+      "titleLength": 67,
+      "metaDescription": "Fotobiomodulacja LED to fascynująca metoda wspierania ogólnego dobrostanu. Dowiedz się, jak technologia światła czerwonego działa na poziomie komórkowym.",
+      "metaLength": 153,
+      "h1Count": 1,
+      "h1Text": "Czym jest Fotobiomodulacja LED? Kompleksowy Przewodnik",
+      "canonical": "https://rltpolska.pl/blog/czym-jest-terapia-swiatlem-czerwonym-rlt-kompleksowy-przewodnik",
+      "hasSelfCanonical": true,
+      "wordCount": 297,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 1,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 14,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/blog/swiatlo-czerwone-red-vs-bliska-podczerwien-nir-roznice-i-zastosowania",
+      "category": "blog",
+      "statusCode": 200,
+      "responseTimeMs": 72,
+      "title": "Światło czerwone (RED) vs Bliska Podczerwień (NIR): Różnice i Zastosowania | RLT Polska",
+      "titleLength": 87,
+      "metaDescription": "Poznaj różnice między światłem czerwonym a bliską podczerwienią. Dowiedz się, które spektrum wybrać dla swoich potrzeb - od cery po regenerację mięśni.",
+      "metaLength": 151,
+      "h1Count": 1,
+      "h1Text": "Światło czerwone (RED) vs Bliska Podczerwień (NIR): Różnice i Zastosowania",
+      "canonical": "https://rltpolska.pl/blog/swiatlo-czerwone-red-vs-bliska-podczerwien-nir-roznice-i-zastosowania",
+      "hasSelfCanonical": true,
+      "wordCount": 314,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 1,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 14,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/blog/domowe-spa-z-urzadzeniem-led-praktyczny-poradnik",
+      "category": "blog",
+      "statusCode": 200,
+      "responseTimeMs": 73,
+      "title": "Domowe SPA z urządzeniem LED: Praktyczny poradnik | RLT Polska",
+      "titleLength": 62,
+      "metaDescription": "Jak przygotować się do sesji RLT w domu? Poznaj zasady dotyczące dystansu, czasu i przygotowania skóry, aby osiągnąć najlepsze efekty.",
+      "metaLength": 134,
+      "h1Count": 1,
+      "h1Text": "Domowe SPA z urządzeniem LED: Praktyczny poradnik",
+      "canonical": "https://rltpolska.pl/blog/domowe-spa-z-urzadzeniem-led-praktyczny-poradnik",
+      "hasSelfCanonical": true,
+      "wordCount": 293,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 1,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 14,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/blog/rlt-dla-sportowcow-regeneracja-miesni-i-wydolnosc",
+      "category": "blog",
+      "statusCode": 200,
+      "responseTimeMs": 70,
+      "title": "RLT dla sportowców: Przyspieszenie regeneracji mięśni | RLT Polska",
+      "titleLength": 66,
+      "metaDescription": "Szybciej, mocniej, bez kontuzji. Dowiedz się, dlaczego profesjonalni sportowcy używają paneli do światła czerwonego przed i po treningu.",
+      "metaLength": 136,
+      "h1Count": 1,
+      "h1Text": "RLT dla sportowców: Przyspieszenie regeneracji mięśni",
+      "canonical": "https://rltpolska.pl/blog/rlt-dla-sportowcow-regeneracja-miesni-i-wydolnosc",
+      "hasSelfCanonical": true,
+      "wordCount": 242,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 1,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 15,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/blog/wplyw-swiatla-czerwonego-na-jakosc-snu-i-melatonine",
+      "category": "blog",
+      "statusCode": 200,
+      "responseTimeMs": 121,
+      "title": "Wpływ światła czerwonego na jakość snu | RLT Polska",
+      "titleLength": 51,
+      "metaDescription": "Problemy z zasypianiem? Poznaj naturalną metodę na reset rytmu dobowego i głęboki, regenerujący sen bez suplementów.",
+      "metaLength": 116,
+      "h1Count": 1,
+      "h1Text": "Wpływ światła czerwonego na jakość snu",
+      "canonical": "https://rltpolska.pl/blog/wplyw-swiatla-czerwonego-na-jakosc-snu-i-melatonine",
+      "hasSelfCanonical": true,
+      "wordCount": 245,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 1,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 15,
+      "externalLinksCount": 2
+    },
+    {
+      "url": "https://rltpolska.pl/blog/terapia-swiatlem-led-na-problemy-skorne-tradzik-i-blizny",
+      "category": "blog",
+      "statusCode": 200,
+      "responseTimeMs": 68,
+      "title": "Fotobiomodulacja LED w pielęgnacji cery: zmarszczki i niedoskonałości | RLT Polska",
+      "titleLength": 82,
+      "metaDescription": "Współczesna kosmetologia coraz częściej docenia potencjał technologii LED jako bezpiecznej metody wspierania kondycji skóry. Dowiedz się więcej o fotobiomodulacji.",
+      "metaLength": 163,
+      "h1Count": 1,
+      "h1Text": "Fotobiomodulacja LED w pielęgnacji cery: zmarszczki i niedoskonałości",
+      "canonical": "https://rltpolska.pl/blog/terapia-swiatlem-led-na-problemy-skorne-tradzik-i-blizny",
+      "hasSelfCanonical": true,
+      "wordCount": 234,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 1,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 15,
+      "externalLinksCount": 2
+    }
+  ],
+  "createdAt": "2026-10-07T15:29:57.376Z",
+  "pillars": [
+    {
+      "name": "Szybkość",
+      "score": 100,
+      "interpretation": "Ułamek sekundy dzieli Cię od sprzedaży. Infrastruktura doskonale utrzymuje uwagę klientów mobilnych."
+    },
+    {
+      "name": "SEO",
+      "score": 25,
+      "interpretation": "Strona jest niewidzialna dla nowoczesnych crawlerów. Błędy w semantyce i architekturze blokują darmowy ruch organiczny."
+    },
+    {
+      "name": "Skalowalność",
+      "score": 100,
+      "interpretation": "Architektura odporna na piki ruchu. Nagły napływ użytkowników czy tysiące nowych produktów nie spowolnią platformy."
+    },
+    {
+      "name": "Automatyzacja",
+      "score": 100,
+      "interpretation": "Nowoczesne środowisko (Headless/Edge). Bezproblemowa, tania w utrzymaniu integracja z dowolnym ERP, PIM czy BaseLinkerem."
+    },
+    {
+      "name": "Bezpieczeństwo",
+      "score": 100,
+      "interpretation": "Żelazne nagłówki i nowoczesne protokoły. Dane Twoich klientów i korespondencja są chronione na poziomie korporacyjnym."
+    }
+  ]
+}

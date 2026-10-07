@@ -1,0 +1,1310 @@
+{
+  "token": "ZHppa2lzdHlsLnZlcmNlbC5hcHA-gpzt0cb5xh3g",
+  "url": "https://dzikistyl.vercel.app",
+  "domain": "dzikistyl.vercel.app",
+  "siteType": "ecommerce",
+  "detectedProfile": "ecommerce",
+  "profileLabel": "E-Commerce & Sklep",
+  "overallScore": 83,
+  "lossPercentage": 11,
+  "aiReport": "Analiza techniczna serwisu wykazała błędy czasu odpowiedzi dla podstron z wariantami produktów oraz zduplikowane tytuły na 12 podstronach, co bezpośrednio osłabia widoczność w wyszukiwarkach. Wspomniane usterki techniczne generują szacowany, realny spadek na poziomie około 11% w obszarze transakcji i sprzedaży e-commerce przez porzucone koszyki oraz utratę potencjalnych przychodów. Rekomendowane wdrożenie techniczne w 24-48 godzin obejmuje optymalizację czasu odpowiedzi serwera dla podstron produktowych, uzupełnienie brakujących nagłówków H1 oraz uporządkowanie znaczników kanonicznych bez naruszania obecnej struktury strony.",
+  "detectedPlatform": "Next.js / React (Serverless Edge)",
+  "wafDetected": false,
+  "codeSmells": {
+    "jquery": false,
+    "badScripts": 0,
+    "domElements": 1833,
+    "inlineStyles": 241,
+    "pageBuilders": [],
+    "trackers": [],
+    "missingAltCount": 0,
+    "unoptimizedImagesCount": 2
+  },
+  "evidence": {
+    "totalPages": 20,
+    "avgResponseTimeMs": 1221,
+    "status200Count": 16,
+    "redirectsCount": 0,
+    "errorsCount": 4,
+    "noIndexCount": 0,
+    "missingTitleCount": 4,
+    "duplicateTitleGroups": [
+      {
+        "title": "DzikiStyl - Studio Graficzne, Drukarnia Online & Gadżety",
+        "count": 6,
+        "urls": [
+          "https://dzikistyl.vercel.app",
+          "https://dzikistyl.vercel.app/drukarnia",
+          "https://dzikistyl.vercel.app/kreator-odziezy",
+          "https://dzikistyl.vercel.app/opinie",
+          "https://dzikistyl.vercel.app/kontakt",
+          "https://dzikistyl.vercel.app/konfigurator"
+        ]
+      },
+      {
+        "title": "Katalog Produktów | DzikiStyl | DzikiStyl",
+        "count": 6,
+        "urls": [
+          "https://dzikistyl.vercel.app/katalog?category=torby",
+          "https://dzikistyl.vercel.app/katalog?category=ulotki",
+          "https://dzikistyl.vercel.app/katalog?category=bannery-rollupy",
+          "https://dzikistyl.vercel.app/katalog?category=kubki",
+          "https://dzikistyl.vercel.app/katalog?category=wizytowki",
+          "https://dzikistyl.vercel.app/katalog?category=kalendarze"
+        ]
+      }
+    ],
+    "missingMetaCount": 4,
+    "avgMetaLength": 127,
+    "missingH1Count": 7,
+    "missingH1Urls": [
+      "https://dzikistyl.vercel.app/odziez-i-gadzety",
+      "https://dzikistyl.vercel.app/kreator-odziezy",
+      "https://dzikistyl.vercel.app/partnerzy",
+      "https://dzikistyl.vercel.app/konfigurator",
+      "https://dzikistyl.vercel.app/katalog",
+      "https://dzikistyl.vercel.app/katalog?category=logo",
+      "https://dzikistyl.vercel.app/katalog?category=cenniki-menu"
+    ],
+    "thinContentCount": 4,
+    "thinContentUrls": [
+      {
+        "url": "https://dzikistyl.vercel.app/partnerzy",
+        "wordCount": 0
+      },
+      {
+        "url": "https://dzikistyl.vercel.app/katalog",
+        "wordCount": 0
+      },
+      {
+        "url": "https://dzikistyl.vercel.app/katalog?category=logo",
+        "wordCount": 0
+      },
+      {
+        "url": "https://dzikistyl.vercel.app/katalog?category=cenniki-menu",
+        "wordCount": 0
+      }
+    ],
+    "missingCanonicalCount": 4,
+    "missingCanonicalUrls": [
+      "https://dzikistyl.vercel.app/partnerzy",
+      "https://dzikistyl.vercel.app/katalog",
+      "https://dzikistyl.vercel.app/katalog?category=logo",
+      "https://dzikistyl.vercel.app/katalog?category=cenniki-menu"
+    ],
+    "missingAltTotal": 0,
+    "adsAndTracking": {
+      "hasGoogleAds": false,
+      "hasGoogleTagManager": false,
+      "hasGA4": false,
+      "hasMetaPixel": false,
+      "hasTikTokPixel": false,
+      "hasConsentModeV2": false,
+      "hasDataLayer": false,
+      "hasAddToCartTracking": false,
+      "hasPurchaseTracking": false,
+      "hasCartButtons": true,
+      "hasLeadForms": false,
+      "hasViewItemTracking": false,
+      "hasProductSchema": true,
+      "hasOmnibusCompliance": true,
+      "hasExpressPayments": true,
+      "hasClickableContacts": true,
+      "hasUnclickablePhone": false,
+      "hasClickToCallTracking": false,
+      "hasFormSpamProtection": false,
+      "hasOpenGraph": true,
+      "openGraphData": {
+        "hasOpenGraph": true,
+        "ogImage": "https://dzikistyl.vercel.app/ogimage.jpg",
+        "ogTitle": "DzikiStyl - Studio Graficzne, Drukarnia Online & Gadżety",
+        "ogDescription": "Kompleksowa obsługa reklamowa firm. Odzież z nadrukiem, krówki firmowe, druk wielkoformatowy oraz projekty logo.",
+        "ogUrl": "https://dzikistyl.vercel.app",
+        "ogSiteName": "DzikiStyl"
+      },
+      "isStagingEnvironment": true,
+      "hasClarity": false,
+      "hasHotjar": false,
+      "hasSessionRecording": false,
+      "hasPrivacyAnalytics": false,
+      "variantTimeoutUrls": [
+        "https://dzikistyl.vercel.app/katalog?category=logo",
+        "https://dzikistyl.vercel.app/katalog?category=cenniki-menu"
+      ],
+      "adBudgetLeakRisk": "none",
+      "issues": [
+        {
+          "id": "leak-variant-slow-or-timeout",
+          "title": "Krytyczny wyciek budżetu z reklam wariantów: błędy 2 podstron (504 / >2.5s)",
+          "severity": "critical",
+          "description": "Podstrony z wariantami produktów zwracają błąd 504 Gateway Timeout lub ładują się powyżej 2.5 sekundy (dotyczy m.in. https://dzikistyl.vercel.app/katalog?category=logo).",
+          "impact": "Gdy użytkownik klika w reklamę produktową z wybranym rozmiarem/kolorem z Google Shopping lub Meta Ads, widzi biały ekran błędu. 100% budżetu wydanego na to kliknięcie zostaje bezpowrotnie przepalone, a klient natychmiast kupuje u konkurencji.",
+          "developerSolution": "Zoptymalizuję zapytania SQL wariantów w bazie, usunę wąskie gardła w szablonie i wdrożę object caching (Redis) w 24-48h, obniżając czas odpowiedzi poniżej 300ms."
+        }
+      ],
+      "profileSignals": {
+        "hasBipLink": false,
+        "hasDeklaracjaDostepnosci": false,
+        "hasEdziennik": false,
+        "hasDonationOrKrs": false,
+        "hasLocalBusinessSignals": false,
+        "hasB2bSignals": false
+      }
+    },
+    "categoriesSummary": {
+      "products": {
+        "count": 15,
+        "missingH1": 3,
+        "missingCanonical": 0,
+        "missingSchema": 0,
+        "missingImages": 0,
+        "goodCount": 3,
+        "warnCount": 0,
+        "badCount": 1
+      },
+      "overall": {
+        "goodCount": 1,
+        "warnCount": 3,
+        "badCount": 4
+      }
+    },
+    "detectedProfile": "ecommerce",
+    "profileLabel": "E-Commerce & Sklep",
+    "profileSignals": {
+      "hasBipLink": false,
+      "hasDeklaracjaDostepnosci": false,
+      "hasEdziennik": false,
+      "hasDonationOrKrs": false,
+      "hasLocalBusinessSignals": false,
+      "hasB2bSignals": false
+    },
+    "detectedSchemas": [
+      "Organization",
+      "LocalBusiness",
+      "Store",
+      "WebSite",
+      "Product",
+      "FAQPage"
+    ],
+    "openGraphSummary": {
+      "hasOpenGraph": true,
+      "ogImage": "https://dzikistyl.vercel.app/ogimage.jpg",
+      "ogTitle": "DzikiStyl - Studio Graficzne, Drukarnia Online & Gadżety",
+      "ogDescription": "Kompleksowa obsługa reklamowa firm. Odzież z nadrukiem, krówki firmowe, druk wielkoformatowy oraz projekty logo.",
+      "ogUrl": "https://dzikistyl.vercel.app",
+      "ogSiteName": "DzikiStyl"
+    },
+    "isStagingEnvironment": true
+  },
+  "quickIssues": [
+    {
+      "id": "quick-tracking-leak",
+      "title": "Krytyczny wyciek budżetu z reklam wariantów: błędy 2 podstron (504 / >2.5s)",
+      "type": "tracking",
+      "severity": "critical",
+      "shortDesc": "Podstrony z wariantami produktów zwracają błąd 504 Gateway Timeout lub ładują się powyżej 2.5 sekundy (dotyczy m.in. https://dzikistyl.vercel.app/katalog?category=logo).",
+      "businessImpact": "Gdy użytkownik klika w reklamę produktową z wybranym rozmiarem/kolorem z Google Shopping lub Meta Ads, widzi biały ekran błędu. 100% budżetu wydanego na to kliknięcie zostaje bezpowrotnie przepalone, a klient natychmiast kupuje u konkurencji.",
+      "developerAction": "Zoptymalizuję zapytania SQL wariantów w bazie, usunę wąskie gardła w szablonie i wdrożę object caching (Redis) w 24-48h, obniżając czas odpowiedzi poniżej 300ms.",
+      "details": [
+        {
+          "label": "Zdarzenie koszykowe / konwersja",
+          "sublabel": "BRAK zdarzenia w kodzie wtyczki/koszyka!"
+        }
+      ]
+    },
+    {
+      "id": "quick-duplicate-titles",
+      "title": "Auto-kanibalizacja w Google: 2 grupy identycznych tagów Title",
+      "type": "seo",
+      "severity": "critical",
+      "shortDesc": "Aż 12 podstron posiada identyczne tytuły, przez co konkurują ze sobą na te same frazy w wynikach wyszukiwania.",
+      "affectedCount": 12,
+      "businessImpact": "Zamiast jednej silnej pozycji, podstrony produktów i kategorii konkurują ze sobą w Google, obniżając widoczność oferty.",
+      "developerAction": "Zaimplementuję dynamiczny szablon unikalnych tagów Title w warstwie CMS/kodu z automatycznym sufiksem wyróżniającym w 24h.",
+      "details": [
+        {
+          "label": "« DzikiStyl - Studio Graficzne, Drukarnia Online & Gadżety » (6 stron)",
+          "sublabel": "https://dzikistyl.vercel.app, https://dzikistyl.vercel.app/drukarnia i 4 więcej..."
+        },
+        {
+          "label": "« Katalog Produktów | DzikiStyl | DzikiStyl » (6 stron)",
+          "sublabel": "https://dzikistyl.vercel.app/katalog?category=torby, https://dzikistyl.vercel.app/katalog?category=ulotki i 4 więcej..."
+        }
+      ]
+    },
+    {
+      "id": "quick-missing-h1",
+      "title": "Brak nagłówków H1 na 7 podstronach",
+      "type": "seo",
+      "severity": "warning",
+      "shortDesc": "Strony nie posiadają głównego nagłówka semantycznego, który wskazuje robotom wyszukiwarek i modelom AI temat podstrony.",
+      "affectedCount": 7,
+      "businessImpact": "Znacznie słabsza widoczność w Google na precyzyjne frazy z długiego ogona (long-tail) oraz gorsza interpretacja treści przez boty AI (SearchGPT, Gemini).",
+      "developerAction": "Wprowadzę automatyczny, semantyczny tag <h1> w strukturze widoków szablonu bez naruszania aktualnego designu serwisu.",
+      "details": [
+        {
+          "url": "https://dzikistyl.vercel.app/odziez-i-gadzety"
+        },
+        {
+          "url": "https://dzikistyl.vercel.app/kreator-odziezy"
+        },
+        {
+          "url": "https://dzikistyl.vercel.app/partnerzy"
+        },
+        {
+          "url": "https://dzikistyl.vercel.app/konfigurator"
+        },
+        {
+          "url": "https://dzikistyl.vercel.app/katalog"
+        }
+      ]
+    },
+    {
+      "id": "quick-missing-canonical",
+      "title": "Brak tagów Canonical na 4 podstronach",
+      "type": "seo",
+      "severity": "warning",
+      "shortDesc": "Strony nie informują wyszukiwarki o oficjalnym adresie kanonicznym, co grozi tworzeniem niekontrolowanych duplikatów.",
+      "affectedCount": 4,
+      "businessImpact": "Rozpraszanie autorytetu domeny PageRank i marnowanie budżetu indeksowania (Crawl Budget) Google.",
+      "developerAction": "Zaimplementuję samoodnoszący się tag <link rel=\"canonical\"> w nagłówku witryny wyliczany na bieżąco z czystego URL.",
+      "details": [
+        {
+          "url": "https://dzikistyl.vercel.app/partnerzy"
+        },
+        {
+          "url": "https://dzikistyl.vercel.app/katalog"
+        },
+        {
+          "url": "https://dzikistyl.vercel.app/katalog?category=logo"
+        },
+        {
+          "url": "https://dzikistyl.vercel.app/katalog?category=cenniki-menu"
+        }
+      ]
+    }
+  ],
+  "checkpointEvals": [
+    {
+      "id": "track-add-to-cart",
+      "status": "passed",
+      "metric": "Brak reklam"
+    },
+    {
+      "id": "track-purchase",
+      "status": "passed",
+      "metric": "Brak transakcji online"
+    },
+    {
+      "id": "track-view-item",
+      "status": "passed",
+      "metric": "Brak katalogu produktów"
+    },
+    {
+      "id": "track-consent-mode-v2",
+      "status": "passed",
+      "metric": "Czystość telemetryczna (Brak komercyjnych pikseli)"
+    },
+    {
+      "id": "track-gtm-installed",
+      "status": "warning",
+      "metric": "Brak kontenera GTM ani GA4"
+    },
+    {
+      "id": "track-datalayer-standard",
+      "status": "passed",
+      "metric": "Brak GTM"
+    },
+    {
+      "id": "track-ga4-installed",
+      "status": "warning",
+      "metric": "Brak Google Analytics 4"
+    },
+    {
+      "id": "track-meta-pixel",
+      "status": "passed",
+      "metric": "Brak piksela"
+    },
+    {
+      "id": "track-tiktok-pixel",
+      "status": "passed",
+      "metric": "Brak piksela TikTok"
+    },
+    {
+      "id": "track-lead-form",
+      "status": "passed",
+      "metric": "OK"
+    },
+    {
+      "id": "track-click-to-call",
+      "status": "warning",
+      "metric": "Brak telemetrii kliknięć w tel:"
+    },
+    {
+      "id": "track-click-to-email",
+      "status": "passed",
+      "metric": "Standard analityczny"
+    },
+    {
+      "id": "track-session-recording",
+      "status": "warning",
+      "metric": "Brak map ciepła i nagrań sesji"
+    },
+    {
+      "id": "track-ad-leak-risk",
+      "status": "passed",
+      "metric": "Brak wycieków budżetu (Serwis bez płatnych reklam)"
+    },
+    {
+      "id": "ecom-variant-health",
+      "status": "failed",
+      "metric": "2 wariantów z błędem 504/>2.5s",
+      "evidence": [
+        "https://dzikistyl.vercel.app/katalog?category=logo",
+        "https://dzikistyl.vercel.app/katalog?category=cenniki-menu"
+      ]
+    },
+    {
+      "id": "ecom-omnibus-compliance",
+      "status": "passed",
+      "metric": "Zgodne z dyrektywą Omnibus"
+    },
+    {
+      "id": "ecom-express-payments",
+      "status": "passed",
+      "metric": "Wykryto płatności mobilne"
+    },
+    {
+      "id": "ecom-schema-product",
+      "status": "passed",
+      "metric": "Schema Product obecna"
+    },
+    {
+      "id": "ecom-schema-offers",
+      "status": "passed",
+      "metric": "Oferty Schema w JSON-LD"
+    },
+    {
+      "id": "ecom-schema-stock",
+      "status": "passed",
+      "metric": "Dostępność magazynowa"
+    },
+    {
+      "id": "ecom-cart-buttons",
+      "status": "passed",
+      "metric": "Przyciski aktywne"
+    },
+    {
+      "id": "ecom-cart-visibility",
+      "status": "passed",
+      "metric": "Koszyk w nagłówku"
+    },
+    {
+      "id": "ecom-trust-signals",
+      "status": "passed",
+      "metric": "Sygnały zaufania e-commerce"
+    },
+    {
+      "id": "ecom-consumer-rights",
+      "status": "passed",
+      "metric": "Informacje o zwrotach i reklamacjach"
+    },
+    {
+      "id": "ecom-cross-sell",
+      "status": "passed",
+      "metric": "Moduły rekomendacji"
+    },
+    {
+      "id": "ecom-free-shipping",
+      "status": "passed",
+      "metric": "Próg darmowej dostawy"
+    },
+    {
+      "id": "ecom-product-images",
+      "status": "passed",
+      "metric": "Wszystkie produkty ze zdjęciami"
+    },
+    {
+      "id": "seo-http-status-200",
+      "status": "failed",
+      "metric": "4 błędów HTTP 4xx/5xx"
+    },
+    {
+      "id": "seo-redirect-hygiene",
+      "status": "passed",
+      "metric": "Czyste linki"
+    },
+    {
+      "id": "seo-title-presence",
+      "status": "failed",
+      "metric": "4 stron bez tytułu"
+    },
+    {
+      "id": "seo-title-cannibalization",
+      "status": "failed",
+      "metric": "2 grupy duplikatów"
+    },
+    {
+      "id": "seo-title-optimal-length",
+      "status": "passed",
+      "metric": "Optymalna długość"
+    },
+    {
+      "id": "seo-meta-description-presence",
+      "status": "warning",
+      "metric": "Brak opisu na 4 stronach"
+    },
+    {
+      "id": "seo-meta-description-length",
+      "status": "passed",
+      "metric": "127 zn."
+    },
+    {
+      "id": "seo-h1-presence",
+      "status": "failed",
+      "metric": "Brak H1 na 7 stronach",
+      "evidence": [
+        "https://dzikistyl.vercel.app/odziez-i-gadzety",
+        "https://dzikistyl.vercel.app/kreator-odziezy",
+        "https://dzikistyl.vercel.app/partnerzy",
+        "https://dzikistyl.vercel.app/konfigurator",
+        "https://dzikistyl.vercel.app/katalog",
+        "https://dzikistyl.vercel.app/katalog?category=logo",
+        "https://dzikistyl.vercel.app/katalog?category=cenniki-menu"
+      ]
+    },
+    {
+      "id": "seo-h1-uniqueness",
+      "status": "passed",
+      "metric": "Jednokrotny H1"
+    },
+    {
+      "id": "seo-canonical-presence",
+      "status": "failed",
+      "metric": "Brak canonical na 4 stronach",
+      "evidence": [
+        "https://dzikistyl.vercel.app/partnerzy",
+        "https://dzikistyl.vercel.app/katalog",
+        "https://dzikistyl.vercel.app/katalog?category=logo",
+        "https://dzikistyl.vercel.app/katalog?category=cenniki-menu"
+      ]
+    },
+    {
+      "id": "seo-self-canonical",
+      "status": "passed",
+      "metric": "Prawidłowe canonicale"
+    },
+    {
+      "id": "seo-noindex-safety",
+      "status": "passed",
+      "metric": "Bezpieczna indeksacja"
+    },
+    {
+      "id": "seo-thin-content",
+      "status": "warning",
+      "metric": "4 stron thin content (<200 słów)"
+    },
+    {
+      "id": "seo-robots-txt",
+      "status": "passed",
+      "metric": "Plik robots.txt dostępny"
+    },
+    {
+      "id": "seo-sitemap-xml",
+      "status": "passed",
+      "metric": "Mapa sitemap.xml"
+    },
+    {
+      "id": "seo-internal-linking",
+      "status": "passed",
+      "metric": "Gęste linkowanie"
+    },
+    {
+      "id": "seo-schema-article",
+      "status": "passed",
+      "metric": "Schema.org: Organization, LocalBusiness, Store"
+    },
+    {
+      "id": "seo-anchor-text-quality",
+      "status": "passed",
+      "metric": "Opisowe kotwice"
+    },
+    {
+      "id": "perf-ttfb-server",
+      "status": "warning",
+      "metric": "Średni TTFB: 1221ms (800-1800ms)"
+    },
+    {
+      "id": "perf-render-blocking-scripts",
+      "status": "passed",
+      "metric": "0 skryptów blokujących"
+    },
+    {
+      "id": "perf-dom-size",
+      "status": "warning",
+      "metric": "1833 elementów DOM (Umiarkowane)"
+    },
+    {
+      "id": "perf-pagebuilder-bloat",
+      "status": "passed",
+      "metric": "Czysty kod Next.js (brak builderów)"
+    },
+    {
+      "id": "perf-modern-stack",
+      "status": "passed",
+      "metric": "Next.js Serverless Edge"
+    },
+    {
+      "id": "perf-jquery-free",
+      "status": "passed",
+      "metric": "Brak jQuery (Vanilla / Modern)"
+    },
+    {
+      "id": "perf-inline-styles",
+      "status": "warning",
+      "metric": "241 stylów inline"
+    },
+    {
+      "id": "perf-image-lazy-loading",
+      "status": "passed",
+      "metric": "Leniwe ładowanie aktywne"
+    },
+    {
+      "id": "perf-image-modern-formats",
+      "status": "passed",
+      "metric": "Formaty nowej generacji"
+    },
+    {
+      "id": "perf-image-dimensions",
+      "status": "passed",
+      "metric": "Wymiary zadeklarowane"
+    },
+    {
+      "id": "perf-lcp-metric",
+      "status": "passed",
+      "metric": "LCP < 2.5s"
+    },
+    {
+      "id": "perf-fcp-metric",
+      "status": "passed",
+      "metric": "FCP < 1.5s"
+    },
+    {
+      "id": "perf-waf-protection",
+      "status": "passed",
+      "metric": "CDN / Edge"
+    },
+    {
+      "id": "ux-clickable-phone",
+      "status": "passed",
+      "metric": "Aktywne linki tel:"
+    },
+    {
+      "id": "ux-clickable-email",
+      "status": "passed",
+      "metric": "Aktywne linki mailto:"
+    },
+    {
+      "id": "ux-image-alt-tags",
+      "status": "passed",
+      "metric": "Opisy alternatywne kompletne"
+    },
+    {
+      "id": "ux-viewport-configuration",
+      "status": "passed",
+      "metric": "Responsywny viewport"
+    },
+    {
+      "id": "ux-favicon-presence",
+      "status": "passed",
+      "metric": "Favicon obecny"
+    },
+    {
+      "id": "ux-touch-target-size",
+      "status": "passed",
+      "metric": "Minimalnie 44x44px"
+    },
+    {
+      "id": "ux-font-readability",
+      "status": "passed",
+      "metric": "Czytelny font WCAG AA"
+    },
+    {
+      "id": "ux-form-usability",
+      "status": "passed",
+      "metric": "Autouzupełnianie mobilne"
+    },
+    {
+      "id": "ux-navigation-accessibility",
+      "status": "passed",
+      "metric": "Menu responsywne"
+    },
+    {
+      "id": "ux-lead-cta-prominence",
+      "status": "passed",
+      "metric": "Czytelne CTA"
+    },
+    {
+      "id": "sec-https-ssl",
+      "status": "passed",
+      "metric": "Wymuszone HTTPS"
+    },
+    {
+      "id": "sec-hsts-header",
+      "status": "passed",
+      "metric": "HSTS skonfigurowany"
+    },
+    {
+      "id": "sec-xframe-options",
+      "status": "passed",
+      "metric": "Ochrona przed Clickjackingiem"
+    },
+    {
+      "id": "sec-content-type-options",
+      "status": "passed",
+      "metric": "nosniff aktywny"
+    },
+    {
+      "id": "sec-content-security-policy",
+      "status": "passed",
+      "metric": "Polityka CSP"
+    },
+    {
+      "id": "sec-form-spam-protection",
+      "status": "passed",
+      "metric": "Ochrona antyspamowa obecna"
+    },
+    {
+      "id": "sec-waf-protection",
+      "status": "passed",
+      "metric": "Zabezpieczenie serwerowe"
+    },
+    {
+      "id": "sec-cms-version-leak",
+      "status": "passed",
+      "metric": "Wersja CMS ukryta"
+    },
+    {
+      "id": "sec-opengraph-tags",
+      "status": "passed",
+      "metric": "Open Graph z miniaturą"
+    },
+    {
+      "id": "sec-privacy-policy",
+      "status": "passed",
+      "metric": "Polityka prywatności dostępna"
+    },
+    {
+      "id": "sec-terms-of-service",
+      "status": "passed",
+      "metric": "Regulamin podlinkowany"
+    },
+    {
+      "id": "sec-company-details",
+      "status": "passed",
+      "metric": "Dane rejestrowe firmy"
+    }
+  ],
+  "checkpointStats": {
+    "total": 80,
+    "passed": 65,
+    "warning": 9,
+    "failed": 6,
+    "criticalLeaksCount": 6
+  },
+  "pages": [
+    {
+      "url": "https://dzikistyl.vercel.app",
+      "category": "home",
+      "statusCode": 200,
+      "responseTimeMs": 50,
+      "title": "DzikiStyl - Studio Graficzne, Drukarnia Online & Gadżety",
+      "titleLength": 56,
+      "metaDescription": "DzikiStyl to studio graficzne i nowoczesna drukarnia online. Tworzymy odzież z nadrukiem, krówki reklamowe, banery oraz unikalne projekty logo. Zamów online!",
+      "metaLength": 157,
+      "h1Count": 1,
+      "h1Text": "Od 12 lat tworzymy projekty, które wyróżniają Twoją markę.",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": true,
+      "wordCount": 1308,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 146,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 94,
+      "externalLinksCount": 12
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/drukarnia",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 530,
+      "title": "DzikiStyl - Studio Graficzne, Drukarnia Online & Gadżety",
+      "titleLength": 56,
+      "metaDescription": "DzikiStyl to studio graficzne i nowoczesna drukarnia online. Tworzymy odzież z nadrukiem, krówki reklamowe, banery oraz unikalne projekty logo. Zamów online!",
+      "metaLength": 157,
+      "h1Count": 1,
+      "h1Text": "Co dzisiaj drukujemy?",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 199,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 25,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 49,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/studio",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 382,
+      "title": "Studio Graficzne | DzikiStyl",
+      "titleLength": 28,
+      "metaDescription": "Profesjonalne projekty graficzne, projektowanie logo i kompletna identyfikacja wizualna. Skonsultuj swój projekt z Dzikim Stylem.",
+      "metaLength": 129,
+      "h1Count": 1,
+      "h1Text": "Studio Graficzne",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 157,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 11,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 36,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/odziez-i-gadzety",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 501,
+      "title": "Odzież i Gadżety Reklamowe | DzikiStyl",
+      "titleLength": 38,
+      "metaDescription": "Najwyższej jakości odzież z nadrukiem i gadżety firmowe dla Twojego biznesu. Projektujemy i produkujemy w Dzikim Stylu.",
+      "metaLength": 119,
+      "h1Count": 0,
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 1,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 3,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/kreator-odziezy",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 191,
+      "title": "DzikiStyl - Studio Graficzne, Drukarnia Online & Gadżety",
+      "titleLength": 56,
+      "metaDescription": "DzikiStyl to studio graficzne i nowoczesna drukarnia online. Tworzymy odzież z nadrukiem, krówki reklamowe, banery oraz unikalne projekty logo. Zamów online!",
+      "metaLength": 157,
+      "h1Count": 0,
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 1,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 3,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/wielki-format",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 207,
+      "title": "Druk Wielkoformatowy | DzikiStyl",
+      "titleLength": 32,
+      "metaDescription": "Banery, siatki mesh i wydruki wielkoformatowe dla Twojego biznesu. Od projektu po wydruk - niezawodna jakość w Dzikim Stylu.",
+      "metaLength": 124,
+      "h1Count": 1,
+      "h1Text": "Wielki Format",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 191,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 17,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 42,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/slodkosci",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 310,
+      "title": "Dzikie Słodkości - Krówki i Czekoladki Reklamowe | DzikiStyl",
+      "titleLength": 60,
+      "metaDescription": "Pyszne, rzemieślnicze słodycze z logo Twojej firmy. Krówki reklamowe z własnym nadrukiem, czekoladki i bombonierki b2b.",
+      "metaLength": 119,
+      "h1Count": 1,
+      "h1Text": "DzikieSłodkości z Twoim wymarzonym nadrukiem!",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 321,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 10,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 33,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/partnerzy",
+      "category": "info",
+      "statusCode": 504,
+      "responseTimeMs": 3010,
+      "title": "",
+      "titleLength": 0,
+      "metaDescription": "",
+      "metaLength": 0,
+      "h1Count": 0,
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 0,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 0,
+      "externalLinksCount": 0
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/opinie",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 1609,
+      "title": "DzikiStyl - Studio Graficzne, Drukarnia Online & Gadżety",
+      "titleLength": 56,
+      "metaDescription": "DzikiStyl to studio graficzne i nowoczesna drukarnia online. Tworzymy odzież z nadrukiem, krówki reklamowe, banery oraz unikalne projekty logo. Zamów online!",
+      "metaLength": 157,
+      "h1Count": 1,
+      "h1Text": "Zaufali nam",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 10409,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 337,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/kontakt",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 430,
+      "title": "DzikiStyl - Studio Graficzne, Drukarnia Online & Gadżety",
+      "titleLength": 56,
+      "metaDescription": "DzikiStyl to studio graficzne i nowoczesna drukarnia online. Tworzymy odzież z nadrukiem, krówki reklamowe, banery oraz unikalne projekty logo. Zamów online!",
+      "metaLength": 157,
+      "h1Count": 1,
+      "h1Text": "Wysyłasz zapytanie. Dostajesz konkret.",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 333,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 3,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 18
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/konfigurator",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 215,
+      "title": "DzikiStyl - Studio Graficzne, Drukarnia Online & Gadżety",
+      "titleLength": 56,
+      "metaDescription": "DzikiStyl to studio graficzne i nowoczesna drukarnia online. Tworzymy odzież z nadrukiem, krówki reklamowe, banery oraz unikalne projekty logo. Zamów online!",
+      "metaLength": 157,
+      "h1Count": 0,
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 1,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 3,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/katalog",
+      "category": "info",
+      "statusCode": 504,
+      "responseTimeMs": 3001,
+      "title": "",
+      "titleLength": 0,
+      "metaDescription": "",
+      "metaLength": 0,
+      "h1Count": 0,
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 0,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 0,
+      "externalLinksCount": 0
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/katalog?category=logo",
+      "category": "info",
+      "statusCode": 504,
+      "responseTimeMs": 3003,
+      "title": "",
+      "titleLength": 0,
+      "metaDescription": "",
+      "metaLength": 0,
+      "h1Count": 0,
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 0,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 0,
+      "externalLinksCount": 0
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/katalog?category=cenniki-menu",
+      "category": "info",
+      "statusCode": 504,
+      "responseTimeMs": 3003,
+      "title": "",
+      "titleLength": 0,
+      "metaDescription": "",
+      "metaLength": 0,
+      "h1Count": 0,
+      "canonical": null,
+      "hasSelfCanonical": false,
+      "wordCount": 0,
+      "isThinContent": true,
+      "isFunctionalPage": false,
+      "imagesCount": 0,
+      "missingAltCount": 0,
+      "schemas": [],
+      "hasNoIndex": false,
+      "internalLinksCount": 0,
+      "externalLinksCount": 0
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/katalog?category=torby",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 1102,
+      "title": "Katalog Produktów | DzikiStyl | DzikiStyl",
+      "titleLength": 41,
+      "metaDescription": "Pełny katalog naszych produktów: poligrafia, słodycze reklamowe, odzież, studio graficzne i gadżety.",
+      "metaLength": 100,
+      "h1Count": 1,
+      "h1Text": "Katalog Produktów",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 16,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 3,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/katalog?category=ulotki",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 1570,
+      "title": "Katalog Produktów | DzikiStyl | DzikiStyl",
+      "titleLength": 41,
+      "metaDescription": "Pełny katalog naszych produktów: poligrafia, słodycze reklamowe, odzież, studio graficzne i gadżety.",
+      "metaLength": 100,
+      "h1Count": 1,
+      "h1Text": "Katalog Produktów",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 16,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 3,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/katalog?category=bannery-rollupy",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 1577,
+      "title": "Katalog Produktów | DzikiStyl | DzikiStyl",
+      "titleLength": 41,
+      "metaDescription": "Pełny katalog naszych produktów: poligrafia, słodycze reklamowe, odzież, studio graficzne i gadżety.",
+      "metaLength": 100,
+      "h1Count": 1,
+      "h1Text": "Katalog Produktów",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 16,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 3,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/katalog?category=kubki",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 1601,
+      "title": "Katalog Produktów | DzikiStyl | DzikiStyl",
+      "titleLength": 41,
+      "metaDescription": "Pełny katalog naszych produktów: poligrafia, słodycze reklamowe, odzież, studio graficzne i gadżety.",
+      "metaLength": 100,
+      "h1Count": 1,
+      "h1Text": "Katalog Produktów",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 16,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 3,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/katalog?category=wizytowki",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 1062,
+      "title": "Katalog Produktów | DzikiStyl | DzikiStyl",
+      "titleLength": 41,
+      "metaDescription": "Pełny katalog naszych produktów: poligrafia, słodycze reklamowe, odzież, studio graficzne i gadżety.",
+      "metaLength": 100,
+      "h1Count": 1,
+      "h1Text": "Katalog Produktów",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 16,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 3,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 11
+    },
+    {
+      "url": "https://dzikistyl.vercel.app/katalog?category=kalendarze",
+      "category": "product",
+      "statusCode": 200,
+      "responseTimeMs": 1066,
+      "title": "Katalog Produktów | DzikiStyl | DzikiStyl",
+      "titleLength": 41,
+      "metaDescription": "Pełny katalog naszych produktów: poligrafia, słodycze reklamowe, odzież, studio graficzne i gadżety.",
+      "metaLength": 100,
+      "h1Count": 1,
+      "h1Text": "Katalog Produktów",
+      "canonical": "https://dzikistyl.vercel.app",
+      "hasSelfCanonical": false,
+      "wordCount": 16,
+      "isThinContent": false,
+      "isFunctionalPage": true,
+      "imagesCount": 3,
+      "missingAltCount": 0,
+      "schemas": [
+        "Organization",
+        "LocalBusiness",
+        "Store",
+        "WebSite",
+        "Product",
+        "FAQPage"
+      ],
+      "hasNoIndex": false,
+      "internalLinksCount": 28,
+      "externalLinksCount": 11
+    }
+  ],
+  "createdAt": "2026-10-07T15:39:53.059Z",
+  "pillars": [
+    {
+      "name": "Szybkość",
+      "score": 98,
+      "interpretation": "Ułamek sekundy dzieli Cię od sprzedaży. Infrastruktura doskonale utrzymuje uwagę klientów mobilnych."
+    },
+    {
+      "name": "SEO",
+      "score": 25,
+      "interpretation": "Strona jest niewidzialna dla nowoczesnych crawlerów. Błędy w semantyce i architekturze blokują darmowy ruch organiczny."
+    },
+    {
+      "name": "Skalowalność",
+      "score": 98,
+      "interpretation": "Architektura odporna na piki ruchu. Nagły napływ użytkowników czy tysiące nowych produktów nie spowolnią platformy."
+    },
+    {
+      "name": "Automatyzacja",
+      "score": 95,
+      "interpretation": "Nowoczesne środowisko (Headless/Edge). Bezproblemowa, tania w utrzymaniu integracja z dowolnym ERP, PIM czy BaseLinkerem."
+    },
+    {
+      "name": "Bezpieczeństwo",
+      "score": 100,
+      "interpretation": "Żelazne nagłówki i nowoczesne protokoły. Dane Twoich klientów i korespondencja są chronione na poziomie korporacyjnym."
+    }
+  ]
+}

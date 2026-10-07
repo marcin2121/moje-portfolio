@@ -109,7 +109,7 @@ export default function Hero({ onNavigate }: HeroProps) {
           <div className="flex flex-col lg:flex-row items-center justify-center gap-2.5 sm:gap-4 md:gap-6 lg:gap-7 w-full">
             {[
               { name: 'Stowarzyszenie KAS', desc: 'portal pożytku publicznego (WCAG 2.2 AA)', link: 'https://stowarzyszeniekas.pl', img: '/kas.svg', hoverBorder: 'hover:border-emerald-500/30', imgClass: 'object-contain' },
-              { name: 'DzikiStyl', desc: 'studio graficzne i drukarnia online', link: 'https://dzikistyldemo.vercel.app/', img: '/dzikistyl-logo.png', hoverBorder: 'hover:border-orange-500/30', imgClass: 'object-cover' },
+              { name: 'DzikiStyl', desc: 'studio graficzne i drukarnia online', link: 'https://dzikistyl.vercel.app/', img: '/dzikistyl-logo.png', hoverBorder: 'hover:border-orange-500/30', imgClass: 'object-cover' },
               { name: 'Sklep Urwis', desc: 'sklep z zabawkami w Białobrzegach', link: 'https://sklep-urwis.pl', img: '/sklepurwis-logo.png', hoverBorder: 'hover:border-orange-500/30', imgClass: 'object-cover' },
               { name: 'RLT Polska', desc: 'sklep internetowy z urządzeniami do terapii światłem', link: 'https://rltpolska.pl', img: '/rltpolska-logo.png', hoverBorder: 'hover:border-orange-500/30', imgClass: 'object-contain' },
               { name: 'Kajaki u Maćka', desc: 'spływy kajakowe Pilicą', link: 'https://kajaki-u-macka.pl', img: '/kajaki-u-macka-logo.png', hoverBorder: 'hover:border-emerald-500/30', imgClass: 'object-cover scale-100' },

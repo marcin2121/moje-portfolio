@@ -297,7 +297,7 @@ const HorizontalProjectsSection = forwardRef<HTMLDivElement, HorizontalProjectsS
             {/* Michał - DzikiStyl */}
             <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full gap-2 lg:gap-2 xl:gap-4 2xl:gap-8">
               <div className="shrink-0 relative z-20">
-                <a href="https://dzikistyldemo.vercel.app/" target="_blank" rel="noopener noreferrer" className="block w-11 h-11 sm:w-14 sm:h-14 lg:w-9 lg:h-9 xl:w-14 xl:h-14 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-orange-500 bg-white shadow-premium relative group overflow-hidden transition-transform duration-500 hover:scale-105">
+                <a href="https://dzikistyl.vercel.app/" target="_blank" rel="noopener noreferrer" className="block w-11 h-11 sm:w-14 sm:h-14 lg:w-9 lg:h-9 xl:w-14 xl:h-14 2xl:w-24 2xl:h-24 rounded-full border-[3px] border-orange-500 bg-white shadow-premium relative group overflow-hidden transition-transform duration-500 hover:scale-105">
                   <Image src="/DzikiMichał.jpg" alt="Michał - DzikiStyl" fill sizes="96px" quality={80} className="object-cover absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" />
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <Image src="/dzikistyl-logo.png" alt="DzikiStyl Logo" fill sizes="96px" quality={80} className="object-contain scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply" />
