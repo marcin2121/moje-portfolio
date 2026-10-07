@@ -398,15 +398,15 @@ export function AudytClient() {
                 <button
                   type="button"
                   onClick={() => {
-                    setUrl('dzikistyl.vercel.app');
+                    setUrl('rltpolska.pl');
                     setSiteType('ecommerce');
-                    handleScan('dzikistyl.vercel.app', 'ecommerce');
+                    handleScan('rltpolska.pl', 'ecommerce');
                   }}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-orange-50 hover:text-orange-700 hover:border-orange-200 border border-slate-200 rounded-lg text-slate-700 font-semibold transition-colors cursor-pointer"
-                  title="Kliknij, aby przetestować na przykładzie sklepu DzikiStyl"
+                  title="Kliknij, aby przetestować na przykładzie sklepu RLT Polska"
                 >
                   <Play className="w-3 h-3 text-orange-500 fill-orange-500" />
-                  <span>dzikistyl.vercel.app</span>
+                  <span>rltpolska.pl</span>
                   <span className="text-[10px] text-slate-500 uppercase font-bold">(Sklep online)</span>
                 </button>
               </div>
