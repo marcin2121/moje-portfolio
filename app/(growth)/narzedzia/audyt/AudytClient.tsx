@@ -29,12 +29,12 @@ export function AudytClient() {
   const initialUrlScannedRef = React.useRef<boolean>(false);
 
   const scanSteps = [
-    "Inicjalizacja i wykrywanie mapy witryny (sitemap.xml)...",
-    "Pobieranie i analiza do 35 kluczowych podstron...",
-    "Audyt architektury DOM, skryptów i nagłówków bezpieczeństwa...",
-    "Równoległa analiza telemetrii i benchmark konkurenta...",
-    "Badanie Core Web Vitals w Google Lighthouse...",
-    "Kompilacja twardych dowodów i diagnoza Architekta AI..."
+    "Łączenie ze stroną i sprawdzanie jej struktury...",
+    "Sprawdzanie kluczowych zakładek i oferty...",
+    "Badanie czy strona otwiera się szybko i wygodnie na telefonach...",
+    "Weryfikacja czy poprawnie mierzysz zapytania od klientów...",
+    "Sprawdzanie wytycznych Google pod kątem pozycji w wyszukiwarce...",
+    "Przygotowanie czytelnego raportu i wskazówek dla Twojej firmy..."
   ];
 
   const handleScan = React.useCallback(async (targetUrl: string, currentSiteType: SiteType, targetCompetitorUrl?: string) => {
@@ -88,7 +88,7 @@ export function AudytClient() {
       trackAuditEvent({
         domain: data.domain || targetUrl,
         score: data.overallScore,
-        siteType: siteType,
+        siteType: currentSiteType,
         token: data.token,
       });
     } catch (err: unknown) {
@@ -218,7 +218,7 @@ export function AudytClient() {
               <span className="w-2.5 h-2.5 rounded-full bg-slate-300/80 border border-slate-400/40 inline-block" />
             </div>
             <span className="font-mono text-[11px] font-bold text-slate-500 uppercase tracking-wider hidden sm:inline-block">
-              Silnik Diagnostyczny v2.6 · 64 parametry
+              Sprawdź, czy Twoja strona nie traci klientów
             </span>
           </div>
 
@@ -253,7 +253,7 @@ export function AudytClient() {
           {/* Prawa strona: status certyfikatu */}
           <div className="hidden md:flex items-center gap-1.5 font-mono text-[11px] text-emerald-600 font-bold uppercase tracking-wider">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Skan Bezpieczny SSL</span>
+            <span>Darmowy test bez zobowiązań</span>
           </div>
         </div>
 
@@ -263,10 +263,10 @@ export function AudytClient() {
             {/* Etykieta główna z zachętą */}
             <div className="flex items-center justify-between mb-3">
               <label htmlFor="audit-url-input" className="block text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider font-mono">
-                {siteType === 'ecommerce' ? 'Wpisz adres sklepu (URL)' : 'Wpisz adres strony firmowej (URL)'}
+                {siteType === 'ecommerce' ? 'Wpisz adres swojego sklepu' : 'Wpisz adres swojej strony firmowej'}
               </label>
               <span className="text-xs font-mono text-orange-600 font-bold">
-                Bez rejestracji · Wynik w 15s
+                Bez rejestracji i bez opłat · Wynik w 15 sekund
               </span>
             </div>
 
@@ -291,7 +291,7 @@ export function AudytClient() {
                     required
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
-                    placeholder={siteType === 'ecommerce' ? 'twoj-sklep.pl' : 'twoja-firma.pl'}
+                    placeholder={siteType === 'ecommerce' ? 'np. twoj-sklep.pl' : 'np. twoja-firma.pl'}
                     className="w-full bg-transparent text-slate-900 text-base sm:text-lg md:text-xl font-mono font-semibold outline-none py-2 px-1 placeholder:text-slate-400 placeholder:font-normal"
                     disabled={isScanning}
                   />
@@ -328,7 +328,7 @@ export function AudytClient() {
                   ) : (
                     <>
                       <Zap className="w-5 h-5 text-amber-200 fill-amber-200" />
-                      <span>{siteType === 'ecommerce' ? 'Rozpocznij Test Sklepu' : 'Rozpocznij Darmowy Audyt'}</span>
+                      <span>{siteType === 'ecommerce' ? 'Przetestuj mój sklep bezpłatnie' : 'Przetestuj moją stronę bezpłatnie'}</span>
                     </>
                   )}
                 </button>
@@ -338,7 +338,7 @@ export function AudytClient() {
             {/* Szybkie przykłady demo (One-Click Demo Chips) */}
             <div className="mt-4 flex flex-wrap items-center justify-between gap-2.5 pt-2">
               <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-                <span className="text-slate-500 font-medium">Sprawdź gotowe demo:</span>
+                <span className="text-slate-500 font-medium">Nie chcesz wpisywać swojej? Zobacz przykładowy raport:</span>
                 <button
                   type="button"
                   onClick={() => {
@@ -351,7 +351,7 @@ export function AudytClient() {
                 >
                   <Play className="w-3 h-3 text-orange-500 fill-orange-500" />
                   <span>stowarzyszeniekas.pl</span>
-                  <span className="text-[10px] text-slate-500 uppercase font-bold">(NGO/Usługi)</span>
+                  <span className="text-[10px] text-slate-500 uppercase font-bold">(Strona firmowa)</span>
                 </button>
                 <button
                   type="button"
@@ -365,7 +365,7 @@ export function AudytClient() {
                 >
                   <Play className="w-3 h-3 text-orange-500 fill-orange-500" />
                   <span>dzikistyldemo.vercel.app</span>
-                  <span className="text-[10px] text-slate-500 uppercase font-bold">(E-commerce)</span>
+                  <span className="text-[10px] text-slate-500 uppercase font-bold">(Sklep online)</span>
                 </button>
               </div>
 
@@ -376,7 +376,7 @@ export function AudytClient() {
                 className="text-xs font-mono font-semibold text-slate-600 hover:text-orange-600 flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Swords className="w-3.5 h-3.5 text-orange-500" />
-                <span>{showCompetitor ? 'Ukryj porównanie' : 'Porównaj z konkurentem'}</span>
+                <span>{showCompetitor ? 'Schowaj porównanie z konkurencją' : 'Chcesz sprawdzić też stronę konkurencji?'}</span>
               </button>
             </div>
 
@@ -390,7 +390,7 @@ export function AudytClient() {
                   className="mt-4 pt-4 border-t border-slate-200/80 overflow-hidden"
                 >
                   <label className="block text-xs font-bold text-slate-700 mb-2 uppercase tracking-wider font-mono">
-                    Adres witryny konkurenta (opcjonalnie)
+                    Adres strony Twojego konkurenta (opcjonalnie)
                   </label>
                   <div className="relative">
                     <input
@@ -403,7 +403,7 @@ export function AudytClient() {
                     />
                   </div>
                   <span className="text-xs text-slate-500 font-mono mt-1.5 block">
-                    Skaner zbada równolegle czas reakcji (TTFB), błędy w kodzie oraz analitykę rywala.
+                    Porównamy obie witryny: dowiesz się, czyja strona otwiera się szybciej i lepiej zdobywa klientów z Google.
                   </span>
                 </motion.div>
               )}
@@ -414,15 +414,15 @@ export function AudytClient() {
           <div className="mt-8 pt-6 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono text-slate-600">
             <div className="flex items-center gap-2">
               <Zap className="w-4 h-4 text-orange-500 shrink-0" />
-              <span>Skan 64 parametrów w ~15 sekund</span>
+              <span>Wynik w 15 sekund bez czekania</span>
             </div>
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-              <span>Zero instalacji i bez podawania haseł</span>
+              <span>100% bezpiecznie: bez haseł i bez instalacji</span>
             </div>
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
-              <span>Diagnoza wycieków w Google Ads i SEO</span>
+              <span>Dowiedz się, dlaczego klienci opuszczają stronę</span>
             </div>
           </div>
         </div>

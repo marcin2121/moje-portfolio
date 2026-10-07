@@ -47,14 +47,14 @@ export default function AudytPage() {
         >
           <div className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-orange-600 mb-3 group-hover:text-orange-500 transition-colors">
             <Activity className="w-4 h-4" />
-            <span>Skaner Architektury Webowej 2026</span>
+            <span>BEZPŁATNY TEST DLA WŁAŚCICIELI FIRM</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4 text-slate-900 group-hover:text-orange-600 transition-colors">
             Darmowy Audyt Strony Internetowej
           </h1>
         </a>
         <p className="text-base md:text-lg text-slate-700 max-w-2xl mx-auto font-normal leading-relaxed">
-          Błyskawiczna analiza Twojej strony WWW lub sklepu. Sprawdzamy prędkość ładowania na telefonach, błędy blokujące pozycje w Google oraz poprawność śledzenia sprzedaży i konwersji z reklam.
+          Dowiedz się w prosty sposób, czy Twoja strona nie traci klientów przez powolne ładowanie na telefonach i niewidoczność w Google. Rzetelne wskazówki bez skomplikowanego żargonu.
         </p>
       </div>
 
@@ -68,13 +68,13 @@ export default function AudytPage() {
         <div className="max-w-3xl mb-12">
           <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-orange-600 mb-3">
             <Cpu className="w-4 h-4" />
-            <span>Metodyka Inżynieryjna Silnika Audytowego</span>
+            <span>JAK TO DZIAŁA W PRAKTYCE</span>
           </div>
           <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-slate-900 mb-4">
-            Co dokładnie sprawdza nasz audyt strony?
+            Co dokładnie sprawdzamy na Twojej stronie?
           </h2>
           <p className="text-base text-slate-600 leading-relaxed font-light">
-            Większość internetowych testerów ogranicza się do powierzchownego zbadania samej strony głównej. Nasz skaner sprawdza do 35 kluczowych podstron Twojego serwisu, analizując realny kod źródłowy, szybkość serwera, błędy indeksacji w Google oraz tagi analityczne.
+            Większość automatycznych testerów w sieci bada tylko stronę główną i zarzuca trudnymi pojęciami technicznymi. Nasz test sprawdza podstrony Twojej oferty i przekłada wyniki na prosty język biznesu: dlaczego klienci mogą opuszczać witrynę oraz co poprawić, aby zyskać więcej zapytań.
           </p>
         </div>
 
@@ -93,7 +93,7 @@ export default function AudytPage() {
                 Współczesne roboty indeksujące Google oraz modele sztucznej inteligencji (SearchGPT, Perplexity, Google Gemini) interpretują ofertę Twojej firmy na podstawie przejrzystej hierarchii nagłówków HTML. Podstrona pozbawiona głównego nagłówka H1 lub używająca nagłówków H1 w stopce i menu traci widoczność w wynikach wyszukiwania.
               </p>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Nasz audyt sprawdza każdą zbadaną podstronę pod kątem obecności dokładnie jednego, unikalnego nagłówka H1, eliminując ryzyko utraty pozycji w organicznych wynikach wyszukiwania oraz w odpowiedziach silników AI.
+                Nasz audyt sprawdza każdą zbadaną podstronę pod kątem obecności dokładnie jednego, unikalnego nagłówka H1, eliminując ryzyko utraty pozycji w wynikach Google oraz w wyszukiwarkach AI (takich jak ChatGPT czy Gemini).
               </p>
             </div>
             <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-3 text-xs font-mono text-slate-500">
