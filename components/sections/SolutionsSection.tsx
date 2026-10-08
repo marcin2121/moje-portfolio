@@ -8,7 +8,7 @@ import { fixOrphans } from '@/utils/typography';
 
 export function SolutionsSection() {
   return (
-    <section id="rozwiazania" className="w-full lg:w-1/4 h-auto lg:h-full shrink-0 flex-shrink-0 flex items-center justify-center px-4 sm:px-8 lg:px-6 xl:px-12 pt-20 lg:pt-24 xl:pt-26 2xl:pt-28 pb-14 lg:pb-18 xl:pb-20 2xl:pb-22 relative overflow-hidden bg-transparent">
+    <section id="rozwiazania" className="w-full lg:w-1/4 h-auto lg:h-full shrink-0 flex-shrink-0 flex items-center justify-center px-4 sm:px-8 lg:px-6 xl:px-12 pt-10 lg:pt-12 xl:pt-18 2xl:pt-24 pb-14 lg:pb-16 xl:pb-20 2xl:pb-22 relative overflow-hidden bg-transparent">
       <div className="flex flex-col gap-2 lg:gap-2 xl:gap-3.5 2xl:gap-5 max-w-5xl w-full relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 lg:gap-2 xl:gap-3.5 2xl:gap-5 w-full">
           <MagicBento className="md:col-span-2 bg-white border border-slate-200 hover:border-orange-300 transition-all group shadow-premium-soft" contentClassName="p-3.5 sm:p-5 lg:p-2.5 xl:p-4 2xl:p-6">

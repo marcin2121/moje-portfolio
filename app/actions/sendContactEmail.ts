@@ -9,11 +9,13 @@ export async function sendContactEmail(formData: FormData) {
   try {
     const email = formData.get('email');
     const blocker = formData.get('blocker');
+    const website = formData.get('website');
     const msg = formData.get('msg');
 
     // Input type and length validation (prevent DoS and unexpected types)
     if (typeof email !== 'string' || email.length > 254 ||
         typeof blocker !== 'string' || blocker.length > 100 ||
+        (website && typeof website !== 'string') || (typeof website === 'string' && website.length > 254) ||
         (msg && typeof msg !== 'string') || (typeof msg === 'string' && msg.length > 2000)) {
       return { success: false, error: 'Nieprawidłowy format danych.' };
     }
@@ -37,6 +39,7 @@ export async function sendContactEmail(formData: FormData) {
 Otrzymałeś nowe zapytanie z mini-quizu kontaktowego:
 
 E-mail: ${email}
+Adres obecnej strony / domeny: ${website || 'Nie podano'}
 Główny problem: ${blocker}
 Uwagi od klienta: ${msg || 'Brak'}
 

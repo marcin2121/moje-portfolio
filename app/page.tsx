@@ -40,9 +40,9 @@ type DemoConfig = {
 
 const NAV_DOTS = [
   { id: 0, title: 'Start' },
-  { id: 1, title: 'O Mnie' },
-  { id: 2, title: 'Problemy' },
-  { id: 3, title: 'Rozwiązania' },
+  { id: 1, title: 'Problemy' },
+  { id: 2, title: 'Rozwiązania' },
+  { id: 3, title: 'O Mnie' },
   { id: 4, title: 'Proces' },
   { id: 5, title: 'Symulacja' },
   { id: 6, title: 'Benefity' },
@@ -58,8 +58,8 @@ const NAV_DOTS = [
 ] as const;
 
 export const LANDMARK_NAV_ITEMS = [
-  { id: 0, title: 'Start', targetIndex: 0, minIdx: 0, maxIdx: 1 },
-  { id: 2, title: 'Dlaczego Next.js', targetIndex: 2, minIdx: 2, maxIdx: 6 },
+  { id: 0, title: 'Start', targetIndex: 0, minIdx: 0, maxIdx: 0 },
+  { id: 1, title: 'Dlaczego Next.js', targetIndex: 1, minIdx: 1, maxIdx: 6 },
   { id: 7, title: 'Realizacje', targetIndex: 7, minIdx: 7, maxIdx: 12 },
   { id: 13, title: 'Cennik', targetIndex: 13, minIdx: 13, maxIdx: 14 },
   { id: 15, title: 'Kontakt', targetIndex: 15, minIdx: 15, maxIdx: 15 },
@@ -124,9 +124,9 @@ export default function PortfolioHome() {
         // Fallback for mobile where horizontal scroll doesn't exist
         const pts: number[] = [];
         pts[0] = getDomRatio('hero', 0);
-        pts[1] = getDomRatio('o-mnie', 1/15);
-        pts[2] = getDomRatio('problem', 2/15);
-        pts[3] = getDomRatio('rozwiazania', 3/15);
+        pts[1] = getDomRatio('problem', 1/15);
+        pts[2] = getDomRatio('rozwiazania', 2/15);
+        pts[3] = getDomRatio('o-mnie', 3/15);
         pts[4] = getDomRatio('proces', 4/15);
         pts[5] = getDomRatio('sandbox', 5/15);
         pts[6] = getDomRatio('benefits', 6/15);
@@ -441,9 +441,9 @@ export default function PortfolioHome() {
         <main className="pl-0 lg:pl-24 w-full overflow-clip">
           <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[400%] h-auto lg:h-screen bg-transparent">
             <Hero onNavigate={scrollToSection} onOpenQuoteModal={() => setIsQuoteModalOpen(true)} />
-            <AboutMeSection />
             <ProblemSection />
             <SolutionsSection />
+            <AboutMeSection />
           </div>
 
           <HowItWorksSection />

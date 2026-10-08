@@ -106,59 +106,77 @@ function PricingContent() {
             transition={{ duration: 0.3 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
-            {activeTiers.map((tier, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: idx * 0.2 }}
-            className={`relative flex flex-col bg-white rounded-3xl overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md border border-slate-200 hover:border-slate-300`}
-          >
-            <div className="p-8 pb-0">
-              <div className="flex items-center gap-2.5 mt-2 mb-2">
-                <div className="text-slate-400">
-                  {tier.icon}
-                </div>
-                <h3 className="text-xl font-bold tracking-tight text-slate-900">{tier.name}</h3>
-              </div>
-              
-              <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-sm text-slate-500 font-medium">od</span>
-                <span className={`text-4xl font-black tracking-tighter text-slate-900`}>
-                  {tier.price}
-                </span>
-                <span className="text-sm text-slate-500 font-medium">zł netto</span>
-              </div>
+            {activeTiers.map((tier, idx) => {
+              const isFeatured = idx === 1;
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: idx * 0.2 }}
+                  className={`relative flex flex-col bg-white rounded-3xl overflow-hidden transition-all duration-300 ${
+                    isFeatured
+                      ? 'border-2 border-orange-500/60 shadow-[0_20px_50px_rgba(234,88,12,0.12)] md:-translate-y-2 ring-1 ring-orange-500/20'
+                      : 'border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow-md'
+                  }`}
+                >
+                  <div className="p-8 pb-0">
+                    {isFeatured && (
+                      <div className="text-[10px] md:text-[11px] font-mono font-bold uppercase tracking-wider text-orange-600 mb-2">
+                        Najczęściej wybierany przez rozwijające się firmy
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2.5 mt-2 mb-2">
+                      <div className={isFeatured ? 'text-orange-500' : 'text-slate-400'}>
+                        {tier.icon}
+                      </div>
+                      <h3 className="text-xl font-bold tracking-tight text-slate-900">{tier.name}</h3>
+                    </div>
+                    
+                    <div className="flex items-baseline gap-2 mb-6">
+                      <span className="text-sm text-slate-500 font-medium">od</span>
+                      <span className="text-4xl font-black tracking-tighter text-slate-900">
+                        {tier.price}
+                      </span>
+                      <span className="text-sm text-slate-500 font-medium">zł netto</span>
+                    </div>
 
-              <div className="h-px w-full bg-slate-100 mb-6" />
+                    <div className="h-px w-full bg-slate-100 mb-6" />
 
-              <p className="text-sm text-slate-600 leading-relaxed min-h-[3.5rem] mb-6 font-light">
-                {fixOrphans(tier.target)}
-              </p>
-            </div>
+                    <p className="text-sm text-slate-600 leading-relaxed min-h-[3.5rem] mb-6 font-light">
+                      {fixOrphans(tier.target)}
+                    </p>
+                  </div>
 
-            <div className="px-8 pb-8 flex-1 flex flex-col bg-slate-50/50 mt-auto pt-6 border-t border-slate-100">
-              <ul className="space-y-4 my-2 flex-1 text-sm leading-relaxed text-slate-600 font-light">
-                {tier.features.map((feat, fIdx) => (
-                  <li key={fIdx} className="flex items-start gap-3">
-                    <Check className={`w-4 h-4 shrink-0 mt-1 text-slate-400`} />
-                    <span className="text-slate-700">
-                      {typeof feat === 'string' ? fixOrphans(feat) : feat}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+                  <div className={`px-8 pb-8 flex-1 flex flex-col mt-auto pt-6 border-t ${
+                    isFeatured ? 'bg-orange-50/20 border-orange-100' : 'bg-slate-50/50 border-slate-100'
+                  }`}>
+                    <ul className="space-y-4 my-2 flex-1 text-sm leading-relaxed text-slate-600 font-light">
+                      {tier.features.map((feat, fIdx) => (
+                        <li key={fIdx} className="flex items-start gap-3">
+                          <Check className={`w-4 h-4 shrink-0 mt-1 ${isFeatured ? 'text-orange-500' : 'text-slate-400'}`} />
+                          <span className="text-slate-700">
+                            {typeof feat === 'string' ? fixOrphans(feat) : feat}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
 
-              <button 
-                onClick={() => handleOpenModal(tier, idx)}
-                className={`w-full py-4 mt-6 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all bg-white border border-slate-200 text-slate-900 hover:bg-slate-50 hover:border-slate-300 shadow-sm`}
-              >
-                {tier.ctaText}
-              </button>
-            </div>
-          </motion.div>
-            ))}
+                    <button 
+                      onClick={() => handleOpenModal(tier, idx)}
+                      className={`w-full py-4 mt-6 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+                        isFeatured
+                          ? 'bg-orange-500 hover:bg-orange-600 text-white shadow-md hover:shadow-orange-500/25'
+                          : 'bg-white border border-slate-200 text-slate-900 hover:bg-slate-50 hover:border-slate-300 shadow-sm'
+                      }`}
+                    >
+                      {tier.ctaText}
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })}
           </motion.div>
         </AnimatePresence>
       </div>

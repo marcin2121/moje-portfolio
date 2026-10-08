@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sendContactEmail } from '@/app/actions/sendContactEmail';
-import { CheckCircle2, AlertCircle, Loader2, Target, Clock, FileWarning, Rocket, Mail, Check, ArrowLeft, ArrowRight } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Loader2, Target, Clock, FileWarning, Rocket, Mail, Globe, Check, ArrowLeft, ArrowRight } from 'lucide-react';
 import { pushGTMEvent, trackGeneralLeadConversion } from '@/lib/telemetry';
 import { fixOrphans } from '@/utils/typography';
 import { useRouter } from 'next/navigation';
@@ -173,10 +173,23 @@ export default function ContactForm({ isModal = false }: { isModal?: boolean } =
                       <input 
                         type="email" 
                         name="email" 
-                        placeholder="Twój adres e-mail" 
+                        placeholder="Twój adres e-mail (wymagane)" 
                         required 
                         disabled={status === 'loading'} 
-                        className="w-full pl-12 md:pl-16 pr-4 py-4 md:py-6 bg-white border border-slate-200 rounded-xl md:rounded-2xl outline-none focus:border-orange-500/50 focus:bg-white text-slate-900 text-sm md:text-base font-mono transition-colors shadow-sm" 
+                        className="w-full pl-12 md:pl-16 pr-4 py-3.5 md:py-5 bg-white border border-slate-200 rounded-xl md:rounded-2xl outline-none focus:border-orange-500/50 focus:bg-white text-slate-900 text-sm md:text-base font-mono transition-colors shadow-sm" 
+                      />
+                    </div>
+
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 md:pl-6 flex items-center pointer-events-none">
+                        <Globe className="w-5 h-5 text-slate-400" />
+                      </div>
+                      <input 
+                        type="text" 
+                        name="website" 
+                        placeholder="Adres Twojej obecnej strony www (opcjonalnie)" 
+                        disabled={status === 'loading'} 
+                        className="w-full pl-12 md:pl-16 pr-4 py-3.5 md:py-5 bg-white border border-slate-200 rounded-xl md:rounded-2xl outline-none focus:border-orange-500/50 focus:bg-white text-slate-900 text-sm md:text-base font-mono transition-colors shadow-sm" 
                       />
                     </div>
 
@@ -189,7 +202,7 @@ export default function ContactForm({ isModal = false }: { isModal?: boolean } =
                         <span className={`w-4 h-4 shrink-0 mt-[2px] rounded flex items-center justify-center transition-colors ${showNotes ? 'bg-orange-500 text-white border-orange-500' : 'border border-slate-300 bg-white'}`}>
                           {showNotes && <Check size={12} strokeWidth={3} />}
                         </span>
-                        <span>Mam dodatkowe uwagi lub chcę podać nazwę firmy / adres mojej obecnej strony / Facebooka (opcjonalnie)</span>
+                        <span>Mam dodatkowe uwagi lub chcę podać nazwę firmy / profil Facebook (opcjonalnie)</span>
                       </button>
                     </div>
 

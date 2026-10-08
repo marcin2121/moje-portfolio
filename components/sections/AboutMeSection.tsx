@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 export function AboutMeSection() {
   return (
-    <section id="o-mnie" className="w-full lg:w-1/4 h-auto lg:h-full shrink-0 flex-shrink-0 flex items-center justify-center relative overflow-hidden bg-transparent pt-20 lg:pt-24 xl:pt-28 2xl:pt-32 pb-14 lg:pb-18 xl:pb-20 2xl:pb-24">
+    <section id="o-mnie" className="w-full lg:w-1/4 h-auto lg:h-full shrink-0 flex-shrink-0 flex items-center justify-center relative overflow-hidden bg-transparent pt-10 lg:pt-12 xl:pt-18 2xl:pt-24 pb-14 lg:pb-16 xl:pb-20 2xl:pb-22">
       {/* Background glow na łączeniu sekcji */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-orange-500/10 rounded-full blur-[120px] pointer-events-none" />
 
