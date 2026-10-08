@@ -14,9 +14,6 @@ importers:
       '@gsap/react':
         specifier: ^2.1.2
         version: 2.1.2(gsap@3.15.0)(react@19.2.3)
-      '@next/third-parties':
-        specifier: ^16.1.6
-        version: 16.2.10(next@16.1.6(@babel/core@7.29.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(sass@1.102.0))(react@19.2.3)
       '@supabase/supabase-js':
         specifier: ^2.116.0
         version: 2.116.0
@@ -53,9 +50,6 @@ importers:
       nuqs:
         specifier: ^2.9.0
         version: 2.9.0(next@16.1.6(@babel/core@7.29.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(sass@1.102.0))(react@19.2.3)
-      radix-ui:
-        specifier: ^1.4.3
-        version: 1.6.2(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react:
         specifier: 19.2.3
         version: 19.2.3

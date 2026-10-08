@@ -1,6 +1,9 @@
 [phases.setup]
 aptPkgs = ["...", "autoconf", "automake", "libtool", "nasm", "pkg-config", "build-essential", "libjpeg-dev", "libpng-dev", "python3"]
 
+[phases.install]
+cmds = ["pnpm install --no-frozen-lockfile"]
+
 [variables]
 PUPPETEER_SKIP_DOWNLOAD = "true"
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"
