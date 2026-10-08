@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Building2, ShoppingCart, Swords, X, Globe, Lock, Zap, ShieldCheck, Sparkles, Play } from 'lucide-react';
+import { Loader2, Swords, X, Globe, Lock, Zap, ShieldCheck, Sparkles, Play } from 'lucide-react';
 import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
 import { SiteType } from '@/app/api/audit-master/types';
 import { parseDomainFromToken } from '@/app/api/audit-master/utils/token';
@@ -209,7 +209,7 @@ export function AudytClient() {
         className="scroll-mt-28 bg-white/95 border border-slate-200/90 rounded-3xl backdrop-blur-2xl mb-12 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.08)] relative overflow-hidden transition-all duration-300"
       >
         {/* Pasek narzędziowy konsoli (Inspector Bar) */}
-        <div className="bg-slate-50/90 border-b border-slate-200/80 px-5 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div className="bg-slate-50/90 border-b border-slate-200/80 px-5 sm:px-8 py-3.5 flex items-center justify-between gap-3">
           {/* Lewa strona: Kropki okna i etykieta */}
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5 select-none" aria-hidden="true">
@@ -217,42 +217,14 @@ export function AudytClient() {
               <span className="w-2.5 h-2.5 rounded-full bg-slate-300/80 border border-slate-400/40 inline-block" />
               <span className="w-2.5 h-2.5 rounded-full bg-slate-300/80 border border-slate-400/40 inline-block" />
             </div>
-            <span className="font-mono text-[11px] font-bold text-slate-500 uppercase tracking-wider hidden sm:inline-block">
+            <span className="font-mono text-xs font-bold text-slate-600 uppercase tracking-wider">
               Sprawdź, czy Twoja strona nie traci klientów
             </span>
           </div>
 
-          {/* Środek / Przełącznik Profilu (zintegrowany, nowoczesny) */}
-          <div className="inline-flex items-center bg-white border border-slate-200 rounded-xl p-1 shadow-xs">
-            <button
-              type="button"
-              onClick={() => setSiteType('services')}
-              className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                siteType === 'services'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Building2 className={`w-3.5 h-3.5 ${siteType === 'services' ? 'text-orange-400' : 'text-slate-400'}`} />
-              <span>Strona Firmowa</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setSiteType('ecommerce')}
-              className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                siteType === 'ecommerce'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <ShoppingCart className={`w-3.5 h-3.5 ${siteType === 'ecommerce' ? 'text-orange-400' : 'text-slate-400'}`} />
-              <span>Sklep E-commerce</span>
-            </button>
-          </div>
-
           {/* Prawa strona: status certyfikatu */}
-          <div className="hidden md:flex items-center gap-1.5 font-mono text-[11px] text-emerald-600 font-bold uppercase tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5" />
+          <div className="flex items-center gap-1.5 font-mono text-[11px] sm:text-xs text-emerald-600 font-bold uppercase tracking-wider">
+            <ShieldCheck className="w-4 h-4 shrink-0" />
             <span>Darmowy test bez zobowiązań</span>
           </div>
         </div>
@@ -263,7 +235,7 @@ export function AudytClient() {
             {/* Etykieta główna z zachętą */}
             <div className="flex items-center justify-between mb-3">
               <label htmlFor="audit-url-input" className="block text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider font-mono">
-                {siteType === 'ecommerce' ? 'Wpisz adres swojego sklepu' : 'Wpisz adres swojej strony firmowej'}
+                Wpisz adres strony lub sklepu
               </label>
               <span className="text-xs font-mono text-orange-600 font-bold">
                 Bez rejestracji i bez opłat · Wynik w 15 sekund
@@ -291,7 +263,7 @@ export function AudytClient() {
                     required
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
-                    placeholder={siteType === 'ecommerce' ? 'np. twoj-sklep.pl' : 'np. twoja-firma.pl'}
+                    placeholder="np. twoja-firma.pl, twoj-sklep.pl"
                     className="w-full bg-transparent text-slate-900 text-base sm:text-lg md:text-xl font-mono font-semibold outline-none py-2 px-1 placeholder:text-slate-400 placeholder:font-normal"
                     disabled={isScanning}
                   />
@@ -328,7 +300,7 @@ export function AudytClient() {
                   ) : (
                     <>
                       <Zap className="w-5 h-5 text-amber-200 fill-amber-200" />
-                      <span>{siteType === 'ecommerce' ? 'Przetestuj mój sklep bezpłatnie' : 'Przetestuj moją stronę bezpłatnie'}</span>
+                      <span>Przetestuj bezpłatnie</span>
                     </>
                   )}
                 </button>
