@@ -1,6 +1,5 @@
 'use client';
-
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, TrendingDown, Zap, Bot, Search, PlugZap } from 'lucide-react';
 import { useQueryState, parseAsStringLiteral } from 'nuqs';
@@ -9,7 +8,7 @@ import { fixOrphans } from '@/utils/typography';
 import { TIERS_SERVICES, TIERS_ECOMMERCE } from './pricing/constants';
 import PricingModal from './pricing/PricingModal';
 
-export default function Pricing() {
+function PricingContent() {
   const [tierType, setTierType] = useQueryState(
     'typ',
     parseAsStringLiteral(['services', 'ecommerce'] as const).withDefault('services')
@@ -305,5 +304,23 @@ export default function Pricing() {
       <PricingModal selectedTier={selectedTier} onClose={handleCloseModal} />
 
     </div>
+  );
+}
+
+export default function Pricing() {
+  return (
+    <Suspense fallback={
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col items-center border-t border-slate-200/50 animate-pulse">
+        <div className="h-10 bg-slate-200 rounded-xl w-72 mb-6" />
+        <div className="h-6 bg-slate-100 rounded-lg w-96 mb-12" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+          <div className="h-96 bg-white rounded-3xl border border-slate-200/60" />
+          <div className="h-96 bg-white rounded-3xl border border-slate-200/60" />
+          <div className="h-96 bg-white rounded-3xl border border-slate-200/60" />
+        </div>
+      </div>
+    }>
+      <PricingContent />
+    </Suspense>
   );
 }

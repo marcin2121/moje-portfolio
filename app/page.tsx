@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Facebook, Linkedin, Monitor, Smartphone as PhoneIcon, X, ChevronUp } from 'lucide-react';
 import Hero from '@/components/Hero';
@@ -440,7 +440,9 @@ export default function PortfolioHome() {
 
           <div id="cennik" className="min-h-screen flex items-center border-t border-white/5 bg-transparent">
             <div className="w-full">
-              <Pricing />
+              <Suspense fallback={<div className="w-full min-h-[600px]" />}>
+                <Pricing />
+              </Suspense>
             </div>
           </div>
 
