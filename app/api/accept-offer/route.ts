@@ -38,6 +38,15 @@ const postHandler = async (data: z.infer<typeof OfferSchema>, req: Request) => {
   const now = Date.now();
   
   if (ip !== 'unknown-ip') {
+    // Evict expired entries to prevent memory leaks
+    if (rateLimitMap.size > 200) {
+      for (const [key, record] of rateLimitMap.entries()) {
+        if (now - record.timestamp >= RATE_LIMIT_WINDOW) {
+          rateLimitMap.delete(key);
+        }
+      }
+    }
+
     const clientRecord = rateLimitMap.get(ip);
     if (clientRecord && now - clientRecord.timestamp < RATE_LIMIT_WINDOW) {
       if (clientRecord.count >= MAX_REQUESTS) {

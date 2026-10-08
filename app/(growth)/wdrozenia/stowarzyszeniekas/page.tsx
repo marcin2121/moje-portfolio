@@ -20,7 +20,7 @@ import {
 
 const stats = [
   { value: '4 × 100', label: 'Google PageSpeed (Desktop)', desc: 'Wydajność 100, Dostępność 100, Praktyki 100, SEO 100', icon: <Gauge className="w-5 h-5 text-emerald-500" /> },
-  { value: '98 / 100', label: 'YellowLabTools (Ocena A)', desc: 'DOM 100, Bad JS 100, Network 100 – Top 0.5% internetu', icon: <Zap className="w-5 h-5 text-amber-500" /> },
+  { value: '98 / 100', label: 'YellowLabTools (Ocena A)', desc: 'DOM 100, Bad JS 100, Network 100 - Top 0.5% internetu', icon: <Zap className="w-5 h-5 text-amber-500" /> },
   { value: '100 / 100', label: 'Certyfikacja WCAG 2.2 AA', desc: '100% bezpieczeństwa prawnego i audytowego dotacji', icon: <ShieldCheck className="w-5 h-5 text-blue-500" /> },
   { value: '16 127', label: 'Linii bezpiecznego kodu', desc: 'Dedykowana architektura bez podatnych szablonów', icon: <FileCode2 className="w-5 h-5 text-orange-500" /> },
   { value: '0.3 s', label: 'Błyskawiczny start (FCP)', desc: 'Użytkownik widzi treść natychmiast, bez czekania', icon: <TrendingUp className="w-5 h-5 text-teal-500" /> },
@@ -34,7 +34,7 @@ const businessBenefits = [
     icon: <ShieldCheck className="w-6 h-6 text-emerald-600" />,
   },
   {
-    title: 'Wygoda pracowników – zero nauki od nowa',
+    title: 'Wygoda pracowników: zero nauki od nowa',
     desc: 'Zastosowaliśmy architekturę Headless. Personel organizacji dodaje artykuły, projekty i zdjęcia w znanym, intuicyjnym panelu WordPressa po polsku. Zespół nie musi uczyć się skomplikowanych systemów, a strona działa jak nowoczesna aplikacja.',
     icon: <Smile className="w-6 h-6 text-orange-600" />,
   },
@@ -45,7 +45,7 @@ const businessBenefits = [
   },
   {
     title: 'Odporność na ataki i brak awaryjnych wtyczek',
-    desc: 'W tradycyjnym WordPressie wtyczki po aktualizacji potrafią zawiesić całą stronę. W architekturze Headless kod zewnętrzny jest w 100% odizolowany od bazy danych – strona jest praktycznie niemożliwa do zawieszenia i odporna na ataki hakerskie.',
+    desc: 'W tradycyjnym WordPressie wtyczki po aktualizacji potrafią zawiesić całą stronę. W architekturze Headless kod zewnętrzny jest w 100% odizolowany od bazy danych: strona jest praktycznie niemożliwa do zawieszenia i odporna na ataki hakerskie.',
     icon: <Lock className="w-6 h-6 text-indigo-600" />,
   }
 ];
@@ -286,7 +286,7 @@ export default function StowarzyszenieKasCaseStudy() {
             Chcesz, aby Twoja strona była tak szybka i bezpieczna?
           </h3>
           <p className="text-sm text-slate-600 max-w-xl">
-            Niezależnie od tego, czy potrzebujesz portalu dla instytucji, sklepu czy firmy usługowej – zrobimy bezpłatną analizę Twojego obecnego serwisu i pokażemy, ile możesz zyskać.
+            Niezależnie od tego, czy potrzebujesz portalu dla instytucji, sklepu czy firmy usługowej: zrobimy bezpłatną analizę Twojego obecnego serwisu i pokażemy, ile możesz zyskać.
           </p>
         </div>
         <Link 

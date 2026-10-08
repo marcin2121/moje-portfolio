@@ -15,7 +15,7 @@ export default function DzikiStylCaseStudy() {
       
       {/* Przycisk Wstecz */}
       <div className="flex justify-start mb-12">
-        <Link href="/wdrozenia" className="group inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-orange-600 transition-colors bg-white hover:bg-slate-50 px-4 py-2 rounded-full border border-slate-200 shadow-sm backdrop-blur-md">
+        <Link href="/wdrozenia" className="group inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-orange-600 transition-colors bg-white hover:bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 shadow-sm backdrop-blur-md">
           <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>

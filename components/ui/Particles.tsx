@@ -32,9 +32,38 @@ export default function Particles({ color = '#f97316' }: { color?: string }) {
     let animationFrameId: number;
     let isVisible = true;
 
-    // ⚡ BOLT FIX: Zatrzymanie CPU, gdy sekcja znika z ekranu
+    const render = () => {
+      if (!isVisible) return;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = color;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        // Ruch w górę
+        p.y -= p.speed;
+        if (p.y < 0) {
+          p.y = height;
+          p.x = Math.random() * width;
+        }
+
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      animationFrameId = window.requestAnimationFrame(render);
+    };
+
+    // ⚡ BOLT FIX: Całkowite zatrzymanie pętli rAF, gdy sekcja znika z ekranu
     const observer = new IntersectionObserver(([entry]) => {
+      const wasVisible = isVisible;
       isVisible = entry.isIntersecting;
+      if (!wasVisible && isVisible) {
+        window.cancelAnimationFrame(animationFrameId);
+        render();
+      }
     });
     observer.observe(canvas);
 
@@ -46,30 +75,6 @@ export default function Particles({ color = '#f97316' }: { color?: string }) {
       canvas.height = height;
     };
     window.addEventListener('resize', handleResize);
-
-    const render = () => {
-      if (isVisible) {
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = color;
-
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          // Ruch w górę
-          p.y -= p.speed;
-          if (p.y < 0) {
-            p.y = height;
-            p.x = Math.random() * width;
-          }
-
-          ctx.globalAlpha = p.alpha;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      animationFrameId = window.requestAnimationFrame(render);
-    };
 
     render();
 

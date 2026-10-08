@@ -19,11 +19,14 @@ const LogSchema = z.object({
 const postHandler = async (data: z.infer<typeof LogSchema>) => {
   const safeJsonLine = JSON.stringify(data) + '\n';
   
-  const logsDir = path.join(process.cwd(), 'logs');
-  await fs.promises.mkdir(logsDir, { recursive: true });
-
-  const filePath = path.join(logsDir, 'ux-logs.jsonl');
-  await fs.promises.appendFile(filePath, safeJsonLine);
+  try {
+    const logsDir = process.env.VERCEL ? path.join('/tmp', 'logs') : path.join(process.cwd(), 'logs');
+    await fs.promises.mkdir(logsDir, { recursive: true });
+    const filePath = path.join(logsDir, 'ux-logs.jsonl');
+    await fs.promises.appendFile(filePath, safeJsonLine);
+  } catch (err) {
+    console.warn('UX log write skipped (serverless filesystem):', err);
+  }
 
   return NextResponse.json({ success: true });
 };

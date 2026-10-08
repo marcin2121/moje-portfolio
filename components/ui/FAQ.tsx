@@ -9,19 +9,19 @@ import { GEOSchemaInjector } from '@/components/ui/GEOSchemaInjector';
 const FAQ_ITEMS = [
   {
     question: "Jak wyglądają kwestie płatności i zaliczki? Co, jeśli projekt mi się nie spodoba?",
-    answer: "Pracujemy na absolutnie przejrzystych zasadach B2B, bez ukrytych gwiazdek. Aby zarezerwować termin i rozpocząć prace, pobieram standardową zaliczkę (zazwyczaj 30-40%). Twoje pieniądze są jednak w pełni bezpieczne, bo chroni Cię Żelazna Gwarancja 7 Dni. Jeśli po tygodniu od przedstawienia wstępnego projektu graficznego powiesz: „Marcin, to zupełnie nie moja bajka” – bez zadawania pytań odsyłam 100% zaliczki w 24 godziny. To ja ponoszę ryzyko. Resztę kwoty rozliczamy dopiero na samym końcu, gdy strona jest gotowa, przetestowana i w pełni spełnia Twoje oczekiwania."
+    answer: "Pracujemy na absolutnie przejrzystych zasadach B2B, bez ukrytych gwiazdek. Aby zarezerwować termin i rozpocząć prace, pobieram standardową zaliczkę (zazwyczaj 30-40%). Twoje pieniądze są jednak w pełni bezpieczne, bo chroni Cię Żelazna Gwarancja 7 Dni. Jeśli po tygodniu od przedstawienia wstępnego projektu graficznego powiesz: „Marcin, to zupełnie nie moja bajka”, bez zadawania pytań odsyłam 100% zaliczki w 24 godziny. To ja ponoszę ryzyko. Resztę kwoty rozliczamy dopiero na samym końcu, gdy strona jest gotowa, przetestowana i w pełni spełnia Twoje oczekiwania."
   },
   {
     question: "Czy po oddaniu strony będę uwiązany jakimś abonamentem?",
-    answer: "Nie. Kod strony jest w 100% Twoją własnością. Nie ma żadnych \"ukrytych licencji\" ani opłat za utrzymanie u mnie. Jeśli za rok zechcesz oddać tę stronę pod opiekę innemu programistowi – jednym kliknięciem przekazuję mu komplet uprawnień."
+    answer: "Nie. Kod strony jest w 100% Twoją własnością. Nie ma żadnych \"ukrytych licencji\" ani opłat za utrzymanie u mnie. Jeśli za rok zechcesz oddać tę stronę pod opiekę innemu programistowi: jednym kliknięciem przekazuję mu komplet uprawnień."
   },
   {
     question: "Czy mogę edytować treści w WordPressie? Bardzo lubię jego panel.",
-    answer: "Jak najbardziej! Wykorzystuję nowoczesną architekturę Headless – co oznacza, że łączę najlepsze cechy obu światów. Ty lub Twoi pracownicy edytujecie artykuły, produkty i zdjęcia w znanym, intuicyjnym panelu WordPressa (lub innym dedykowanym CMS), a strona widoczna dla klientów jest generowana w technologii Next.js. Dzięki temu zyskujesz pełną wygodę edycji połączoną z prędkością światła (PageSpeed 100/100) i bezpieczeństwem klasy militarnej – bez powolnych motywów i dziurawych wtyczek."
+    answer: "Jak najbardziej! Wykorzystuję nowoczesną architekturę Headless, co oznacza, że łączę najlepsze cechy obu światów. Ty lub Twoi pracownicy edytujecie artykuły, produkty i zdjęcia w znanym, intuicyjnym panelu WordPressa (lub innym dedykowanym CMS), a strona widoczna dla klientów jest generowana w technologii Next.js. Dzięki temu zyskujesz pełną wygodę edycji połączoną z prędkością światła (PageSpeed 100/100) i bezpieczeństwem klasy militarnej (bez powolnych motywów i dziurawych wtyczek)."
   },
   {
     question: "Co się stanie, jeśli po 3 miesiącach coś na stronie przestałoby działać?",
-    answer: "W cenie każdego projektu dostajesz ode mnie 6 miesięcy opieki technicznej. Jeśli cokolwiek z winy kodu przestanie funkcjonować prawidłowo – naprawiam to na swój koszt. Po upływie pół roku możesz wykupić pakiet stałej opieki, ale nie dlatego, że się psują (bo są tak stabilne!), tylko po to abym mógł na bieżąco wprowadzać aktualizacje, które w tak szybko pędzącym świecie technologii pozwolą Ci zawsze być na topie i być zawsze o krok przed konkurencją."
+    answer: "W cenie każdego projektu dostajesz ode mnie 6 miesięcy opieki technicznej. Jeśli cokolwiek z winy kodu przestanie funkcjonować prawidłowo: naprawiam to na swój koszt. Po upływie pół roku możesz wykupić pakiet stałej opieki, ale nie dlatego, że się psują (bo są tak stabilne!), tylko po to abym mógł na bieżąco wprowadzać aktualizacje, które w tak szybko pędzącym świecie technologii pozwolą Ci zawsze być na topie i być zawsze o krok przed konkurencją."
   }
 ];
 

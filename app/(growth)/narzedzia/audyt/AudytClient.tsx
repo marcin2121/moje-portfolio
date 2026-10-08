@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Swords, X, Globe, Lock, Zap, ShieldCheck, Sparkles, Play } from 'lucide-react';
 import AuditResultView, { AuditResult } from '@/components/audyt/AuditResultView';
@@ -10,6 +10,7 @@ import { parseDomainFromToken } from '@/app/api/audit-master/utils/token';
 import { trackAuditEvent } from '@/lib/telemetry';
 
 export function AudytClient() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const tokenParam = searchParams.get('token');
   const urlParam = searchParams.get('url');
@@ -79,10 +80,10 @@ export function AudytClient() {
       const data: AuditResult = await res.json();
       setResult(data);
 
-      if (data.token && typeof window !== 'undefined') {
+      if (data.token) {
         const domainSlug = data.domain || targetUrl;
         processedInitialTokenRef.current = data.token;
-        window.history.replaceState(null, '', `/narzedzia/audyt?token=${encodeURIComponent(data.token)}&url=${encodeURIComponent(domainSlug)}`);
+        router.replace(`/narzedzia/audyt?token=${encodeURIComponent(data.token)}&url=${encodeURIComponent(domainSlug)}`, { scroll: false });
       }
 
       trackAuditEvent({
@@ -147,9 +148,7 @@ export function AudytClient() {
             return;
           }
           setErrorMessage(err.message);
-          if (typeof window !== 'undefined') {
-            window.history.replaceState(null, '', '/narzedzia/audyt');
-          }
+          router.replace('/narzedzia/audyt', { scroll: false });
         })
         .finally(() => {
           setIsScanning(false);

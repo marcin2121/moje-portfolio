@@ -3,13 +3,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, TrendingDown, Zap, Bot, Search, PlugZap } from 'lucide-react';
+import { useQueryState, parseAsStringLiteral } from 'nuqs';
 import { pushGTMEvent } from '@/app/page';
 import { fixOrphans } from '@/utils/typography';
 import { TIERS_SERVICES, TIERS_ECOMMERCE } from './pricing/constants';
 import PricingModal from './pricing/PricingModal';
 
 export default function Pricing() {
-  const [tierType, setTierType] = useState<'services' | 'ecommerce'>('services');
+  const [tierType, setTierType] = useQueryState(
+    'typ',
+    parseAsStringLiteral(['services', 'ecommerce'] as const).withDefault('services')
+  );
   const activeTiers = tierType === 'services' ? TIERS_SERVICES : TIERS_ECOMMERCE;
 
   const [selectedTier, setSelectedTier] = useState<typeof TIERS_SERVICES[0] | null>(null);

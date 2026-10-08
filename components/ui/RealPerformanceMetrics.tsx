@@ -9,8 +9,8 @@ export function RealPerformanceMetrics() {
 
         {/* Lewa strona - Opis */}
         <div className="flex-1 space-y-6 text-center md:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs font-bold uppercase tracking-widest border border-emerald-100">
-            <Zap size={14} className="fill-emerald-600" /> Case Study: Sklep Urwis
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-emerald-500/10 text-emerald-700 rounded-md text-xs font-mono font-semibold uppercase tracking-wider border border-emerald-500/20">
+            <Zap size={13} className="text-emerald-600" /> Case Study: Sklep Urwis
           </div>
           <h3 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight">
             Architektura klasy &quot;Top 1%&quot;
