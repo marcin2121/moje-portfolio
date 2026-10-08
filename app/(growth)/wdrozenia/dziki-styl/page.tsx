@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ZoomIn, ExternalLink } from 'lucide-react';
+import { NextStepCTA } from '@/components/ui/NextStepCTA';
 
 export default function DzikiStylCaseStudy() {
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
@@ -157,15 +158,12 @@ export default function DzikiStylCaseStudy() {
           <InteractiveShowcase />
         </div>
 
-        {/* Bottom CTA */}
-        <div className="mt-16 p-8 bg-orange-50 border border-orange-200/60 rounded-2xl text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-6 shadow-premium-soft">
-          <div>
-            <h3 className="text-orange-600 font-bold mb-2 text-xl">Twój sklep ma podobne objawy?</h3>
-            <p className="text-slate-600 m-0">Jeśli czujesz, że Twój system &quot;puchnie&quot; i nie domyka konwersji, nie musisz migrować wszystkiego od razu. Zróbmy darmowy audyt wagi.</p>
-          </div>
-          <Link href="/#kontakt" className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 shadow-[0_8px_20px_rgba(249,115,22,0.2)] transition-all hover:scale-105 whitespace-nowrap">
-            Zamów audyt wagi →
-          </Link>
+        {/* Bottom Next Step CTA */}
+        <div className="mt-20">
+          <NextStepCTA 
+            title="Chcesz podobne wyniki w swoim sklepie internetowym?"
+            subtitle="Wyeliminujemy błędy i spowolnienia w Twoim sklepie. W 24h otrzymasz konkretny kosztorys i plan architektury na e-mail."
+          />
         </div>
       </div>
     </main>
@@ -215,7 +213,7 @@ function InteractiveShowcase() {
       <div>
         <h3 className="text-3xl font-bold text-slate-900 mb-4">1. Koniec z „klikaniem w ciemno” (Przełącznik Netto/Brutto)</h3>
         <p className="text-slate-600 text-lg leading-relaxed">
-          Twoi klienci B2B operują na cenach netto? Żaden problem. Jednym kliknięciem przełączają cały sklep na swój tryb pracy – bez czekania, bez przeładowywania strony i bez błądzenia w ustawieniach konta. Szybko, konkretnie i bez irytacji.
+          Twoi klienci B2B operują na cenach netto? Żaden problem. Jednym kliknięciem przełączają cały sklep na swój tryb pracy - bez czekania, bez przeładowywania strony i bez błądzenia w ustawieniach konta. Szybko, konkretnie i bez irytacji.
         </p>
       </div>
 
@@ -229,7 +227,7 @@ function InteractiveShowcase() {
       <div>
         <h3 className="text-3xl font-bold text-slate-900 mb-4">3. Jeden konfigurator zamiast 26 rozproszonych cenników</h3>
         <p className="text-slate-600 text-lg leading-relaxed">
-          Zamiast budować labirynt z 26 osobnych podstron, zrobiliśmy jeden, inteligentny panel. Klient wybiera produkt, a system sam podpowiada: „tu najlepiej sprawdzi się haft, a tutaj taniej wyjdzie sitodruk”. Do tego dostaje podgląd gotowego produktu w czasie rzeczywistym. Klient widzi, co kupuje – Ty dostajesz bezbłędne zlecenie.
+          Zamiast budować labirynt z 26 osobnych podstron, zrobiliśmy jeden, inteligentny panel. Klient wybiera produkt, a system sam podpowiada: „tu najlepiej sprawdzi się haft, a tutaj taniej wyjdzie sitodruk”. Do tego dostaje podgląd gotowego produktu w czasie rzeczywistym. Klient widzi, co kupuje - Ty dostajesz bezbłędne zlecenie.
         </p>
       </div>
     </section>

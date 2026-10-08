@@ -48,18 +48,24 @@ export default function QuickCriticalIssues({ issues }: QuickCriticalIssuesProps
             return m;
           });
           const cleanDeveloperAction = issue.developerAction
-            .replace(/^Marcin zaimplementuje/i, 'Zaimplementuję')
-            .replace(/^Marcin wdroży/i, 'Wdrożę')
-            .replace(/^Marcin wprowadzi/i, 'Wprowadzę')
-            .replace(/^Marcin skonfiguruje/i, 'Skonfiguruję')
-            .replace(/^Marcin podepnie/i, 'Podepnę')
-            .replace(/^Marcin przeprowadzi/i, 'Przeprowadzę')
-            .replace(/\bMarcin zaimplementuje\b/g, 'zaimplementuję')
-            .replace(/\bMarcin wdroży\b/g, 'wdrożę')
-            .replace(/\bMarcin wprowadzi\b/g, 'wprowadzę')
-            .replace(/\bMarcin skonfiguruje\b/g, 'skonfiguruję')
-            .replace(/\bMarcin podepnie\b/g, 'podepnę')
-            .replace(/\bMarcin przeprowadzi\b/g, 'przeprowadzę');
+            .replace(/^Marcin zaimplementuje/i, 'Implementacja')
+            .replace(/^Marcin wdroży/i, 'Wdrożenie')
+            .replace(/^Marcin wprowadzi/i, 'Wdrożenie')
+            .replace(/^Marcin skonfiguruje/i, 'Konfiguracja')
+            .replace(/^Marcin podepnie/i, 'Podpięcie')
+            .replace(/^Marcin przeprowadzi/i, 'Przeprowadzenie')
+            .replace(/^zaimplementuję/i, 'Implementacja')
+            .replace(/^wdrożę/i, 'Wdrożenie')
+            .replace(/^wprowadzę/i, 'Wdrożenie')
+            .replace(/^skonfiguruję/i, 'Konfiguracja')
+            .replace(/^podepnę/i, 'Podpięcie')
+            .replace(/^przeprowadzę/i, 'Przeprowadzenie')
+            .replace(/\bMarcin zaimplementuje\b/g, 'implementacja')
+            .replace(/\bMarcin wdroży\b/g, 'wdrożenie')
+            .replace(/\bMarcin wprowadzi\b/g, 'wdrożenie')
+            .replace(/\bMarcin skonfiguruje\b/g, 'konfiguracja')
+            .replace(/\bMarcin podepnie\b/g, 'podpięcie')
+            .replace(/\bMarcin przeprowadzi\b/g, 'przeprowadzenie');
 
           const affectedText = issue.affectedCount === 1
             ? '1 podstrona'

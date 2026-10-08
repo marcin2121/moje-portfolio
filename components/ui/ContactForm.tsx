@@ -15,19 +15,32 @@ const PROBLEMS = [
   { id: 'brak_strony', icon: Rocket, label: 'Nie mam jeszcze strony', desc: 'Startuję z nowym projektem i chcę zrobić to od razu dobrze.' }
 ];
 
-export default function ContactForm() {
+export default function ContactForm({ isModal = false }: { isModal?: boolean } = {}) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [selectedBlocker, setSelectedBlocker] = useState('');
   const [showNotes, setShowNotes] = useState(false);
+  const [noteText, setNoteText] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const strata = params.get('strata');
+      if (strata) {
+        setSelectedBlocker('Strona wolno działa');
+        setShowNotes(true);
+        setNoteText(`Dotyczy optymalizacji / migracji powolnego sklepu. Szacowana strata z kalkulatora: ${strata} zł/mies.`);
+      }
+    }
+  }, []);
 
   const handleSelect = (id: string, label: string) => {
     setSelectedBlocker(label);
     setTimeout(() => {
       setStep(2);
-      const scroller = document.getElementById('bottom-sheet-scroll');
+      const scroller = document.getElementById('modal-scroll-container') || document.getElementById('bottom-sheet-scroll');
       if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }, 400);
   };
@@ -57,8 +70,16 @@ export default function ContactForm() {
   }
 
   return (
-    <section id="kontakt" className="w-full py-24 sm:py-32 px-6 sm:px-10 lg:px-20 bg-transparent relative overflow-hidden border-t border-slate-200/50 flex flex-col items-center justify-center min-h-[80vh]">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-size-[40px_40px] pointer-events-none" />
+    <section 
+      id={isModal ? undefined : "kontakt"} 
+      className={isModal 
+        ? "w-full py-2 sm:py-6 px-1 sm:px-4 bg-transparent relative flex flex-col items-center justify-center" 
+        : "w-full py-24 sm:py-32 px-6 sm:px-10 lg:px-20 bg-transparent relative overflow-hidden border-t border-slate-200/50 flex flex-col items-center justify-center min-h-[80vh]"
+      }
+    >
+      {!isModal && (
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-size-[40px_40px] pointer-events-none" />
+      )}
       
       <div className="w-full max-w-4xl mx-auto relative z-10 flex flex-col items-center">
         {status === 'success' ? (
@@ -78,7 +99,7 @@ export default function ContactForm() {
               <button 
                 onClick={() => {
                   setStep(1);
-                  const scroller = document.getElementById('bottom-sheet-scroll');
+                  const scroller = document.getElementById('modal-scroll-container') || document.getElementById('bottom-sheet-scroll');
                   if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
                 }} 
                 className="absolute -top-16 left-0 md:-left-12 p-3 bg-white/80 backdrop-blur rounded-2xl border border-slate-200 hover:border-slate-300 transition-all text-slate-500 hover:text-slate-900 active:scale-95 z-20 flex items-center gap-2 text-xs font-mono uppercase shadow-sm"
@@ -132,6 +153,9 @@ export default function ContactForm() {
                     <p className="text-slate-600 font-light text-base md:text-xl">
                       {fixOrphans(`Gdzie mam wysłać bezpłatną wycenę i plan działania?`)}
                     </p>
+                    <p className="text-slate-400 text-xs md:text-sm mt-2 font-normal">
+                      {fixOrphans(`W 24h otrzymasz konkretny kosztorys na e-mail. Zero spamu i zero natarczywych telefonów.`)}
+                    </p>
                   </div>
                   
                   <form onSubmit={handleSubmit} className="w-full flex flex-col gap-5 bg-white/80 backdrop-blur-xl border border-slate-200 p-6 md:p-10 rounded-3xl shadow-premium-soft">
@@ -174,6 +198,8 @@ export default function ContactForm() {
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
                           <textarea 
                             name="msg" 
+                            value={noteText}
+                            onChange={(e) => setNoteText(e.target.value)}
                             placeholder="Uwagi..." 
                             rows={3} 
                             disabled={status === 'loading'} 

@@ -1,7 +1,7 @@
 'use client';
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Smartphone, Edit3, MessageSquare } from 'lucide-react';
+import { Clock, AlertTriangle, FileWarning } from 'lucide-react';
 import { fixOrphans } from '@/utils/typography';
 
 export function ProblemSection() {
@@ -10,19 +10,19 @@ export function ProblemSection() {
 
   const problems = [
     {
-      icon: <Smartphone className="w-6 h-6" />,
-      title: 'Błyskawiczne otwieranie na telefonie',
-      desc: 'Wyobraź sobie klienta, który stoi na światłach i klika w Twój link. Moje strony (pisane w technologii Next.js) otwierają się w 1.2 sekundy. Zanim strona Twojej konkurencji w ogóle załaduje logo, Twój klient już klika „Zadzwoń”.',
+      icon: <Clock className="w-6 h-6" />,
+      title: 'Klient ucieka po 3 sekundach czekania',
+      desc: 'Ciężkie szablony i przeładowane wtyczki ładują się 4-6 sekund na smartfonach. Badania Google wykazują, że ponad 50% odwiedzających porzuca stronę, zanim w ogóle zobaczy ofertę. Każda sekunda opóźnienia to bezpośrednio przepalony budżet na reklamy Google Ads i Meta Ads.',
     },
     {
-      icon: <Edit3 className="w-6 h-6" />,
-      title: 'Samodzielna edycja bez ryzyka zepsucia',
-      desc: 'Dostajesz ultra-prosty panel do edycji. Wpisujesz nową cenę, dodajesz zdjęcie z realizacji i klikasz "Zapisz". Całość zajmuje 30 sekund. System jest zaprojektowany tak, że fizycznie nie da się w nim "rozjechać" grafiki.',
+      icon: <AlertTriangle className="w-6 h-6" />,
+      title: 'Awarie i błędy po aktualizacji wtyczek',
+      desc: 'Wystarczy jedna automatyczna aktualizacja WordPressa lub WooCommerce, by koszyk przestał działać, a witryna wyświetliła błąd krytyczny. Zamiast rozwijać sprzedaż, tracisz czas na nerwowe szukanie pomocy lub płacisz comiesięczny haracz agencji za łatanie kodu.',
     },
     {
-      icon: <MessageSquare className="w-6 h-6" />,
-      title: 'Automatyczna obsługa zapytań',
-      desc: 'Spinam formularz na Twojej stronie z Twoim telefonem i kalendarzem. Klient rezerwuje termin -> Ty dostajesz gotowego SMS-a, a dane same wskakują do arkusza. Oszczędzasz około 10 godzin powtarzalnej klikaniny w miesiącu.',
+      icon: <FileWarning className="w-6 h-6" />,
+      title: '10+ godzin tygodniowo marnowane na ręczną papierologię',
+      desc: 'Ręczne odpisywanie na powtarzalne zapytania, żmudne przepisywanie danych z formularzy do arkuszy i gubiące się e-maile. Brak automatyzacji kradnie Twój najcenniejszy czas, który powinieneś przeznaczać na strategiczny rozwój firmy.',
     }
   ];
 
@@ -31,7 +31,7 @@ export function ProblemSection() {
       
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.04] overflow-hidden">
         <div className="text-[13vw] sm:text-[11vw] md:text-[9vw] font-black text-slate-900 leading-none whitespace-nowrap tracking-tighter select-none opacity-50">
-          ROZWIĄZANIA
+          PROBLEMY
         </div>
       </div>
 
@@ -45,7 +45,7 @@ export function ProblemSection() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="text-2xl sm:text-4xl lg:text-2xl xl:text-4xl 2xl:text-6xl font-black text-slate-900 tracking-tighter leading-[1.15] mb-3 lg:mb-3 xl:mb-6 2xl:mb-8"
           >
-            Dlaczego tradycyjne strony z&nbsp;szablonów niszczą Twój biznes <span className="text-orange-500">(i&nbsp;jak to naprawiam)</span>
+            Dlaczego tradycyjne strony z&nbsp;szablonów niszczą Twój biznes <span className="text-orange-500">(i&nbsp;generują straty)</span>
           </motion.h2>
           
           <motion.div
@@ -63,7 +63,7 @@ export function ProblemSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xs sm:text-base lg:text-xs xl:text-base 2xl:text-xl font-light text-slate-600 leading-relaxed"
           >
-            Zbyt wiele biznesów zatrzymuje się przez niewłaściwie dobraną, powolną infrastrukturę, frustrując zarówno Ciebie jak i&nbsp;Twoich klientów. Znamy te problemy na wylot i&nbsp;niszczymy je u&nbsp;podstaw.
+            Zbyt wiele firm traci klientów przez ociężałą infrastrukturę i&nbsp;brak automatyzacji procesów. Identyfikuję te wąskie gardła i&nbsp;zastępuję je bezawaryjnym, inżynierskim kodem Next.js.
           </motion.p>
         </div>
 

@@ -17,7 +17,7 @@ export const TIERS_SERVICES = [
       'Spokój prawny (pełna zgodność z RODO i wdrożenie polityki prywatności)',
       '6 miesięcy żelaznej gwarancji na bezawaryjne działanie kodu'
     ],
-    ctaText: 'Wybieram ten pakiet',
+    ctaText: 'Zamawiam Wizytówkę (Wycena w 24h)',
     highlighted: false
   },
   {
@@ -35,7 +35,7 @@ export const TIERS_SERVICES = [
       'Zatrzymujesz 100% zysku z usług (0% ukrytych prowizji systemowych)',
       <React.Fragment key="care">12 miesięcy opieki technicznej i Twojego pełnego <strong>świętego spokoju</strong></React.Fragment>
     ],
-    ctaText: 'Wybieram ten pakiet',
+    ctaText: 'Zamawiam Maszynę Sprzedażową (Wycena w 24h)',
     highlighted: true,
     badge: 'REKOMENDOWANY'
   },
@@ -47,13 +47,13 @@ export const TIERS_SERVICES = [
     features: [
       'Wszystko to, co w pakiecie "Maszyna Sprzedażowa" + Dedykowana Aplikacja Usługowa',
       'Automatyczny obieg danych (spinamy platformę z Twoim systemem rezerwacji, kalendarzem lub fakturowaniem)',
-      'Twój Asystent AI 24/7 – inteligentny bot, który odciąża Cię z pytań o usługi i cennik',
-      'Automat do Google Maps – system sam prosi zadowolonych klientów o 5★ po wizycie',
+      'Twój Asystent AI 24/7 - inteligentny bot, który odciąża Cię z pytań o usługi i cennik',
+      'Automat do Google Maps - system sam prosi zadowolonych klientów o 5★ po wizycie',
       'Gotowa specyfikacja techniczna pod dotacje na cyfryzację (np. z KPO)',
       'Priorytetowe Wsparcie VIP: bezpośredni kanał na WhatsApp i gwarancja reakcji w max 2h',
       'Dożywotnia Gwarancja Inżynieryjna na stabilność systemu (zero ukrytych wad)'
     ],
-    ctaText: 'Aplikuj o pakiet VIP',
+    ctaText: 'Aplikuj o pakiet VIP (Wycena w 24h)',
     highlighted: false
   }
 ];
@@ -74,7 +74,7 @@ export const TIERS_ECOMMERCE = [
       'Spokój prawny (pełna zgodność z RODO i wdrożenie polityki prywatności)',
       '6 miesięcy żelaznej gwarancji na bezawaryjne działanie kodu'
     ],
-    ctaText: 'Wybieram ten pakiet',
+    ctaText: 'Zamawiam Landing Page (Wycena w 24h)',
     highlighted: false
   },
   {
@@ -93,7 +93,7 @@ export const TIERS_ECOMMERCE = [
       'Prosty panel do zarządzania magazynem i cenami bez ryzyka zepsucia strony',
       <React.Fragment key="care2">12 miesięcy opieki technicznej i Twojego pełnego <strong>świętego spokoju</strong></React.Fragment>
     ],
-    ctaText: 'Wybieram ten pakiet',
+    ctaText: 'Zamawiam Sklep Next.js (Wycena w 24h)',
     highlighted: true,
     badge: 'REKOMENDOWANY'
   },
@@ -105,13 +105,13 @@ export const TIERS_ECOMMERCE = [
     features: [
       'Wszystko to, co w pakiecie "Maszyna Sprzedażowa" + Sklep bez limitu asortymentu (inżynieryjny import bazy danych)',
       'Automatyczny obieg danych (spinamy sklep z systemem ERP, BaseLinkerem lub magazynem)',
-      'Twój Asystent AI 24/7 – inteligentny bot doradzający klientom w wyborze produktów',
-      'Automat do Google Maps – system sam prosi klientów o opinię 5★ po odebraniu paczki',
+      'Twój Asystent AI 24/7 - inteligentny bot doradzający klientom w wyborze produktów',
+      'Automat do Google Maps - system sam prosi klientów o opinię 5★ po odebraniu paczki',
       'Gotowa specyfikacja techniczna pod dotacje na cyfryzację (np. z KPO)',
       'Priorytetowe Wsparcie VIP: bezpośredni kanał na WhatsApp i gwarancja reakcji w max 2h',
       'Dożywotnia Gwarancja Inżynieryjna na stabilność systemu (zero ukrytych wad)'
     ],
-    ctaText: 'Aplikuj o pakiet VIP',
+    ctaText: 'Aplikuj o Sklep Pro (Wycena w 24h)',
     highlighted: false
   }
 ];

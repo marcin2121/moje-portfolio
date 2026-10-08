@@ -17,6 +17,7 @@ import {
   Lock,
   Smile
 } from 'lucide-react';
+import { NextStepCTA } from '@/components/ui/NextStepCTA';
 
 const stats = [
   { value: '4 × 100', label: 'Google PageSpeed (Desktop)', desc: 'Wydajność 100, Dostępność 100, Praktyki 100, SEO 100', icon: <Gauge className="w-5 h-5 text-emerald-500" /> },
@@ -279,22 +280,12 @@ export default function StowarzyszenieKasCaseStudy() {
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <div className="p-8 md:p-10 bg-gradient-to-br from-orange-50 to-white border border-orange-200/60 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-        <div className="space-y-2">
-          <h3 className="text-xl md:text-2xl font-bold text-slate-900">
-            Chcesz, aby Twoja strona była tak szybka i bezpieczna?
-          </h3>
-          <p className="text-sm text-slate-600 max-w-xl">
-            Niezależnie od tego, czy potrzebujesz portalu dla instytucji, sklepu czy firmy usługowej: zrobimy bezpłatną analizę Twojego obecnego serwisu i pokażemy, ile możesz zyskać.
-          </p>
-        </div>
-        <Link 
-          href="/#kontakt" 
-          className="shrink-0 inline-flex items-center gap-2 px-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm rounded-xl shadow-[0_8px_20px_rgba(249,115,22,0.25)] transition-all hover:scale-105"
-        >
-          Zamów bezpłatny audyt →
-        </Link>
+      {/* Bottom Next Step CTA */}
+      <div className="mt-20">
+        <NextStepCTA 
+          title="Chcesz, aby Twoja strona była tak szybka, dostępna i bezpieczna?"
+          subtitle="Zbuduję lub zoptymalizuję Twój serwis w architekturze Next.js 16 ze 100% zgodnością z WCAG 2.2. Wycena i plan wdrożenia w 24h na e-mail."
+        />
       </div>
 
     </main>

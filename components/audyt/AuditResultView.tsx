@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Shield, Zap, Search, Server, Settings, Copy, Check, Printer } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Shield, Zap, Search, Server, Settings, Copy, Check, Printer, ArrowRight, Wrench } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { AuditMasterResponse } from '@/app/api/audit-master/types';
 import AuditEvidenceCard from './AuditEvidenceCard';
@@ -26,6 +26,30 @@ interface AuditResultViewProps {
 
 export default function AuditResultView({ result }: AuditResultViewProps) {
   const [copied, setCopied] = useState(false);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Pokaż pasek po przewinięciu sekcji podsumowania (450px)
+      if (window.scrollY > 450) {
+        setShowStickyBar(true);
+      } else {
+        setShowStickyBar(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToConsultation = () => {
+    const el = document.getElementById('konsultacja');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+      window.dispatchEvent(new CustomEvent('select-consultation-topic', {
+        detail: { intent: 'fixes' }
+      }));
+    }
+  };
 
   const isEcommerce = result.siteType === 'ecommerce';
   let conversionLabel = 'zapytań i leadów';
@@ -92,7 +116,12 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
       .replace(/\buporządkuję\b/gi, 'rekomendowane jest uporządkowanie')
       .replace(/\bzoptymalizuję\b/gi, 'zoptymalizowanie')
       .replace(/\bwdrożę\b/gi, 'wdrożenie')
+      .replace(/\bWdrożę\b/gi, 'Wdrożenie')
+      .replace(/\bwprowadzę\b/gi, 'wdrożenie')
+      .replace(/\bWprowadzę automatyczny, semantyczny tag\b/gi, 'Wdrożenie automatycznego, semantycznego tagu')
+      .replace(/\bWprowadzę\b/gi, 'Wdrożenie')
       .replace(/\bskonfiguruję\b/gi, 'skonfigurowanie')
+      .replace(/\bSkonfiguruję\b/gi, 'Skonfigurowanie')
       .replace(/\bwyeliminuję\b/gi, 'wyeliminowanie')
       .replace(/exemplaryczn[a-ząęółśżźćń]+/gi, 'wzorową')
       .replace(/\bexemplary\b/gi, 'wzorową')
@@ -797,6 +826,44 @@ export default function AuditResultView({ result }: AuditResultViewProps) {
           </div>
         </div>
       </div>
+
+      {/* Floating Sticky Conversion Bar (Pojawia się po przewinięciu sekcji wstępnej >450px) */}
+      <AnimatePresence>
+        {showStickyBar && (
+          <motion.div
+            initial={{ y: 90, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 90, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-3xl bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-2xl sm:rounded-full p-2.5 sm:p-3 sm:px-6 shadow-[0_20px_50px_rgba(15,23,42,0.18)] flex flex-col sm:flex-row items-center justify-between gap-3 print:hidden"
+          >
+            <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center shrink-0">
+                  <Wrench size={14} className="text-orange-600" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <div className="text-xs font-bold text-slate-900 truncate max-w-[200px] sm:max-w-[240px]">
+                    {result.domain}
+                  </div>
+                  <div className="text-[11px] font-mono text-slate-500">
+                    Ocena: <span className="font-bold text-slate-800">{result.overallScore}/100</span> · Zdiagnozowane usterki
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={scrollToConsultation}
+              className="w-full sm:w-auto px-5 py-2.5 bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-bold text-xs rounded-xl sm:rounded-full shadow-[0_4px_14px_rgba(234,88,12,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+            >
+              <span>Zleć naprawę wykrytych usterek w 24-48h</span>
+              <ArrowRight size={14} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

@@ -1,17 +1,35 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Check } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Check, Globe } from 'lucide-react';
 import { pushGTMEvent } from '@/app/page';
 import { fixOrphans } from '@/utils/typography';
 
 interface HeroProps {
   onNavigate: (index: number) => void;
+  onOpenQuoteModal?: () => void;
 }
 
-export default function Hero({ onNavigate }: HeroProps) {
+export default function Hero({ onNavigate, onOpenQuoteModal }: HeroProps) {
+  const router = useRouter();
+  const [isSpeedTooltipOpen, setIsSpeedTooltipOpen] = useState(false);
+  const [auditUrl, setAuditUrl] = useState('');
+
+  const handleAuditSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const clean = auditUrl.trim();
+    pushGTMEvent('hero_omnibox_audyt_click', { url: clean || 'nie_podano' });
+    if (clean) {
+      const formatted = clean.startsWith('http://') || clean.startsWith('https://') ? clean : `https://${clean}`;
+      router.push(`/narzedzia/audyt?url=${encodeURIComponent(formatted)}`);
+    } else {
+      router.push('/narzedzia/audyt');
+    }
+  };
   return (
     <section id="hero" className="w-full lg:w-1/4 h-auto lg:h-full flex flex-col justify-between pt-16 pb-2 lg:pt-20 xl:pt-22 2xl:pt-26 lg:pb-2 xl:pb-4 relative shrink-0 font-sans overflow-hidden">
       
@@ -28,11 +46,59 @@ export default function Hero({ onNavigate }: HeroProps) {
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-xl xl:text-3xl 2xl:text-5xl font-black text-slate-900 tracking-tight leading-[1.15] mb-2 sm:mb-2.5 xl:mb-4">
-            Zbuduję stronę, która przyspieszy Twoją <span className="text-slate-900">sprzedaż</span>.
+            Wymień powolny szablon na stronę Next.js ze średnim czasem ładowania{' '}
+            <span 
+              className="relative inline-block"
+              onMouseEnter={() => setIsSpeedTooltipOpen(true)}
+              onMouseLeave={() => setIsSpeedTooltipOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={() => setIsSpeedTooltipOpen((prev) => !prev)}
+                className="text-orange-500 underline decoration-dotted decoration-orange-400/80 underline-offset-4 hover:decoration-orange-600 transition-colors cursor-help inline-flex items-center gap-0.5 focus:outline-none"
+                aria-label="Wyjaśnienie inżynieryjne średniego czasu ładowania 0.8s"
+              >
+                <span>~0.8 s*</span>
+              </button>
+
+              <AnimatePresence>
+                {isSpeedTooltipOpen && (
+                  <motion.span
+                    initial={{ opacity: 0, y: 6, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 6, scale: 0.97 }}
+                    transition={{ duration: 0.18, ease: 'easeOut' }}
+                    className="absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2.5 z-50 w-72 sm:w-84 p-4 bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-2xl shadow-[0_20px_50px_rgba(15,23,42,0.14)] text-left block font-normal pointer-events-none sm:pointer-events-auto"
+                  >
+                    <span className="flex items-center justify-between gap-2 pb-2 mb-2.5 border-b border-slate-100 block">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-orange-600">
+                        Inżynieryjny Benchmark
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-400">
+                        Google Chromium CDP
+                      </span>
+                    </span>
+                    <span className="space-y-1.5 text-xs text-slate-600 font-normal leading-relaxed block">
+                      <span className="flex items-center justify-between text-[11px] block">
+                        <span className="text-slate-500">Pierwszy render (FCP):</span>
+                        <span className="font-mono font-bold text-slate-900">0.4 s - 0.6 s</span>
+                      </span>
+                      <span className="flex items-center justify-between text-[11px] block">
+                        <span className="text-slate-500">Czas odpowiedzi (TTFB):</span>
+                        <span className="font-mono font-bold text-slate-900">30 ms - 50 ms</span>
+                      </span>
+                      <span className="pt-2 text-[11px] text-slate-500 leading-snug border-t border-slate-100 block">
+                        Pomiary na realnych wdrożeniach produkcyjnych (m.in. molendadevelopment.pl, kajaki-u-macka.pl). Kod zawsze projektowany pod kątem stałej zielonej strefy Google Core Web Vitals.
+                      </span>
+                    </span>
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </span>
           </h1>
 
           <p className="text-slate-600 text-xs sm:text-sm lg:text-xs xl:text-sm 2xl:text-base font-normal max-w-xl leading-relaxed mb-2.5 sm:mb-3 xl:mb-5">
-            {fixOrphans(`Uwalniam małe firmy od powolnych szablonów. Projektuję nowoczesne systemy, które odciążają Cię z ręcznej pracy i zdobywają klientów szybciej niż konkurencja. Płacisz raz, a maszyna działa bezawaryjnie.`)}
+            {fixOrphans(`Projektuję bezawaryjne serwisy i sklepy internetowe dla firm, które nie chcą tracić klientów z reklam przez wolny kod. Płacisz raz, 0% prowizji, pełna automatyzacja procesów.`)}
           </p>
 
           <div className="flex flex-col gap-1.5 lg:gap-1 xl:gap-2 mb-3.5 sm:mb-4 xl:mb-6">
@@ -50,25 +116,49 @@ export default function Hero({ onNavigate }: HeroProps) {
             </div>
           </div>
 
-          <div className="flex flex-col items-start gap-1.5">
+          <div className="flex flex-col items-start gap-3 w-full">
             <button
               onClick={() => {
                 pushGTMEvent('strona_glowna_wycena_klikniecie');
-                onNavigate(15);
+                if (onOpenQuoteModal) {
+                  onOpenQuoteModal();
+                } else {
+                  onNavigate(15);
+                }
               }}
               className="w-full sm:w-auto px-5 py-2.5 sm:px-7 sm:py-3.5 xl:px-8 xl:py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-[0_10px_30px_rgba(234,88,12,0.35)] hover:shadow-[0_15px_40px_rgba(234,88,12,0.45)] hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2.5 cursor-pointer group whitespace-nowrap"
             >
-              Odbierz bezpłatną wycenę na e-mail
+              Wyceń projekt w 60 sekund
               <ArrowRight size={16} className="shrink-0 xl:w-5 xl:h-5 transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
 
-            <Link
-              href="/narzedzia/audyt"
-              className="px-1 py-0.5 text-slate-500 hover:text-slate-900 font-medium text-[11px] sm:text-xs flex items-center gap-1.5 transition-colors group"
-            >
-              <span>lub przetestuj stronę darmowym audytem</span>
-              <span className="text-slate-400 group-hover:text-orange-500 transition-colors">→</span>
-            </Link>
+            {/* Interactive Omnibox: Quick 5s Audit */}
+            <div className="w-full max-w-lg">
+              <form onSubmit={handleAuditSubmit} className="flex items-center gap-2 p-1.5 bg-white/90 hover:bg-white focus-within:bg-white border border-slate-200/90 focus-within:border-orange-500/60 rounded-2xl shadow-inner transition-all">
+                <div className="pl-2.5 text-slate-400 shrink-0">
+                  <Globe className="w-4 h-4" />
+                </div>
+                <input 
+                  type="text"
+                  placeholder="Wklej adres strony (np. twojadomena.pl)"
+                  value={auditUrl}
+                  onChange={(e) => setAuditUrl(e.target.value)}
+                  className="flex-1 bg-transparent text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 outline-none font-mono py-1 min-w-0"
+                />
+                <button
+                  type="submit"
+                  className="px-3.5 py-2 bg-slate-900 hover:bg-orange-500 text-white font-bold text-xs rounded-xl shadow-sm transition-all whitespace-nowrap cursor-pointer active:scale-95 shrink-0"
+                >
+                  Audytuj w 5 s →
+                </button>
+              </form>
+              <div className="flex items-center justify-between px-2 pt-1 text-[10px] font-mono text-slate-500">
+                <span>Darmowy test 64 parametrów: Core Web Vitals, SEO i konwersja</span>
+                <Link href="/narzedzia/audyt" className="text-orange-600 hover:text-orange-500 font-bold hidden sm:inline">
+                  Pełne narzędzie →
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -81,7 +171,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             <div className="w-full aspect-square rounded-[1.1rem] xl:rounded-[1.6rem] overflow-hidden relative">
               <Image
                 src="/Marcin_Molenda_Development.webp"
-                alt="Marcin Molenda - Ekspert od szybkiej sprzedaży B2B"
+                alt="Marcin Molenda - Niezależny Inżynier Oprogramowania Next.js"
                 fill
                 priority
                 quality={90}
@@ -93,7 +183,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             {/* Elegant Typographic Status */}
             <div className="w-full pt-1.5 pb-0.5 px-1.5 sm:px-2 xl:px-2.5 flex items-center justify-between gap-1.5">
               <span className="text-[7.5px] sm:text-[8px] xl:text-[9px] 2xl:text-[10px] font-bold text-slate-400 uppercase tracking-widest 2xl:tracking-[0.2em] whitespace-nowrap">Marcin Molenda</span>
-              <span className="text-[7.5px] sm:text-[8px] xl:text-[9px] 2xl:text-[10px] font-black text-slate-900 uppercase tracking-widest 2xl:tracking-[0.2em] whitespace-nowrap">Partner Biznesowy</span>
+              <span className="text-[7.5px] sm:text-[8px] xl:text-[9px] 2xl:text-[10px] font-black text-slate-900 uppercase tracking-widest 2xl:tracking-[0.2em] whitespace-nowrap">Niezależny Inżynier Oprogramowania</span>
             </div>
           </div>
         </div>

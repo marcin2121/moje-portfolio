@@ -32,10 +32,10 @@ function PricingContent() {
       {/* Header */}
       <div className="text-center mb-16 relative z-10 w-full flex flex-col items-center">
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 mb-6">
-          Jasne zasady. Transparentne ceny.<br />Wybierz rozwiązanie dla swojej skali.
+          Zainwestuj raz w stabilny system.<br />Zero abonamentów i ukrytych prowizji.
         </h2>
         <p className="text-slate-600 font-light max-w-2xl text-lg mb-10">
-          {fixOrphans(`Podane ceny to kwoty "od", ustalane na twardo przed linijką kodu. Żadnych niespodzianek na fakturze końcowej.`)}
+          {fixOrphans(`Ceny ustalane na twardo przed rozpoczęciem prac. Płacisz raz za gotowy kod i pełne wdrożenie, bez niespodzianek na fakturze końcowej.`)}
         </p>
 
         {/* Cost of Inaction */}

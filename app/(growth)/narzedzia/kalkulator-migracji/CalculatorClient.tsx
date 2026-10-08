@@ -8,6 +8,7 @@ import { GEOSchemaInjector } from '@/components/ui/GEOSchemaInjector';
 import { motion } from 'framer-motion';
 import { useFrictionTelemetry } from '@/hooks/useFrictionTelemetry';
 import { pushGTMEvent } from '@/app/page';
+import { ArrowRight } from 'lucide-react';
 
 const formatPLN = (val: number) => 
   new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' })
@@ -95,6 +96,15 @@ export function CalculatorClient() {
             <p className="text-4xl md:text-5xl lg:text-5xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-orange-500 to-rose-600 pb-2 w-full break-normal">
               {formatPLN(outputs.projectedRevenueLostPerMonth)}
             </p>
+            <div className="pt-3">
+              <Link 
+                href={`/?strata=${Math.round(outputs.projectedRevenueLostPerMonth)}#kontakt`}
+                className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-[0_8px_20px_rgba(249,115,22,0.25)] hover:scale-105 active:scale-95 transition-all group cursor-pointer"
+              >
+                <span>Zatrzymaj ten wyciek: Wyceń migrację w 24h</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
           
           <div className="grid grid-cols-2 gap-8 pt-8 border-t border-slate-100 relative z-10">

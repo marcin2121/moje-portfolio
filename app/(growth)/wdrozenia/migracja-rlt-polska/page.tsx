@@ -4,6 +4,7 @@ import React from 'react';
 import { GEOSchemaInjector } from '@/components/ui/GEOSchemaInjector';
 import { CaseStudyMetricsBoard } from '@/components/ui/CaseStudyMetricsBoard';
 import { EngineeringCaseStudy } from '@/types';
+import { NextStepCTA } from '@/components/ui/NextStepCTA';
 
 export default function RltPolskaCaseStudyPage() {
   const caseStudyData: EngineeringCaseStudy = {
@@ -115,6 +116,14 @@ export default function RltPolskaCaseStudyPage() {
         <p className="text-sm text-zinc-400 leading-relaxed">
           Wdrozenie nowej architektury zaowocowalo 100% dostepnoscia serwisu podczas szczytow sezonowych, zredukowaniem kosztow serwerowych oraz wzrostem konwersji mobilnej o 35% dzieki blyskawicznemu ladowaniu oferty na kazdym urzadzeniu.
         </p>
+      </div>
+
+      <div className="pt-8">
+        <NextStepCTA 
+          theme="dark"
+          title="Twój monolit PHP lub WooCommerce traci klientów?"
+          subtitle="Przeprowadzę audyt wąskich gardeł i przygotuję plan migracji do Next.js. Wycena i kosztorys w 24h na e-mail."
+        />
       </div>
     </div>
   );

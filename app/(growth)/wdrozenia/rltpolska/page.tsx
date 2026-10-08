@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
+import { NextStepCTA } from '@/components/ui/NextStepCTA';
 
 export default function RLTPolskaCaseStudy() {
   return (
@@ -117,15 +118,12 @@ export default function RLTPolskaCaseStudy() {
           </div>
         </section>
 
-        {/* Bottom CTA */}
-        <div className="mt-32 p-8 bg-orange-50 border border-orange-200/60 shadow-premium-soft rounded-2xl text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 className="text-orange-600 font-bold mb-2 text-xl">Masz dość padających serwerów?</h3>
-            <p className="text-slate-600 m-0">Skaluj biznes w branży beauty bez limitów. Sprawdźmy, jak wdrożenie Serverless ustabilizuje Twój sklep.</p>
-          </div>
-          <Link href="/#kontakt" className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 shadow-[0_8px_20px_rgba(249,115,22,0.2)] transition-all hover:scale-105 whitespace-nowrap">
-            Skonsultuj architekturę →
-          </Link>
+        {/* Bottom Next Step CTA */}
+        <div className="mt-24 not-prose">
+          <NextStepCTA 
+            title="Masz dość padających serwerów i utraconych zamówień?"
+            subtitle="Sprawdźmy, jak wdrożenie Serverless i Next.js zabezpieczy Twoją sprzedaż przed błędami 508. Wycena i plan w 24h na e-mail."
+          />
         </div>
       </div>
     </main>

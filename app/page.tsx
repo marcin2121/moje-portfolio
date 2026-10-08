@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from
 import { Facebook, Linkedin, Monitor, Smartphone as PhoneIcon, X, ChevronUp } from 'lucide-react';
 import Hero from '@/components/Hero';
 import Link from 'next/link';
-import BottomSheet from '@/components/ui/BottomSheet';
+import { ContactModal } from '@/components/ui/ContactModal';
 import { ProblemSection } from '@/components/sections/ProblemSection';
 import { SolutionsSection } from '@/components/sections/SolutionsSection';
 import { AboutMeSection } from '@/components/sections/AboutMeSection';
@@ -57,6 +57,14 @@ const NAV_DOTS = [
   { id: 15, title: 'Kontakt' },
 ] as const;
 
+export const LANDMARK_NAV_ITEMS = [
+  { id: 0, title: 'Start', targetIndex: 0, minIdx: 0, maxIdx: 1 },
+  { id: 2, title: 'Dlaczego Next.js', targetIndex: 2, minIdx: 2, maxIdx: 6 },
+  { id: 7, title: 'Realizacje', targetIndex: 7, minIdx: 7, maxIdx: 12 },
+  { id: 13, title: 'Cennik', targetIndex: 13, minIdx: 13, maxIdx: 14 },
+  { id: 15, title: 'Kontakt', targetIndex: 15, minIdx: 15, maxIdx: 15 },
+] as const;
+
 import { pushGTMEvent } from '@/lib/telemetry';
 export { pushGTMEvent };
 
@@ -71,7 +79,7 @@ export default function PortfolioHome() {
   const [activeDot, setActiveDot]         = useState(0);
   const [openDemo, setOpenDemo]           = useState<DemoConfig | null>(null);
   const [viewMode, setViewMode]           = useState<'desktop' | 'mobile'>('desktop');
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
 
   const playRef = useRef<(() => void) | null>(null);
@@ -286,9 +294,9 @@ export default function PortfolioHome() {
             <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-slate-200 rounded-full" />
             <motion.div className="absolute left-1/2 -translate-x-1/2 top-0 w-1 bg-orange-500 rounded-full origin-top z-0" style={{ height: lavaHeight }} />
             
-            {NAV_DOTS.map((dot, index) => {
-              const isActive = activeDot === index;
-              const isPassed = index < activeDot;
+            {LANDMARK_NAV_ITEMS.map((item) => {
+              const isActive = activeDot >= item.minIdx && activeDot <= item.maxIdx;
+              const isPassed = activeDot > item.maxIdx;
               let dotClasses = 'bg-white border-slate-200';
               let textClasses = 'opacity-0 group-hover:opacity-50 text-slate-900';
 
@@ -300,14 +308,16 @@ export default function PortfolioHome() {
                 textClasses = 'opacity-0 group-hover:opacity-100 text-orange-500';
               }
 
+              const topRatio = snapPointsRef.current[item.targetIndex] ?? 0;
+
               return (
                 <button
-                  key={dot.id}
-                  onClick={() => scrollToSection(dot.id)}
-                  className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border cursor-pointer group hover:scale-150 transition-all duration-300 z-10 ${dotClasses}`}
-                  style={{ top: `${snapPointsRef.current[index] * 100}%` }}
+                  key={item.id}
+                  onClick={() => scrollToSection(item.targetIndex)}
+                  className={`absolute left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full border cursor-pointer group hover:scale-150 transition-all duration-300 z-10 ${dotClasses}`}
+                  style={{ top: `${topRatio * 100}%` }}
                 >
-                  <span className={`absolute left-8 text-[10px] uppercase font-mono tracking-widest transition-all duration-300 whitespace-nowrap ${textClasses}`}>{dot.title}</span>
+                  <span className={`absolute left-8 text-[10px] uppercase font-mono tracking-widest transition-all duration-300 whitespace-nowrap ${textClasses}`}>{item.title}</span>
                 </button>
               );
             })}
@@ -340,8 +350,11 @@ export default function PortfolioHome() {
             <div className="w-px h-5 bg-slate-200 mx-2" />
 
             <button 
-              onClick={() => scrollToSection(15)}
-              className="group relative ml-1 px-6 py-2 bg-orange-500 text-white font-black uppercase text-[10px] tracking-[0.15em] rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(234,88,12,0.3)]"
+              onClick={() => {
+                pushGTMEvent('desktop_nav_cta_click');
+                setIsQuoteModalOpen(true);
+              }}
+              className="group relative ml-1 px-6 py-2 bg-orange-500 text-white font-black uppercase text-[10px] tracking-[0.15em] rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(234,88,12,0.3)] cursor-pointer"
             >
               <span className="absolute inset-0 block bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               <span className="relative z-10">DARMOWA WYCENA</span>
@@ -365,21 +378,24 @@ export default function PortfolioHome() {
                 className="flex lg:hidden fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-[320px] bg-white/95 backdrop-blur-3xl border border-slate-200 rounded-2xl z-40 overflow-hidden shadow-premium flex-col"
               >
               <div className="max-h-[50vh] overflow-y-auto py-2 px-2 custom-scrollbar" data-lenis-prevent="true">
-                {NAV_DOTS.map((dot, idx) => (
-                  <button
-                    key={dot.id}
-                    onClick={() => {
-                      scrollToSection(dot.id);
-                      setIsMobileTocOpen(false);
-                    }}
-                    className={`w-full text-left px-4 py-3 rounded-xl text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase transition-colors flex items-center justify-between ${
-                      activeDot === idx ? 'bg-orange-50 text-orange-600' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                    }`}
-                  >
-                    <span className="truncate pr-2">{dot.title}</span>
-                    {activeDot === idx && <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-orange-500 shadow-[0_0_8px_#ea580c] inline-block" />}
-                  </button>
-                ))}
+                {LANDMARK_NAV_ITEMS.map((item) => {
+                  const isActive = activeDot >= item.minIdx && activeDot <= item.maxIdx;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        scrollToSection(item.targetIndex);
+                        setIsMobileTocOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-3 rounded-xl text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase transition-colors flex items-center justify-between ${
+                        isActive ? 'bg-orange-50 text-orange-600' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                      }`}
+                    >
+                      <span className="truncate pr-2">{item.title}</span>
+                      {isActive && <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-orange-500 shadow-[0_0_8px_#ea580c] inline-block" />}
+                    </button>
+                  );
+                })}
               </div>
             </motion.div>
             </>
@@ -414,9 +430,9 @@ export default function PortfolioHome() {
           <button 
             onClick={() => {
               pushGTMEvent('mobile_nav_cta_click');
-              setIsBottomSheetOpen(true);
+              setIsQuoteModalOpen(true);
             }} 
-            className="px-4 py-2.5 bg-orange-500 text-white font-black uppercase text-[10px] tracking-widest rounded-xl shadow-lg transition-all active:scale-95 whitespace-nowrap shadow-[0_4px_12px_rgba(234,88,12,0.3)]"
+            className="px-4 py-2.5 bg-orange-500 text-white font-black uppercase text-[10px] tracking-widest rounded-xl shadow-lg transition-all active:scale-95 whitespace-nowrap shadow-[0_4px_12px_rgba(234,88,12,0.3)] cursor-pointer"
           >
             DARMOWA WYCENA
           </button>
@@ -424,7 +440,7 @@ export default function PortfolioHome() {
 
         <main className="pl-0 lg:pl-24 w-full overflow-clip">
           <div ref={horizontal1Ref} className="flex flex-col lg:flex-row w-full lg:w-[400%] h-auto lg:h-screen bg-transparent">
-            <Hero onNavigate={scrollToSection} />
+            <Hero onNavigate={scrollToSection} onOpenQuoteModal={() => setIsQuoteModalOpen(true)} />
             <AboutMeSection />
             <ProblemSection />
             <SolutionsSection />
@@ -460,9 +476,7 @@ export default function PortfolioHome() {
         </main>
       </div>
 
-      <BottomSheet isOpen={isBottomSheetOpen} onClose={() => setIsBottomSheetOpen(false)}>
-        <ContactForm />
-      </BottomSheet>
+      <ContactModal isOpen={isQuoteModalOpen} onClose={() => setIsQuoteModalOpen(false)} />
 
       <AnimatePresence>
         {openDemo && (
