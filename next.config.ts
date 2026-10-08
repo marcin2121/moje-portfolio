@@ -30,6 +30,36 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, OPTIONS',
+          },
+        ],
+      },
+      {
+        source: '/(.*\\.(?:png|jpg|jpeg|gif|webp|avif|ico|svg|woff|woff2|css))',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, OPTIONS',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
         source: '/(.*)',
         headers: [
           {
@@ -55,16 +85,7 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
-          }
-        ],
-      },
-      {
-        source: '/(.*\\.(?:png|jpg|jpeg|gif|webp|avif|ico|svg|woff|woff2))',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          }
+          },
         ],
       },
     ];
